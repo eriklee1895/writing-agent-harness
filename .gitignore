@@ -38,8 +38,8 @@ node_modules/
 .turbo/
 
 # Agent/editor local state
-.claude/
-.codex/
+.claude/settings.local.json
+.claude/worktrees/
 
 # Superpowers / visual companion generated scratch files
 .superpowers/

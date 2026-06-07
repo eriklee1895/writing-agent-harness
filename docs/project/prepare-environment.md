@@ -67,6 +67,7 @@
 - `.env`
 - API keys / tokens / cookies
 - browser profiles 和 WeChat 登录态
+- `.claude/settings.local.json`、`.claude/worktrees/` 等 agent/editor 本机状态
 - `output/` 生成产物
 - `.superpowers/` scratch
 - `.venv/`、`node_modules/` 等依赖目录
