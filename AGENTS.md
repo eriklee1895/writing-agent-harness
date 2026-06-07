@@ -14,6 +14,7 @@
 - 任何最终发布动作都需要 user final review，除非用户明确授权自动发布。
 - 先做 small, practical automation；不要把未跑通的能力写成已可用能力。
 - 遇到可复用的新坑点、新技巧、workflow 改进或 skill 缺陷，随手沉淀到 docs / skills。
+- 临时想法、未确认价值的 todo、本机上下文先放 `.local-memory/`；验证为可复用后再迁移到 docs / skills。
 - 当某项能力已经值得 project-level skill 化时，主动建议并沉淀为 `.agents/skills/*`。
 
 ## Docs Router
@@ -34,6 +35,7 @@
 | Markdown / MDX 到微信公众号同步方案 | [docs/workflows/markdown-to-wechat.md](docs/workflows/markdown-to-wechat.md) |
 | 查看项目 skills 边界 | [docs/reference/skills.md](docs/reference/skills.md) |
 | 沉淀 memory、复盘、skill 自我进化 | [docs/reference/self-evolution.md](docs/reference/self-evolution.md) |
+| 使用本机 scratch memory | [docs/reference/local-memory.md](docs/reference/local-memory.md) |
 | 图片、封面、正文插图 | [docs/reference/visuals.md](docs/reference/visuals.md) |
 | 微信发布复盘与坑点 | [docs/retrospectives/2026-06-05-wechat-publish.md](docs/retrospectives/2026-06-05-wechat-publish.md) |
 | Superpowers specs / plans 约定 | [docs/README.md](docs/README.md#superpowers) |
