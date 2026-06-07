@@ -47,6 +47,7 @@ node_modules/
 # Local skill install/export scratch
 .baoyu-skills/
 .agents/skills/*.zip
+skills-lock.json
 
 # WeChat/browser runtime state
 **/chrome-profile/
