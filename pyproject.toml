@@ -1,12 +1,16 @@
 [project]
 name = "writing-agent-harness"
 version = "0.1.0"
-description = "Add your description here"
+description = "Personal AI writing automation harness for research, drafting, visuals, and publishing workflows."
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "agno>=2.6.11",
     "anthropic>=0.105.2",
     "openai>=2.41.0",
+    "pillow>=10.0.0",
     "trafilatura>=2.0.0",
 ]
+
+[tool.uv]
+package = false
