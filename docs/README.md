@@ -41,6 +41,9 @@
 - [reference/self-evolution.md](reference/self-evolution.md)
   - 遇到新坑点、新技巧、workflow 改进和 skill 缺陷时，如何沉淀到 docs / skills。
 
+- [reference/local-memory.md](reference/local-memory.md)
+  - `.local-memory/` 本机 scratch memory 的使用边界和迁移规则。
+
 - [reference/visuals.md](reference/visuals.md)
   - 图片生成、微信公众号封面、正文插图和 asset 规则。
 

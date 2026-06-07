@@ -41,6 +41,9 @@ node_modules/
 .claude/settings.local.json
 .claude/worktrees/
 
+# Local scratch memory, not canonical repo knowledge
+.local-memory/
+
 # Superpowers / visual companion generated scratch files
 .superpowers/
 

@@ -29,6 +29,8 @@
 
 不要把所有信息都塞进 `AGENTS.md`。`AGENTS.md` 是 router 和高频规则，不是百科全书。
 
+如果只是临时想法、未判断价值的 todo、本机上下文或一次性 scratch，先放 `.local-memory/`。`.local-memory/` 不入 Git，不是 canonical memory；当内容被验证为可复用时，再迁移到上述 docs / skills。详细规则见 [local-memory.md](local-memory.md)。
+
 ## Skill Evolution Rules
 
 当发现 skill 可以优化时：
