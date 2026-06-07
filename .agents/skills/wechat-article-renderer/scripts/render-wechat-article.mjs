@@ -1,0 +1,738 @@
+#!/usr/bin/env node
+import fs from "node:fs";
+import path from "node:path";
+import process from "node:process";
+
+// ── Style tokens ────────────────────────────────────────────────
+const STYLE_TOKENS = {
+  "impact-rational": {
+    accent: "#d84b37",
+    blue: "#3d6a8a",
+    text: "#303b46",
+    muted: "#596673",
+    panelBorder: "rgba(67,105,128,.14)",
+    shadow: "0 8px 24px rgba(43,70,88,.08)",
+    fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',Arial,sans-serif",
+    headingFontFamily: undefined,
+    bodyBg: "#f4f7f8",
+    cardBg: "#ffffff",
+    quoteBg: "#edf4f8",
+    quoteBorder: "#4a7c9b",
+    useCards: true,
+    showOutline: true,
+    showSummary: true,
+    heroStyle: "border-left",
+    headingPrefix: "◆",
+    closingPanel: true,
+    lineHeight: "1.9",
+  },
+  "literary-essay": {
+    accent: "#8b5e3c",
+    blue: "#5a7d6a",
+    text: "#3a3a3a",
+    muted: "#7a7a7a",
+    panelBorder: "transparent",
+    shadow: "none",
+    fontFamily: "'Noto Serif SC','STSong','SimSun','PingFang SC','Hiragino Sans GB',serif",
+    headingFontFamily: "'Noto Serif SC','STSong','Georgia',serif",
+    bodyBg: "#fafaf7",
+    cardBg: "transparent",
+    quoteBg: "#f7f4f0",
+    quoteBorder: "#8b5e3c",
+    useCards: false,
+    showOutline: false,
+    showSummary: false,
+    heroStyle: "centered",
+    headingPrefix: "",
+    closingPanel: false,
+    lineHeight: "2.0",
+  },
+  "tech-blog": {
+    accent: "#0066cc",
+    blue: "#2c5f8a",
+    text: "#24292e",
+    muted: "#586069",
+    panelBorder: "rgba(0,102,204,.12)",
+    shadow: "0 4px 16px rgba(0,0,0,.06)",
+    fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif",
+    headingFontFamily: undefined,
+    bodyBg: "#f6f8fa",
+    cardBg: "#ffffff",
+    quoteBg: "#f0f7ff",
+    quoteBorder: "#0066cc",
+    useCards: true,
+    showOutline: true,
+    showSummary: true,
+    heroStyle: "border-left",
+    headingPrefix: "#",
+    closingPanel: true,
+    lineHeight: "1.9",
+  },
+};
+
+const STYLE_LABELS = {
+  "impact-rational": {
+    heroLabel: "个人随笔",
+    authorNoteLabel: "作者想说",
+    outlineLabel: "阅读地图",
+    questionLabel: "三个关键问题",
+    thesisLabel: "核心判断",
+    galleryLabel: "公告截图速览",
+    closingCTA: "下一篇正在路上...",
+  },
+  "literary-essay": {
+    heroLabel: "散文随笔",
+    authorNoteLabel: undefined,
+    outlineLabel: undefined,
+    questionLabel: undefined,
+    thesisLabel: undefined,
+    galleryLabel: "文中配图",
+    closingCTA: undefined,
+  },
+  "tech-blog": {
+    heroLabel: "技术观察",
+    authorNoteLabel: "作者想说",
+    outlineLabel: "内容导航",
+    questionLabel: "关键问题",
+    thesisLabel: "核心判断",
+    galleryLabel: "截图速览",
+    closingCTA: "下一篇在路上 →",
+  },
+};
+
+// ── Shared constants ─────────────────────────────────────────────
+const SAFE_WRAP = "box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word;";
+const DEFAULT_STYLE = "impact-rational";
+const SUPPORTED_STYLES = new Set(Object.keys(STYLE_TOKENS));
+let IMAGE_BASE_DIR = process.cwd();
+let ACTIVE_STYLE = DEFAULT_STYLE;
+
+function getTokens() {
+  return STYLE_TOKENS[ACTIVE_STYLE] || STYLE_TOKENS[DEFAULT_STYLE];
+}
+
+function getLabels() {
+  return STYLE_LABELS[ACTIVE_STYLE] || STYLE_LABELS[DEFAULT_STYLE];
+}
+
+// ── HTML utilities ───────────────────────────────────────────────
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function escapeAttr(value) {
+  return escapeHtml(value).replaceAll("'", "&#39;");
+}
+
+// ── Markdown parsing ─────────────────────────────────────────────
+function stripFrontmatter(markdown) {
+  if (!markdown.startsWith("---\n")) return markdown;
+  const end = markdown.indexOf("\n---\n", 4);
+  return end === -1 ? markdown : markdown.slice(end + 5);
+}
+
+function plainInline(value) {
+  return value
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/\*([^*]+)\*/g, "$1")
+    .trim();
+}
+
+function inline(markdown) {
+  const tokens = getTokens();
+  let html = escapeHtml(markdown);
+
+  html = html.replace(/`([^`]+)`/g, (_match, code) => (
+    `<code style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono',monospace; font-size:.92em; color:${tokens.accent}; background:#fff3ee; border:1px solid rgba(216,75,55,.16); border-radius:4px; padding:1px 5px;">${code}</code>`
+  ));
+
+  html = html.replace(/\*\*([^*]+)\*\*/g, `<strong style="color:${tokens.accent}; font-weight:700;">$1</strong>`);
+  html = html.replace(/\*([^*]+)\*/g, `<em style="font-style:normal; color:${tokens.blue};">$1</em>`);
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, label) => (
+    `<span style="color:${tokens.blue}; border-bottom:1px solid rgba(61,106,138,.28);">${label}</span>`
+  ));
+
+  return html;
+}
+
+function isImageLine(line) {
+  return /^!\[[^\]]*]\([^)]+\)\s*$/.test(line.trim());
+}
+
+function parseImage(line) {
+  const match = line.trim().match(/^!\[([^\]]*)]\(([^)]+)\)\s*$/);
+  if (!match) return null;
+  return { alt: match[1] || "文章配图", src: match[2] };
+}
+
+function imageAttrs(src, alt) {
+  const escapedSrc = escapeAttr(src);
+  const escapedAlt = escapeAttr(alt);
+  if (/^(https?:|data:|\/\/)/i.test(src)) {
+    return `src="${escapedSrc}" alt="${escapedAlt}"`;
+  }
+  const localPath = path.isAbsolute(src) ? src : path.resolve(IMAGE_BASE_DIR, src);
+  return `src="${escapedSrc}" data-local-path="${escapeAttr(localPath)}" alt="${escapedAlt}"`;
+}
+
+function parseTable(lines, start) {
+  const rows = [];
+  let i = start;
+  while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) {
+    const cells = lines[i]
+      .trim()
+      .slice(1, -1)
+      .split("|")
+      .map((cell) => cell.trim());
+    rows.push(cells);
+    i += 1;
+  }
+  if (rows.length < 2 || !rows[1].every((cell) => /^:?-+:?$/.test(cell))) {
+    return null;
+  }
+  return { block: { type: "table", header: rows[0], rows: rows.slice(2) }, next: i };
+}
+
+function parseBlocks(markdown) {
+  const lines = stripFrontmatter(markdown).replace(/\r\n/g, "\n").split("\n");
+  const blocks = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      i += 1;
+      continue;
+    }
+
+    if (/^```/.test(trimmed)) {
+      const fence = trimmed;
+      const code = [];
+      i += 1;
+      while (i < lines.length && lines[i].trim() !== fence) {
+        code.push(lines[i]);
+        i += 1;
+      }
+      i += 1;
+      blocks.push({ type: "code", text: code.join("\n") });
+      continue;
+    }
+
+    const heading = trimmed.match(/^(#{1,6})\s+(.+)$/);
+    if (heading) {
+      blocks.push({ type: "heading", level: heading[1].length, text: heading[2].trim() });
+      i += 1;
+      continue;
+    }
+
+    if (/^---+$/.test(trimmed)) {
+      blocks.push({ type: "hr" });
+      i += 1;
+      continue;
+    }
+
+    const table = parseTable(lines, i);
+    if (table) {
+      blocks.push(table.block);
+      i = table.next;
+      continue;
+    }
+
+    if (trimmed.startsWith(">")) {
+      const quoteLines = [];
+      while (i < lines.length && lines[i].trim().startsWith(">")) {
+        quoteLines.push(lines[i].replace(/^\s*>\s?/, ""));
+        i += 1;
+      }
+      blocks.push({ type: "quote", lines: quoteLines });
+      continue;
+    }
+
+    if (isImageLine(trimmed)) {
+      blocks.push({ type: "image", ...parseImage(trimmed) });
+      i += 1;
+      continue;
+    }
+
+    if (/^[-*]\s+/.test(trimmed) || /^\d+[.)]\s+/.test(trimmed)) {
+      const ordered = /^\d+[.)]\s+/.test(trimmed);
+      const items = [];
+      while (i < lines.length) {
+        const itemLine = lines[i].trim();
+        const itemMatch = ordered
+          ? itemLine.match(/^\d+[.)]\s+(.+)$/)
+          : itemLine.match(/^[-*]\s+(.+)$/);
+        if (!itemMatch) break;
+        items.push(itemMatch[1].trim());
+        i += 1;
+      }
+      blocks.push({ type: "list", ordered, items });
+      continue;
+    }
+
+    const paragraph = [trimmed];
+    i += 1;
+    while (i < lines.length) {
+      const next = lines[i].trim();
+      if (!next) break;
+      if (/^(#{1,6})\s+/.test(next) || next.startsWith(">") || /^---+$/.test(next) || isImageLine(next)) break;
+      if (/^[-*]\s+/.test(next) || /^\d+[.)]\s+/.test(next) || /^\s*\|.*\|\s*$/.test(next) || /^```/.test(next)) break;
+      paragraph.push(next);
+      i += 1;
+    }
+    blocks.push({ type: "paragraph", text: paragraph.join(" ") });
+  }
+
+  return blocks;
+}
+
+function groupConsecutiveImages(blocks) {
+  const grouped = [];
+  for (let index = 0; index < blocks.length;) {
+    if (blocks[index].type !== "image") {
+      grouped.push(blocks[index]);
+      index += 1;
+      continue;
+    }
+
+    const images = [];
+    while (blocks[index]?.type === "image") {
+      images.push(blocks[index]);
+      index += 1;
+    }
+    grouped.push(images.length === 1 ? images[0] : { type: "imageGroup", images });
+  }
+  return grouped;
+}
+
+function takeOpening(blocks) {
+  const remaining = [...blocks];
+  const titleIndex = remaining.findIndex((block) => block.type === "heading" && block.level === 1);
+  const title = titleIndex >= 0 ? plainInline(remaining[titleIndex].text) : "未命名文章";
+  if (titleIndex >= 0) remaining.splice(titleIndex, 1);
+
+  const deckIndex = remaining.findIndex((block) => block.type === "quote");
+  const deck = deckIndex >= 0
+    ? plainInline(remaining[deckIndex].lines.join(" "))
+    : "";
+  if (deckIndex >= 0) remaining.splice(deckIndex, 1);
+
+  const summaryIndex = remaining.findIndex((block) => (
+    block.type === "paragraph" && /一句话总结/.test(block.text)
+  ));
+  const summary = summaryIndex >= 0
+    ? plainInline(remaining[summaryIndex].text.replace(/^(\*\*)?一句话总结[:：](\*\*)?\s*/, ""))
+    : deck;
+  if (summaryIndex >= 0) remaining.splice(summaryIndex, 1);
+
+  while (remaining[0]?.type === "hr") remaining.shift();
+
+  return { title, deck, summary, blocks: groupConsecutiveImages(remaining) };
+}
+
+// ── HTML generation ──────────────────────────────────────────────
+function headingHtml(block) {
+  const tokens = getTokens();
+  const ff = tokens.headingFontFamily || tokens.fontFamily;
+  const prefix = tokens.headingPrefix ? `<span style="color:${tokens.accent};">${tokens.headingPrefix}</span> ` : "";
+  if (block.level === 2) {
+    return `<h2 style="${SAFE_WRAP} font-size:21px; color:${tokens.blue}; margin:0 0 16px; padding-bottom:11px; border-bottom:1px dashed rgba(74,124,155,.34); letter-spacing:0; line-height:1.45; font-family:${ff};">${prefix}${inline(block.text)}</h2>`;
+  }
+  if (block.level === 3) {
+    return `<h3 style="${SAFE_WRAP} font-size:18px; color:${tokens.blue}; margin:22px 0 12px; line-height:1.5; border-left:4px solid ${tokens.accent}; padding-left:10px; font-family:${ff};">${inline(block.text)}</h3>`;
+  }
+  return `<h4 style="${SAFE_WRAP} font-size:16px; color:${tokens.muted}; margin:18px 0 10px; line-height:1.5; font-family:${ff};">${inline(block.text)}</h4>`;
+}
+
+function paragraphHtml(text) {
+  const tokens = getTokens();
+  return `<p style="${SAFE_WRAP} font-size:16px; line-height:${tokens.lineHeight}; color:${tokens.text}; margin:0 0 16px; letter-spacing:0;">${inline(text)}</p>`;
+}
+
+function questionStackHtml(block) {
+  const tokens = getTokens();
+  const labels = getLabels();
+  const questions = block.lines
+    .map((line) => {
+      const text = plainInline(line).trim();
+      return text.startsWith("💡") ? text.slice("💡".length).trim() : text;
+    })
+    .filter(Boolean);
+  const rows = questions.map((question, index) => `<div style="${SAFE_WRAP} margin:${index === 0 ? "0" : "9px"} 0 0; padding:9px 11px; background:#ffffff; border:1px solid rgba(74,124,155,.14); border-radius:8px;">
+    <span style="display:inline-block; width:28px; color:${tokens.accent}; font-size:13px; font-weight:700; vertical-align:top;">${String(index + 1).padStart(2, "0")}</span>
+    <span style="color:#344657; font-size:15px; line-height:1.55; font-weight:700; vertical-align:top;">${escapeHtml(question)}</span>
+  </div>`).join("");
+  return `<div style="${SAFE_WRAP} margin:0 0 16px; padding:13px; background:#f7fafb; border:1px solid rgba(74,124,155,.16); border-radius:10px;">
+  <div style="${SAFE_WRAP} color:${tokens.blue}; font-size:13px; font-weight:700; margin:0 0 10px;">${escapeHtml(labels.questionLabel || "关键问题")}</div>
+  ${rows}
+</div>`;
+}
+
+function thesisCalloutHtml(block) {
+  const tokens = getTokens();
+  const labels = getLabels();
+  const text = block.lines.join(" ").trim().replace(/^💡\s*\*\*核心判断\*\*[:：]\s*/, "");
+  return `<div style="${SAFE_WRAP} margin:0 0 18px; padding:14px 15px; background:#fff8f5; border:1px solid rgba(216,75,55,.18); border-left:4px solid ${tokens.accent}; border-radius:0 10px 10px 0;">
+  <div style="${SAFE_WRAP} color:${tokens.accent}; font-size:13px; line-height:1.4; font-weight:700; margin:0 0 7px;">${escapeHtml(labels.thesisLabel || "核心判断")}</div>
+  <div style="${SAFE_WRAP} color:${tokens.text}; font-size:15px; line-height:1.8; margin:0;">${inline(text)}</div>
+</div>`;
+}
+
+function quoteHtml(block) {
+  const tokens = getTokens();
+  const plainLines = block.lines.map((line) => plainInline(line));
+  const normalizedLines = plainLines.map((line) => {
+    const text = line.trim();
+    return text.startsWith("💡") ? text.slice("💡".length).trim() : text;
+  });
+  if (normalizedLines.length === 3 && normalizedLines.every((line) => line.startsWith("为什么是"))) {
+    return questionStackHtml(block);
+  }
+  if (normalizedLines.some((line) => line.startsWith("核心判断：") || line.startsWith("核心判断:"))) {
+    return thesisCalloutHtml(block);
+  }
+
+  const content = block.lines
+    .filter((line) => line.trim())
+    .map((line) => {
+      if (/^[-*]\s+/.test(line.trim())) {
+        return `<div style="margin-top:6px;">• ${inline(line.trim().replace(/^[-*]\s+/, ""))}</div>`;
+      }
+      return `<div>${inline(line)}</div>`;
+    })
+    .join("");
+  return `<blockquote style="${SAFE_WRAP} margin:0 0 18px; padding:15px 16px; background:${tokens.quoteBg}; border-left:4px solid ${tokens.quoteBorder}; border-radius:0 10px 10px 0; color:${tokens.muted}; font-size:15px; line-height:${tokens.lineHeight};">${content}</blockquote>`;
+}
+
+function listHtml(block) {
+  const tokens = getTokens();
+  const tag = block.ordered ? "ol" : "ul";
+  const items = block.items
+    .map((item) => `<li style="${SAFE_WRAP} margin:0 0 8px;">${inline(item)}</li>`)
+    .join("");
+  return `<${tag} style="${SAFE_WRAP} padding-left:22px; margin:0 0 16px; color:${tokens.text}; font-size:15px; line-height:${tokens.lineHeight};">${items}</${tag}>`;
+}
+
+function referenceListHtml(block) {
+  const tokens = getTokens();
+  const items = block.items.map((item, index) => {
+    const match = item.match(/^\[([^\]]+)]\(([^)]+)\)\s*[-—]\s*(.+)$/);
+    if (!match) {
+      return `<div style="${SAFE_WRAP} margin:0; padding:8px 0; border-bottom:1px solid rgba(74,124,155,.12); color:${tokens.text}; font-size:13px; line-height:1.55;">${inline(item)}</div>`;
+    }
+    const [, title, _href, rawSource] = match;
+    const source = plainInline(rawSource);
+    return `<div style="${SAFE_WRAP} margin:0; padding:8px 0; border-bottom:1px solid rgba(74,124,155,.12);">
+  <div style="${SAFE_WRAP} color:#8b97a3; font-size:11px; line-height:1.35; font-weight:600; margin:0 0 3px;">${String(index + 1).padStart(2, "0")} · ${escapeHtml(source)}</div>
+  <div style="${SAFE_WRAP} color:${tokens.blue}; font-size:13px; line-height:1.5; font-weight:500;">${escapeHtml(title)}</div>
+</div>`;
+  }).join("");
+  return `<div style="${SAFE_WRAP} margin:-2px 0 0;">${items}</div>`;
+}
+
+function imageHtml(block) {
+  return `<figure style="${SAFE_WRAP} width:100%; margin:20px 0; text-align:center;">
+  <img ${imageAttrs(block.src, block.alt)} style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:10px; display:block; margin:0 auto;">
+  <figcaption style="${SAFE_WRAP} font-size:13px; line-height:1.65; color:#6a727a; margin:10px 0 0;">${escapeHtml(block.alt)}</figcaption>
+</figure>`;
+}
+
+function imageGroupHtml(block) {
+  const tokens = getTokens();
+  const labels = getLabels();
+  const [lead, ...rest] = block.images;
+  const leadHtml = lead ? `<div style="${SAFE_WRAP} margin:0 0 12px; text-align:center;">
+    <img ${imageAttrs(lead.src, lead.alt)} style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:8px; display:block; margin:0 auto;">
+    <p style="${SAFE_WRAP} font-size:13px; line-height:1.65; color:#6a727a; margin:9px 0 0;">${escapeHtml(lead.alt)}</p>
+  </div>` : "";
+  const secondaryHtml = rest.length > 0 ? `<div style="${SAFE_WRAP} font-size:0; margin:0;">
+    ${rest.map((image, index) => `<div style="${SAFE_WRAP} display:inline-block; width:${rest.length === 1 ? "100%" : "49%"}; margin:${index % 2 === 0 ? "0 2% 0 0" : "0"}; vertical-align:top; text-align:center;">
+      <img ${imageAttrs(image.src, image.alt)} style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:8px; display:block; margin:0 auto;">
+      <p style="${SAFE_WRAP} font-size:12px; line-height:1.55; color:#6a727a; margin:8px 0 0;">${escapeHtml(image.alt)}</p>
+    </div>`).join("")}
+  </div>` : "";
+  return `<div style="${SAFE_WRAP} width:100%; background:linear-gradient(135deg,#f7f9fb,#edf4f8); border:1px solid rgba(74,124,155,.16); border-radius:12px; padding:14px; margin:20px 0; text-align:left;">
+  <div style="${SAFE_WRAP} font-size:13px; color:${tokens.accent}; font-weight:700; margin:0 0 10px;">${escapeHtml(labels.galleryLabel || "公告截图速览")}</div>
+  ${leadHtml}
+  ${secondaryHtml}
+</div>`;
+}
+
+function tableHtml(block) {
+  const tokens = getTokens();
+  const columnCount = Math.max(block.header.length, ...block.rows.map((row) => row.length));
+  let columnWidths = [];
+  if (columnCount === 2) {
+    columnWidths = ["34%", "66%"];
+  } else if (columnCount === 3) {
+    columnWidths = ["24%", "32%", "44%"];
+  } else {
+    columnWidths = Array.from({ length: columnCount }, () => `${Math.floor(100 / columnCount)}%`);
+  }
+  const colgroup = `<colgroup>${columnWidths.map((width) => `<col style="width:${width};">`).join("")}</colgroup>`;
+  const headers = block.header.map((cell) => (
+    `<th style="${SAFE_WRAP} border:1px solid rgba(74,124,155,.18); padding:11px 10px; background:#edf4f8; color:${tokens.blue}; font-size:14px; line-height:1.55; font-weight:700; text-align:left; vertical-align:top;">${inline(cell)}</th>`
+  )).join("");
+  const rows = block.rows.map((row, index) => (
+    `<tr>${row.map((cell, cellIndex) => `<td style="${SAFE_WRAP} border:1px solid rgba(74,124,155,.14); padding:12px 10px; font-size:14px; line-height:1.75; color:${cellIndex === 0 ? tokens.blue : tokens.text}; font-weight:${cellIndex === 0 ? "700" : "400"}; background:${index % 2 === 0 ? "#ffffff" : "#f8fbfc"}; vertical-align:top;">${inline(cell)}</td>`).join("")}</tr>`
+  )).join("");
+  return `<div style="${SAFE_WRAP} overflow-x:auto; margin:4px 0 20px; border:1px solid rgba(74,124,155,.16); border-radius:10px; background:#ffffff;">
+  <table style="${SAFE_WRAP} border-collapse:collapse; width:100%; table-layout:fixed;">
+    ${colgroup}
+    <thead><tr>${headers}</tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+</div>`;
+}
+
+function codeHtml(block) {
+  return `<pre style="${SAFE_WRAP} white-space:pre-wrap; background:#1f252c; color:#f4f7f8; border-radius:10px; padding:14px 16px; font-size:13px; line-height:1.75; margin:0 0 18px;"><code>${escapeHtml(block.text)}</code></pre>`;
+}
+
+function blockHtml(block) {
+  switch (block.type) {
+    case "heading":
+      return headingHtml(block);
+    case "paragraph":
+      return paragraphHtml(block.text);
+    case "quote":
+      return quoteHtml(block);
+    case "list":
+      return listHtml(block);
+    case "image":
+      return imageHtml(block);
+    case "imageGroup":
+      return imageGroupHtml(block);
+    case "table":
+      return tableHtml(block);
+    case "code":
+      return codeHtml(block);
+    case "hr":
+      return `<div style="height:1px; background:linear-gradient(90deg,transparent,rgba(74,124,155,.28),transparent); margin:22px 0;"></div>`;
+    default:
+      return "";
+  }
+}
+
+function outlineItems(blocks) {
+  return blocks
+    .filter((block) => block.type === "heading" && block.level === 2)
+    .slice(0, 6)
+    .map((block, index) => {
+      const raw = plainInline(block.text);
+      const match = raw.match(/^(\d{1,2})\s+(.+)$/);
+      return {
+        id: `section-${index + 1}`,
+        number: match ? match[1].padStart(2, "0") : String(index + 1).padStart(2, "0"),
+        text: match ? match[2] : raw,
+      };
+    });
+}
+
+function renderBody(blocks) {
+  const tokens = getTokens();
+  const chunks = [];
+  let current = [];
+
+  for (const block of blocks) {
+    if (block.type === "heading" && block.level === 2 && current.length > 0) {
+      chunks.push(current);
+      current = [block];
+    } else {
+      current.push(block);
+    }
+  }
+  if (current.length > 0) chunks.push(current);
+
+  let sectionIndex = 0;
+  return chunks.map((chunk) => {
+    const standaloneImages = chunk.length === 1 && chunk[0].type === "image";
+    if (standaloneImages) return imageHtml(chunk[0]);
+    const firstBlock = chunk[0];
+    const isReferenceSection = firstBlock?.type === "heading" && firstBlock.level === 2 && plainInline(firstBlock.text) === "参考资料";
+    const anchor = firstBlock?.type === "heading" && firstBlock.level === 2
+      ? ` id="section-${++sectionIndex}"`
+      : "";
+    const sectionStyle = tokens.useCards
+      ? `background:${tokens.cardBg}; border:1px solid ${tokens.panelBorder}; border-radius:14px; padding:22px 18px; box-shadow:${tokens.shadow}; margin-bottom:22px;`
+      : `background:transparent; padding:0 0 32px; margin-bottom:0;`;
+    return `<section${anchor} style="${SAFE_WRAP} width:100%; ${sectionStyle}">
+${chunk.map((block) => (isReferenceSection && block.type === "list" ? referenceListHtml(block) : blockHtml(block))).join("\n")}
+</section>`;
+  }).join("\n");
+}
+
+function closingPanelHtml() {
+  const tokens = getTokens();
+  const labels = getLabels();
+  if (!tokens.closingPanel || !labels.closingCTA) return "";
+  return `<section style="${SAFE_WRAP} width:100%; background:#1f252c; color:#d4d9df; border-radius:14px; padding:24px 20px; margin-top:28px; text-align:center; box-shadow:${tokens.shadow};">
+    <p style="${SAFE_WRAP} font-size:16px; line-height:1.8; color:#e8ebef; margin:0; font-family:${tokens.fontFamily};">${escapeHtml(labels.closingCTA)}</p>
+  </section>`;
+}
+
+function renderDocument({ title, deck, summary, blocks }) {
+  const tokens = getTokens();
+  const labels = getLabels();
+
+  // ── Hero section ──
+  let heroHtml;
+  const ff = tokens.headingFontFamily || tokens.fontFamily;
+  if (tokens.heroStyle === "centered") {
+    heroHtml = `<section style="${SAFE_WRAP} width:100%; background:${tokens.cardBg === "transparent" ? tokens.bodyBg : tokens.cardBg}; border-radius:14px; padding:32px 20px 28px; text-align:center; margin-bottom:24px;">
+        <div style="display:inline-block; color:${tokens.accent}; font-size:13px; line-height:1; padding:6px 10px; border:1px solid ${tokens.accent}; border-radius:4px; margin-bottom:18px; opacity:0.8;">${escapeHtml(labels.heroLabel)}</div>
+        <h1 style="${SAFE_WRAP} font-size:26px; line-height:1.4; color:#1f252c; margin:0 auto; font-weight:700; letter-spacing:0; font-family:${ff}; max-width:90%;">${escapeHtml(title)}</h1>
+        ${deck ? `<p style="${SAFE_WRAP} font-size:15px; line-height:1.8; color:${tokens.muted}; margin:14px auto 0; max-width:86%;">${escapeHtml(deck)}</p>` : ""}
+      </section>`;
+  } else {
+    // border-left hero (default for impact-rational and tech-blog)
+    heroHtml = `<section style="${SAFE_WRAP} width:100%; background:${tokens.cardBg}; border-left:8px solid ${tokens.accent}; border-radius:0 14px 14px 0; padding:28px 20px; box-shadow:0 14px 38px rgba(54,72,89,.13); margin-bottom:24px;">
+        <div style="display:inline-block; background:${tokens.accent}; color:#fff; font-size:13px; line-height:1; padding:7px 11px; border-radius:4px; margin-bottom:16px;">${escapeHtml(labels.heroLabel)}</div>
+        <h1 style="${SAFE_WRAP} font-size:28px; line-height:1.28; color:#1f252c; margin:0 0 16px; font-weight:750; letter-spacing:0; font-family:${ff};">${escapeHtml(title)}</h1>
+        ${deck ? `<p style="${SAFE_WRAP} font-size:16px; line-height:1.9; color:${tokens.muted}; margin:0;">${escapeHtml(deck)}</p>` : ""}
+        ${deck ? `<div style="height:1px; background:linear-gradient(90deg,${tokens.accent},rgba(216,75,55,0)); margin:22px 0 0;"></div>` : ""}
+      </section>`;
+  }
+
+  // ── Summary card ──
+  const summaryHtml = (tokens.showSummary && summary)
+    ? `<section style="${SAFE_WRAP} width:100%; background:${tokens.cardBg}; border:1px solid ${tokens.panelBorder}; border-radius:14px; padding:22px 18px 20px; box-shadow:${tokens.shadow}; margin-bottom:22px;">
+        <div style="font-size:13px; color:${tokens.accent}; font-weight:700; margin-bottom:10px;">${escapeHtml(labels.authorNoteLabel || "作者想说")}</div>
+        <p style="${SAFE_WRAP} font-size:16px; line-height:1.95; color:${tokens.text}; margin:0;">${escapeHtml(summary)}</p>
+      </section>`
+    : "";
+
+  // ── Outline / reading map ──
+  const mapItems = outlineItems(blocks);
+  const mapHtml = (tokens.showOutline && mapItems.length > 0)
+    ? `<section style="${SAFE_WRAP} width:100%; background:${tokens.cardBg}; border:1px solid ${tokens.panelBorder}; border-radius:14px; padding:22px 18px; box-shadow:${tokens.shadow}; margin-bottom:22px;">
+  <h2 style="${SAFE_WRAP} font-size:20px; color:${tokens.blue}; margin:0 0 12px; padding-bottom:11px; border-bottom:1px dashed rgba(74,124,155,.34); letter-spacing:0;"><span style="color:${tokens.accent};">${tokens.headingPrefix}</span> ${escapeHtml(labels.outlineLabel || "阅读地图")}</h2>
+  <div style="${SAFE_WRAP} margin:0;">
+    ${mapItems.map((item) => `<div style="${SAFE_WRAP} display:block; color:#3a4652; margin:0 0 6px; line-height:1.55;">
+      <span style="display:inline-block; min-width:32px; color:${tokens.accent}; font-size:13px; font-weight:700; letter-spacing:0;">${escapeHtml(item.number)}</span>
+      <span style="font-size:15px;">${escapeHtml(item.text)}</span>
+    </div>`).join("\n")}
+  </div>
+</section>` : "";
+
+  return `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${escapeHtml(title)}</title>
+  <meta name="description" content="${escapeAttr(summary || deck || title)}">
+</head>
+<body style="box-sizing:border-box; max-width:100%; margin:0; padding:0; background:${tokens.bodyBg}; overflow-x:hidden;">
+  <div style="${SAFE_WRAP} width:100%; background:${tokens.bodyBg}; padding:24px 12px;">
+    <article style="${SAFE_WRAP} width:100%; max-width:760px; margin:0 auto; font-family:${tokens.fontFamily}; color:${tokens.text};">
+      ${heroHtml}
+
+      ${summaryHtml}
+      ${mapHtml}
+      ${renderBody(blocks)}
+      ${closingPanelHtml()}
+    </article>
+  </div>
+</body>
+</html>
+`;
+}
+
+// ── Main ──────────────────────────────────────────────────────────
+async function main() {
+  const args = process.argv.slice(2);
+  if (args.includes("--list-styles")) {
+    console.log(JSON.stringify({ styles: [...SUPPORTED_STYLES], defaultStyle: DEFAULT_STYLE }, null, 2));
+    return;
+  }
+
+  let input = "";
+  let output = "";
+  let serve = false;
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (arg === "--style") {
+      const style = args[index + 1];
+      if (!style) {
+        console.error("Missing value for --style");
+        process.exit(1);
+      }
+      ACTIVE_STYLE = style;
+      index += 1;
+      continue;
+    }
+    if (arg?.startsWith("--style=")) {
+      ACTIVE_STYLE = arg.slice("--style=".length);
+      continue;
+    }
+    if (arg === "--serve") {
+      serve = true;
+      continue;
+    }
+    if (arg?.startsWith("--")) {
+      console.error(`Unknown option: ${arg}`);
+      process.exit(1);
+    }
+    if (!input) {
+      input = arg || "";
+    } else if (!output) {
+      output = arg || "";
+    } else {
+      console.error(`Unexpected argument: ${arg}`);
+      process.exit(1);
+    }
+  }
+
+  if (!input) {
+    console.error("Usage: node scripts/render-wechat-article.mjs <article.md> [output.html] [--style impact-rational|literary-essay|tech-blog] [--serve]");
+    console.error("List styles: node scripts/render-wechat-article.mjs --list-styles");
+    process.exit(1);
+  }
+
+  if (!SUPPORTED_STYLES.has(ACTIVE_STYLE)) {
+    console.error(`Unsupported style: ${ACTIVE_STYLE}`);
+    console.error(`Supported styles: ${[...SUPPORTED_STYLES].join(", ")}`);
+    process.exit(1);
+  }
+
+  const inputPath = path.resolve(input);
+  const outputPath = output
+    ? path.resolve(output)
+    : path.join(path.dirname(inputPath), `${path.basename(inputPath, path.extname(inputPath))}.wechat-preview.html`);
+
+  const markdown = fs.readFileSync(inputPath, "utf8");
+  IMAGE_BASE_DIR = path.dirname(inputPath);
+  const blocks = parseBlocks(markdown);
+  const opening = takeOpening(blocks);
+  const html = renderDocument(opening);
+  fs.writeFileSync(outputPath, html, "utf8");
+
+  const imageCount = opening.blocks.reduce((count, block) => (
+    count + (block.type === "imageGroup" ? block.images.length : block.type === "image" ? 1 : 0)
+  ), 0);
+  console.log(JSON.stringify({ outputPath, title: opening.title, imageCount, style: ACTIVE_STYLE }, null, 2));
+
+  if (serve) {
+    const scriptDir = path.dirname(path.resolve(process.argv[1]));
+    const serverScript = path.join(scriptDir, "preview-server.mjs");
+    const serveDir = path.dirname(outputPath);
+    console.log(`\nStarting preview at http://localhost:49255/`);
+    console.log(`Serving: ${serveDir}`);
+    console.log(`Press Ctrl+C to stop.\n`);
+    const { spawn } = await import("node:child_process");
+    const child = spawn("node", [serverScript, serveDir], { stdio: "inherit" });
+    child.on("exit", () => process.exit(0));
+  }
+}
+
+main();

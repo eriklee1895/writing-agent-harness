@@ -1,0 +1,4 @@
+interface:
+  display_name: "WeChat Publish Workflow"
+  short_description: "End-to-end WeChat article publishing workflow"
+  default_prompt: "Use $wechat-publish-workflow to take this Markdown article through WeChat preview, verification, WeChat draft creation, and final publishing handoff."

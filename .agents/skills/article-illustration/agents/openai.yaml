@@ -1,0 +1,6 @@
+interface:
+  display_name: "Article Illustration"
+  short_description: "Generate article illustrations"
+  default_prompt: "Use $article-illustration to create a polished illustration for this article."
+policy:
+  allow_implicit_invocation: true

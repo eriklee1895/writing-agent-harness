@@ -1,0 +1,61 @@
+# OS noise
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# Logs and runtime state
+logs/
+*.log
+*.pid
+*.tmp
+
+# Local env / secrets
+.env
+.env.*
+!.env.example
+
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+
+# Node / JS dependencies and caches
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+.turbo/
+
+# Agent/editor local state
+.claude/
+.codex/
+
+# Superpowers / visual companion generated scratch files
+.superpowers/
+
+# Local skill install/export scratch
+.baoyu-skills/
+.agents/skills/*.zip
+
+# WeChat/browser runtime state
+**/chrome-profile/
+**/Chrome Profile/
+**/user-data-dir/
+**/Cookies
+**/Cookies-journal
+
+# Generated outputs and temporary working files
+output/
+tmp/
+.backups/

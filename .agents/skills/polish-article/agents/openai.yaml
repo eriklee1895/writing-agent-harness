@@ -1,0 +1,4 @@
+interface:
+  display_name: "Polish Article"
+  short_description: "Polish article drafts with genre-aware voice"
+  default_prompt: "Use $polish-article to strengthen this draft's logic, prose, professional depth, and genre-appropriate voice while preserving the author's perspective."

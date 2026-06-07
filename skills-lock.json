@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "baoyu-post-to-wechat": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "computedHash": "9594dde34bd299601b3354562e67756d56f6145575c6b40c498d4647a41fe4f7"
+    }
+  }
+}

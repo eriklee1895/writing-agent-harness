@@ -1,0 +1,4 @@
+interface:
+  display_name: "WeChat Article Renderer"
+  short_description: "Render Markdown into WeChat-ready HTML"
+  default_prompt: "Use $wechat-article-renderer to generate a polished WeChat HTML preview from this Markdown draft."
