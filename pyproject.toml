@@ -1,5 +1,5 @@
 [project]
-name = "writer-agent"
+name = "writing-agent-harness"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
