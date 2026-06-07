@@ -10,6 +10,9 @@
 - [project/directory-layout.md](project/directory-layout.md)
   - 推荐目录结构、文章自包含目录、历史目录迁移原则。
 
+- [project/prepare-environment.md](project/prepare-environment.md)
+  - 新机器 / 新 agent 环境的 runtime、Git LFS、外部 skills 和本机账号态准备。
+
 - [project/automation-roadmap.md](project/automation-roadmap.md)
   - 从 human-in-the-loop 到 scheduled agents 的路线图和安全边界。
 

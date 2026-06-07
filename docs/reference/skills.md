@@ -2,6 +2,8 @@
 
 项目级 skills 放在 `.agents/skills/`。
 
+它们随 repo 提交，是 `writing-agent-harness` 的稳定能力边界。部分任务还会使用本机 user-level skills，例如 `tavily-search`、`imagegen`、`openai-docs`；这些 skills 通常安装在 `~/.agents/skills/` 或 `~/.codex/skills/`，不属于本 repo。新环境准备见 [../project/prepare-environment.md](../project/prepare-environment.md)。
+
 ## Current Core
 
 - `article-ideation`

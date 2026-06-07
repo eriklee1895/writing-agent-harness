@@ -100,6 +100,8 @@ node .agents/skills/wechat-article-renderer/scripts/preview-server.mjs \
 
 详见 [docs/workflows/ai-writing-workflow.md](docs/workflows/ai-writing-workflow.md)。
 
+新机器或新 agent 环境的本机依赖、Git LFS、可选 user-level skills 和账号态准备，见 [docs/project/prepare-environment.md](docs/project/prepare-environment.md)。
+
 ### 已发布文章
 
 | # | 标题 | 样式 | 日期 |
@@ -197,6 +199,7 @@ Renderer 支持三种 style preset：`impact-rational`（技术评论）、`lite
 
 - [docs/README.md](docs/README.md): 文档索引。
 - [docs/project/vision.md](docs/project/vision.md): 项目愿景、写作场景和分发目标。
+- [docs/project/prepare-environment.md](docs/project/prepare-environment.md): 新机器 / 新 agent 环境的 runtime、Git LFS、外部 skills 和本机账号态准备。
 - [docs/project/todolist.md](docs/project/todolist.md): 当前建设 todo。
 - [docs/workflows/writing-overview.md](docs/workflows/writing-overview.md): 通用写作流程。
 - [docs/workflows/wechat-writing-publishing.md](docs/workflows/wechat-writing-publishing.md): 微信公众号写作、排版、草稿箱同步与发布流程。
