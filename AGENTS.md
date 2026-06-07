@@ -53,6 +53,18 @@
 - 不使用 paid `md2wechat` API。
 - `docs/superpowers/specs/` 和 `docs/superpowers/plans/` 是 Superpowers 长期文档目录；`.superpowers/` 是 generated scratch，通常忽略。
 
+## Self-Evolution Loop
+
+执行任务过程中，如果遇到新的可复用经验，agent 应主动判断是否沉淀：
+
+- 临时想法、未验证 todo、本机上下文：写入 `.local-memory/`。
+- 已验证的 workflow 改进、坑点、检查清单：更新 `docs/`。
+- 高频规则或项目级行为边界：更新 `AGENTS.md`，保持简短。
+- 可重复执行 3 次以上、边界清晰的能力：沉淀为 `.agents/skills/*`。
+- 已经跑通且值得自动化的步骤：补充 scripts 或 workflow runbook。
+
+不要把一次性细节过度制度化；先验证，再沉淀。
+
 ## Quick Commands
 
 生成 WeChat preview：
