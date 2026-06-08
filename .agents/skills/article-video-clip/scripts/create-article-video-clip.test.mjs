@@ -1,9 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs/promises";
+import os from "node:os";
 import path from "node:path";
 import {
   buildClipSlug,
   buildFfmpegArgs,
+  createClip,
   createClipManifest,
   createNotesMarkdown,
   findMediaFile,
@@ -166,4 +169,60 @@ test("parseArgs requires material, timestamps, preset, and title", () => {
   assert.equal(parsed.dryRun, true);
 
   assert.throws(() => parseArgs(["--material", "/repo/source"]), /Usage:/);
+});
+
+test("createClip dry run plans output without executing commands", async () => {
+  const temp = await fs.mkdtemp(path.join(os.tmpdir(), "article-video-clip-"));
+  const article = path.join(temp, "content", "drafts", "topic");
+  const material = path.join(article, "assets", "media", "source");
+  await fs.mkdir(material, { recursive: true });
+  await fs.writeFile(path.join(material, "media.mp4"), "fake media");
+  await fs.writeFile(
+    path.join(material, "manifest.json"),
+    JSON.stringify(
+      {
+        original_url: "https://example.com/watch/1",
+        canonical_url: "https://example.com/canonical",
+        title: "Source Title",
+        uploader: "Author",
+        platform: "Example",
+      },
+      null,
+      2,
+    ),
+  );
+  await fs.writeFile(path.join(material, "sources.md"), "# Source\n");
+
+  const calls = [];
+  const result = await createClip({
+    options: {
+      material,
+      target: "",
+      start: "00:12",
+      end: "00:38",
+      preset: "wechat-landscape",
+      title: "Clip Title",
+      caption: "Caption",
+      focus: "center",
+      style: "impact-rational",
+      dryRun: true,
+    },
+    runCommandFn: async (command, args) => {
+      calls.push({ command, args });
+      return { stdout: "", stderr: "" };
+    },
+    now: () => new Date("2026-06-08T00:00:00.000Z"),
+  });
+
+  assert.equal(calls.length, 0);
+  assert.equal(result.dryRun, true);
+  assert.equal(result.outputDirectory, path.join(article, "assets", "video-clips", "clip-title"));
+  assert.equal(result.commands[0].command, "ffmpeg");
+  assert.equal(result.commands[1].command, "npx");
+  assert.deepEqual(result.manifest.clip, {
+    title: "Clip Title",
+    caption: "Caption",
+    start: "00:12",
+    end: "00:38",
+  });
 });

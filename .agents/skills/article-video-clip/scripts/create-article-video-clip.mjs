@@ -247,3 +247,265 @@ export function usage() {
     "  node .agents/skills/article-video-clip/scripts/create-article-video-clip.mjs --material <material-dir> --start <time> --end <time> --preset <wechat-landscape|wechat-portrait> --title <title> [--caption <text>] [--focus left|center|right] [--style impact-rational] [--target <article-folder>] [--dry-run]",
   ].join("\n");
 }
+
+export function runCommand(command, args, options = {}) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, {
+      cwd: options.cwd,
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+
+    let stdout = "";
+    let stderr = "";
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk;
+    });
+    child.stderr.on("data", (chunk) => {
+      stderr += chunk;
+    });
+    child.on("error", reject);
+    child.on("close", (code) => {
+      if (code === 0) {
+        resolve({ stdout, stderr });
+      } else {
+        reject(new Error(`Command failed (${code}): ${command} ${args.join(" ")}\n${stderr || stdout}`));
+      }
+    });
+  });
+}
+
+async function readJson(filePath) {
+  return JSON.parse(await fs.readFile(filePath, "utf8"));
+}
+
+async function listFiles(directory) {
+  return (await fs.readdir(directory)).sort();
+}
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function buildHyperframesHtml({ preset, title, caption, sourceLabel }) {
+  const safeTitle = escapeHtml(title);
+  const safeCaption = escapeHtml(caption);
+  const safeSource = escapeHtml(sourceLabel);
+  const captionHtml = safeCaption ? `<div class="caption">${safeCaption}</div>` : "";
+  return `<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>${safeTitle}</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: #101214;
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", sans-serif;
+      }
+      [data-composition-id="root"] {
+        position: relative;
+        overflow: hidden;
+        background: #101214;
+      }
+      video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .shade {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,.62), rgba(0,0,0,0) 30%, rgba(0,0,0,.7));
+        z-index: 2;
+        pointer-events: none;
+      }
+      .title {
+        position: absolute;
+        left: 6%;
+        right: 6%;
+        top: 6%;
+        z-index: 3;
+        color: #fff;
+        font-size: ${preset.width > preset.height ? "64px" : "54px"};
+        font-weight: 750;
+        line-height: 1.12;
+        letter-spacing: 0;
+        text-shadow: 0 2px 18px rgba(0,0,0,.45);
+      }
+      .caption {
+        position: absolute;
+        left: 6%;
+        right: 6%;
+        bottom: 11%;
+        z-index: 3;
+        color: #f4f0e8;
+        font-size: ${preset.width > preset.height ? "34px" : "38px"};
+        line-height: 1.28;
+        text-shadow: 0 2px 16px rgba(0,0,0,.5);
+      }
+      .source {
+        position: absolute;
+        left: 6%;
+        right: 6%;
+        bottom: 4%;
+        z-index: 3;
+        color: rgba(255,255,255,.72);
+        font-size: ${preset.width > preset.height ? "22px" : "24px"};
+        line-height: 1.25;
+        text-shadow: 0 2px 12px rgba(0,0,0,.55);
+      }
+    </style>
+  </head>
+  <body>
+    <div data-composition-id="root" data-width="${preset.width}" data-height="${preset.height}">
+      <video src="assets/source-clip.mp4" data-start="0" data-track-index="0" muted playsinline></video>
+      <div class="shade" data-start="0" data-duration="999" data-track-index="1"></div>
+      <div class="title" data-start="0" data-duration="999" data-track-index="2">${safeTitle}</div>
+      ${captionHtml}
+      <div class="source" data-start="0" data-duration="999" data-track-index="3">${safeSource}</div>
+    </div>
+  </body>
+</html>
+`;
+}
+
+function buildCommandPlan({ ffmpegArgs, hyperframesDirectory, finalPath, previewPath }) {
+  return [
+    { command: "ffmpeg", args: ffmpegArgs },
+    { command: "npx", args: ["hyperframes", "lint", "."], cwd: hyperframesDirectory },
+    { command: "npx", args: ["hyperframes", "inspect", "."], cwd: hyperframesDirectory },
+    {
+      command: "npx",
+      args: ["hyperframes", "render", "--output", finalPath],
+      cwd: hyperframesDirectory,
+    },
+    { command: "ffmpeg", args: ["-y", "-ss", "1", "-i", finalPath, "-frames:v", "1", previewPath] },
+  ];
+}
+
+export async function createClip({ options, runCommandFn = runCommand, now = () => new Date() }) {
+  const materialPath = path.resolve(options.material);
+  const materialFiles = await listFiles(materialPath);
+  const mediaFile = findMediaFile(materialFiles);
+  if (!mediaFile) {
+    throw new Error(`No media file found in ${materialPath}`);
+  }
+
+  const manifestPath = path.join(materialPath, "manifest.json");
+  const sourceManifest = await readJson(manifestPath);
+  const preset = getPreset(options.preset);
+  const startSeconds = parseTimestamp(options.start);
+  const endSeconds = parseTimestamp(options.end);
+  const slug = buildClipSlug(options.title);
+  const articleFolder = inferArticleFolder(materialPath);
+  const outputDirectory = planOutputDirectory({
+    articleFolder,
+    target: options.target,
+    slug,
+  });
+  const hyperframesDirectory = path.join(outputDirectory, "hyperframes");
+  const hyperframesAssetsDirectory = path.join(hyperframesDirectory, "assets");
+  const intermediatePath = path.join(hyperframesAssetsDirectory, "source-clip.mp4");
+  const finalPath = path.join(outputDirectory, "final.mp4");
+  const previewPath = path.join(outputDirectory, "preview-frame.jpg");
+  const notesPath = path.join(outputDirectory, "notes.md");
+  const clipManifestPath = path.join(outputDirectory, "clip-manifest.json");
+  const sourceLabel = [sourceManifest.platform, sourceManifest.uploader].filter(Boolean).join(" / ");
+  const ffmpegArgs = buildFfmpegArgs({
+    input: path.join(materialPath, mediaFile),
+    output: intermediatePath,
+    startSeconds,
+    endSeconds,
+    preset,
+    focus: options.focus,
+  });
+  const commands = buildCommandPlan({
+    ffmpegArgs,
+    hyperframesDirectory,
+    finalPath,
+    previewPath,
+  });
+  const clipManifest = createClipManifest({
+    sourceManifest,
+    materialPath,
+    manifestPath,
+    start: options.start,
+    end: options.end,
+    preset,
+    focus: options.focus,
+    style: options.style,
+    title: options.title,
+    caption: options.caption,
+    outputFiles: ["final.mp4", "clip-manifest.json", "notes.md", "preview-frame.jpg"],
+    generatedAt: now().toISOString(),
+  });
+
+  if (options.dryRun) {
+    return {
+      dryRun: true,
+      outputDirectory,
+      commands,
+      manifest: clipManifest,
+    };
+  }
+
+  await fs.mkdir(hyperframesAssetsDirectory, { recursive: true });
+  await runCommandFn("ffmpeg", ffmpegArgs);
+  await fs.writeFile(
+    path.join(hyperframesDirectory, "index.html"),
+    buildHyperframesHtml({
+      preset,
+      title: options.title,
+      caption: options.caption,
+      sourceLabel: sourceLabel || sourceManifest.original_url || "",
+    }),
+  );
+
+  for (const planned of commands.slice(1)) {
+    await runCommandFn(planned.command, planned.args, { cwd: planned.cwd });
+  }
+
+  await fs.writeFile(clipManifestPath, `${JSON.stringify(clipManifest, null, 2)}\n`);
+  await fs.writeFile(notesPath, createNotesMarkdown({ manifest: clipManifest }));
+
+  return {
+    dryRun: false,
+    outputDirectory,
+    finalPath,
+    manifestPath: clipManifestPath,
+    notesPath,
+  };
+}
+
+export async function main(argv = process.argv.slice(2)) {
+  const options = parseArgs(argv);
+  const result = await createClip({ options });
+  if (result.dryRun) {
+    console.log(`Dry run: ${result.manifest.clip.title}`);
+    console.log(`Target: ${result.outputDirectory}`);
+    for (const command of result.commands) {
+      console.log(`Command: ${command.command} ${command.args.join(" ")}`);
+    }
+  } else {
+    console.log(`Saved: ${result.finalPath}`);
+    console.log(`Manifest: ${result.manifestPath}`);
+    console.log(`Notes: ${result.notesPath}`);
+  }
+}
+
+const isCli = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (isCli) {
+  main().catch((error) => {
+    console.error(error.message);
+    process.exitCode = 1;
+  });
+}
