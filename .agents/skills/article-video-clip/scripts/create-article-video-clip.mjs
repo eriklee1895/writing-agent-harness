@@ -290,7 +290,7 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;");
 }
 
-function buildHyperframesHtml({ preset, title, caption, sourceLabel }) {
+export function buildHyperframesHtml({ preset, title, caption, sourceLabel }) {
   const safeTitle = escapeHtml(title);
   const safeCaption = escapeHtml(caption);
   const safeSource = escapeHtml(sourceLabel);
@@ -367,7 +367,7 @@ function buildHyperframesHtml({ preset, title, caption, sourceLabel }) {
   </head>
   <body>
     <div data-composition-id="root" data-width="${preset.width}" data-height="${preset.height}">
-      <video src="assets/source-clip.mp4" data-start="0" data-track-index="0" muted playsinline></video>
+      <video src="assets/source-clip.mp4" data-start="0" data-track-index="0" data-volume="1" playsinline></video>
       <div class="shade" data-start="0" data-duration="999" data-track-index="1"></div>
       <div class="title" data-start="0" data-duration="999" data-track-index="2">${safeTitle}</div>
       ${captionHtml}

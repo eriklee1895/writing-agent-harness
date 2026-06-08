@@ -6,6 +6,7 @@ import path from "node:path";
 import {
   buildClipSlug,
   buildFfmpegArgs,
+  buildHyperframesHtml,
   createClip,
   createClipManifest,
   createNotesMarkdown,
@@ -225,4 +226,17 @@ test("createClip dry run plans output without executing commands", async () => {
     start: "00:12",
     end: "00:38",
   });
+});
+
+test("buildHyperframesHtml preserves clip audio by default", () => {
+  const html = buildHyperframesHtml({
+    preset: getPreset("wechat-landscape"),
+    title: "Clip Title",
+    caption: "Caption",
+    sourceLabel: "Example / Author",
+  });
+
+  assert.match(html, /<video src="assets\/source-clip\.mp4"/);
+  assert.doesNotMatch(html, /\smuted\b/);
+  assert.match(html, /data-volume="1"/);
 });
