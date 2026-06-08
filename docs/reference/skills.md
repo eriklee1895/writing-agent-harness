@@ -25,6 +25,11 @@
   - 端到端微信公众号发布 runbook。
   - 负责编排 preview、草稿箱同步、验证和最终发布交接。
 
+- `video-material-ingest`
+  - 用 `yt-dlp` 把已知视频 URL 摄取到本地可追溯素材目录。
+  - 第一版只负责下载、metadata、manifest 和 sources 留痕；不负责搜索视频、图片搜索、版权判断或剪辑生产。
+  - 默认使用 `--cookies-from-browser chrome` 读取本机 Chrome 登录态，但不导出、打印或提交 cookies。
+
 - `baoyu-post-to-wechat`
   - 当前作为底层微信公众号上传器使用，只维护 browser/CDP 主路径。
   - API / remote-api 仅作为历史/实验能力保留，不作为本 repo 的常规自动化路线。

@@ -27,6 +27,7 @@ Feishu / notes -> Markdown / MDX -> research -> polish -> channel packaging -> p
 - Markdown / MDX 到 Astro content collections 的博客发布 skill。
 - 微信公众号草稿箱同步的项目定制 CDP uploader，逐步减少对通用 skill 的依赖。
 - 文章 metadata、assets、reference links 的统一规范。
+- `video-material-ingest`：基于 `yt-dlp` 摄取已知视频 URL，沉淀 metadata、manifest 和 sources，为后续转写、抽帧、切片、HyperFrames 和短视频生产做素材入口。
 
 ## Long Term
 

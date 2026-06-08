@@ -21,6 +21,10 @@
   - `baoyu-post-to-wechat` 的 CDP 上传器脚本使用 Bun，或通过 `npx -y bun` 临时运行。
 - Chrome / Chromium
   - 微信公众号草稿箱同步依赖 browser / CDP 模式。
+- yt-dlp
+  - `video-material-ingest` 使用本机 `yt-dlp` 抓取 YouTube / Bilibili / Douyin 等已知视频 URL。
+  - 需要登录态的平台依赖本机浏览器状态，默认命令使用 `--cookies-from-browser chrome`。
+  - 不要导出、打印或提交 cookies。
 - OpenAI API key
   - 图片生成、部分 AI 辅助脚本可能需要。
   - 真实 key 放在本机环境变量或本地 `.env`，不要提交。
@@ -94,6 +98,7 @@ git lfs version
 node --version
 uv --version
 bun --version   # optional
+yt-dlp --version # optional, required for video-material-ingest
 ```
 
 渲染微信公众号 preview：

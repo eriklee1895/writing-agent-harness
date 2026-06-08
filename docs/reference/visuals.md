@@ -16,6 +16,15 @@ OPENAI_BASE_URL
 - 使用 descriptive alt text。微信公众号 renderer 会把 alt text 转成 caption。
 - 避免 `文章配图` 这种 generic caption。
 
+## Video Material
+
+已知视频 URL 的素材摄取使用 `video-material-ingest` skill。
+
+- 视频素材优先放在文章目录的 `assets/media/<slug>/`。
+- 没有文章上下文时放在 `content/inbox/media/YYYY-MM-DD-<slug>/`。
+- 每个素材包必须保留 `manifest.json` 和 `sources.md`，用于后续写作、配图、短视频或 HyperFrames 生产前复核。
+- `video-material-ingest` 不负责图片 web search；图片搜索、图片生成和最终版权判断仍走独立 workflow。
+
 ## 微信公众号封面图
 
 尺寸规范（上传压缩后更清晰）：
