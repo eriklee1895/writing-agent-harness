@@ -1,4 +1,4 @@
-# Video Article Clip Design
+# Article Video Clip Design
 
 ## Context
 
@@ -8,7 +8,7 @@ HyperFrames skills are prerequisites and underlying production tools, not the pr
 
 ## Goal
 
-Create a future project-level skill named `video-article-clip`.
+Create a future project-level skill named `article-video-clip`.
 
 The first version should take a `video-material-ingest` material package, a human-selected time range, and a target preset, then produce an article-ready video clip with light packaging.
 
@@ -49,7 +49,7 @@ It should:
 
 ## Capability Boundary
 
-`video-article-clip` is the derivative layer after `video-material-ingest`.
+`article-video-clip` is the derivative layer after `video-material-ingest`.
 
 Responsibilities:
 
@@ -81,7 +81,7 @@ Do not add a root `package.json` or Bun workspace until shared project-level JS 
 Example command shape:
 
 ```bash
-node .agents/skills/video-article-clip/scripts/create-video-article-clip.mjs \
+node .agents/skills/article-video-clip/scripts/create-article-video-clip.mjs \
   --material /absolute/path/to/content/drafts/2026-06-08-topic/assets/media/source-slug \
   --start 00:12 \
   --end 00:38 \
@@ -243,7 +243,7 @@ HyperFrames owns visual packaging: title, caption, source overlay, simple motion
 
 ## WeChat Boundary
 
-`video-article-clip` stops after creating article-ready local files.
+`article-video-clip` stops after creating article-ready local files.
 
 WeChat-specific workflow:
 
@@ -292,4 +292,3 @@ Manual smoke test:
 - root-level Bun workspace if CDP video upload requires shared JS dependencies;
 - WeChat video upload and insert automation in `baoyu-post-to-wechat`;
 - reusable visual templates shared across blog, WeChat, and short-video outputs.
-
