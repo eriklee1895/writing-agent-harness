@@ -120,15 +120,6 @@ node .agents/skills/wechat-article-renderer/scripts/preview-server.mjs \
 
 详见 [docs/workflows/ai-writing-workflow.md](docs/workflows/ai-writing-workflow.md)。
 
-### 已发布文章
-
-| # | 标题 | 样式 | 日期 |
-|---|------|------|------|
-| 2 | [半生雪](content/wechat/2026-06-07-banshengxue/article.md) | `literary-essay` | 2026-06-07 |
-| 1 | Cloudflare 收购 VoidZero | `impact-rational` | 2026-06-05 |
-
-归档目录：`content/wechat/`。
-
 ## 📦 What This Repo Holds
 
 - 项目 memory 和工作流规范。
