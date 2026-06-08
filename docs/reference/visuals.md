@@ -25,6 +25,15 @@ OPENAI_BASE_URL
 - 每个素材包必须保留 `manifest.json` 和 `sources.md`，用于后续写作、配图、短视频或 HyperFrames 生产前复核。
 - `video-material-ingest` 不负责图片 web search；图片搜索、图片生成和最终版权判断仍走独立 workflow。
 
+## Article Video Clips
+
+文章内插入的视频剪辑使用 `article-video-clip` skill 从本地素材包生成。
+
+- 输入必须优先来自 `video-material-ingest` 的素材包。
+- 输出放在文章目录的 `assets/video-clips/<slug>/`。
+- 第一版只做轻包装：裁片段、横/竖 preset、标题、caption、来源提示。
+- `article-video-clip` 不负责微信公众号上传；插入草稿由 `wechat-publish-workflow` 编排。
+
 ## 微信公众号封面图
 
 尺寸规范（上传压缩后更清晰）：

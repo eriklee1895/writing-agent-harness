@@ -30,6 +30,11 @@
   - 第一版只负责下载、metadata、manifest 和 sources 留痕；不负责搜索视频、图片搜索、版权判断或剪辑生产。
   - 默认使用 `--cookies-from-browser chrome` 读取本机 Chrome 登录态，但不导出、打印或提交 cookies。
 
+- `article-video-clip`
+  - 把 `video-material-ingest` 素材包剪成适合文章插入的轻包装视频。
+  - 第一版由用户指定片段、横竖 preset、标题和说明；底层用 `ffmpeg` 裁切/转码，用 HyperFrames 包装标题、caption 和来源提示。
+  - 不负责下载视频、自动选片、自动字幕或微信公众号上传。
+
 - `baoyu-post-to-wechat`
   - 当前作为底层微信公众号上传器使用，只维护 browser/CDP 主路径。
   - API / remote-api 仅作为历史/实验能力保留，不作为本 repo 的常规自动化路线。

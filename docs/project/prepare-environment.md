@@ -25,6 +25,11 @@
   - `video-material-ingest` 使用本机 `yt-dlp` 抓取 YouTube / Bilibili / Douyin 等已知视频 URL。
   - 需要登录态的平台依赖本机浏览器状态，默认命令使用 `--cookies-from-browser chrome`。
   - 不要导出、打印或提交 cookies。
+- FFmpeg
+  - `article-video-clip` 使用 `ffmpeg` 做视频裁片段、裁切和转码。
+- HyperFrames CLI
+  - `article-video-clip` 使用 `npx hyperframes` 生成和渲染轻包装视频。
+  - 需要 Node.js、浏览器渲染环境和 FFmpeg。
 - OpenAI API key
   - 图片生成、部分 AI 辅助脚本可能需要。
   - 真实 key 放在本机环境变量或本地 `.env`，不要提交。
@@ -99,6 +104,8 @@ node --version
 uv --version
 bun --version   # optional
 yt-dlp --version # optional, required for video-material-ingest
+ffmpeg -version  # optional, required for article-video-clip
+npx hyperframes --version # optional, required for article-video-clip
 ```
 
 渲染微信公众号 preview：
