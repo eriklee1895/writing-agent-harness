@@ -2,11 +2,13 @@
 
 `writing-agent-harness` 是这个 repo 的项目身份：一个面向写作活动的 agent harness，而不是单一 writer bot。
 
+它的长期目标是成为 AI 写作领域的 Superpowers：一套面向写作 agents 的 skills methodology。它受到 [obra/superpowers](https://github.com/obra/superpowers) 启发，但服务于选题、研究、写作、配图、分发和复盘。
+
 它服务于 Claude Code / Codex / Hermes / OpenClaw / Pi 等 backend agents：让这些 agents 在本 repo 中加载项目级 skills、memory、docs runbooks 和可追踪 source，完成从选题、研究、写作到多平台发布的工作流。
 
 ## Mission
 
-帮助 Erik 把想法、素材和判断转化为可发布、可复盘、可持续演进的文章资产。
+帮助 Erik 把想法、素材和判断转化为可发布、可复盘、可持续演进的文章资产，并让每次真实写作任务都反哺 skills、docs、memory 和 workflow。
 
 核心链路：
 

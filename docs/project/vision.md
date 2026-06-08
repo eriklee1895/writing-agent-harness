@@ -2,7 +2,9 @@
 
 `writing-agent-harness` 是 Erik 的个人 AI 自动化写作 harness。
 
-它的目标不是做一个单一写作脚本，也不是 writer bot，而是沉淀一组可复用的 writing skills、publishing workflows、docs runbooks 和可追踪 source，把 Claude Code / Codex / Hermes / OpenClaw / Pi 等 agents 接入 Erik 的写作流程。
+它的目标是成为 AI 写作领域的 Superpowers：不是做一个单一写作脚本，也不是 writer bot，而是沉淀一套面向写作 agents 的 skills methodology。
+
+它受到 [obra/superpowers](https://github.com/obra/superpowers) 启发，但服务于写作、研究、配图、分发和复盘：沉淀可组合 writing skills、publishing workflows、docs runbooks 和可追踪 source，把 Claude Code / Codex / Hermes / OpenClaw / Pi 等 agents 接入 Erik 的写作流程。
 
 它是一套面向写作活动的 agent harness：
 

@@ -22,6 +22,10 @@ npx skills add eriklee1895/writing-agent-harness --skill article-ideation
 
 ## 🌌 My Grand Design
 
+我的目标是把 `writing-agent-harness` 做成 AI 写作领域的 Superpowers：不是单个 writer bot，而是一套面向写作 agents 的 skills methodology。
+
+它受到 [obra/superpowers](https://github.com/obra/superpowers) 启发，但服务于写作、研究、配图、分发和复盘：让 agents 不只是“会写”，而是能稳定完成从选题到发布复盘的完整写作链路，并在每次真实任务后自我进化。
+
 长期目标是形成一条可验证、可回滚、可扩展的写作分发链路：
 
 ```text
