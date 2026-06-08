@@ -5,7 +5,10 @@ import {
   buildYtDlpArgs,
   createManifest,
   createSourcesMarkdown,
+  ingestOne,
+  parseArgs,
   planOutputDirectory,
+  redactCommandForDisplay,
   slugify,
 } from "./ingest-video-material.mjs";
 
@@ -113,4 +116,76 @@ test("createSourcesMarkdown includes final-review reminder", () => {
   assert.match(markdown, /# Video Source/);
   assert.match(markdown, /https:\/\/example.com\/watch\/1/);
   assert.match(markdown, /Confirm rights, citation, and platform terms before publication/);
+});
+
+test("parseArgs accepts url, target, cookies browser, and dry run", () => {
+  const parsed = parseArgs([
+    "https://example.com/video",
+    "--target",
+    "/repo/content/drafts/topic",
+    "--cookies-from-browser",
+    "chrome",
+    "--dry-run",
+  ]);
+
+  assert.deepEqual(parsed.urls, ["https://example.com/video"]);
+  assert.equal(parsed.target, "/repo/content/drafts/topic");
+  assert.equal(parsed.cookiesFromBrowser, "chrome");
+  assert.equal(parsed.dryRun, true);
+});
+
+test("parseArgs defaults cookies browser to chrome", () => {
+  const parsed = parseArgs(["https://example.com/video"]);
+  assert.equal(parsed.cookiesFromBrowser, "chrome");
+});
+
+test("parseArgs rejects missing url", () => {
+  assert.throws(() => parseArgs([]), /Usage:/);
+});
+
+test("redactCommandForDisplay keeps browser name but never cookie file paths", () => {
+  const display = redactCommandForDisplay("yt-dlp", [
+    "--cookies-from-browser",
+    "chrome",
+    "--cookies",
+    "/Users/me/cookies.txt",
+    "https://example.com/video",
+  ]);
+
+  assert.match(display, /--cookies-from-browser chrome/);
+  assert.match(display, /--cookies \[redacted\]/);
+  assert.doesNotMatch(display, /cookies\.txt/);
+});
+
+test("ingestOne dry run resolves metadata and planned output without downloading", async () => {
+  const calls = [];
+  const result = await ingestOne({
+    url: "https://example.com/video",
+    options: {
+      target: "/repo/content/drafts/topic",
+      cookiesFromBrowser: "chrome",
+      audioOnly: false,
+      dryRun: true,
+    },
+    cwd: "/repo",
+    today: "2026-06-08",
+    runCommandFn: async (command, args) => {
+      calls.push({ command, args });
+      return {
+        stdout: JSON.stringify({
+          id: "abc123",
+          title: "Demo Video",
+          webpage_url: "https://example.com/canonical",
+          extractor_key: "Example",
+        }),
+        stderr: "",
+      };
+    },
+  });
+
+  assert.equal(result.dryRun, true);
+  assert.equal(result.title, "Demo Video");
+  assert.equal(result.outputDirectory, "/repo/content/drafts/topic/assets/media/demo-video");
+  assert.equal(calls.length, 1);
+  assert.ok(calls[0].args.includes("--dump-json"));
 });

@@ -98,3 +98,225 @@ export async function pathExists(filePath) {
     return false;
   }
 }
+
+export function parseArgs(argv) {
+  const options = {
+    urls: [],
+    target: "",
+    cookiesFromBrowser: DEFAULT_COOKIE_BROWSER,
+    audioOnly: false,
+    dryRun: false,
+  };
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
+    if (arg === "--target") {
+      options.target = argv[++index] || "";
+    } else if (arg === "--cookies-from-browser") {
+      options.cookiesFromBrowser = argv[++index] || "";
+    } else if (arg === "--audio-only") {
+      options.audioOnly = true;
+    } else if (arg === "--dry-run") {
+      options.dryRun = true;
+    } else if (arg === "--help" || arg === "-h") {
+      throw new Error(usage());
+    } else if (arg.startsWith("--")) {
+      throw new Error(`Unknown option: ${arg}\n\n${usage()}`);
+    } else {
+      options.urls.push(arg);
+    }
+  }
+
+  if (options.urls.length === 0) {
+    throw new Error(usage());
+  }
+
+  return options;
+}
+
+export function usage() {
+  return [
+    "Usage:",
+    "  node .agents/skills/video-material-ingest/scripts/ingest-video-material.mjs <url...> [--target <article-folder>] [--cookies-from-browser chrome] [--audio-only] [--dry-run]",
+  ].join("\n");
+}
+
+export function redactCommandForDisplay(command, args) {
+  const redacted = [];
+  for (let index = 0; index < args.length; index += 1) {
+    redacted.push(args[index]);
+    if (args[index] === "--cookies") {
+      index += 1;
+      redacted.push("[redacted]");
+    }
+  }
+  return [command, ...redacted].join(" ");
+}
+
+export function runCommand(command, args, options = {}) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, {
+      cwd: options.cwd,
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+
+    let stdout = "";
+    let stderr = "";
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk;
+    });
+    child.stderr.on("data", (chunk) => {
+      stderr += chunk;
+    });
+    child.on("error", reject);
+    child.on("close", (code) => {
+      if (code === 0) {
+        resolve({ stdout, stderr });
+      } else {
+        reject(
+          new Error(
+            `Command failed (${code}): ${redactCommandForDisplay(command, args)}\n${stderr || stdout}`,
+          ),
+        );
+      }
+    });
+  });
+}
+
+async function getYtDlpVersion({ runCommandFn = runCommand } = {}) {
+  const result = await runCommandFn("yt-dlp", ["--version"]);
+  return result.stdout.trim();
+}
+
+async function getVideoInfo({ url, cookiesFromBrowser, runCommandFn = runCommand }) {
+  const args = buildYtDlpArgs({
+    url,
+    outputTemplate: "%(title)s.%(ext)s",
+    cookiesFromBrowser,
+    dumpJson: true,
+  });
+  const result = await runCommandFn("yt-dlp", args);
+  return JSON.parse(result.stdout);
+}
+
+async function listRelativeFiles(directory) {
+  const entries = await fs.readdir(directory);
+  return entries.sort();
+}
+
+export async function ingestOne({
+  url,
+  options,
+  cwd,
+  today,
+  runCommandFn = runCommand,
+  now = () => new Date(),
+}) {
+  const info = await getVideoInfo({
+    url,
+    cookiesFromBrowser: options.cookiesFromBrowser,
+    runCommandFn,
+  });
+  const slug = slugify(info.title || info.id || "video");
+  const outputDirectory = planOutputDirectory({
+    cwd,
+    target: options.target,
+    slug,
+    today,
+  });
+
+  if (options.dryRun) {
+    return {
+      url,
+      title: info.title || "",
+      outputDirectory,
+      dryRun: true,
+    };
+  }
+
+  await fs.mkdir(outputDirectory, { recursive: true });
+  const outputTemplate = path.join(outputDirectory, "media.%(ext)s");
+  const downloadArgs = buildYtDlpArgs({
+    url,
+    outputTemplate,
+    cookiesFromBrowser: options.cookiesFromBrowser,
+    audioOnly: options.audioOnly,
+    dumpJson: false,
+  });
+
+  await runCommandFn("yt-dlp", downloadArgs);
+
+  const filesBeforeManifest = await listRelativeFiles(outputDirectory);
+  const infoFile = filesBeforeManifest.find((file) => file.endsWith(".info.json"));
+  if (infoFile) {
+    await fs.rename(path.join(outputDirectory, infoFile), path.join(outputDirectory, "info.json"));
+  }
+
+  const thumbnailFile = filesBeforeManifest.find((file) =>
+    /^media\.(jpg|jpeg|png|webp)$/i.test(file),
+  );
+  if (thumbnailFile) {
+    await fs.rename(
+      path.join(outputDirectory, thumbnailFile),
+      path.join(outputDirectory, thumbnailFile.replace(/^media\./, "thumbnail.")),
+    );
+  }
+
+  const downloadedFiles = await listRelativeFiles(outputDirectory);
+  const manifest = createManifest({
+    inputUrl: url,
+    info,
+    downloadedFiles,
+    ytDlpVersion: await getYtDlpVersion({ runCommandFn }),
+    cookiesFromBrowser: options.cookiesFromBrowser,
+    audioOnly: options.audioOnly,
+    downloadedAt: now().toISOString(),
+  });
+
+  await fs.writeFile(path.join(outputDirectory, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);
+  await fs.writeFile(path.join(outputDirectory, "sources.md"), createSourcesMarkdown({ manifest }));
+
+  return {
+    url,
+    title: manifest.title,
+    platform: manifest.platform,
+    outputDirectory,
+    files: await listRelativeFiles(outputDirectory),
+  };
+}
+
+export async function main(argv = process.argv.slice(2), cwd = process.cwd()) {
+  const options = parseArgs(argv);
+  const today = new Date().toISOString().slice(0, 10);
+  const results = [];
+  for (const url of options.urls) {
+    results.push(await ingestOne({ url, options, cwd, today }));
+  }
+
+  for (const result of results) {
+    if (result.dryRun) {
+      console.log(`Dry run: ${result.title || result.url}`);
+      console.log(`Target: ${result.outputDirectory}`);
+    } else {
+      console.log(`Saved: ${result.title || result.url}`);
+      if (result.platform) {
+        console.log(`Platform: ${result.platform}`);
+      }
+      console.log(`Directory: ${result.outputDirectory}`);
+      console.log(`Files: ${result.files.join(", ")}`);
+    }
+  }
+}
+
+const isCli = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (isCli) {
+  main().catch((error) => {
+    console.error(error.message);
+    if (/cookies|login|sign in|authentication|forbidden|unauthorized/i.test(error.message)) {
+      console.error(
+        "If this platform requires login, open it in Chrome first, then retry with --cookies-from-browser chrome.",
+      );
+    }
+    process.exitCode = 1;
+  });
+}
