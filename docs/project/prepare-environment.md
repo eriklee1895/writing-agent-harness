@@ -45,6 +45,18 @@
 - `wechat-publish-workflow`
 - `baoyu-post-to-wechat`
 
+标准安装方式：
+
+```bash
+npx skills add eriklee1895/writing-agent-harness
+```
+
+只安装指定 skill：
+
+```bash
+npx skills add eriklee1895/writing-agent-harness --skill article-ideation
+```
+
 有些 workflow 还会使用本机安装的 user-level skills。它们通常位于：
 
 ```text

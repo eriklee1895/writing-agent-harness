@@ -57,6 +57,24 @@ flowchart LR
 
 ## How to Start
 
+### Install Project Skills
+
+把本 repo 的 project skills 安装到本机 agent 环境：
+
+```bash
+npx skills add eriklee1895/writing-agent-harness
+```
+
+只安装指定 skill：
+
+```bash
+npx skills add eriklee1895/writing-agent-harness --skill article-ideation
+```
+
+可用 project skills 见 [Core Skills](#core-skills)。新机器或新 agent 环境的本机依赖、Git LFS、可选 user-level skills 和账号态准备，见 [docs/project/prepare-environment.md](docs/project/prepare-environment.md)。
+
+### Start Writing
+
 **万事起点：`article-ideation`。** 你有任何灵感、碎片、念头，直接告诉 agent，它会帮你从模糊想法一步步打磨成可执行的 writing brief 和 outline。不需要先整理，不需要先想清楚——把原材料扔给 agent，article-ideation 负责理清。
 
 ```text
@@ -99,8 +117,6 @@ node .agents/skills/wechat-article-renderer/scripts/preview-server.mjs \
 ```
 
 详见 [docs/workflows/ai-writing-workflow.md](docs/workflows/ai-writing-workflow.md)。
-
-新机器或新 agent 环境的本机依赖、Git LFS、可选 user-level skills 和账号态准备，见 [docs/project/prepare-environment.md](docs/project/prepare-environment.md)。
 
 ### 已发布文章
 
