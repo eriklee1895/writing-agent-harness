@@ -4,6 +4,8 @@
 
 它的长期目标是成为 AI 写作领域的 Superpowers：一套面向写作 agents 的 skills methodology。它受到 [obra/superpowers](https://github.com/obra/superpowers) 启发，但服务于选题、研究、写作、配图、分发和复盘。
 
+它也是一个会自我进化的 writing harness：每次真实任务中的踩坑、偏好、workflow 改进和 skill 缺陷，都应该被路由到 `.local-memory/`、docs、retrospectives 或 project skills，让系统越用越贴合 Erik 的写作方式。
+
 它服务于 Claude Code / Codex / Hermes / OpenClaw / Pi 等 backend agents：让这些 agents 在本 repo 中加载项目级 skills、memory、docs runbooks 和可追踪 source，完成从选题、研究、写作到多平台发布的工作流。
 
 ## Mission
