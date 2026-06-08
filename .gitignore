@@ -44,6 +44,13 @@ node_modules/
 # Local scratch memory, not canonical repo knowledge
 .local-memory/
 
+# Local writing scratch, keep only placeholders in origin
+content/inbox/**
+!content/inbox/.gitkeep
+
+content/drafts/**
+!content/drafts/.gitkeep
+
 # Superpowers / visual companion generated scratch files
 .superpowers/
 
