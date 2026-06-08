@@ -20,7 +20,7 @@ npx skills add eriklee1895/writing-agent-harness --skill article-ideation
 
 可用 skills 见 [🧩 Core Skills](#-core-skills)。新机器或新 agent 环境的本机依赖、Git LFS、可选 user-level skills 和账号态准备，见 [docs/project/prepare-environment.md](docs/project/prepare-environment.md)。
 
-## 🌌 Grand Design
+## 🌌 My Grand Design
 
 长期目标是形成一条可验证、可回滚、可扩展的写作分发链路：
 
