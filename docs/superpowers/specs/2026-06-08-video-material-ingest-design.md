@@ -1,20 +1,22 @@
-# Media Ingest Design
+# Video Material Ingest Design
 
 ## Context
 
-`writing-agent-harness` already handles ideation, drafting, polishing, illustration, WeChat rendering, and publishing. The missing layer is source media ingestion: collecting video material from external platforms so it can later support writing research, screenshots, short video production, HyperFrames compositions, and article visuals.
+`writing-agent-harness` already handles ideation, drafting, polishing, illustration, WeChat rendering, and publishing. The missing layer is video material ingestion: collecting known video URLs from external platforms so they can later support writing research, screenshots, short video production, HyperFrames compositions, and article visuals.
 
 Erik has already validated that local `yt-dlp` can download YouTube, Bilibili, and Douyin links successfully. The first version should preserve that working path instead of rebuilding a downloader.
 
 ## Goal
 
-Create a project-level `media-ingest` skill backed by one `yt-dlp` script.
+Create a project-level `video-material-ingest` skill backed by one `yt-dlp` script.
 
 The first version is an ingest layer, not a full editing pipeline. It should reliably download source media, save metadata, and place files into predictable directories with provenance preserved. Future workflows can add transcription, screenshots, clips, transcoding, and HyperFrames-ready outputs on top of the same manifest.
 
 ## Non-Goals
 
 - Do not build a new downloader.
+- Do not search for videos or images on the web.
+- Do not handle general image search or visual asset discovery.
 - Do not automate final publication or reuse of copyrighted media.
 - Do not extract or store browser cookies.
 - Do not build the full short-video pipeline in the first version.
@@ -41,7 +43,7 @@ The skill should explain this requirement clearly. If a platform fails because t
 Typical usage:
 
 ```bash
-node .agents/skills/media-ingest/scripts/ingest-media.mjs \
+node .agents/skills/video-material-ingest/scripts/ingest-video-material.mjs \
   "https://www.bilibili.com/video/BV1gBmTBtEoy" \
   --target /Users/eriklee/code/my_project/writing-agent-harness/content/drafts/2026-06-08-luolebai-handanxuebu
 ```
@@ -87,6 +89,14 @@ sources.md                # human-readable provenance notes
 
 `sources.md` should be readable inside an article folder and useful during final review. It should include the original URL, retrieved date, title, uploader, and a reminder to confirm rights and citation before publication.
 
+## Capability Boundary
+
+`video-material-ingest` is a known-video-URL ingest skill, not a discovery skill.
+
+It should accept a URL the user or agent already selected, then download and preserve it as a traceable local asset package. It should not search the web for images, choose stock photos, rank visual candidates, or decide copyright suitability.
+
+Image search and image generation remain separate workflows. Selected images may eventually get their own direct-asset ingest helper, but that should not be part of the first `video-material-ingest` implementation.
+
 ## Script Behavior
 
 The first script should:
@@ -126,8 +136,8 @@ The skill should make the first version boring and reliable. Future subcommands 
 
 Implementation should update:
 
-- `.agents/skills/media-ingest/SKILL.md`
-- `.agents/skills/media-ingest/scripts/ingest-media.mjs`
+- `.agents/skills/video-material-ingest/SKILL.md`
+- `.agents/skills/video-material-ingest/scripts/ingest-video-material.mjs`
 - `docs/reference/skills.md`
 - `docs/reference/visuals.md` or a new `docs/reference/media-assets.md`
 - `docs/project/automation-roadmap.md`
@@ -153,7 +163,7 @@ Use local tests that avoid downloading large public media during routine runs:
 Manual validation for the first version:
 
 ```bash
-node .agents/skills/media-ingest/scripts/ingest-media.mjs \
+node .agents/skills/video-material-ingest/scripts/ingest-video-material.mjs \
   "https://www.bilibili.com/video/BV1gBmTBtEoy" \
   --target /Users/eriklee/code/my_project/writing-agent-harness/content/drafts/2026-06-08-luolebai-handanxuebu
 ```
@@ -164,4 +174,3 @@ Expected result:
 - `manifest.json` and `sources.md` preserve provenance.
 - No cookie files or secrets are created in the repo.
 - The command works with the already logged-in local Chrome session.
-
