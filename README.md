@@ -4,7 +4,7 @@
 
 它不是一个单一写作脚本，也不是 writer bot，而是一套面向写作活动的 agent harness：用项目级 skills、docs runbooks 和可追踪 source，把 Claude Code / Codex / Hermes / OpenClaw / Pi 等 agents 接入 Erik 的写作流程。
 
-## North Star
+## 🌟 North Star
 
 长期目标是形成一条可验证、可回滚、可扩展的写作分发链路：
 
@@ -19,7 +19,7 @@ Feishu / Notion / notes / etc.
 
 飞书文档和 Notion 可以继续作为原文写作、笔记和早期沉淀入口；进入 repo 后，再同步或转换为 Markdown / MDX，获得 diff、review、render、publish automation 和多渠道派生能力。
 
-## AI 写作工作流全景
+## 🗺️ AI 写作工作流全景
 
 ![AI Writing + WeChat Publishing Workflow](docs/assets/ai-writing-wechat-workflow.png)
 
@@ -55,25 +55,7 @@ flowchart LR
     Source -.canonical.-> F
 ```
 
-## How to Start
-
-### Install Project Skills
-
-把本 repo 的 project skills 安装到本机 agent 环境：
-
-```bash
-npx skills add eriklee1895/writing-agent-harness
-```
-
-只安装指定 skill：
-
-```bash
-npx skills add eriklee1895/writing-agent-harness --skill article-ideation
-```
-
-可用 project skills 见 [Core Skills](#core-skills)。新机器或新 agent 环境的本机依赖、Git LFS、可选 user-level skills 和账号态准备，见 [docs/project/prepare-environment.md](docs/project/prepare-environment.md)。
-
-### Start Writing
+## ✍️ How to Start
 
 **万事起点：`article-ideation`。** 你有任何灵感、碎片、念头，直接告诉 agent，它会帮你从模糊想法一步步打磨成可执行的 writing brief 和 outline。不需要先整理，不需要先想清楚——把原材料扔给 agent，article-ideation 负责理清。
 
@@ -127,7 +109,7 @@ node .agents/skills/wechat-article-renderer/scripts/preview-server.mjs \
 
 归档目录：`content/wechat/`。
 
-## What This Repo Holds
+## 📦 What This Repo Holds
 
 - 项目 memory 和工作流规范。
 - 项目级 AI writing / publishing skills。
@@ -135,7 +117,7 @@ node .agents/skills/wechat-article-renderer/scripts/preview-server.mjs \
 - 对未来博客主阵地、微信公众号和其他分发渠道的自动化积累。
 - 生成插图：支持多种风格 — `watercolor-illustration`（文学/散文默认）、`flat-tech-infographic`（agent 开发技术图）、`flat-illustration`、`sketchnote`、`soft-tech-diagram`、`repo-architecture-clean`。
 
-## Writing Modes
+## 🧭 Writing Modes
 
 ### usecase1. AI自主选题并完成写作
 
@@ -160,7 +142,7 @@ Erik 提供主题、灵感、素材、判断和文章雏形；agent 负责：
 
 这个模式强调 human-in-the-loop：人的判断是核心，agent 做研究、组织和表达增强。
 
-## Distribution Targets
+## 🚀 Distribution Targets
 
 ### Blog
 
@@ -188,9 +170,23 @@ Renderer 支持三种 style preset：`impact-rational`（技术评论）、`lite
 
 掘金和其他平台暂时作为 downstream repackaging targets。先记录 format constraints、asset rules、publish boundary 和 rollback path，再决定是否自动化。
 
-## Core Skills
+## 🧩 Core Skills
 
 项目级 skills 放在 `.agents/skills/`。
+
+安装全部 project skills：
+
+```bash
+npx skills add eriklee1895/writing-agent-harness
+```
+
+只安装指定 skill：
+
+```bash
+npx skills add eriklee1895/writing-agent-harness --skill article-ideation
+```
+
+新机器或新 agent 环境的本机依赖、Git LFS、可选 user-level skills 和账号态准备，见 [docs/project/prepare-environment.md](docs/project/prepare-environment.md)。
 
 | Skill | 用途 |
 |-------|------|
@@ -201,7 +197,7 @@ Renderer 支持三种 style preset：`impact-rational`（技术评论）、`lite
 | `wechat-publish-workflow` | 编排微信公众号草稿箱同步、验证和发布交接 |
 | `baoyu-post-to-wechat` | 底层 CDP 上传器参考实现 |
 
-## Third-Party Acknowledgement
+## 🙏 Third-Party Acknowledgement
 
 本项目 vendored 了一份 `baoyu-post-to-wechat`，作为微信公众号草稿箱上传器和 Chrome CDP 发布流程的参考实现。
 
@@ -209,7 +205,7 @@ Renderer 支持三种 style preset：`impact-rational`（技术评论）、`lite
 - Vendored path: `.agents/skills/baoyu-post-to-wechat/`
 - Local role: uploader / API / browser automation reference only；项目排版风格和发布编排由 `wechat-article-renderer` 与 `wechat-publish-workflow` 负责。
 
-## Docs
+## 📚 Docs
 
 流程和复盘放在 `docs/`，方便 agents 在执行前先读对应 runbook。
 
@@ -222,7 +218,7 @@ Renderer 支持三种 style preset：`impact-rational`（技术评论）、`lite
 - [docs/reference/writing-agent-harness-profile.md](docs/reference/writing-agent-harness-profile.md): `writing-agent-harness` 的身份、职责、能力边界。
 - [docs/reference/skills.md](docs/reference/skills.md): 项目 skills 边界。
 
-## Suggested Layout
+## 🗂️ Suggested Layout
 
 项目还在演进中。当前不要为了整洁强行迁移历史内容；新内容建议逐步靠近这个 layout。
 
@@ -265,7 +261,7 @@ content/blog/YYYY-MM-DD-topic/
 
 当前 `微信公众号/` 是已经跑通的历史文章目录；后续新文章优先进入 `content/drafts/`，再派生到 `content/wechat/` 和 `content/blog/`。
 
-## Principles
+## 🧱 Principles
 
 - Markdown / MDX 是 repo 内长期 canonical source。
 - 飞书文档、Notion 等可以作为上游写作入口，但进入 repo 后需要可追踪地同步到 Markdown / MDX。
