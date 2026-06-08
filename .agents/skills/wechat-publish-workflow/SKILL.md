@@ -17,6 +17,7 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
 
 - 文章还在写作/润色阶段：先用 `polish-article`。
 - 文章需要公众号排版：用 `wechat-article-renderer`。
+- 文章包含本地视频素材：先确认视频来自 `video-material-ingest` 素材包，并在发布前确认使用权、插入位置和最终呈现。
 - 用户确认 preview 后要求同步/推送/创建草稿：用 `baoyu-post-to-wechat` 的 browser/CDP 路径。
 - 用户要求直接发布：先创建或确认草稿，再请求 explicit final confirmation，之后才能点击发布/群发。
 
@@ -34,6 +35,7 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
    - no `<script>`, external stylesheet dependency, `TODO`, `TBD`；
    - no external link `href`，引用来源用 plain text reference；
    - local images 带 `data-local-path`，方便上传器替换成本地图片；
+   - 如含本地视频，video placeholder / embed marker 带本地视频路径和素材来源说明；
    - mobile preview `390-430px` 无 horizontal overflow。
 4. 如需要，打开或刷新本地 preview，常见地址是 `http://localhost:49255/`。
 5. 在触碰微信公众号编辑器前，先让用户确认 preview。
@@ -42,6 +44,7 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
    - title、author、summary；
    - 封面可见，上传后指向 WeChat CDN；
    - 正文图片已上传到 WeChat CDN；
+   - 如含视频，视频卡片/播放器在编辑器中可见，插入位置正确；
    - editor body 中 external links 数量为 `0`；
    - 保存后 URL 出现 `appmsgid=...`。
 8. 向用户报告草稿状态和 `appmsgid`。除非用户明确确认 live publish，否则停在 final human review。
@@ -74,6 +77,25 @@ VoidZero is joining Cloudflare
 正文图片放在文章目录的 `assets/` 中，并通过 `data-local-path` 让上传器找到本地文件。上传后检查正文图片 URL 是否变成 `https://mmbiz.qpic.cn/`。
 
 封面图和正文图是两套状态。封面以编辑器左侧卡片/封面预览可见为准；DOM 里的 `#js_cover_area` 有时仍会显示 placeholder text，不一定代表封面失败。
+
+### 视频素材
+
+微信公众号文章里插入视频属于 channel-specific publishing step，不属于 `video-material-ingest` 的职责。
+
+职责边界：
+
+- `video-material-ingest`：抓取已知视频 URL，保留 `manifest.json` 和 `sources.md`，形成本地可追溯素材包。
+- `wechat-article-renderer`：未来可把 Markdown 中的视频引用渲染成 WeChat-ready placeholder，并保留本地视频路径和素材来源说明。
+- `wechat-publish-workflow`：编排视频素材发布前确认、上传/插入、草稿保存和最终检查。
+- `baoyu-post-to-wechat`：未来负责具体 CDP/browser 上传视频、插入编辑器和读取插入结果。
+
+发布前必须确认：
+
+- 视频素材包来自 `video-material-ingest`，并有 `manifest.json` / `sources.md`。
+- 用户确认可以在微信公众号文章中使用该视频或相关片段。
+- 用户确认视频插入位置、标题/说明和是否需要替代封面图。
+
+如果底层上传器尚未实现视频上传/插入能力，不要声称已自动完成。应停在草稿编辑器可人工处理的状态，提示用户手动上传/插入视频；之后再检查视频卡片/播放器可见、位置正确，并继续保存草稿。
 
 ### 保存状态
 
