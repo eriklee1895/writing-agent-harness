@@ -4,7 +4,23 @@
 
 它不是一个单一写作脚本，也不是 writer bot，而是一套面向写作活动的 agent harness：用项目级 skills、docs runbooks 和可追踪 source，把 Claude Code / Codex / Hermes / OpenClaw / Pi 等 agents 接入 Erik 的写作流程。
 
-## 🌟 North Star
+## ⚡ Install Skills
+
+把本 repo 的 project skills 安装到本机 agent 环境：
+
+```bash
+npx skills add eriklee1895/writing-agent-harness
+```
+
+只安装指定 skill：
+
+```bash
+npx skills add eriklee1895/writing-agent-harness --skill article-ideation
+```
+
+可用 skills 见 [🧩 Core Skills](#-core-skills)。新机器或新 agent 环境的本机依赖、Git LFS、可选 user-level skills 和账号态准备，见 [docs/project/prepare-environment.md](docs/project/prepare-environment.md)。
+
+## 🌌 Grand Design
 
 长期目标是形成一条可验证、可回滚、可扩展的写作分发链路：
 
@@ -173,20 +189,6 @@ Renderer 支持三种 style preset：`impact-rational`（技术评论）、`lite
 ## 🧩 Core Skills
 
 项目级 skills 放在 `.agents/skills/`。
-
-安装全部 project skills：
-
-```bash
-npx skills add eriklee1895/writing-agent-harness
-```
-
-只安装指定 skill：
-
-```bash
-npx skills add eriklee1895/writing-agent-harness --skill article-ideation
-```
-
-新机器或新 agent 环境的本机依赖、Git LFS、可选 user-level skills 和账号态准备，见 [docs/project/prepare-environment.md](docs/project/prepare-environment.md)。
 
 | Skill | 用途 |
 |-------|------|
