@@ -5,7 +5,7 @@ description: Create a lightly packaged article-ready video clip from a video-mat
 
 # Article Video Clip
 
-Use this skill when a known video has already been ingested with `video-material-ingest` and the user wants a short, lightly packaged clip for an article.
+Use this skill when a known video has already been ingested with `video-material-ingest` skill and the user wants a short, lightly packaged clip for an article.
 
 Do not use this skill to download URLs, search for videos, auto-select highlights, auto-generate subtitles, or upload to WeChat.
 

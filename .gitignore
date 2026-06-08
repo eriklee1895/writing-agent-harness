@@ -51,6 +51,12 @@ content/inbox/**
 content/drafts/**
 !content/drafts/.gitkeep
 
+# Local/derived video material in published WeChat workspaces
+content/wechat/**/*.mp4
+content/wechat/**/*.mov
+content/wechat/**/*.webm
+content/wechat/**/*.mkv
+
 # Superpowers / visual companion generated scratch files
 .superpowers/
 
