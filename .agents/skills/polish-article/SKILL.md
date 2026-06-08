@@ -11,6 +11,8 @@ description: "润色和打磨文章写作。Use when the user asks to polish/精
 
 `Markdown source` 是 canonical source。打磨时保留作者判断、语气、锋芒和知识密度；不要把文章抹平成中庸、柔软、无风险的通用稿。
 
+如果 repo 根目录存在 `SOUL.md`，润色前必须先读取它，并按其中的作者声音契约对齐 register、审美边界和 anti-style。`SOUL.md` 优先约束作者气质；本 skill 负责执行具体编辑。
+
 ## 先判断文章类型
 
 先识别文章应采用的 writing register：
@@ -44,18 +46,19 @@ description: "润色和打磨文章写作。Use when the user asks to polish/精
    - section map；
    - strongest paragraphs；
    - weak/redundant/risky paragraphs。
-2. 检查信息依赖关系。文章内容应像 DAG：读者理解后文所需的概念、背景和判断，应该先出现。
-3. 判断是否需要先确认结构：
+2. 读取并应用 `SOUL.md`（如存在）：确认主 register、反风格规则和作者声音边界。
+3. 检查信息依赖关系。文章内容应像 DAG：读者理解后文所需的概念、背景和判断，应该先出现。
+4. 判断是否需要先确认结构：
    - 大幅改 section order、删除整节、改变 thesis 时，先给 short editorial plan。
    - 局部润色、收紧、错别字、表达增强时，直接编辑。
-4. 按 register 打磨正文：
+5. 按 register 打磨正文：
    - 每段只承担一个主要意思；
    - 移动端长文段落通常不超过约 240 Chinese chars；
    - 删除重复铺垫、空泛结论、AI 味套话；
    - 把软判断改成有边界的明确判断；
    - 保留具体日期、数字、机构名、产品名和原始引用边界；
    - 不编造事实、来源、引语、链接。
-5. 结束前检查：
+6. 结束前检查：
    - title / subtitle / opening 是否承接 thesis；
    - section headings 是否形成清晰阅读路径；
    - conclusion 是否收束，而不是机械 CTA；

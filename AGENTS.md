@@ -10,6 +10,7 @@
 - 不要打印、提交或泄漏 secrets、本地运行态、账号态数据和依赖目录。
 - Current events、company/product facts、pricing、laws、fast-moving tech topics 必须查证，并写清具体日期。
 - repo 内长期 canonical source 是 Markdown / MDX。飞书文档、Notion 等可以作为上游写作入口；进入 repo 后要同步或转换成可追踪文本。
+- 内容写作、选题构思、文章润色、改稿、标题和风格判断时读取 [SOUL.md](SOUL.md)，对齐 Erik 的作者声音、register 和 anti-style；非写作任务不要默认加载。
 - 图片生成优先使用系统 `$imagegen` skill，不要重建项目重复的 `gpt-image-gen`。
 - 任何最终发布动作都需要 user final review，除非用户明确授权自动发布。
 - 先做 small, practical automation；不要把未跑通的能力写成已可用能力。
@@ -24,6 +25,7 @@
 | 任务 | 先读 |
 | --- | --- |
 | 了解项目愿景、写作场景 | [docs/project/vision.md](docs/project/vision.md) |
+| 对齐 Erik 作者声音、文风、审美边界 | [SOUL.md](SOUL.md) |
 | 了解完整 AI 写作工作流、skill 分工、目录约定 | [docs/workflows/ai-writing-workflow.md](docs/workflows/ai-writing-workflow.md) |
 | 理解 writing-agent-harness 身份和边界 | [docs/reference/writing-agent-harness-profile.md](docs/reference/writing-agent-harness-profile.md) |
 | 查看当前建设 todo | [docs/project/todolist.md](docs/project/todolist.md) |
@@ -64,41 +66,6 @@
 - 已经跑通且值得自动化的步骤：补充 scripts 或 workflow runbook。
 
 不要把一次性细节过度制度化；先验证，再沉淀。
-
-## Quick Commands
-
-生成 WeChat preview：
-
-```bash
-node .agents/skills/wechat-article-renderer/scripts/render-wechat-article.mjs /absolute/path/to/article.md --style literary-essay
-```
-
-列出 WeChat renderer styles：
-
-```bash
-node .agents/skills/wechat-article-renderer/scripts/render-wechat-article.mjs --list-styles
-```
-
-本地预览（渲染后可手动启动 server）：
-
-```bash
-node .agents/skills/wechat-article-renderer/scripts/preview-server.mjs /absolute/path/to/article-dir
-# 然后打开 http://localhost:49255/
-```
-
-或一步完成渲染+预览：
-
-```bash
-node .agents/skills/wechat-article-renderer/scripts/render-wechat-article.mjs /absolute/path/to/article.md --style literary-essay --serve
-```
-
-生成插图（Python 脚本一律使用 `uv run`）：
-
-```bash
-uv run .agents/skills/article-illustration/scripts/generate_doc_illustration.py \
-  --title "插画标题" --brief "描述" \
-  --style-profile watercolor-illustration --size wechat-cover-hd
-```
 
 ## Publish Boundary
 
