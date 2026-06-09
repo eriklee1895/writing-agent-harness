@@ -42,6 +42,7 @@ Feishu / Notion / etc.
   - [ ] 决定 Notion sync 的首个最小可用范围：单 page 导出、database 批量导出，还是指定 collection 增量同步。
 - [ ] 定义统一 source package：
   - [x] 使用 `content/source/YYYY-MM-DD-topic/` 作为可追踪 canonical Markdown / MDX 目录。
+  - [x] 回填第一批现有文章到 `content/source/`，形成 source package 样例。
   - [ ] 每篇文章一个目录，包含 `article.md` / `article.mdx`、`notes.md`、`assets/` 和可选 `channels/`。
   - [ ] frontmatter 统一字段：title、subtitle、slug、date、updated、source、source_url、channels、tags、status。
   - [ ] 保留 upstream source link，方便回溯飞书或 Notion 原文。

@@ -1,0 +1,22 @@
+{
+  "title": "luolebai-handanxuebu-wechat-cover",
+  "brief": "微信公众号头条封面，文章标题《我只是听了首〈落了白〉，怎么就掉进了邯郸学步宇宙？》。画面主题是《落了白》短视频神曲、邯郸学步舞蹈、邯郸城市文旅三者互相成就。超宽 2.35:1 构图，适合作为微信订阅流小缩略图：左侧可以有竖屏手机或音乐光带意象，中部保留一条流动声波/丝带，右侧和远景出现邯郸古城、学步桥、赵文化礼宴、城市夜色。重点是有趣、文化感、现代国潮编辑插图，不是旅游广告。不要任何文字、标题、logo、二维码、字幕、箭头或信息图标签。标题会由微信公众号编辑器另行展示，画面需要留出干净空间。",
+  "content_type": "WeChat article cover",
+  "content_category": "cover",
+  "mode": "text-only",
+  "style_profile": "modern-guochao-editorial",
+  "resolved_style_profile": "modern-guochao-editorial",
+  "size": "wechat-cover-hd",
+  "resolved_size": "1792x1024",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'luolebai-handanxuebu-wechat-cover'. Style: modern Chinese editorial illustration with restrained guochao influence, historical motifs reinterpreted through clean contemporary composition, rich but not gaudy colors, subtle paper texture, no text labels, no diagrams. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a WeChat Official Account headline cover image (公众号头条封面). Compose for a 2.35:1 ultra-wide crop (1080x460). Keep key subjects centered or in the bottom third — top area will be cropped. Design for readability as a small thumbnail in WeChat's subscription feed. Title text will be overlaid by the editor, so leave ample negative space. Language/region: zh. Target aspect ratio: wechat-cover-hd. Mode: text-only. Brief:\n微信公众号头条封面，文章标题《我只是听了首〈落了白〉，怎么就掉进了邯郸学步宇宙？》。画面主题是《落了白》短视频神曲、邯郸学步舞蹈、邯郸城市文旅三者互相成就。超宽 2.35:1 构图，适合作为微信订阅流小缩略图：左侧可以有竖屏手机或音乐光带意象，中部保留一条流动声波/丝带，右侧和远景出现邯郸古城、学步桥、赵文化礼宴、城市夜色。重点是有趣、文化感、现代国潮编辑插图，不是旅游广告。不要任何文字、标题、logo、二维码、字幕、箭头或信息图标签。标题会由微信公众号编辑器另行展示，画面需要留出干净空间。",
+  "created_at": "2026-06-08T21:50:41",
+  "output_files": [
+    "../../../../../.local-archive/2026-06-08-落了白-邯郸学步/images/20260608-214957-luolebai-handanxuebu-wechat-cover-cropped.png"
+  ],
+  "crop_hint": "1080x460 (2.35:1)",
+  "dry_run": false
+}

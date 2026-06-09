@@ -1,0 +1,22 @@
+{
+  "title": "handan-traffic-caught-by-city",
+  "brief": "正文插图，放在微信公众号文章《我只是听了首〈落了白〉，怎么就掉进了邯郸学步宇宙？》的‘泼天的流量，邯郸接住了’章节。画面表现：一段来自手机短视频的《落了白》旋律，像流动的声波与光带，从竖屏手机里延展出来，落到邯郸古城、赵文化礼宴、成语典故、学步桥意象和城市夜色之间。重点是‘短视频流量被城市文旅接住’，不是旅游广告。风格克制、有文化感、现代国潮编辑插图，画面应有留白，适合移动端正文阅读。不要任何文字、字幕、logo、二维码、箭头或信息图标签。",
+  "content_type": "body inset illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "modern-guochao-editorial",
+  "resolved_style_profile": "modern-guochao-editorial",
+  "size": "portrait-hd",
+  "resolved_size": "1024x1536",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'handan-traffic-caught-by-city'. Style: modern Chinese editorial illustration with restrained guochao influence, historical motifs reinterpreted through clean contemporary composition, rich but not gaudy colors, subtle paper texture, no text labels, no diagrams. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a body illustration inside a WeChat article read on mobile phones (~390px wide). Compose for narrow-width readability. Use generous negative space. Language/region: zh. Target aspect ratio: portrait-hd. Mode: text-only. Brief:\n正文插图，放在微信公众号文章《我只是听了首〈落了白〉，怎么就掉进了邯郸学步宇宙？》的‘泼天的流量，邯郸接住了’章节。画面表现：一段来自手机短视频的《落了白》旋律，像流动的声波与光带，从竖屏手机里延展出来，落到邯郸古城、赵文化礼宴、成语典故、学步桥意象和城市夜色之间。重点是‘短视频流量被城市文旅接住’，不是旅游广告。风格克制、有文化感、现代国潮编辑插图，画面应有留白，适合移动端正文阅读。不要任何文字、字幕、logo、二维码、箭头或信息图标签。",
+  "created_at": "2026-06-08T19:49:56",
+  "output_files": [
+    "../../../../../.local-archive/2026-06-08-落了白-邯郸学步/images/20260608-194856-handan-traffic-caught-by-city.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
