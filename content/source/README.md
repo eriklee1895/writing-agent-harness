@@ -11,14 +11,14 @@ content/source/YYYY-MM-DD-topic/
 ├── article.md
 ├── article.mdx                  # optional
 ├── notes.md                     # optional
-├── assets/                      # prompts / metadata / manifests / small source data
-└── channels/                    # optional channel-specific adaptations
+└── assets/                      # prompts / metadata / manifests / small source data
 ```
 
 规则：
 
 - `article.md` / `article.mdx` 是跨渠道 canonical source。
-- `channels/` 只放确实需要保留的渠道改写或历史发布版本。
+- 同一篇文章跨 `source` / `wechat` / `blog` 使用同一个 folder slug。
+- 渠道稿 frontmatter 用 `source:` 指回 canonical article。
 - 图片、视频、音频等二进制素材默认放 `.local-archive/` 或外部资产库，不提交 Git。
 - 可以提交 prompt、metadata、manifest、sources、notes、CSV 等可追踪文本数据。
 

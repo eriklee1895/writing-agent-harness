@@ -1,3 +1,9 @@
+---
+title: "小马智行-W (02026.HK) 深度投研报告"
+source: ../../../source/2026-06-04-poniai-research/article.md
+channel: blog
+---
+
 # 小马智行-W (02026.HK) 深度投研报告
 
 > **报告日期**：2026年6月4日  

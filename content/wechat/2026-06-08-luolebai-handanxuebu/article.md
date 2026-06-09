@@ -1,6 +1,7 @@
 ---
 title: "我只是听了首〈落了白〉，怎么就掉进了邯郸学步宇宙？"
 date: 2026-06-08
+source: ../../source/2026-06-08-luolebai-handanxuebu/article.md
 status: draft
 channel: wechat
 style: literary-essay

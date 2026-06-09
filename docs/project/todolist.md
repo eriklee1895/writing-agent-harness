@@ -43,7 +43,8 @@ Feishu / Notion / etc.
 - [ ] 定义统一 source package：
   - [x] 使用 `content/source/YYYY-MM-DD-topic/` 作为可追踪 canonical Markdown / MDX 目录。
   - [x] 回填第一批现有文章到 `content/source/`，形成 source package 样例。
-  - [ ] 每篇文章一个目录，包含 `article.md` / `article.mdx`、`notes.md`、`assets/` 和可选 `channels/`。
+  - [x] 统一现有 `content/wechat/` 目录 slug，并在渠道稿 frontmatter 增加 `source:` 反向指针。
+  - [ ] 每篇文章一个目录，包含 `article.md` / `article.mdx`、`notes.md` 和 `assets/`。
   - [ ] frontmatter 统一字段：title、subtitle、slug、date、updated、source、source_url、channels、tags、status。
   - [ ] 保留 upstream source link，方便回溯飞书或 Notion 原文。
 
@@ -104,5 +105,5 @@ Feishu / Notion / etc.
 - Notion database 的哪些字段应该成为博客 / 微信共同 metadata？
 - Blog production publish 是否需要人工确认，还是只要 GitHub PR review 即可？
 - 掘金等其他渠道是否需要登录态浏览器自动化，还是先手动复制粘贴更稳？
-- `content/source/` 的 `channels/` 是只放轻量渠道改写，还是允许放完整渠道稿？
+- 是否需要给 `source:` 反向指针补一个小脚本，批量检查渠道稿是否能找到 canonical article？
 - ASR/TTS 供应商第一版选 MiniMax、火山引擎，还是做一个 provider interface 后再接多个实现？

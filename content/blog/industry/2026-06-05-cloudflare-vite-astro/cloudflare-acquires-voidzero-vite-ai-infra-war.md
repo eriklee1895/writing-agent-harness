@@ -3,6 +3,8 @@ title: "从Cloudflare收购Vite看AI军备竞赛趋势"
 description: "Cloudflare 收购 VoidZero 和 Vite 工具链背后，是 AI 时代开发者入口、运行时与默认工作流的基础设施争夺。"
 pubDate: 2026-06-05
 updatedDate: 2026-06-05
+source: ../../../source/2026-06-05-cloudflare-vite-astro/article.md
+channel: blog
 tags:
   - AI
   - Cloudflare

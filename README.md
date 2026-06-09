@@ -281,8 +281,7 @@ content/source/YYYY-MM-DD-topic/
 ├── article.md
 ├── article.mdx                  # optional, for blog
 ├── notes.md                     # optional research notes
-├── assets/                      # prompts / metadata / manifests
-└── channels/                    # optional channel adaptations
+└── assets/                      # prompts / metadata / manifests
 ```
 
 渠道派生稿可以放在：
@@ -292,7 +291,7 @@ content/wechat/YYYY-MM-DD-topic/
 content/blog/YYYY-MM-DD-topic/
 ```
 
-当前 `content/drafts/` 按本地 scratch 处理，不会默认提交。新文章可以先在这里写作；进入可追踪状态时，再把 Markdown / MDX、notes 和 metadata promote 到 `content/source/`。渠道版本再从 `content/source/` 派生到 `content/wechat/` 和 `content/blog/`。二进制素材默认留在 `.local-archive/` 或外部资产库，只提交可复现的 prompt、metadata、manifest 和 notes。
+同一篇文章跨 `source` / `wechat` / `blog` 使用同一个 folder slug；渠道稿 frontmatter 用 `source:` 指回 canonical article。当前 `content/drafts/` 按本地 scratch 处理，不会默认提交。新文章可以先在这里写作；进入可追踪状态时，再把 Markdown / MDX、notes 和 metadata promote 到 `content/source/`。渠道版本再从 `content/source/` 派生到 `content/wechat/` 和 `content/blog/`。二进制素材默认留在 `.local-archive/` 或外部资产库，只提交可复现的 prompt、metadata、manifest 和 notes。
 
 ## 🧱 Principles
 

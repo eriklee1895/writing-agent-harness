@@ -28,9 +28,10 @@ content/source/YYYY-MM-DD-topic/
 ├── article.md
 ├── article.mdx
 ├── notes.md
-├── assets/
-└── channels/
+└── assets/
 ```
+
+同一篇文章跨 `source` / `wechat` / `blog` 使用同一个 folder slug；渠道稿 frontmatter 用 `source:` 指回 canonical article。
 
 博客派生稿建议使用：
 

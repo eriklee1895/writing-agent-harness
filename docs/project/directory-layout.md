@@ -42,8 +42,7 @@ content/source/YYYY-MM-DD-topic/
 ├── article.md
 ├── article.mdx                  # optional, for blog
 ├── notes.md                     # optional research notes
-├── assets/                      # prompts / metadata / manifests
-└── channels/                    # optional channel-specific adaptations
+└── assets/                      # prompts / metadata / manifests
 ```
 
 渠道稿可以放在：
@@ -67,6 +66,6 @@ content/blog/
 
 ## Migration Rule
 
-当前 `content/drafts/` 和 `content/inbox/` 按本地 scratch 处理，不会默认提交。后续新文章可以先进入 `content/drafts/` 写作；当文章需要 repo 追踪、review、渲染或发布交付时，再 promote 到 `content/source/`。渠道版本从 `content/source/` 派生到 `content/wechat/` 或 `content/blog/`。
+当前 `content/drafts/` 和 `content/inbox/` 按本地 scratch 处理，不会默认提交。后续新文章可以先进入 `content/drafts/` 写作；当文章需要 repo 追踪、review、渲染或发布交付时，再 promote 到 `content/source/`。渠道版本从 `content/source/` 派生到 `content/wechat/` 或 `content/blog/`，并保持同一个 folder slug。渠道稿 frontmatter 用 `source:` 指回 canonical article。
 
 不要为了目录整洁贸然移动用户稿件。只有在用户明确同意迁移、且链接和 assets 路径可验证时，才移动历史文章。

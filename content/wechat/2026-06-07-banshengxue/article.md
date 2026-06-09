@@ -1,3 +1,10 @@
+---
+title: "半生雪: 网红神曲背后藏着中国版《放牛班的春天》"
+source: ../../source/2026-06-07-banshengxue/article.md
+channel: wechat
+style: literary-essay
+---
+
 # 半生雪: 网红神曲背后藏着中国版《放牛班的春天》
 
 ## 小学生的流行歌单
