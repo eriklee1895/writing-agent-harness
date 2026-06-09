@@ -4,9 +4,9 @@
 
 ## Canonical Source
 
-尽量把 Markdown / MDX 作为 repo 内 canonical source。
+尽量把 Markdown / MDX 作为 repo 内可追踪 canonical source。
 
-飞书文档可以作为原始写作入口，但进入 repo 后应同步/转换为 Markdown / MDX，方便 diff、review、render 和 publish automation。
+飞书文档可以作为原始写作入口，但进入 repo 后应同步/转换为 Markdown / MDX，方便 diff、review、render 和 publish automation。`content/drafts/` 当前是 gitignored 本地工作区；需要长期追踪的 source 应 promote 到 `content/source/`，再派生到 `content/wechat/` 或 `content/blog/`。
 
 ## Workflow
 

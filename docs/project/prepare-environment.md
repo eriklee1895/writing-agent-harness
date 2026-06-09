@@ -6,9 +6,9 @@
 
 ## Required Runtime
 
-- Git + Git LFS
-  - 本 repo 使用 Git LFS 管理图片、视频、音频和设计源文件。
-  - clone 后应确保执行过 `git lfs install`，并能正常拉取 LFS objects。
+- Git
+  - 本 repo 跟踪 Markdown / MDX、docs、skills、prompt、metadata、manifest 和 notes。
+  - 图片、视频、音频和设计源文件默认放在 `.local-archive/` 或外部资产库，不进入 Git。
 - Node.js
   - `wechat-article-renderer` 和 preview server 使用 Node.js 脚本。
 - uv
@@ -99,7 +99,7 @@ npx skills add eriklee1895/writing-agent-harness --skill article-ideation
 ## Quick Verification
 
 ```bash
-git lfs version
+git --version
 node --version
 uv --version
 bun --version   # optional
@@ -112,7 +112,7 @@ npx hyperframes --version # optional, required for article-video-clip
 
 ```bash
 node .agents/skills/wechat-article-renderer/scripts/render-wechat-article.mjs \
-  content/drafts/YYYY-MM-DD-topic/article.md --style impact-rational
+  content/source/YYYY-MM-DD-topic/article.md --style impact-rational
 ```
 
 生成插图：

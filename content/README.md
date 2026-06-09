@@ -1,8 +1,8 @@
 # Content
 
-这里是未来文章内容的目标工作区。当前历史文章还保留在原目录中，不需要强行迁移。
+这里是文章内容工作区。`content/inbox/` 和 `content/drafts/` 当前按本地 scratch 处理，默认不提交；可追踪 canonical source 放在 `content/source/`，渠道稿放在 `content/wechat/` 和 `content/blog/`。
 
-建议新文章先进入 canonical draft：
+建议新文章先进入本地 draft：
 
 ```text
 content/drafts/YYYY-MM-DD-topic/
@@ -14,11 +14,23 @@ content/drafts/YYYY-MM-DD-topic/
 
 目录含义：
 
-- `inbox/`: 飞书导出、网页剪藏、临时素材和未整理输入。
-- `drafts/`: Markdown / MDX canonical drafts。
-- `blog/`: 未来 Astro / Cloudflare Pages 的博客派生稿，按一级主题目录归档。
-- `wechat/`: 微信公众号派生稿、HTML preview 和发布相关文件。
-- `assets/`: 可复用视觉资产。单篇文章专属图片优先放在文章目录自己的 `assets/`。
+- `inbox/`: 飞书导出、网页剪藏、临时素材和未整理输入，gitignored。
+- `drafts/`: 本地 Markdown / MDX 写作工作区，gitignored。
+- `source/`: 可追踪 canonical Markdown / MDX source package，跨渠道共用。
+- `blog/`: 可追踪博客 Markdown / MDX，未来供 Astro / Cloudflare Pages 使用，按一级主题目录归档。
+- `wechat/`: 可追踪微信公众号文章、HTML preview、notes 和发布相关 metadata。
+- `assets/`: 可复用 prompt、metadata、manifest。二进制图片/视频默认放 `.local-archive/` 或外部资产库。
+
+Canonical source package 建议使用：
+
+```text
+content/source/YYYY-MM-DD-topic/
+├── article.md
+├── article.mdx
+├── notes.md
+├── assets/
+└── channels/
+```
 
 博客派生稿建议使用：
 

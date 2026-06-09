@@ -15,18 +15,17 @@ writing-agent-harness/
 │   └── superpowers/             # brainstorming specs / writing plans
 ├── .superpowers/                # generated scratch, preview server output, gitignored
 ├── content/
-│   ├── inbox/                   # 从飞书 / Notion / 剪藏进入的原始内容
-│   ├── drafts/                  # Markdown / MDX canonical drafts
-│   ├── blog/                    # 未来 Astro/MDX 派生稿，按一级主题目录归档
-│   ├── wechat/                  # 微信公众号派生稿和 preview
-│   └── assets/                  # 可复用视觉资产
-├── 微信公众号/                   # 当前历史微信公众号文章目录，后续可迁移
-└── astro_blogs/                 # 未来博客实验区
+│   ├── inbox/                   # 本地原始输入 scratch，gitignored
+│   ├── drafts/                  # 本地写作工作区，gitignored
+│   ├── source/                  # 可追踪 canonical Markdown / MDX
+│   ├── blog/                    # 可追踪博客 Markdown / MDX，按一级主题目录归档
+│   ├── wechat/                  # 可追踪微信公众号文章、preview、notes 和 metadata
+│   └── assets/                  # 可复用 prompt、metadata、manifest
 ```
 
 ## Article Folder
 
-每篇文章建议使用自包含目录：
+写作初期可以使用自包含本地草稿目录：
 
 ```text
 content/drafts/YYYY-MM-DD-topic/
@@ -36,7 +35,18 @@ content/drafts/YYYY-MM-DD-topic/
 └── notes.md                     # optional research notes
 ```
 
-渠道派生稿可以放在：
+进入可追踪状态后，canonical source 放在：
+
+```text
+content/source/YYYY-MM-DD-topic/
+├── article.md
+├── article.mdx                  # optional, for blog
+├── notes.md                     # optional research notes
+├── assets/                      # prompts / metadata / manifests
+└── channels/                    # optional channel-specific adaptations
+```
+
+渠道稿可以放在：
 
 ```text
 content/wechat/YYYY-MM-DD-topic/
@@ -57,6 +67,6 @@ content/blog/
 
 ## Migration Rule
 
-当前 `微信公众号/` 是已经跑通的历史文章目录。后续新文章优先进入 `content/drafts/`，再派生到 `content/wechat/` 和 `content/blog/`。
+当前 `content/drafts/` 和 `content/inbox/` 按本地 scratch 处理，不会默认提交。后续新文章可以先进入 `content/drafts/` 写作；当文章需要 repo 追踪、review、渲染或发布交付时，再 promote 到 `content/source/`。渠道版本从 `content/source/` 派生到 `content/wechat/` 或 `content/blog/`。
 
 不要为了目录整洁贸然移动用户稿件。只有在用户明确同意迁移、且链接和 assets 路径可验证时，才移动历史文章。

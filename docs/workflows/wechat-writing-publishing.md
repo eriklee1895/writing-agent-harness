@@ -29,16 +29,7 @@ Feishu / idea notes
 
 ## 文章目录
 
-当前历史目录可以继续使用：
-
-```text
-微信公众号/YYYY-or-MMDD-topic/
-├── article.md
-├── article.wechat-preview.html
-└── assets/
-```
-
-未来建议迁移到：
+当前推荐目录：
 
 ```text
 content/wechat/YYYY-MM-DD-topic/
@@ -47,9 +38,11 @@ content/wechat/YYYY-MM-DD-topic/
 └── assets/
 ```
 
+`content/drafts/` 可以作为本地写作工作区，但默认 gitignored。文章进入草稿箱同步、发布交付或 repo review 前，应把 canonical Markdown / MDX、notes 和 metadata promote 到 `content/source/`，再把微信公众号派生稿和 preview 放到 `content/wechat/`。
+
 ## Step 1: 准备 Markdown source
 
-Markdown 是 repo 内的 canonical source。飞书文档可以作为原始写作入口，但进入发布流程前应转换为 Markdown / MDX。
+`content/source/` 里的 Markdown / MDX 是 repo 内 canonical source。飞书文档可以作为原始写作入口，但进入发布流程前应转换为 Markdown / MDX。
 
 建议 frontmatter 至少包含：
 

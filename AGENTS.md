@@ -9,7 +9,7 @@
 - 保留用户 edits；不要 revert 用户改动，除非用户明确要求。
 - 不要打印、提交或泄漏 secrets、本地运行态、账号态数据和依赖目录。
 - Current events、company/product facts、pricing、laws、fast-moving tech topics 必须查证，并写清具体日期。
-- repo 内长期 canonical source 是 Markdown / MDX。飞书文档、Notion 等可以作为上游写作入口；进入 repo 后要同步或转换成可追踪文本。
+- repo 内长期 canonical source 放在 `content/source/`，格式是 Markdown / MDX。飞书文档、Notion 等可以作为上游写作入口；进入 repo 后要同步或转换成可追踪文本。
 - 内容写作、选题构思、文章润色、改稿、标题和风格判断时读取 [SOUL.md](SOUL.md)，对齐 Erik 的作者写作风格、register、anti-style 和审美边界；非写作任务不要默认加载。
 - 图片生成优先使用系统 `$imagegen` skill，不要重建项目重复的 `gpt-image-gen`。
 - 任何最终发布动作都需要 user final review，除非用户明确授权自动发布。
@@ -51,7 +51,7 @@
 - 早期灵感脑暴使用 project skill：`article-ideation`。
 - 文章打磨使用 project skill：`polish-article`。
 - 发布前文章 readiness 检查使用 project skill：`article-readiness-check`。
-- 微信公众号 HTML preview 使用 project skill：`wechat-article-renderer`；生成后可用 `node scripts/preview-server.mjs <dir>` 本地预览。
+- 微信公众号 HTML preview 使用 project skill：`wechat-article-renderer`；生成后可用 `node .agents/skills/wechat-article-renderer/scripts/preview-server.mjs <dir>` 本地预览。
 - 微信公众号发布流程使用 project skill：`wechat-publish-workflow`；底层上传器当前可复用 `baoyu-post-to-wechat`。
 - 发布或交付后的写作任务收尾使用 project skill：`writing-task-closeout`。
 - 不使用 paid `md2wechat` API。

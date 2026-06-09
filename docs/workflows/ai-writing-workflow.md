@@ -13,14 +13,15 @@ graph TD
         C --> D["灵感 → writing brief → outline"]
         D --> E["手写初稿 Markdown"]
         E --> F["content/drafts/YY-MMDD-topic/"]
+        F --> S["promote to content/source/YY-MM-DD-topic/"]
     end
 
     subgraph "🎨 polish & visual"
-        F --> G["polish-article (可选)"]
-        F --> H["article-illustration"]
+        S --> G["polish-article (可选)"]
+        S --> H["article-illustration"]
         H --> H1["插画/封面/信息图"]
         H1 --> H2["uv run .agents/skills/article-illustration/..."]
-        F --> V["video-material-ingest"]
+        S --> V["video-material-ingest"]
         V --> V1["video-highlight-select"]
         V1 --> V2["候选高光片段"]
         V2 --> V3["article-video-clip"]
@@ -28,7 +29,7 @@ graph TD
     end
 
     subgraph "📱 render & preview"
-        F --> I["wechat-article-renderer"]
+        S --> I["wechat-article-renderer"]
         G --> I
         H1 --> I
         V4 --> I
@@ -44,8 +45,9 @@ graph TD
     end
 
     subgraph "📦 archive"
+        S --> B1["content/blog/<category>/YY-MM-DD-topic/"]
         M --> N["content/wechat/YY-MM-DD-topic/"]
-        N --> O["未来: content/blog/ Astro 发布"]
+        B1 --> O["未来: Astro 发布"]
     end
 ```
 
@@ -53,11 +55,12 @@ graph TD
 
 | 目录 | 用途 |
 |------|------|
-| `content/inbox/` | 灵感碎片、飞书导出、网页剪藏、参考素材 |
-| `content/drafts/` | Markdown canonical source + WeChat HTML + assets（写作工作区） |
-| `content/wechat/` | 已发布微信公众号文章归档 |
-| `content/blog/` | 未来 Astro/Cloudflare Pages 博客派生稿 |
-| `content/assets/` | 可复用视觉资产 |
+| `content/inbox/` | 本地原始输入 scratch，gitignored |
+| `content/drafts/` | 本地写作工作区，gitignored；进入可追踪状态前需要 promote |
+| `content/source/` | 可追踪 canonical Markdown / MDX source package，跨渠道共用 |
+| `content/wechat/` | 可追踪微信公众号文章、HTML preview、notes 和 metadata |
+| `content/blog/` | 可追踪博客 Markdown / MDX，未来供 Astro/Cloudflare Pages 使用 |
+| `content/assets/` | 可复用 prompt、metadata、manifest；二进制素材默认不提交 |
 
 ## Skill 分工
 
@@ -79,6 +82,7 @@ graph TD
 |------|-----------|------|
 | 技术评论/观点文 | `impact-rational` (默认) | agent 开发、技术分析 |
 | 个人散文/随笔 | `literary-essay` | 生活随笔、文学类 |
+| 文化现象/城市/音乐/文旅随笔 | `cultural-essay` | 文化观察、城市文旅、音乐传播 |
 | 通用技术博客 | `tech-blog` | 技术分享、教程 |
 
 ## 插图预设
@@ -98,4 +102,5 @@ graph TD
 - CDP 模式为唯一发布路径（不用官方 API）
 - Agent 可创建草稿，最终发布必须人工确认
 - 标题和摘要发布时显式传入 `--title` 和 `--summary`
-- 视频素材和剪辑产物默认是本地工作素材，不应提交 Git；`content/inbox/**`、`content/drafts/**` 和 `content/wechat/**/*.mp4|mov|webm|mkv` 已按本地素材处理。
+- `content/inbox/**` 和 `content/drafts/**` 默认是本地 scratch，不提交 Git。可追踪文章源稿应 promote 到 `content/source/`，再派生到 `content/wechat/` 或 `content/blog/`。
+- 图片、视频素材和剪辑产物默认是本地工作素材，不应提交 Git；保留 prompt、metadata、manifest、sources 和 notes 作为可追踪文本。

@@ -37,7 +37,7 @@
 
 用于文章：
 
-- Article: `content/drafts/2026-06-08-luolebai-handanxuebu/article.md`
+- Article: `content/source/2026-06-08-luolebai-handanxuebu/article.md`
 - Section: `泼天的流量，邯郸接住了`
 - Style profile: `modern-guochao-editorial`
 - Size: `portrait-hd`
@@ -68,5 +68,5 @@ uv run .agents/skills/article-illustration/scripts/generate_article_illustration
   --size portrait-hd \
   --quality auto \
   --language zh \
-  --output-dir content/drafts/2026-06-08-luolebai-handanxuebu/assets/images
+  --output-dir content/source/2026-06-08-luolebai-handanxuebu/assets/images
 ```

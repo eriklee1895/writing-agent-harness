@@ -96,7 +96,7 @@ const STYLE_TOKENS = {
 
 const STYLE_LABELS = {
   "impact-rational": {
-    heroLabel: "个人随笔",
+    heroLabel: "趋势观察",
     authorNoteLabel: "作者想说",
     outlineLabel: "阅读地图",
     questionLabel: "三个关键问题",
