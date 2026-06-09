@@ -45,9 +45,9 @@ VoidZero 不是一间普通创业公司，它是尤雨溪为 Vite 时代的下�
 
 Cloudflare 已公开承诺，Vite、Vitest、Rolldown、Oxc 等项目将继续保持开源与厂商中立，并设立 100 万美元 Vite 生态基金支持维护者与贡献者。这些承诺会缓解短期焦虑，但无法消除一个更长期的问题：当事实标准进入平台体系之后，它还能在多大程度上保持真正的中立。
 
-![文章配图](./assets/feishu-image-01.png)
-![文章配图](./assets/feishu-image-02.png)
-![文章配图](./assets/feishu-image-03.png)
+![文章配图](../../../../.local-archive/2026-06-05-cloudflare-vite-astro/images/blog/feishu-image-01.png)
+![文章配图](../../../../.local-archive/2026-06-05-cloudflare-vite-astro/images/blog/feishu-image-02.png)
+![文章配图](../../../../.local-archive/2026-06-05-cloudflare-vite-astro/images/blog/feishu-image-03.png)
 
 Cloudflare和VoidZero同步发布的收购公告：
 
@@ -96,7 +96,7 @@ Vite 之所以重要，不在于它是“一个构建工具”，而在于它已
 
 也正因为如此，Cloudflare 才必须反复强调：即便未来 Vite 持续演化，它也不应滑向某种平台独占功能。100 万美元生态基金的意义，不只在于安抚情绪，更在于向社区释放一个信号——至少在当前阶段，Cloudflare 希望维持 Vite 作为公共基础设施的合法性。
 
-![文章配图](./assets/feishu-image-04.png)
+![文章配图](../../../../.local-archive/2026-06-05-cloudflare-vite-astro/images/blog/feishu-image-04.png)
 
 越来越多由 AI Agent 生成、修改并部署的应用，正在以 Vite 为基础，并进一步接入 Cloudflare 的 Workers、D1、R2、KV、Workers AI 与 Agents 等平台能力。工具链与云平台，已经不是简单的上下游关系，而是在形成一个闭环。
 
@@ -354,7 +354,7 @@ Bun 被 Anthropic 收购之后，并没有立刻改变开源许可证，也没�
 
 下图展示的是一条正在被重新争夺的 AI 开发流水线：从意图表达、代码生成，到环境配置、依赖管理、构建、测试与部署，每一个环节都开始出现新的控制权归属。
 
-![AI 开发流水线控制权图](./assets/ai-dev-pipeline-whiteboard.jpg)
+![AI 开发流水线控制权图](../../../../.local-archive/2026-06-05-cloudflare-vite-astro/images/blog/ai-dev-pipeline-whiteboard.png)
 
 看看这个链条上的关键位置，正在被谁掌握：
 

@@ -236,7 +236,26 @@ test("buildHyperframesHtml preserves clip audio by default", () => {
     sourceLabel: "Example / Author",
   });
 
-  assert.match(html, /<video src="assets\/source-clip\.mp4"/);
+  assert.match(html, /<video[^>]+src="assets\/source-clip\.mp4"/);
   assert.doesNotMatch(html, /\smuted\b/);
   assert.match(html, /data-volume="1"/);
+});
+
+test("buildHyperframesHtml emits current HyperFrames lint contract", () => {
+  const html = buildHyperframesHtml({
+    preset: getPreset("wechat-landscape"),
+    title: "Clip Title",
+    caption: "Caption",
+    sourceLabel: "Example / Author",
+  });
+
+  assert.match(html, /id="root"/);
+  assert.match(html, /data-composition-id="root"/);
+  assert.match(html, /data-start="0"/);
+  assert.match(html, /data-duration="999"/);
+  assert.match(html, /id="source-video"/);
+  assert.match(html, /data-has-audio="true"/);
+  assert.match(html, /class="shade clip"/);
+  assert.match(html, /class="title clip"/);
+  assert.match(html, /window\.__timelines\["root"\] = tl/);
 });

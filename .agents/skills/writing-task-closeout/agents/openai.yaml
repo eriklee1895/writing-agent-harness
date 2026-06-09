@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing Task Closeout"
+  short_description: "发布后素材归档、复盘、memory 与 git/task 收尾"
+  default_prompt: "Use $writing-task-closeout to archive media, record publish status, write retrospective notes, and prepare git/task handoff after publishing."

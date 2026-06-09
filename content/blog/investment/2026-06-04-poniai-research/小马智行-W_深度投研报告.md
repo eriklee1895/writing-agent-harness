@@ -50,7 +50,7 @@
 
 #### 营收高速增长，Robotaxi成第一增长曲线
 
-![季度营收趋势](chart1_revenue_trend.png)
+![季度营收趋势](../../../../.local-archive/2026-06-04-poniai-research/images/chart1_revenue_trend.png)
 
 | 指标 | 2024年 | 2025年 | 2026Q1 | 趋势判断 |
 |------|--------|--------|--------|---------|
@@ -67,13 +67,13 @@
 
 #### 收入结构优化
 
-![收入结构](chart2_revenue_structure.png)
+![收入结构](../../../../.local-archive/2026-06-04-poniai-research/images/chart2_revenue_structure.png)
 
 2025年Robotaxi收入占比仅18.4%，但增速最快（+129%）。随着车队规模从2024年底的270辆扩张至2026年的3500+辆，**Robotaxi有望成为第一大收入来源**，带动整体毛利率提升。
 
 #### 盈利路径分析
 
-![毛利率与净利润](chart5_margin_profit.png)
+![毛利率与净利润](../../../../.local-archive/2026-06-04-poniai-research/images/chart5_margin_profit.png)
 
 **重要提示**：2025年Q4净利润5.28亿元为**首次单季盈利**，但主要来自交易性金融资产公允价值变动的**非经常性收益**，核心运营业务仍未实现经营性盈利。投资者需区分"纸面盈利"与"经营性盈利"。
 
@@ -86,7 +86,7 @@
 
 #### Robotaxi车队规模爆发式增长
 
-![车队规模增长](chart4_fleet_growth.png)
+![车队规模增长](../../../../.local-archive/2026-06-04-poniai-research/images/chart4_fleet_growth.png)
 
 | 时间节点 | 车队规模 | 关键事件 |
 |---------|---------|---------|
@@ -126,9 +126,9 @@
 
 ### 4.2 竞品对比：小马智行 vs 文远知行
 
-![竞品对比雷达图](chart3_competitor_radar.png)
+![竞品对比雷达图](../../../../.local-archive/2026-06-04-poniai-research/images/chart3_competitor_radar.png)
 
-![竞品财务对比](chart7_competitor_comparison.png)
+![竞品财务对比](../../../../.local-archive/2026-06-04-poniai-research/images/chart7_competitor_comparison.png)
 
 | 对比维度 | 小马智行 (02026.HK) | 文远知行 (00800.HK) |
 |---------|-------------------|-------------------|
@@ -163,7 +163,7 @@
 
 ### 5.2 券商评级汇总
 
-![券商评级](chart8_broker_ratings.png)
+![券商评级](../../../../.local-archive/2026-06-04-poniai-research/images/chart8_broker_ratings.png)
 
 | 券商 | 评级 | 核心观点 |
 |------|------|---------|
@@ -180,7 +180,7 @@
 
 ### 6.1 何时可以买？——买入时机判断
 
-![股价关键节点](chart6_stock_price.png)
+![股价关键节点](../../../../.local-archive/2026-06-04-poniai-research/images/chart6_stock_price.png)
 
 **当前（2026年6月）是较好的观察窗口，建议分阶段建仓**：
 

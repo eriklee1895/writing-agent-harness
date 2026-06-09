@@ -290,11 +290,14 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;");
 }
 
-export function buildHyperframesHtml({ preset, title, caption, sourceLabel }) {
+export function buildHyperframesHtml({ preset, title, caption, sourceLabel, durationSeconds = 999 }) {
   const safeTitle = escapeHtml(title);
   const safeCaption = escapeHtml(caption);
   const safeSource = escapeHtml(sourceLabel);
-  const captionHtml = safeCaption ? `<div class="caption">${safeCaption}</div>` : "";
+  const duration = Number(durationSeconds) > 0 ? Number(durationSeconds) : 999;
+  const captionHtml = safeCaption
+    ? `<div id="caption" class="caption clip" data-start="0" data-duration="${duration}" data-track-index="3">${safeCaption}</div>`
+    : "";
   return `<!doctype html>
 <html>
   <head>
@@ -366,13 +369,19 @@ export function buildHyperframesHtml({ preset, title, caption, sourceLabel }) {
     </style>
   </head>
   <body>
-    <div data-composition-id="root" data-width="${preset.width}" data-height="${preset.height}">
-      <video src="assets/source-clip.mp4" data-start="0" data-track-index="0" data-volume="1" playsinline></video>
-      <div class="shade" data-start="0" data-duration="999" data-track-index="1"></div>
-      <div class="title" data-start="0" data-duration="999" data-track-index="2">${safeTitle}</div>
+    <div id="root" data-composition-id="root" data-start="0" data-duration="${duration}" data-width="${preset.width}" data-height="${preset.height}">
+      <video id="source-video" src="assets/source-clip.mp4" data-start="0" data-track-index="0" data-volume="1" data-has-audio="true" playsinline></video>
+      <div id="shade" class="shade clip" data-start="0" data-duration="${duration}" data-track-index="1"></div>
+      <div id="title" class="title clip" data-start="0" data-duration="${duration}" data-track-index="2">${safeTitle}</div>
       ${captionHtml}
-      <div class="source" data-start="0" data-duration="999" data-track-index="3">${safeSource}</div>
+      <div id="source" class="source clip" data-start="0" data-duration="${duration}" data-track-index="4">${safeSource}</div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines["root"] = tl;
+    </script>
   </body>
 </html>
 `;
@@ -467,6 +476,7 @@ export async function createClip({ options, runCommandFn = runCommand, now = () 
       title: options.title,
       caption: options.caption,
       sourceLabel: sourceLabel || sourceManifest.original_url || "",
+      durationSeconds: endSeconds - startSeconds,
     }),
   );
 

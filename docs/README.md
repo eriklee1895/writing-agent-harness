@@ -45,7 +45,7 @@
   - `.local-memory/` 本机 scratch memory 的使用边界和迁移规则。
 
 - [reference/visuals.md](reference/visuals.md)
-  - 图片生成、微信公众号封面、正文插图和 asset 规则。
+  - 图片生成、视频素材、文章视频剪辑、微信公众号封面、正文插图和 asset 规则。
 
 ## Retrospectives
 
@@ -54,6 +54,9 @@
 
 - [retrospectives/2026-06-06-wechat-cdp-only-decision.md](retrospectives/2026-06-06-wechat-cdp-only-decision.md)
   - 微信公众号发布只维护 CDP/browser 主路径的决策、API 放弃原因和扫码登录边界。
+
+- [retrospectives/2026-06-08-video-material-clip.md](retrospectives/2026-06-08-video-material-clip.md)
+  - 视频素材摄取、裸 mp4 包装、HyperFrames 模板 contract 和文章视频剪辑复盘。
 
 ## Superpowers
 

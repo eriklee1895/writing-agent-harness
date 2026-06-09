@@ -44,6 +44,9 @@ node_modules/
 # Local scratch memory, not canonical repo knowledge
 .local-memory/
 
+# Local media archive, not canonical repo source
+.local-archive/
+
 # Local writing scratch, keep only placeholders in origin
 content/inbox/**
 !content/inbox/.gitkeep
@@ -51,11 +54,30 @@ content/inbox/**
 content/drafts/**
 !content/drafts/.gitkeep
 
-# Local/derived video material in published WeChat workspaces
-content/wechat/**/*.mp4
-content/wechat/**/*.mov
-content/wechat/**/*.webm
-content/wechat/**/*.mkv
+# Media and design binaries are kept in .local-archive/ or external storage, not git
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.avif
+*.heic
+*.tif
+*.tiff
+*.psd
+*.mp4
+*.mov
+*.m4v
+*.webm
+*.mkv
+*.avi
+*.mp3
+*.wav
+*.m4a
+*.flac
+*.ai
+*.sketch
+*.fig
 
 # Superpowers / visual companion generated scratch files
 .superpowers/

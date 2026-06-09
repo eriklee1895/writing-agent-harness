@@ -122,7 +122,7 @@ export async function launchChrome(
     profileDir: profile,
     port,
     url,
-    extraArgs: ['--disable-blink-features=AutomationControlled', '--start-maximized'],
+    extraArgs: ['--start-maximized'],
   });
 
   const wsUrl = await waitForChromeDebugPort(port, 30_000, { includeLastError: true });

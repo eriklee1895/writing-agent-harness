@@ -25,6 +25,14 @@ from openai import OpenAI
 
 
 STYLE_PROFILES = {
+    "editorial-atmospheric": {
+        "style_text": (
+            "contemporary editorial illustration, layered composition, subtle texture, "
+            "restrained color palette, atmospheric but concrete, article-friendly visual metaphor, "
+            "no text labels, no diagrams, no arrows"
+        ),
+        "is_artistic": True,
+    },
     "flat-tech-infographic": {
         "style_text": (
             "flat technical infographic illustration, clean grouped modules, clear arrows, "
@@ -35,6 +43,21 @@ STYLE_PROFILES = {
     "flat-illustration": {
         "style_text": (
             "flat illustration, simple geometric forms, concise annotations, soft editorial look"
+        ),
+        "is_artistic": True,
+    },
+    "modern-guochao-editorial": {
+        "style_text": (
+            "modern Chinese editorial illustration with restrained guochao influence, "
+            "historical motifs reinterpreted through clean contemporary composition, "
+            "rich but not gaudy colors, subtle paper texture, no text labels, no diagrams"
+        ),
+        "is_artistic": True,
+    },
+    "cinematic-editorial": {
+        "style_text": (
+            "cinematic editorial still, dramatic but natural lighting, grounded scene details, "
+            "documentary-like framing with an illustrative finish, no text labels, no diagrams"
         ),
         "is_artistic": True,
     },
@@ -89,13 +112,13 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate article illustrations.")
     parser.add_argument("--brief", help="Short illustration brief.")
     parser.add_argument("--brief-file", help="Path to a UTF-8 text file containing the brief.")
-    parser.add_argument("--title", default="doc-illustration")
+    parser.add_argument("--title", default="article-illustration")
     parser.add_argument("--mode", choices=["text-only", "reference+text"], default="text-only")
     parser.add_argument("--reference-image", action="append", default=[])
     parser.add_argument(
         "--style-profile",
-        default="watercolor-illustration",
-        choices=sorted(STYLE_PROFILES),
+        default="auto",
+        choices=["auto", *sorted(STYLE_PROFILES)],
     )
     parser.add_argument("--size", default="auto")
     parser.add_argument(
@@ -133,7 +156,7 @@ def normalize_reference_images(paths: list[str]) -> list[str]:
 
 def slugify(text: str) -> str:
     slug = re.sub(r"[^a-zA-Z0-9]+", "-", text).strip("-").lower()
-    return slug or "doc-illustration"
+    return slug or "article-illustration"
 
 
 def get_api_settings(require_key: bool) -> tuple[str | None, str | None]:
@@ -208,6 +231,36 @@ def is_artistic_style(style_profile: str) -> bool:
     return STYLE_PROFILES.get(style_profile, {}).get("is_artistic", False)
 
 
+def resolve_style_profile(requested: str, brief: str) -> str:
+    """Choose a style when --style-profile=auto.
+
+    Auto should keep agents from treating watercolor as the universal literary default.
+    It favors a concrete editorial style for essays, while still selecting technical
+    profiles for diagrams and engineering notes.
+    """
+    if requested != "auto":
+        return requested
+
+    content_info = detect_content_type(brief)
+    category = content_info["category"]
+    lower = brief.lower()
+
+    if category == "diagram":
+        if any(t in lower for t in ("repo", "repository", "codebase", "目录", "仓库")):
+            return "repo-architecture-clean"
+        if any(t in lower for t in ("architecture", "system", "架构", "workflow", "process", "流程")):
+            return "soft-tech-diagram"
+        return "flat-tech-infographic"
+
+    if any(t in brief for t in ("国潮", "古风", "古城", "战国", "赵国", "邯郸", "成语", "礼宴", "文旅", "传统文化")):
+        return "modern-guochao-editorial"
+
+    if any(t in brief for t in ("舞台", "现场", "电影", "光影", "夜色", "城市", "街头")):
+        return "cinematic-editorial"
+
+    return "editorial-atmospheric"
+
+
 def build_prompt(
     *,
     brief: str,
@@ -257,9 +310,9 @@ def build_prompt(
         return (
             f"Create an illustration titled '{title}'. "
             f"Style: {style_text}. "
-            "This is for a literary essay or personal writing — not a technical document. "
+            "This is for an article or essay — not a technical document. "
             "Do NOT add any diagrams, arrows, labels, callouts, or text. "
-            "Focus purely on atmosphere, mood, and visual poetry. "
+            "Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. "
             f"{guidance} "
             f"Language/region: {language}. "
             f"Target aspect ratio: {size_label}. "
@@ -319,6 +372,7 @@ def metadata_dict(
         "content_category": content_info["category"],
         "mode": args.mode,
         "style_profile": args.style_profile,
+        "resolved_style_profile": args.resolved_style_profile,
         "size": args.size,
         "resolved_size": SIZE_PRESETS.get(args.size, args.size),
         "quality": args.quality,
@@ -419,6 +473,7 @@ def generate_from_reference(
 def main() -> int:
     args = parse_args()
     brief = load_brief(args)
+    args.resolved_style_profile = resolve_style_profile(args.style_profile, brief)
     reference_images = normalize_reference_images(args.reference_image)
     if args.mode == "reference+text" and not reference_images:
         raise SystemExit("Error: reference+text mode requires at least one --reference-image.")
@@ -430,7 +485,7 @@ def main() -> int:
         brief=brief,
         title=args.title,
         mode=args.mode,
-        style_profile=args.style_profile,
+        style_profile=args.resolved_style_profile,
         language=args.language,
         size_label=args.size,
         reference_images=reference_images,
@@ -448,7 +503,7 @@ def main() -> int:
         )
         meta_path.write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8")
         print("Mode: dry-run")
-        print(f"Style: {args.style_profile}")
+        print(f"Style: {args.resolved_style_profile} (requested: {args.style_profile})")
         print(f"Model: {model_name}")
         print(f"Prompt saved to: {meta_path}")
         print(json.dumps(metadata, ensure_ascii=False, indent=2))
@@ -494,7 +549,7 @@ def main() -> int:
     meta_path.write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print("Mode: generate")
-    print(f"Style: {args.style_profile}")
+    print(f"Style: {args.resolved_style_profile} (requested: {args.style_profile})")
     print(f"Image: {image_path}")
     print(f"Metadata: {meta_path}")
     print(f"Markdown: ![{args.title}]({image_path})")

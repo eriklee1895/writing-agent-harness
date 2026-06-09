@@ -1,0 +1,22 @@
+{
+  "title": "谨慎的外衣 - Body",
+  "brief": "A person sitting alone in a dim, cluttered room full of unopened packages and blank notebooks, staring at their phone. Outside the window is bright warm sunlight. Flat editorial illustration style with soft watercolor washes, strong contrast between the gloomy interior and warm exterior, metaphor for procrastination and waiting. Minimalist composition, generous negative space, literary picture book aesthetic.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "flat-illustration",
+  "resolved_style_profile": "flat-illustration",
+  "size": "portrait-hd",
+  "resolved_size": "1024x1536",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled '谨慎的外衣 - Body'. Style: flat illustration, simple geometric forms, concise annotations, soft editorial look. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a body illustration inside a WeChat article read on mobile phones (~390px wide). Compose for narrow-width readability. Use generous negative space. Language/region: zh. Target aspect ratio: portrait-hd. Mode: text-only. Brief:\nA person sitting alone in a dim, cluttered room full of unopened packages and blank notebooks, staring at their phone. Outside the window is bright warm sunlight. Flat editorial illustration style with soft watercolor washes, strong contrast between the gloomy interior and warm exterior, metaphor for procrastination and waiting. Minimalist composition, generous negative space, literary picture book aesthetic.",
+  "created_at": "2026-06-09T11:51:19",
+  "output_files": [
+    "../../.local-archive/2026-06-09-article-draft-images/images/20260609-115025-body.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

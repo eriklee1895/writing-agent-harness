@@ -16,10 +16,15 @@
 4. 做 research。遇到 current events、company/product facts、pricing、laws、fast-moving tech topics 时，必须查证并写清具体日期。
 5. 根据 writing brief 和 research 形成 full draft。
 6. 使用 `polish-article` 打磨逻辑、文风、专业深度和题材气质。
-7. 只有当图片能帮助理解、传播或渠道呈现时，才生成或优化 visuals。
-8. 按不同渠道做 packaging。
-9. 在声称 ready 之前先 verify rendered output。
-10. 用户确认 preview/draft 后，才进入 publish。
+7. 只有当图片或视频能帮助理解、传播或渠道呈现时，才生成或优化 visuals。
+   - 图片/封面/信息图走 `article-illustration`。
+   - 已知视频 URL 先走 `video-material-ingest` 留痕。
+   - 文章内视频先走 `video-highlight-select` 做人工辅助选片，再走 `article-video-clip` 做轻包装。
+8. 使用 `article-readiness-check` 做发布前检查：正文 readiness、事实边界、Markdown/MDX hygiene、frontmatter、图片/视频引用、渠道 handoff 和 publish blockers。
+9. 按不同渠道做 packaging。
+10. 在声称 ready 之前先 verify rendered output。
+11. 用户确认 preview/draft 后，才进入 publish。
+12. 发布、创建草稿或最终交付之后，使用 `writing-task-closeout` 做任务收尾：回填发布状态、归档媒体到 `.local-archive/YYYY-MM-DD-slug/`、复盘、memory / skill 决策和 git / task handoff。
 
 ## Ideation First
 

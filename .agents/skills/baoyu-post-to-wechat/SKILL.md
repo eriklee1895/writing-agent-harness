@@ -114,6 +114,10 @@ Checks: Chrome, profile isolation, Bun, Accessibility, clipboard, paste keystrok
 | Paste keystroke (Linux) | Install `xdotool` (X11) or `ydotool` (Wayland) |
 | API credentials | Follow guided setup in Step 2, or set in repo root `.env` |
 
+Browser login note: wait up to 5 minutes for WeChat login because QR scanning and phone confirmation can be slow. If the WeChat Official Account login page shows a `微信快捷登录` button instead of a QR code, click that button directly and continue waiting for `/cgi-bin/home`. Do not wait for QR scanning in that state.
+
+Chrome launch note: do not pass `--disable-blink-features=AutomationControlled`. Recent Chrome versions show an unsupported command-line warning for this flag, adding visual noise and potentially reducing stability.
+
 ## Image-Text Posting (图文)
 
 Short posts with multiple images (up to 9):

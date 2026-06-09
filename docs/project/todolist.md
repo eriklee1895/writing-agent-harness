@@ -2,7 +2,7 @@
 
 记录 Erik 对 `writing-agent-harness` 的当前建设想法和待办。本文是活文档：先保存方向，再逐步拆成 specs、plans、skills 和可运行脚本。
 
-更新日期：2026-06-06
+更新日期：2026-06-08
 
 ## North Star
 
@@ -71,6 +71,21 @@ Feishu / Notion / etc.
   - [ ] 暂时作为 downstream repackaging targets，不抢先做重自动化。
   - [ ] 每个渠道独立记录 format constraints、asset rules、publish boundary 和 rollback path。
 
+## Media Intelligence Todos
+
+- [x] 设计并落地第一版视频高光选择 workflow：
+  - [x] 明确 `video-highlight-select` 的输入输出：本地素材包、文章主题/段落意图、候选高光片段清单。
+  - [x] 第一版保持 human-in-the-loop，只推荐候选片段，不自动决定最终剪辑。
+  - [x] 与 `article-video-clip` 分层：前者负责找候选片段，后者负责已确认片段的裁切和轻包装。
+- [ ] 规划 ASR/TTS provider abstraction：
+  - [ ] 不默认依赖 HyperFrames 自带 Whisper；优先评估 Erik 已用过且体验好的 MiniMax、火山引擎等供应商。
+  - [ ] ASR 第一优先服务于 transcript、视频高光选择、文章引用和字幕草稿。
+  - [ ] TTS 第一优先服务于未来 HyperFrames 视频生成、动态摘要和短视频配音。
+  - [ ] 先沉淀 provider-neutral 输入输出协议，再决定是否做 project-level skill，例如 `video-transcript-extract` / `speech-transcript-extract` / `article-video-narration`。
+- [ ] 判断何时实现：
+  - [ ] 当 `video-highlight-select` 进入实施，且至少 2 次真实视频任务需要 transcript 时，再实现 ASR skill。
+  - [ ] 当 HyperFrames 视频生成进入真实文章/短视频生产，而不是 demo 阶段时，再实现 TTS skill。
+
 ## Near-Term Build Order
 
 1. 把飞书文档 `<->` Markdown 的现有成功经验写成 runbook。
@@ -78,7 +93,8 @@ Feishu / Notion / etc.
 3. 定义统一 frontmatter 和 article folder contract。
 4. 让一篇文章从 `content/drafts/` 派生到微信公众号 preview。
 5. 建立 Astro 博客最小工程，让同一篇文章能被博客消费。
-6. 再抽象 project-level skills，避免把没跑通的能力包装成“已完成”。
+6. 继续验证视频素材链路：用真实文章测试 `video-highlight-select`，再决定 ASR/TTS 是否进入实现。
+7. 再抽象 project-level skills，避免把没跑通的能力包装成“已完成”。
 
 ## Open Questions
 
@@ -87,3 +103,4 @@ Feishu / Notion / etc.
 - Blog production publish 是否需要人工确认，还是只要 GitHub PR review 即可？
 - 掘金等其他渠道是否需要登录态浏览器自动化，还是先手动复制粘贴更稳？
 - 文章目录是否从现在开始全部进入 `content/drafts/`，历史 `微信公众号/` 是否以后再迁移？
+- ASR/TTS 供应商第一版选 MiniMax、火山引擎，还是做一个 provider interface 后再接多个实现？

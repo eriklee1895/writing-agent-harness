@@ -10,7 +10,7 @@
 - 不要打印、提交或泄漏 secrets、本地运行态、账号态数据和依赖目录。
 - Current events、company/product facts、pricing、laws、fast-moving tech topics 必须查证，并写清具体日期。
 - repo 内长期 canonical source 是 Markdown / MDX。飞书文档、Notion 等可以作为上游写作入口；进入 repo 后要同步或转换成可追踪文本。
-- 内容写作、选题构思、文章润色、改稿、标题和风格判断时读取 [SOUL.md](SOUL.md)，对齐 Erik 的作者声音、register 和 anti-style；非写作任务不要默认加载。
+- 内容写作、选题构思、文章润色、改稿、标题和风格判断时读取 [SOUL.md](SOUL.md)，对齐 Erik 的作者写作风格、register、anti-style 和审美边界；非写作任务不要默认加载。
 - 图片生成优先使用系统 `$imagegen` skill，不要重建项目重复的 `gpt-image-gen`。
 - 任何最终发布动作都需要 user final review，除非用户明确授权自动发布。
 - 先做 small, practical automation；不要把未跑通的能力写成已可用能力。
@@ -38,7 +38,7 @@
 | 查看项目 skills 边界 | [docs/reference/skills.md](docs/reference/skills.md) |
 | 沉淀 memory、复盘、skill 自我进化 | [docs/reference/self-evolution.md](docs/reference/self-evolution.md) |
 | 使用本机 scratch memory | [docs/reference/local-memory.md](docs/reference/local-memory.md) |
-| 图片、封面、正文插图 | [docs/reference/visuals.md](docs/reference/visuals.md) |
+| 图片、封面、正文插图、视频素材/剪辑 | [docs/reference/visuals.md](docs/reference/visuals.md) |
 | 微信发布复盘与坑点 | [docs/retrospectives/2026-06-05-wechat-publish.md](docs/retrospectives/2026-06-05-wechat-publish.md) |
 | Superpowers specs / plans 约定 | [docs/README.md](docs/README.md#superpowers) |
 
@@ -46,12 +46,14 @@
 
 ## Current Defaults
 
-- 微信公众号 renderer 支持三种 style：`impact-rational`（技术评论/观点文，默认）、`literary-essay`（个人散文/随笔，推荐用于文学类）、`tech-blog`（通用技术博客）。
-- 文章插图生成默认使用 `watercolor-illustration` 风格、`zh` 语言；Python 脚本一律用 `uv run`。
+- 微信公众号 renderer 支持四种 style：`impact-rational`（技术评论/观点文，默认）、`literary-essay`（个人散文/随笔）、`cultural-essay`（文化现象/城市/音乐/文旅随笔）、`tech-blog`（通用技术博客）。
+- 文章插图生成默认使用 `article-illustration --style-profile auto` 按文章气质选择画风；Python 脚本一律用 `uv run`。
 - 早期灵感脑暴使用 project skill：`article-ideation`。
 - 文章打磨使用 project skill：`polish-article`。
+- 发布前文章 readiness 检查使用 project skill：`article-readiness-check`。
 - 微信公众号 HTML preview 使用 project skill：`wechat-article-renderer`；生成后可用 `node scripts/preview-server.mjs <dir>` 本地预览。
 - 微信公众号发布流程使用 project skill：`wechat-publish-workflow`；底层上传器当前可复用 `baoyu-post-to-wechat`。
+- 发布或交付后的写作任务收尾使用 project skill：`writing-task-closeout`。
 - 不使用 paid `md2wechat` API。
 - `docs/superpowers/specs/` 和 `docs/superpowers/plans/` 是 Superpowers 长期文档目录；`.superpowers/` 是 generated scratch，通常忽略。
 
@@ -69,4 +71,4 @@
 
 ## Publish Boundary
 
-Agent 可以创建草稿、检查图片、检查封面、检查链接、报告 `appmsgid`。不要未经用户明确确认点击最终发布 / 群发。
+Agent 可以创建草稿、检查图片、检查封面、检查链接，并报告草稿创建结果（如微信公众号编辑页 URL 中的 `appmsgid`）。不要未经用户明确确认点击最终发布 / 群发。

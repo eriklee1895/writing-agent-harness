@@ -123,13 +123,36 @@ async function sendQrToTelegram(session: ChromeSession): Promise<void> {
   }
 }
 
-async function waitForLogin(session: ChromeSession, timeoutMs = 120_000): Promise<boolean> {
+async function waitForLogin(session: ChromeSession, timeoutMs = 300_000): Promise<boolean> {
   // Notify via Telegram if configured (no-op when env vars absent)
   await sendQrToTelegram(session);
   const start = Date.now();
+  let quickLoginClicked = false;
   while (Date.now() - start < timeoutMs) {
     const url = await evaluate<string>(session, 'window.location.href');
     if (url.includes('/cgi-bin/home')) return true;
+
+    const clickedQuickLogin = await evaluate<boolean>(session, `
+      (function() {
+        const candidates = Array.from(document.querySelectorAll('button, a, [role="button"], span, div'));
+        const quickLogin = candidates.find((el) => {
+          const text = (el.textContent || '').trim();
+          if (text !== '微信快捷登录' && !(text.includes('微信快捷登录') && text.length <= 20)) return false;
+          const rect = el.getBoundingClientRect();
+          const style = window.getComputedStyle(el);
+          return rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
+        });
+        if (!quickLogin) return false;
+        const clickable = quickLogin.closest('button, a, [role="button"]') || quickLogin;
+        clickable.click();
+        return true;
+      })()
+    `);
+    if (clickedQuickLogin && !quickLoginClicked) {
+      console.log('[wechat] Clicked WeChat quick login button.');
+      quickLoginClicked = true;
+    }
+
     await sleep(2000);
   }
   return false;
@@ -502,14 +525,19 @@ function parseHtmlMeta(htmlPath: string): { title: string; author: string; summa
   const contentImages: ImageInfo[] = [];
   const imgRegex = /<img[^>]*\ssrc=["']([^"']+)["'][^>]*>/gi;
   const matches = [...content.matchAll(imgRegex)];
+  const htmlDir = path.dirname(path.resolve(htmlPath));
   for (const match of matches) {
     const [fullTag, src] = match;
-    if (!src || src.startsWith('http')) continue;
+    if (!src || /^(https?:|data:|\/\/)/i.test(src)) continue;
     const localPathMatch = fullTag.match(/data-local-path=["']([^"']+)["']/);
     if (localPathMatch) {
+      const rawLocalPath = localPathMatch[1]!;
+      const localPath = path.isAbsolute(rawLocalPath)
+        ? rawLocalPath
+        : path.resolve(htmlDir, rawLocalPath);
       contentImages.push({
         placeholder: src,
-        localPath: localPathMatch[1]!,
+        localPath,
         originalPath: src,
       });
     }

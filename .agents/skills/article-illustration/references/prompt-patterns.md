@@ -15,9 +15,9 @@ Always build prompts in this order:
 
 The script auto-selects the prompt frame based on whether the chosen style has `is_artistic: True`. Do NOT manually override this — the script handles it correctly.
 
-### Artistic styles (watercolor-illustration, flat-illustration, sketchnote)
+### Artistic styles (editorial-atmospheric, modern-guochao-editorial, cinematic-editorial, watercolor-illustration, flat-illustration, sketchnote)
 
-Frame: "literary essay or personal writing — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus purely on atmosphere, mood, and visual poetry." The script also injects content-type-specific guidance (cover safe zones, mobile readability, etc.) based on keyword detection.
+Frame: "article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity." The script also injects content-type-specific guidance (cover safe zones, mobile readability, etc.) based on keyword detection.
 
 ### Technical styles (flat-tech-infographic, soft-tech-diagram, repo-architecture-clean)
 

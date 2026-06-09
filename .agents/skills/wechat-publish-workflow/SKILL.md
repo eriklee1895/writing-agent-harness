@@ -33,13 +33,18 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
 3. Verify generated HTML：
    - renderer 成功退出，title 和 image count 正常；
    - no `<script>`, external stylesheet dependency, `TODO`, `TBD`；
+   - no base64 image payload；
    - no external link `href`，引用来源用 plain text reference；
-   - local images 带 `data-local-path`，方便上传器替换成本地图片；
+   - local images 带 `data-local-path`，可解析到文章 `assets/`、`.local-archive/YYYY-MM-DD-slug/images/` 或其他本地归档路径，方便上传器读取本地图片；
    - 如含本地视频，video placeholder / embed marker 带本地视频路径和素材来源说明；
    - mobile preview `390-430px` 无 horizontal overflow。
 4. 如需要，打开或刷新本地 preview，常见地址是 `http://localhost:49255/`。
 5. 在触碰微信公众号编辑器前，先让用户确认 preview。
 6. 用 `baoyu-post-to-wechat` 的 browser/CDP 路径填入微信公众号编辑器并创建草稿。默认偏向创建草稿，不直接发布。
+   - CDP 阶段实时读取 `data-local-path` 指向的本地图片；
+   - 上传正文图片到微信公众号；
+   - 将 `<img src>` 替换为微信 CDN URL；
+   - 不把图片 base64 内联进 HTML。
 7. 填入后检查：
    - title、author、summary；
    - 封面可见，上传后指向 WeChat CDN；
@@ -74,7 +79,9 @@ VoidZero is joining Cloudflare
 
 ### 图片与封面
 
-正文图片放在文章目录的 `assets/` 中，并通过 `data-local-path` 让上传器找到本地文件。上传后检查正文图片 URL 是否变成 `https://mmbiz.qpic.cn/`。
+正文图片可以放在文章目录的 `assets/` 中，也可以按任务归档到 `.local-archive/YYYY-MM-DD-slug/images/`。Renderer 通过 `data-local-path` 或本地 archive hint 让上传器找到文件。
+
+不要把图片以 base64 写进 WeChat preview HTML。HTML artifact 保持轻量；发布时由 CDP 上传器实时读取本地图片、上传到微信，并替换为微信 CDN URL。上传后检查正文图片 URL 是否变成 `https://mmbiz.qpic.cn/`。
 
 封面图和正文图是两套状态。封面以编辑器左侧卡片/封面预览可见为准；DOM 里的 `#js_cover_area` 有时仍会显示 placeholder text，不一定代表封面失败。
 

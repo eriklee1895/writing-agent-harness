@@ -101,7 +101,8 @@ Renderer 必须保证：
 - no JavaScript；
 - no external stylesheet；
 - no external `href`；
-- local images 带 `data-local-path`；
+- no base64 image payload；
+- local images 带 `data-local-path`，可指向文章 `assets/` 或 `.local-archive/YYYY-MM-DD-slug/images/`；
 - mobile width `390-430px` 不横向溢出。
 
 ## Step 4: 本地预览与检查
@@ -116,6 +117,7 @@ http://localhost:49255/
 
 - title 和 image count 正常；
 - generated HTML 没有 `<script>`、`TODO`、`TBD`；
+- generated HTML 没有 base64 图片；
 - HTML 没有 `<a>`、`href`、外部 URL；
 - 表格、图片、caption、section cards 没有移动端溢出；
 - 图片路径可解析；
@@ -142,7 +144,34 @@ baoyu-post-to-wechat
 
 CDP 成功后的可靠信号是保存后编辑页 URL 出现 `appmsgid=...`；API 成功后的可靠信号是返回草稿 `media_id`。两种方式都只代表进入草稿箱，不代表已经发布。
 
-CDP 模式唯一不可避免的人工参与点是扫码登录。这是微信账号安全模型带来的物理/账号边界，不是自动化缺口；登录态可复用后，后续从 preview 到草稿箱同步已经接近 100% AI 自动化。
+CDP 模式唯一不可避免的人工参与点是微信登录确认。这是微信账号安全模型带来的物理/账号边界，不是自动化缺口；登录态可复用后，后续从 preview 到草稿箱同步已经接近 100% AI 自动化。
+
+如果登录页显示「微信快捷登录」按钮而不是二维码，应直接点击该按钮继续登录流程，不要等待扫码超时；如果显示二维码，再由用户扫码确认。
+
+### 图片上传策略
+
+不要把正文图片以 base64 内联进 WeChat preview HTML。Markdown / HTML preview 只保留轻量引用和 `data-local-path` / archive hint。
+
+CDP 同步草稿箱时实时处理图片：
+
+1. 读取 HTML 中的 `data-local-path` 或 `.local-archive` 相对路径；
+2. 找到本地图片；
+3. 上传到微信公众号编辑器/素材；
+4. 将 `<img src>` 替换为微信 CDN URL；
+5. 保存草稿后检查正文图片是否变成 `https://mmbiz.qpic.cn/...`。
+
+`.local-archive/` 是本机素材库，不提交 Git。换机器时需要手动同步 archive、从外部资产库取回，或从已发布平台 CDN 回填。
+
+### 视频素材
+
+文章内视频素材准备分三层：
+
+- `video-material-ingest`：抓取已知视频 URL，保存本地素材包和来源留痕。
+- `video-highlight-select`：生成 contact sheet 和候选片段表，帮助人确认适合文章的高光片段。
+- `article-video-clip`：从本地素材包裁片段、转码并用 HyperFrames 做轻包装。
+- `wechat-publish-workflow`：决定视频是否插入草稿，以及后续是否调用 CDP 上传到微信公众号素材/草稿箱。
+
+不要把 `article-video-clip` 产物等同于“已上传微信公众号”。WeChat video upload via CDP 仍属于发布 workflow 的后续能力。
 
 ## 微信公众号限制坑点
 
@@ -211,3 +240,5 @@ Agent 不应未经用户明确确认点击最终发布/群发。扫码登录可�
 2026-06-05，Cloudflare/Vite 文章已按 CDP 流程成功发布。详细复盘见 [../retrospectives/2026-06-05-wechat-publish.md](../retrospectives/2026-06-05-wechat-publish.md)。
 
 2026-06-06，确认不维护 API 主路径，只维护 CDP 自动化。决策记录见 [../retrospectives/2026-06-06-wechat-cdp-only-decision.md](../retrospectives/2026-06-06-wechat-cdp-only-decision.md)。
+
+2026-06-08，跑通视频素材再包装测试，确认裸 mp4 需要先包装成标准素材包，并修复 HyperFrames 模板 contract。复盘见 [../retrospectives/2026-06-08-video-material-clip.md](../retrospectives/2026-06-08-video-material-clip.md)。

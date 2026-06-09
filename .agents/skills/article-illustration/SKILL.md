@@ -16,7 +16,11 @@ Use this skill to create illustrations for articles — covers, inset imagery, d
    - Blog banner / hero
    - Technical diagram (architecture, process, knowledge card)
 2. Pick a style profile:
-   - `watercolor-illustration` (default): fine-art watercolor, best for literary essays / personal writing / WeChat articles
+   - `auto` (default): choose from the brief instead of forcing a house style
+   - `editorial-atmospheric`: textured contemporary editorial illustration, good for essays and cultural observation
+   - `modern-guochao-editorial`: restrained modern guochao / Chinese cultural editorial style
+   - `cinematic-editorial`: film-still inspired editorial image with grounded light and scene detail
+   - `watercolor-illustration`: fine-art watercolor, use only when the article truly wants a soft painterly mood
    - `flat-illustration`: editorial flat illustration, soft look
    - `sketchnote`: hand-drawn notebook feel
    - `flat-tech-infographic`: technical infographic with clean modules, arrows, bilingual labels
@@ -37,15 +41,14 @@ Use this skill to create illustrations for articles — covers, inset imagery, d
 Use `uv run` for Python scripts:
 
 ```bash
-# Literary essay illustration
-uv run .agents/skills/article-illustration/scripts/generate_doc_illustration.py \
+# Literary essay illustration, auto style selection
+uv run .agents/skills/article-illustration/scripts/generate_article_illustration.py \
   --title "Snowy Window Scene" \
-  --brief "A watercolor illustration of snow falling outside a warm-lit classroom window..." \
-  --style-profile watercolor-illustration \
+  --brief "A body inset illustration of snow falling outside a warm-lit classroom window..." \
   --size wechat-cover-hd
 
 # Technical diagram
-uv run .agents/skills/article-illustration/scripts/generate_doc_illustration.py \
+uv run .agents/skills/article-illustration/scripts/generate_article_illustration.py \
   --title "RAG Pipeline Overview" \
   --brief "A technical infographic showing ingestion, chunking, embedding, retrieval..." \
   --style-profile flat-tech-infographic \
@@ -58,7 +61,7 @@ Use `--mode reference+text --reference-image <path>` when the new image should f
 Use `--dry-run` when you want the exact prompt and parameters without calling the API.
 
 Default output settings:
-- `--style-profile watercolor-illustration` (default)
+- `--style-profile auto` (default; resolves from the brief)
 - `--language zh` (default; use `zh-en` for bilingual labels)
 - `--size auto` for best compatibility with GPT image providers
 - `--quality auto` for high-fidelity default behavior

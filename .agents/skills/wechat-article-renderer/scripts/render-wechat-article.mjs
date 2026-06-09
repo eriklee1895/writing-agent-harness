@@ -47,6 +47,30 @@ const STYLE_TOKENS = {
     closingPanel: false,
     lineHeight: "2.0",
   },
+  "cultural-essay": {
+    accent: "#9a5b2f",
+    blue: "#345f5a",
+    text: "#332f2a",
+    muted: "#74685c",
+    panelBorder: "rgba(154,91,47,.14)",
+    shadow: "none",
+    fontFamily: "'Noto Serif SC','STSong','SimSun','PingFang SC','Hiragino Sans GB',serif",
+    headingFontFamily: "'Noto Serif SC','STSong','Georgia',serif",
+    bodyBg: "#ffffff",
+    cardBg: "transparent",
+    quoteBg: "#f5efe5",
+    quoteBorder: "#9a5b2f",
+    highlightBg: "#f8f1e8",
+    highlightColor: "#2f2a24",
+    highlightBorder: "rgba(154,91,47,.22)",
+    useCards: false,
+    showOutline: false,
+    showSummary: false,
+    heroStyle: "cultural",
+    headingPrefix: "",
+    closingPanel: false,
+    lineHeight: "2.0",
+  },
   "tech-blog": {
     accent: "#0066cc",
     blue: "#2c5f8a",
@@ -82,6 +106,15 @@ const STYLE_LABELS = {
   },
   "literary-essay": {
     heroLabel: "散文随笔",
+    authorNoteLabel: undefined,
+    outlineLabel: undefined,
+    questionLabel: undefined,
+    thesisLabel: undefined,
+    galleryLabel: "文中配图",
+    closingCTA: undefined,
+  },
+  "cultural-essay": {
+    heroLabel: "文化随笔",
     authorNoteLabel: undefined,
     outlineLabel: undefined,
     questionLabel: undefined,
@@ -135,6 +168,30 @@ function stripFrontmatter(markdown) {
   return end === -1 ? markdown : markdown.slice(end + 5);
 }
 
+function stripHtmlComments(markdown) {
+  return markdown.replace(/<!--[\s\S]*?-->/g, "");
+}
+
+function attrValue(markup, name) {
+  const match = markup.match(new RegExp(`${name}=["']([^"']+)["']`, "i"));
+  return match ? match[1] : "";
+}
+
+function videoPlaceholderLine(markup) {
+  const sourceMatch = markup.match(/<source\b[^>]*src=["']([^"']+)["'][^>]*>/i);
+  const src = sourceMatch ? sourceMatch[1] : attrValue(markup, "src");
+  const poster = attrValue(markup, "poster");
+  const attrs = [
+    src ? `src="${src}"` : "",
+    poster ? `poster="${poster}"` : "",
+  ].filter(Boolean).join(" ");
+  return `\n::video-placeholder ${attrs}::\n`;
+}
+
+function replaceRawVideoBlocks(markdown) {
+  return markdown.replace(/<video\b[\s\S]*?<\/video>/gi, (match) => videoPlaceholderLine(match));
+}
+
 function plainInline(value) {
   return value
     .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
@@ -155,6 +212,9 @@ function inline(markdown) {
 
   html = html.replace(/\*\*([^*]+)\*\*/g, `<strong style="color:${tokens.accent}; font-weight:700;">$1</strong>`);
   html = html.replace(/\*([^*]+)\*/g, `<em style="font-style:normal; color:${tokens.blue};">$1</em>`);
+  html = html.replace(/==([^=]+)==/g, (_match, text) => (
+    `<span style="color:${tokens.highlightColor || tokens.text}; background:${tokens.highlightBg || "rgba(216,75,55,.10)"}; padding:1px 4px; border-radius:4px;">${text}</span>`
+  ));
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, label) => (
     `<span style="color:${tokens.blue}; border-bottom:1px solid rgba(61,106,138,.28);">${label}</span>`
   ));
@@ -201,7 +261,7 @@ function parseTable(lines, start) {
 }
 
 function parseBlocks(markdown) {
-  const lines = stripFrontmatter(markdown).replace(/\r\n/g, "\n").split("\n");
+  const lines = replaceRawVideoBlocks(stripHtmlComments(stripFrontmatter(markdown))).replace(/\r\n/g, "\n").split("\n");
   const blocks = [];
   let i = 0;
 
@@ -227,6 +287,17 @@ function parseBlocks(markdown) {
       continue;
     }
 
+    const videoPlaceholder = trimmed.match(/^::video-placeholder(?:\s+src="([^"]+)")?(?:\s+poster="([^"]+)")?\s*::$/);
+    if (videoPlaceholder) {
+      blocks.push({
+        type: "videoPlaceholder",
+        src: videoPlaceholder[1] || "",
+        poster: videoPlaceholder[2] || "",
+      });
+      i += 1;
+      continue;
+    }
+
     const heading = trimmed.match(/^(#{1,6})\s+(.+)$/);
     if (heading) {
       blocks.push({ type: "heading", level: heading[1].length, text: heading[2].trim() });
@@ -244,6 +315,13 @@ function parseBlocks(markdown) {
     if (table) {
       blocks.push(table.block);
       i = table.next;
+      continue;
+    }
+
+    const highlight = trimmed.match(/^==(.+)==$/);
+    if (highlight) {
+      blocks.push({ type: "highlight", text: highlight[1].trim() });
+      i += 1;
       continue;
     }
 
@@ -345,6 +423,9 @@ function headingHtml(block) {
   const ff = tokens.headingFontFamily || tokens.fontFamily;
   const prefix = tokens.headingPrefix ? `<span style="color:${tokens.accent};">${tokens.headingPrefix}</span> ` : "";
   if (block.level === 2) {
+    if (ACTIVE_STYLE === "cultural-essay") {
+      return `<h2 style="${SAFE_WRAP} font-size:21px; color:${tokens.blue}; margin:4px 0 18px; padding:12px 14px 12px 13px; background:#f3f8f6; border-left:4px solid ${tokens.accent}; border-radius:0 10px 10px 0; letter-spacing:0; line-height:1.45; font-family:'Songti SC','Noto Serif SC','STSong','SimSun','PingFang SC','Hiragino Sans GB',serif; font-weight:700;">${inline(block.text)}</h2>`;
+    }
     return `<h2 style="${SAFE_WRAP} font-size:21px; color:${tokens.blue}; margin:0 0 16px; padding-bottom:11px; border-bottom:1px dashed rgba(74,124,155,.34); letter-spacing:0; line-height:1.45; font-family:${ff};">${prefix}${inline(block.text)}</h2>`;
   }
   if (block.level === 3) {
@@ -356,6 +437,13 @@ function headingHtml(block) {
 function paragraphHtml(text) {
   const tokens = getTokens();
   return `<p style="${SAFE_WRAP} font-size:16px; line-height:${tokens.lineHeight}; color:${tokens.text}; margin:0 0 16px; letter-spacing:0;">${inline(text)}</p>`;
+}
+
+function highlightHtml(block) {
+  const tokens = getTokens();
+  return `<div style="${SAFE_WRAP} margin:8px 0 20px; padding:14px 15px; background:${tokens.highlightBg || "#fff8f5"}; border:1px solid ${tokens.highlightBorder || "rgba(216,75,55,.18)"}; border-left:4px solid ${tokens.accent}; border-radius:10px;">
+  <div style="${SAFE_WRAP} color:${tokens.highlightColor || tokens.text}; font-size:15px; line-height:1.85; font-weight:600; margin:0;">${inline(block.text)}</div>
+</div>`;
 }
 
 function questionStackHtml(block) {
@@ -446,6 +534,22 @@ function imageHtml(block) {
 </figure>`;
 }
 
+function videoPlaceholderHtml(block) {
+  const tokens = getTokens();
+  const srcLabel = block.src ? path.basename(block.src) : "待替换视频素材";
+  const posterHtml = block.poster
+    ? `<div style="${SAFE_WRAP} margin:0 0 10px; text-align:center;">
+      <img ${imageAttrs(block.poster, "视频封面")} style="box-sizing:border-box; width:100%; max-width:420px; height:auto; border-radius:8px; display:block; margin:0 auto;">
+    </div>`
+    : "";
+  return `<div style="${SAFE_WRAP} margin:20px 0; padding:14px 15px; background:#f8faf9; border:1px dashed ${tokens.panelBorder === "transparent" ? "rgba(52,95,90,.28)" : tokens.panelBorder}; border-radius:10px;">
+  ${posterHtml}
+  <div style="${SAFE_WRAP} color:${tokens.accent}; font-size:13px; line-height:1.5; font-weight:700; margin:0 0 5px;">视频素材位</div>
+  <div style="${SAFE_WRAP} color:${tokens.text}; font-size:14px; line-height:1.7; margin:0;">${escapeHtml(srcLabel)}</div>
+  <div style="${SAFE_WRAP} color:${tokens.muted}; font-size:12px; line-height:1.6; margin:7px 0 0;">发布时替换为视频号、腾讯视频或微信素材库视频。</div>
+</div>`;
+}
+
 function imageGroupHtml(block) {
   const tokens = getTokens();
   const labels = getLabels();
@@ -504,12 +608,16 @@ function blockHtml(block) {
       return headingHtml(block);
     case "paragraph":
       return paragraphHtml(block.text);
+    case "highlight":
+      return highlightHtml(block);
     case "quote":
       return quoteHtml(block);
     case "list":
       return listHtml(block);
     case "image":
       return imageHtml(block);
+    case "videoPlaceholder":
+      return videoPlaceholderHtml(block);
     case "imageGroup":
       return imageGroupHtml(block);
     case "table":
@@ -587,7 +695,15 @@ function renderDocument({ title, deck, summary, blocks }) {
   // ── Hero section ──
   let heroHtml;
   const ff = tokens.headingFontFamily || tokens.fontFamily;
-  if (tokens.heroStyle === "centered") {
+  if (tokens.heroStyle === "cultural") {
+    heroHtml = `<section style="${SAFE_WRAP} width:100%; background:#fff; padding:18px 2px 24px; text-align:left; margin-bottom:26px; border-bottom:1px solid rgba(154,91,47,.16);">
+        <div style="${SAFE_WRAP} color:${tokens.accent}; font-size:12px; line-height:1; margin:0 0 14px; letter-spacing:0; font-family:${tokens.fontFamily};">
+          <span style="display:inline-block; width:28px; height:1px; background:${tokens.accent}; vertical-align:middle; margin-right:9px;"></span>${escapeHtml(labels.heroLabel)}
+        </div>
+        <h1 style="${SAFE_WRAP} font-size:25px; line-height:1.46; color:${tokens.text}; margin:0; font-weight:800; letter-spacing:0; font-family:${ff};">${escapeHtml(title)}</h1>
+        ${deck ? `<p style="${SAFE_WRAP} font-size:15px; line-height:1.85; color:${tokens.muted}; margin:15px 0 0;">${escapeHtml(deck)}</p>` : ""}
+      </section>`;
+  } else if (tokens.heroStyle === "centered") {
     heroHtml = `<section style="${SAFE_WRAP} width:100%; background:${tokens.cardBg === "transparent" ? tokens.bodyBg : tokens.cardBg}; border-radius:14px; padding:32px 20px 28px; text-align:center; margin-bottom:24px;">
         <div style="display:inline-block; color:${tokens.accent}; font-size:13px; line-height:1; padding:6px 10px; border:1px solid ${tokens.accent}; border-radius:4px; margin-bottom:18px; opacity:0.8;">${escapeHtml(labels.heroLabel)}</div>
         <h1 style="${SAFE_WRAP} font-size:26px; line-height:1.4; color:#1f252c; margin:0 auto; font-weight:700; letter-spacing:0; font-family:${ff}; max-width:90%;">${escapeHtml(title)}</h1>
@@ -694,7 +810,7 @@ async function main() {
   }
 
   if (!input) {
-    console.error("Usage: node scripts/render-wechat-article.mjs <article.md> [output.html] [--style impact-rational|literary-essay|tech-blog] [--serve]");
+    console.error(`Usage: node scripts/render-wechat-article.mjs <article.md> [output.html] [--style ${[...SUPPORTED_STYLES].join("|")}] [--serve]`);
     console.error("List styles: node scripts/render-wechat-article.mjs --list-styles");
     process.exit(1);
   }

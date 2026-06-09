@@ -54,6 +54,13 @@ node {baseDir}/scripts/render-wechat-article.mjs /absolute/path/to/article.md /a
 
 Use `references/styles/impact-rational.md` for the current default style decisions. Load only the selected style reference when style-specific visual decisions are needed.
 
+Current style presets:
+
+- `impact-rational`: 技术评论/观点文，默认。
+- `literary-essay`: 个人散文/随笔。
+- `cultural-essay`: 文化现象、城市、音乐、文旅观察类随笔。
+- `tech-blog`: 通用技术博客。
+
 Style extension convention:
 
 - Add a new style guide at `references/styles/<style-name>.md`.
@@ -65,7 +72,9 @@ Shared renderer rules:
 
 - Keep all layout styling inline; avoid external CSS and JavaScript.
 - Do not output external link `href` attributes in WeChat HTML. Render links and references as readable text because the WeChat editor rejects non-`mp.weixin.qq.com` links when saving drafts.
-- Preserve local image references with `data-local-path`.
+- Do not inline image binaries as base64. WeChat preview HTML should stay lightweight and reviewable.
+- Preserve local image references with `data-local-path`; paths may point to article `assets/`, `.local-archive/YYYY-MM-DD-slug/images/`, or another local archive hint.
+- CDP publishing resolves `data-local-path` at draft creation time, uploads images to WeChat, and replaces `src` with WeChat CDN URLs.
 - Make small-screen safety non-negotiable: `box-sizing:border-box`, width constraints, and long-token wrapping.
 - Keep `一句话总结` and `文章大纲` available when the selected style supports long-form reading aids.
 

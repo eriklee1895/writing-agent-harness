@@ -1,0 +1,22 @@
+{
+  "title": "野生念头 - Body",
+  "brief": "In a misty morning forest, a glowing firefly flies out from between leaves, trailing a string of luminous text fragments behind it. A person reaches out trying to catch the light. Flat editorial illustration style with soft watercolor texture, green and gold color palette, fresh and natural atmosphere, full of vitality. Minimalist composition with generous negative space, literary picture book aesthetic.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "flat-illustration",
+  "resolved_style_profile": "flat-illustration",
+  "size": "portrait-hd",
+  "resolved_size": "1024x1536",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled '野生念头 - Body'. Style: flat illustration, simple geometric forms, concise annotations, soft editorial look. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a body illustration inside a WeChat article read on mobile phones (~390px wide). Compose for narrow-width readability. Use generous negative space. Language/region: zh. Target aspect ratio: portrait-hd. Mode: text-only. Brief:\nIn a misty morning forest, a glowing firefly flies out from between leaves, trailing a string of luminous text fragments behind it. A person reaches out trying to catch the light. Flat editorial illustration style with soft watercolor texture, green and gold color palette, fresh and natural atmosphere, full of vitality. Minimalist composition with generous negative space, literary picture book aesthetic.",
+  "created_at": "2026-06-09T11:52:00",
+  "output_files": [
+    "../../.local-archive/2026-06-09-article-draft-images/images/20260609-115121-body.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

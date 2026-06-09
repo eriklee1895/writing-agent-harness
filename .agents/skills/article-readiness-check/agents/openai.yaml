@@ -1,0 +1,4 @@
+interface:
+  display_name: "Article Readiness Check"
+  short_description: "发布前文章内容、事实与渠道 readiness 检查"
+  default_prompt: "Use $article-readiness-check to verify whether this Markdown article is ready for rendering, channel packaging, or draft creation."

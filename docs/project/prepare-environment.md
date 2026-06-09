@@ -118,7 +118,7 @@ node .agents/skills/wechat-article-renderer/scripts/render-wechat-article.mjs \
 生成插图：
 
 ```bash
-uv run .agents/skills/article-illustration/scripts/generate_doc_illustration.py \
+uv run .agents/skills/article-illustration/scripts/generate_article_illustration.py \
   --title "插画标题" --brief "描述" \
-  --style-profile watercolor-illustration --size wechat-cover-hd
+  --style-profile auto --size wechat-cover-hd
 ```

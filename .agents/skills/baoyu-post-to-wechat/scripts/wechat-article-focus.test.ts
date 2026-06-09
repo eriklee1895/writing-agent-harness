@@ -40,6 +40,12 @@ test("browser article inserts inline images through WeChat local upload instead 
   assert.doesNotMatch(articleScript, /await copyImageToClipboard\(img\.localPath\)/);
 });
 
+test("browser article resolves relative data-local-path values against the HTML file", () => {
+  assert.match(articleScript, /const htmlDir = path\.dirname\(path\.resolve\(htmlPath\)\)/);
+  assert.match(articleScript, /path\.resolve\(htmlDir, rawLocalPath\)/);
+  assert.equal(articleScript.includes("/^(https?:|data:|\\/\\/)/i.test(src)"), true);
+});
+
 test("browser article uploads original images before fallback processing", () => {
   const rawUploadIndex = articleScript.indexOf("await uploadImagePathThroughFileInput(session, absolutePath, beforeCount)");
   const fallbackIndex = articleScript.indexOf("const fallback = await prepareFallbackWechatBodyImageUpload(absolutePath)");

@@ -1,0 +1,22 @@
+{
+  "title": "谨慎的外衣 - Landscape",
+  "brief": "A wide scene: a person sitting alone in a dim cluttered room full of unopened packages and blank notebooks, staring at their phone. Outside the large window is bright warm sunlight. Flat editorial illustration with soft watercolor washes, strong contrast between gloomy interior and warm exterior, metaphor for procrastination. Minimalist, generous negative space, literary picture book aesthetic. Landscape composition.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "flat-illustration",
+  "resolved_style_profile": "flat-illustration",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled '谨慎的外衣 - Landscape'. Style: flat illustration, simple geometric forms, concise annotations, soft editorial look. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a body illustration inside a WeChat article read on mobile phones (~390px wide). Compose for narrow-width readability. Use generous negative space. Language/region: zh. Target aspect ratio: doc-hd. Mode: text-only. Brief:\nA wide scene: a person sitting alone in a dim cluttered room full of unopened packages and blank notebooks, staring at their phone. Outside the large window is bright warm sunlight. Flat editorial illustration with soft watercolor washes, strong contrast between gloomy interior and warm exterior, metaphor for procrastination. Minimalist, generous negative space, literary picture book aesthetic. Landscape composition.",
+  "created_at": "2026-06-09T11:55:25",
+  "output_files": [
+    "../../.local-archive/2026-06-09-article-draft-images/images/20260609-115436-landscape.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

@@ -23,7 +23,7 @@
 
 | 改动 | 文件 |
 |------|------|
-| 新增 `watercolor-illustration` 风格 | `scripts/generate_doc_illustration.py` |
+| 新增 `watercolor-illustration` 风格 | `scripts/generate_article_illustration.py` |
 | 艺术风格跳过技术图表 prompt 框架 | 同上 |
 | 新增 `cover-hd` (1792x1024) | 同上 |
 | 时间戳精度从分钟→秒+碰撞检测 | 同上（修复同秒覆写 bug） |
@@ -78,7 +78,7 @@
 | 位置 | 内容 |
 |------|------|
 | `docs/reference/visuals.md` | 微信公众号封面图尺寸规范（头条 2.35:1, 1080x460） |
-| `scripts/generate_doc_illustration.py` | `watercolor-illustration` 风格、`cover-hd` 尺寸、碰撞检测 |
+| `scripts/generate_article_illustration.py` | `watercolor-illustration` 风格、`cover-hd` 尺寸、碰撞检测 |
 | `references/style-profiles.md` | 新增艺术风格文档 |
 | `scripts/render-wechat-article.mjs` | 散文适配：条件渲染、标签中性化 |
 | 本次复盘 | `docs/retrospectives/2026-06-07-banshengxue.md` |

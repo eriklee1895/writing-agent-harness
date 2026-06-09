@@ -95,6 +95,8 @@ flowchart LR
      ↓
 🎨  article-illustration: 文章插图（多种风格可选）
      ↓
+🎞️  video-material-ingest → video-highlight-select → article-video-clip: 视频素材摄取、选片与文章视频片段（可选）
+     ↓
 📱  wechat-article-renderer: 排版 + 本地预览
      ↓
 🚀  wechat-publish-workflow → CDP 草稿箱
@@ -106,9 +108,26 @@ flowchart LR
 
 ```bash
 # 生成插图
-uv run .agents/skills/article-illustration/scripts/generate_doc_illustration.py \
+uv run .agents/skills/article-illustration/scripts/generate_article_illustration.py \
   --title "封面插画" --brief "水彩风格..." \
-  --style-profile watercolor-illustration --size wechat-cover-hd
+  --style-profile auto --size wechat-cover-hd
+
+# 已知 URL 视频素材摄取
+node .agents/skills/video-material-ingest/scripts/ingest-video-material.mjs \
+  "https://example.com/video" \
+  --target content/drafts/YYYY-MM-DD-topic
+
+# 人工辅助选择文章高光片段
+node .agents/skills/video-highlight-select/scripts/select-video-highlights.mjs \
+  --material content/drafts/YYYY-MM-DD-topic/assets/media/source-slug \
+  --intent "放在文章开头抓人"
+
+# 从本地素材包生成文章视频片段
+node .agents/skills/article-video-clip/scripts/create-article-video-clip.mjs \
+  --material content/drafts/YYYY-MM-DD-topic/assets/media/source-slug \
+  --start 00:12 --end 00:38 \
+  --preset wechat-landscape \
+  --title "视频标题"
 
 # 渲染微信公众号 HTML（三种风格可选）
 node .agents/skills/wechat-article-renderer/scripts/render-wechat-article.mjs \
@@ -129,6 +148,7 @@ node .agents/skills/wechat-article-renderer/scripts/preview-server.mjs \
 - 文章源稿、渠道派生稿、视觉资产和发布流程文档。
 - 对未来博客主阵地、微信公众号和其他分发渠道的自动化积累。
 - 生成插图：支持多种风格 — `watercolor-illustration`（文学/散文默认）、`flat-tech-infographic`（agent 开发技术图）、`flat-illustration`、`sketchnote`、`soft-tech-diagram`、`repo-architecture-clean`。
+- 视频素材：`video-material-ingest` 负责已知 URL 抓取和来源留痕，`video-highlight-select` 负责人工辅助选片，`article-video-clip` 负责文章内短视频片段轻包装。
 
 ## 🧭 Writing Modes
 
@@ -172,7 +192,7 @@ Astro + Cloudflare Pages + GitHub Actions
 微信公众号已经跑通过完整流程：
 
 ```text
-article-ideation → draft → polish → article-illustration → wechat-article-renderer → CDP 草稿箱 → human review → publish
+article-ideation → draft → polish → article-illustration / video-highlight-select → article-video-clip → wechat-article-renderer → CDP 草稿箱 → human review → publish
 ```
 
 Renderer 支持三种 style preset：`impact-rational`（技术评论）、`literary-essay`（个人散文）、`tech-blog`（通用技术博客）。发布使用 CDP browser 模式（不需要 API IP 白名单）。
@@ -191,7 +211,10 @@ Renderer 支持三种 style preset：`impact-rational`（技术评论）、`lite
 |-------|------|
 | `article-ideation` | 灵感脑暴 → writing brief + outline |
 | `polish-article` | 润色打磨，按题材强化逻辑、文风与作者气质 |
-| `article-illustration` | 通用文章生图：水彩插画、信息图、技术图表等多种风格，默认 `watercolor-illustration`，Python `uv run` |
+| `article-illustration` | 通用文章生图：水彩插画、信息图、技术图表等多种风格，默认 `--style-profile auto`，Python `uv run` |
+| `video-material-ingest` | 用 `yt-dlp` 摄取已知视频 URL，生成本地素材包、manifest 和 sources 留痕 |
+| `video-highlight-select` | 人工辅助选择文章相关高光片段，生成 contact sheet、候选片段表和 `article-video-clip` handoff |
+| `article-video-clip` | 从本地视频素材包裁切并轻包装文章视频片段，输出 `final.mp4`、预览帧和 clip manifest |
 | `wechat-article-renderer` | Markdown → 微信公众号 HTML，支持 `impact-rational`/`literary-essay`/`tech-blog` 三种风格 |
 | `wechat-publish-workflow` | 编排微信公众号草稿箱同步、验证和发布交接 |
 | `baoyu-post-to-wechat` | 底层 CDP 上传器参考实现 |
@@ -216,6 +239,7 @@ Renderer 支持三种 style preset：`impact-rational`（技术评论）、`lite
 - [docs/workflows/wechat-writing-publishing.md](docs/workflows/wechat-writing-publishing.md): 微信公众号写作、排版、草稿箱同步与发布流程。
 - [docs/reference/writing-agent-harness-profile.md](docs/reference/writing-agent-harness-profile.md): `writing-agent-harness` 的身份、职责、能力边界。
 - [docs/reference/skills.md](docs/reference/skills.md): 项目 skills 边界。
+- [docs/reference/visuals.md](docs/reference/visuals.md): 图片、视频素材和文章视频剪辑规则。
 
 ## 🗂️ Suggested Layout
 

@@ -15,6 +15,8 @@ Do not use this skill to download URLs, search for videos, auto-select highlight
 - `ffmpeg` available on `PATH`.
 - HyperFrames CLI available through `npx hyperframes`.
 
+Bare `.mp4` files in `content/inbox/` are not valid `--material` inputs. Wrap or migrate them into a material package first; use a `media.mp4` symlink when avoiding large local copies.
+
 ## Required Human Decisions
 
 Ask for these before creating a clip:
@@ -43,6 +45,8 @@ node .agents/skills/article-video-clip/scripts/create-article-video-clip.mjs \
 ```
 
 Use `--dry-run` first when checking paths and command planning.
+
+Before calling the clip ready, verify `final.mp4` with `ffprobe` and inspect `preview-frame.jpg` for black frames, overflow, or obviously wrong crop.
 
 ## Output
 

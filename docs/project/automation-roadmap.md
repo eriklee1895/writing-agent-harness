@@ -28,6 +28,8 @@ Feishu / notes -> Markdown / MDX -> research -> polish -> channel packaging -> p
 - 微信公众号草稿箱同步的项目定制 CDP uploader，逐步减少对通用 skill 的依赖。
 - 文章 metadata、assets、reference links 的统一规范。
 - `video-material-ingest`：基于 `yt-dlp` 摄取已知视频 URL，沉淀 metadata、manifest 和 sources，为后续转写、抽帧、切片、HyperFrames 和短视频生产做素材入口。
+- `video-highlight-select`：从本地视频素材包、文章主题和可选 transcript/contact sheet 中推荐候选高光片段，保持 human-in-the-loop。
+- ASR provider abstraction：先不绑定 HyperFrames Whisper，后续优先评估 MiniMax、火山引擎等已验证供应商，为 transcript、高光选择和字幕草稿服务。
 
 ## Long Term
 
@@ -58,3 +60,19 @@ cron / scheduled run
 - explicit authorization：用户明确授权某个渠道可以自动发布。
 
 默认策略：博客可以更早尝试自动发布；微信公众号保持 human final review。微信公众号自动化不追求官方 API 主路径，避免维护固定公网出口 IP 和富文本 API 兼容层。
+
+## Media Generation Boundary
+
+ASR/TTS 是未来 HyperFrames 视频生成和文章动态摘要的重要底层能力，但不应在缺少真实 workflow 调用点时先做成独立大工程。
+
+推荐顺序：
+
+```text
+video-material-ingest
+-> video-highlight-select
+-> ASR only when transcript becomes repeated need
+-> article-video-clip
+-> TTS only when HyperFrames narration/video generation enters real production
+```
+
+第一版 ASR/TTS 应先定义 provider-neutral artifact，例如 `transcript.json`、`transcript.md`、`narration.wav` 和 provenance metadata，再接具体供应商。
