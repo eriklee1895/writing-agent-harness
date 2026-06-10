@@ -17,6 +17,7 @@
 - 遇到可复用的新坑点、新技巧、workflow 改进或 skill 缺陷，随手沉淀到项目 docs，或新增、修改 project-level skills。
 - 临时想法、未确认价值的 todo、本机上下文先放 `.local-memory/`；验证为可复用后再迁移到项目 docs、`AGENTS.md` 或 `.agents/skills/`。
 - 当某项能力已经值得 project-level skill 化时，主动建议并沉淀为 `.agents/skills/*`。
+- Python 工具链统一使用 uv（`uv add` / `uv sync` / `uv run` / `uv lock`），禁止 pip / pipx / poetry / 裸 python 直接操作依赖。
 
 ## Operating Principle
 
@@ -75,7 +76,7 @@
 ## Current Defaults
 
 - 微信公众号 renderer 支持四种 style：`impact-rational`（技术评论/观点文，默认）、`literary-essay`（个人散文/随笔）、`cultural-essay`（文化现象/城市/音乐/文旅随笔）、`tech-blog`（通用技术博客）。
-- 文章插图生成默认使用 `article-illustration --style-profile auto` 按文章气质选择画风；Python 脚本一律用 `uv run`。
+- 文章插图生成默认使用 `article-illustration --style-profile auto` 按文章气质选择画风。
 - 早期灵感脑暴使用 project skill：`article-ideation`。
 - 文章打磨使用 project skill：`polish-article`。
 - 发布前文章 readiness 检查使用 project skill：`article-readiness-check`。
