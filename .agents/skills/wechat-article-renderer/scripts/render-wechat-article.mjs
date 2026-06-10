@@ -92,6 +92,37 @@ const STYLE_TOKENS = {
     closingPanel: true,
     lineHeight: "1.9",
   },
+  "agent-flow": {
+    accent: "#ff6b35",
+    blue: "#2d8cff",
+    text: "#1a1a2e",
+    muted: "#6b7280",
+    panelBorder: "transparent",
+    shadow: "none",
+    fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',Arial,sans-serif",
+    headingFontFamily: undefined,
+    bodyBg: "#ffffff",
+    cardBg: "transparent",
+    quoteBg: "#f8f9ff",
+    quoteBorder: "#2d8cff",
+    useCards: false,
+    showOutline: false,
+    showSummary: false,
+    heroStyle: "centered",
+    headingPrefix: "",
+    closingPanel: false,
+    lineHeight: "1.9",
+    codeBg: "#f3f4f6",
+    codeBorder: "rgba(0,0,0,.08)",
+    darkBg: "#111827",
+    darkCardBg: "#1f2937",
+    darkText: "#e5e7eb",
+    darkMuted: "#9ca3af",
+    darkAccent: "#fb923c",
+    darkQuoteBg: "#1e293b",
+    darkCodeBg: "#374151",
+    darkHeadingColor: "#fbbf24",
+  },
 };
 
 const STYLE_LABELS = {
@@ -130,6 +161,15 @@ const STYLE_LABELS = {
     thesisLabel: "核心判断",
     galleryLabel: "截图速览",
     closingCTA: "下一篇在路上 →",
+  },
+  "agent-flow": {
+    heroLabel: undefined,
+    authorNoteLabel: undefined,
+    outlineLabel: undefined,
+    questionLabel: undefined,
+    thesisLabel: undefined,
+    galleryLabel: "配图",
+    closingCTA: undefined,
   },
 };
 
@@ -207,7 +247,7 @@ function inline(markdown) {
   let html = escapeHtml(markdown);
 
   html = html.replace(/`([^`]+)`/g, (_match, code) => (
-    `<code style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono',monospace; font-size:.92em; color:${tokens.accent}; background:#fff3ee; border:1px solid rgba(216,75,55,.16); border-radius:4px; padding:1px 5px;">${code}</code>`
+    `<code class="dark-code" style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono',monospace; font-size:.92em; color:${tokens.accent}; background:#fff3ee; border:1px solid rgba(216,75,55,.16); border-radius:4px; padding:1px 5px;">${code}</code>`
   ));
 
   html = html.replace(/\*\*([^*]+)\*\*/g, `<strong style="color:${tokens.accent}; font-weight:700;">$1</strong>`);
@@ -426,7 +466,7 @@ function headingHtml(block) {
     if (ACTIVE_STYLE === "cultural-essay") {
       return `<h2 style="${SAFE_WRAP} font-size:21px; color:${tokens.blue}; margin:4px 0 18px; padding:12px 14px 12px 13px; background:#f3f8f6; border-left:4px solid ${tokens.accent}; border-radius:0 10px 10px 0; letter-spacing:0; line-height:1.45; font-family:'Songti SC','Noto Serif SC','STSong','SimSun','PingFang SC','Hiragino Sans GB',serif; font-weight:700;">${inline(block.text)}</h2>`;
     }
-    return `<h2 style="${SAFE_WRAP} font-size:21px; color:${tokens.blue}; margin:0 0 16px; padding-bottom:11px; border-bottom:1px dashed rgba(74,124,155,.34); letter-spacing:0; line-height:1.45; font-family:${ff};">${prefix}${inline(block.text)}</h2>`;
+    return `<h2 class="dark-heading" style="${SAFE_WRAP} font-size:21px; color:${tokens.blue}; margin:0 0 16px; padding-bottom:11px; border-bottom:1px dashed rgba(74,124,155,.34); letter-spacing:0; line-height:1.45; font-family:${ff};">${prefix}${inline(block.text)}</h2>`;
   }
   if (block.level === 3) {
     return `<h3 style="${SAFE_WRAP} font-size:18px; color:${tokens.blue}; margin:22px 0 12px; line-height:1.5; border-left:4px solid ${tokens.accent}; padding-left:10px; font-family:${ff};">${inline(block.text)}</h3>`;
@@ -498,7 +538,7 @@ function quoteHtml(block) {
       return `<div>${inline(line)}</div>`;
     })
     .join("");
-  return `<blockquote style="${SAFE_WRAP} margin:0 0 18px; padding:15px 16px; background:${tokens.quoteBg}; border-left:4px solid ${tokens.quoteBorder}; border-radius:0 10px 10px 0; color:${tokens.muted}; font-size:15px; line-height:${tokens.lineHeight};">${content}</blockquote>`;
+  return `<blockquote class="dark-quote" style="${SAFE_WRAP} margin:0 0 18px; padding:15px 16px; background:${tokens.quoteBg}; border-left:4px solid ${tokens.quoteBorder}; border-radius:0 10px 10px 0; color:${tokens.muted}; font-size:15px; line-height:${tokens.lineHeight};">${content}</blockquote>`;
 }
 
 function listHtml(block) {
@@ -599,7 +639,7 @@ function tableHtml(block) {
 }
 
 function codeHtml(block) {
-  return `<pre style="${SAFE_WRAP} white-space:pre-wrap; background:#1f252c; color:#f4f7f8; border-radius:10px; padding:14px 16px; font-size:13px; line-height:1.75; margin:0 0 18px;"><code>${escapeHtml(block.text)}</code></pre>`;
+  return `<pre class="dark-code" style="${SAFE_WRAP} white-space:pre-wrap; background:#1f252c; color:#f4f7f8; border-radius:10px; padding:14px 16px; font-size:13px; line-height:1.75; margin:0 0 18px;"><code>${escapeHtml(block.text)}</code></pre>`;
 }
 
 function blockHtml(block) {
@@ -673,7 +713,8 @@ function renderBody(blocks) {
     const sectionStyle = tokens.useCards
       ? `background:${tokens.cardBg}; border:1px solid ${tokens.panelBorder}; border-radius:14px; padding:22px 18px; box-shadow:${tokens.shadow}; margin-bottom:22px;`
       : `background:transparent; padding:0 0 32px; margin-bottom:0;`;
-    return `<section${anchor} style="${SAFE_WRAP} width:100%; ${sectionStyle}">
+    const sectionClass = tokens.useCards ? "dark-card dark-border" : "";
+    return `<section${anchor}${sectionClass ? ` class="${sectionClass}"` : ""} style="${SAFE_WRAP} width:100%; ${sectionStyle}">
 ${chunk.map((block) => (isReferenceSection && block.type === "list" ? referenceListHtml(block) : blockHtml(block))).join("\n")}
 </section>`;
   }).join("\n");
@@ -704,8 +745,8 @@ function renderDocument({ title, deck, summary, blocks }) {
         ${deck ? `<p style="${SAFE_WRAP} font-size:15px; line-height:1.85; color:${tokens.muted}; margin:15px 0 0;">${escapeHtml(deck)}</p>` : ""}
       </section>`;
   } else if (tokens.heroStyle === "centered") {
-    heroHtml = `<section style="${SAFE_WRAP} width:100%; background:${tokens.cardBg === "transparent" ? tokens.bodyBg : tokens.cardBg}; border-radius:14px; padding:32px 20px 28px; text-align:center; margin-bottom:24px;">
-        <div style="display:inline-block; color:${tokens.accent}; font-size:13px; line-height:1; padding:6px 10px; border:1px solid ${tokens.accent}; border-radius:4px; margin-bottom:18px; opacity:0.8;">${escapeHtml(labels.heroLabel)}</div>
+    heroHtml = `<section class="dark-hero" style="${SAFE_WRAP} width:100%; background:${tokens.cardBg === "transparent" ? tokens.bodyBg : tokens.cardBg}; border-radius:14px; padding:32px 20px 28px; text-align:center; margin-bottom:24px;">
+        ${labels.heroLabel ? `<div style="display:inline-block; color:${tokens.accent}; font-size:13px; line-height:1; padding:6px 10px; border:1px solid ${tokens.accent}; border-radius:4px; margin-bottom:18px; opacity:0.8;">${escapeHtml(labels.heroLabel)}</div>` : ""}
         <h1 style="${SAFE_WRAP} font-size:26px; line-height:1.4; color:#1f252c; margin:0 auto; font-weight:700; letter-spacing:0; font-family:${ff}; max-width:90%;">${escapeHtml(title)}</h1>
         ${deck ? `<p style="${SAFE_WRAP} font-size:15px; line-height:1.8; color:${tokens.muted}; margin:14px auto 0; max-width:86%;">${escapeHtml(deck)}</p>` : ""}
       </section>`;
@@ -747,10 +788,11 @@ function renderDocument({ title, deck, summary, blocks }) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeAttr(summary || deck || title)}">
+  ${tokens.darkBg ? `<style>@media(prefers-color-scheme:dark){body.dark-aware{background:${tokens.darkBg}!important}body.dark-aware .dark-card{background:${tokens.darkCardBg}!important;border-color:rgba(255,255,255,.08)!important}body.dark-aware .dark-text{color:${tokens.darkText}!important}body.dark-aware .dark-muted{color:${tokens.darkMuted}!important}body.dark-aware .dark-accent{color:${tokens.darkAccent}!important}body.dark-aware .dark-heading{color:${tokens.darkHeadingColor}!important}body.dark-aware .dark-code{background:${tokens.darkCodeBg}!important;border-color:rgba(255,255,255,.06)!important}body.dark-aware .dark-quote{background:${tokens.darkQuoteBg}!important}body.dark-aware .dark-hero{background:${tokens.darkCardBg}!important}body.dark-aware img{opacity:.9}}</style>`:''}
 </head>
-<body style="box-sizing:border-box; max-width:100%; margin:0; padding:0; background:${tokens.bodyBg}; overflow-x:hidden;">
-  <div style="${SAFE_WRAP} width:100%; background:${tokens.bodyBg}; padding:24px 12px;">
-    <article style="${SAFE_WRAP} width:100%; max-width:760px; margin:0 auto; font-family:${tokens.fontFamily}; color:${tokens.text};">
+<body class="dark-aware" style="box-sizing:border-box; max-width:100%; margin:0; padding:0; background:${tokens.bodyBg}; overflow-x:hidden;">
+  <div class="dark-card" style="${SAFE_WRAP} width:100%; background:${tokens.bodyBg}; padding:24px 12px;">
+    <article class="dark-text" style="${SAFE_WRAP} width:100%; max-width:760px; margin:0 auto; font-family:${tokens.fontFamily}; color:${tokens.text};">
       ${heroHtml}
 
       ${summaryHtml}
