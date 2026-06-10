@@ -19,7 +19,7 @@
 
 - `polish-article`
   - 润色和打磨文章写作。
-  - 按题材强化逻辑、文风、专业深度与作者气质。
+  - 按题材强化逻辑、register、表达质感、专业深度与作者气质。
   - 已吸收旧 `humanizer` 的目标，不再单独维护 “去 AI 味” skill。
 
 - `article-readiness-check`
@@ -61,7 +61,7 @@
 - `article-illustration`
   - 生成文章封面、正文插图、章节视觉分隔图和技术图示。
   - 默认支持 `--style-profile auto`，但正式文章出图时应优先明确指定风格。
-  - 示例与优秀 prompt 见 [article-illustration-guide.md](article-illustration-guide.md)。
+  - Guide 和历史优质生图案例见 [article-illustration/README.md](article-illustration/README.md)。
 
 - `baoyu-post-to-wechat`
   - 当前作为底层微信公众号上传器使用，只维护 browser/CDP 主路径。

@@ -15,7 +15,7 @@
 3. 产出 `writing brief`、`research questions` 和初版 outline。不要在没理解清楚前急着写正文。
 4. 做 research。遇到 current events、company/product facts、pricing、laws、fast-moving tech topics 时，必须查证并写清具体日期。
 5. 根据 writing brief 和 research 形成 full draft。
-6. 使用 `polish-article` 打磨逻辑、文风、专业深度和题材气质。
+6. 使用 `polish-article` 打磨逻辑、register、表达质感、专业深度和题材气质。
 7. 只有当图片或视频能帮助理解、传播或渠道呈现时，才生成或优化 visuals。
    - 图片/封面/信息图走 `article-illustration`。
    - 已知视频 URL 先走 `video-material-ingest` 留痕。

@@ -46,7 +46,7 @@ With thanks to the authors and maintainers of these amazing skills and skill eco
 
 边界：third-party skills 提供方法论、辅助能力或底层参考；本 repo 的目录约定、文章 readiness、渲染风格、发布编排和 closeout 规则仍以 `AGENTS.md`、`docs/` 和 `.agents/skills/` 为准。
 
-## 🌌 Project Goal / Long-Term Direction
+## 🌌 My Grand Design
 
 我的目标是把 `writing-agent-harness` 做成 AI 写作领域的 Superpowers：不是单个 writer bot，而是一套面向写作 agents 的 skills methodology。
 
@@ -249,9 +249,9 @@ writing-agent-harness/
 │   ├── inbox/                   # 本地原始输入 scratch，gitignored
 │   ├── drafts/                  # 本地写作工作区，gitignored
 │   ├── source/                  # 可追踪 canonical Markdown / MDX
-│   ├── blog/                    # 可追踪博客 Markdown / MDX
+│   ├── blog/                    # 可追踪博客 Markdown / MDX，按一级主题目录归档
 │   ├── wechat/                  # 微信公众号派生稿和 preview
-│   └── assets/                  # 可复用视觉资产
+│   └── assets/                  # 跨文章复用 prompts / metadata / manifests
 ```
 
 写作初期可以使用自包含本地草稿目录：
@@ -271,17 +271,17 @@ content/source/YYYY-MM-DD-topic/
 ├── article.md
 ├── article.mdx                  # optional, for blog
 ├── notes.md                     # optional research notes
-└── assets/                      # prompts / metadata / manifests
+└── assets/                      # article-local assets / prompts / metadata / manifests
 ```
 
 渠道派生稿可以放在：
 
 ```text
 content/wechat/YYYY-MM-DD-topic/
-content/blog/YYYY-MM-DD-topic/
+content/blog/<category>/YYYY-MM-DD-topic/
 ```
 
-同一篇文章跨 `source` / `wechat` / `blog` 使用同一个 folder slug；渠道稿 frontmatter 用 `source:` 指回 canonical article。当前 `content/drafts/` 按本地 scratch 处理，不会默认提交。新文章可以先在这里写作；进入可追踪状态时，再把 Markdown / MDX、notes 和 metadata promote 到 `content/source/`。渠道版本再从 `content/source/` 派生到 `content/wechat/` 和 `content/blog/`。二进制素材默认留在 `.local-archive/` 或外部资产库，只提交可复现的 prompt、metadata、manifest 和 notes。
+同一篇文章跨 `source` / `wechat` / `blog` 使用同一个 folder slug；渠道稿 frontmatter 用 `source:` 指回 canonical article。当前 `content/drafts/` 按本地 scratch 处理，不会默认提交。新文章可以先在这里写作；进入可追踪状态时，再把 Markdown / MDX、notes 和 metadata promote 到 `content/source/`。渠道版本再从 `content/source/` 派生到 `content/wechat/` 和 `content/blog/`。文章目录里的 `assets/` 是 article-local assets；全局 `content/assets/` 只放跨文章复用素材。二进制素材默认留在 `.local-archive/` 或外部资产库，只提交可复现的 prompt、metadata、manifest 和 notes。
 
 ## 🧱 Principles
 

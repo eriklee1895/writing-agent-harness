@@ -1,0 +1,22 @@
+{
+  "title": "Left Finger Moon Article Cover",
+  "brief": "A dramatic cinematic cover image for a technical analysis article about the Chinese song '左手指月' (Left Finger Pointing at Moon). The scene shows a dark night sky with a glowing full moon. A stylized human hand silhouette reaches up toward the moon with one finger extended. From the finger tip, colorful sound waves and frequency spectrum lines emanate upward like a beam of light toward the moon. The sound waves are visualized as glowing blue and gold oscillating lines. Stars in the background subtly form musical note shapes. Dramatic, mystical yet technical atmosphere. Dark blue and gold color palette. Cinematic lighting with lens flare. Title area should be relatively clean. Epic, grand, mysterious mood.",
+  "content_type": "WeChat article cover",
+  "content_category": "cover",
+  "mode": "text-only",
+  "style_profile": "cinematic-editorial",
+  "resolved_style_profile": "cinematic-editorial",
+  "size": "blog-banner",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'Left Finger Moon Article Cover'. Style: cinematic editorial still, dramatic but natural lighting, grounded scene details, documentary-like framing with an illustrative finish, no text labels, no diagrams. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a WeChat Official Account headline cover image (公众号头条封面). Compose for a 2.35:1 ultra-wide crop (1080x460). Keep key subjects centered or in the bottom third — top area will be cropped. Design for readability as a small thumbnail in WeChat's subscription feed. Title text will be overlaid by the editor, so leave ample negative space. Language/region: zh-en. Target aspect ratio: blog-banner. Mode: text-only. Brief:\nA dramatic cinematic cover image for a technical analysis article about the Chinese song '左手指月' (Left Finger Pointing at Moon). The scene shows a dark night sky with a glowing full moon. A stylized human hand silhouette reaches up toward the moon with one finger extended. From the finger tip, colorful sound waves and frequency spectrum lines emanate upward like a beam of light toward the moon. The sound waves are visualized as glowing blue and gold oscillating lines. Stars in the background subtly form musical note shapes. Dramatic, mystical yet technical atmosphere. Dark blue and gold color palette. Cinematic lighting with lens flare. Title area should be relatively clean. Epic, grand, mysterious mood.",
+  "created_at": "2026-06-10T09:37:29",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/output/article-illustration/20260610-093700-left-finger-moon-article-cover.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

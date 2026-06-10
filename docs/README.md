@@ -21,14 +21,14 @@
 
 ## Workflows
 
+- [workflows/ai-writing-workflow.md](workflows/ai-writing-workflow.md)
+  - AI 写作自动化 harness 全景、目录约定、skill 分工和关键约束。
+
 - [workflows/writing-overview.md](workflows/writing-overview.md)
   - 从 idea / Feishu / notes 到 Markdown / MDX 的通用写作流程。
 
 - [workflows/wechat-writing-publishing.md](workflows/wechat-writing-publishing.md)
   - 微信公众号写作、排版、HTML preview、草稿箱同步和发布前验证。
-
-- [workflows/markdown-to-wechat.md](workflows/markdown-to-wechat.md)
-  - 旧入口，后续可展开为更底层的 Markdown/MDX -> 微信公众号同步技术方案。
 
 ## Reference
 
@@ -39,13 +39,16 @@
   - 当前项目 skills、用途边界、命名和保留原因。
 
 - [reference/self-evolution.md](reference/self-evolution.md)
-  - 遇到新坑点、新技巧、workflow 改进和 skill 缺陷时，如何沉淀到 docs / skills。
+  - 遇到新坑点、新技巧、workflow 改进和 skill 缺陷时，如何沉淀到项目 docs、`AGENTS.md` 或 `.agents/skills/`。
 
 - [reference/local-memory.md](reference/local-memory.md)
   - `.local-memory/` 本机 scratch memory 的使用边界和迁移规则。
 
 - [reference/visuals.md](reference/visuals.md)
   - 图片生成、视频素材、文章视频剪辑、微信公众号封面、正文插图和 asset 规则。
+
+- [reference/article-illustration/README.md](reference/article-illustration/README.md)
+  - `article-illustration` 的 guide、风格选择、prompt pattern 和历史优质生图案例。
 
 ## Retrospectives
 
@@ -54,6 +57,9 @@
 
 - [retrospectives/2026-06-06-wechat-cdp-only-decision.md](retrospectives/2026-06-06-wechat-cdp-only-decision.md)
   - 微信公众号发布只维护 CDP/browser 主路径的决策、API 放弃原因和扫码登录边界。
+
+- [retrospectives/2026-06-07-banshengxue.md](retrospectives/2026-06-07-banshengxue.md)
+  - 《半生雪》个人散文从 ideation、插图、renderer 到微信公众号草稿箱的全流程复盘。
 
 - [retrospectives/2026-06-08-video-material-clip.md](retrospectives/2026-06-08-video-material-clip.md)
   - 视频素材摄取、裸 mp4 包装、HyperFrames 模板 contract 和文章视频剪辑复盘。

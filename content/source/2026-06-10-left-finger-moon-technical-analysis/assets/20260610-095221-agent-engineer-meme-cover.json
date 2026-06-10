@@ -1,0 +1,22 @@
+{
+  "title": "Agent Engineer Meme Cover",
+  "brief": "A funny meme-style illustration for a WeChat article. Shows a female singer (stylized, not realistic) standing on stage with one hand pointing up at a glowing moon, while the other hand holds a microphone. Above her head floats a holographic HUD display showing system metrics: 'CPU: 99%', 'Memory: 3 Octaves', 'Latency: 0ms', 'Status: PROD READY'. The background is dark with neon green and orange tech elements mixed with traditional Chinese clouds and moon. Style should be like a tech company internal presentation slide that went viral - dead serious but obviously ridiculous. Clean, modern, slightly absurd. Title area at bottom should be clean.",
+  "content_type": "architecture diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "wechat-cover-hd",
+  "resolved_size": "1792x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Agent Engineer Meme Cover'. Diagram type: architecture diagram. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: wechat-cover-hd. Mode: text-only. Content brief:\nA funny meme-style illustration for a WeChat article. Shows a female singer (stylized, not realistic) standing on stage with one hand pointing up at a glowing moon, while the other hand holds a microphone. Above her head floats a holographic HUD display showing system metrics: 'CPU: 99%', 'Memory: 3 Octaves', 'Latency: 0ms', 'Status: PROD READY'. The background is dark with neon green and orange tech elements mixed with traditional Chinese clouds and moon. Style should be like a tech company internal presentation slide that went viral - dead serious but obviously ridiculous. Clean, modern, slightly absurd. Title area at bottom should be clean.",
+  "created_at": "2026-06-10T09:53:01",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/output/article-illustration/20260610-095221-agent-engineer-meme-cover-cropped.png"
+  ],
+  "crop_hint": "1080x460 (2.35:1)",
+  "dry_run": false
+}

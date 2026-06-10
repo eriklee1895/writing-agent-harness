@@ -1,0 +1,22 @@
+{
+  "title": "Agent Voice Routing Workflow",
+  "brief": "A fun technical workflow diagram showing an Agent system processing a singing voice across different vocal registers. Top-to-bottom flow with connected nodes: Node 1 shows a person icon with label 'Input: 歌词请求 (Lyrics Request)'. Node 2 is a green box 'Chest Voice Agent (E3-G4)' with 200 OK badge. Node 3 is a yellow box 'Mixed Voice Gateway (G4-D5)' with a routing switch icon. Node 4 is an orange box 'Head Voice Agent (E5-B5)' with a rocket icon. Node 5 is a red box 'Whistle Mode (B5+)' with a flame icon. Node 6 is a trophy icon 'Output: 完美演唱'. Arrows connect all nodes with status labels like '200 OK', 'Zero Downtime'. On the side, a small panel shows 'SLA: P99 < 10ms' and 'Availability: 99.99%'. Dark background with neon accents. Flat tech infographic style. Chinese and English bilingual labels. Clean, modern, slightly humorous.",
+  "content_type": "process diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Agent Voice Routing Workflow'. Diagram type: process diagram. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\nA fun technical workflow diagram showing an Agent system processing a singing voice across different vocal registers. Top-to-bottom flow with connected nodes: Node 1 shows a person icon with label 'Input: 歌词请求 (Lyrics Request)'. Node 2 is a green box 'Chest Voice Agent (E3-G4)' with 200 OK badge. Node 3 is a yellow box 'Mixed Voice Gateway (G4-D5)' with a routing switch icon. Node 4 is an orange box 'Head Voice Agent (E5-B5)' with a rocket icon. Node 5 is a red box 'Whistle Mode (B5+)' with a flame icon. Node 6 is a trophy icon 'Output: 完美演唱'. Arrows connect all nodes with status labels like '200 OK', 'Zero Downtime'. On the side, a small panel shows 'SLA: P99 < 10ms' and 'Availability: 99.99%'. Dark background with neon accents. Flat tech infographic style. Chinese and English bilingual labels. Clean, modern, slightly humorous.",
+  "created_at": "2026-06-10T10:04:50",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/output/article-illustration/20260610-100351-agent-voice-routing-workflow.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

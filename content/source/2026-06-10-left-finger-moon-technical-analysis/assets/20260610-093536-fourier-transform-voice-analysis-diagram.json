@@ -1,0 +1,22 @@
+{
+  "title": "Fourier Transform Voice Analysis Diagram",
+  "brief": "A beautiful technical illustration showing Fourier Transform applied to voice analysis. Split into two panels: left panel shows a complex voice waveform in time domain (wavy oscillating lines), with an arrow pointing to right panel. Right panel shows the same signal decomposed into frequency components - clean sine waves stacked vertically at different frequencies (100Hz, 200Hz, 400Hz, 800Hz, 1600Hz), each with amplitude bars. Mathematical formula 'X(f) = ∫x(t)e^(-j2πft)dt' elegantly displayed at top. Dark background with glowing cyan and magenta waves. Title: 'FIGURE 5: 傅里叶变换声纹分解 (Fourier Transform Voice Decomposition)'. Scientific, elegant, slightly cyberpunk aesthetic. Chinese and English labels.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-2k",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Fourier Transform Voice Analysis Diagram'. Diagram type: article illustration. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-2k. Mode: text-only. Content brief:\nA beautiful technical illustration showing Fourier Transform applied to voice analysis. Split into two panels: left panel shows a complex voice waveform in time domain (wavy oscillating lines), with an arrow pointing to right panel. Right panel shows the same signal decomposed into frequency components - clean sine waves stacked vertically at different frequencies (100Hz, 200Hz, 400Hz, 800Hz, 1600Hz), each with amplitude bars. Mathematical formula 'X(f) = ∫x(t)e^(-j2πft)dt' elegantly displayed at top. Dark background with glowing cyan and magenta waves. Title: 'FIGURE 5: 傅里叶变换声纹分解 (Fourier Transform Voice Decomposition)'. Scientific, elegant, slightly cyberpunk aesthetic. Chinese and English labels.",
+  "created_at": "2026-06-10T09:36:40",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/output/article-illustration/20260610-093536-fourier-transform-voice-analysis-diagram.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

@@ -34,11 +34,11 @@ flowchart LR
     Source --> Channels["WeChat / Blog / future"]
     Channels --> Review["Human final review"]
     Review --> Closeout["writing-task-closeout"]
-    Closeout --> Evolution["retrospectives / memory / docs / skills"]
+    Closeout --> Evolution["retrospectives / memory / project docs / skills"]
     Evolution -. improves .-> Ideation
 
     Router["AGENTS.md + docs runbooks"] -. guides .-> Ideation
-    Soul["SOUL.md author voice"] -. guides .-> Skills
+    Soul["SOUL.md writing taste + register guardrails"] -. guides .-> Skills
 ```
 
 </details>
@@ -60,9 +60,9 @@ flowchart LR
 | `content/source/` | 可追踪 canonical Markdown / MDX source package，跨渠道共用 |
 | `content/wechat/` | 可追踪微信公众号文章、HTML preview、notes 和 metadata |
 | `content/blog/` | 可追踪博客 Markdown / MDX，未来供 Astro/Cloudflare Pages 使用 |
-| `content/assets/` | 可复用 prompt、metadata、manifest；二进制素材默认不提交 |
+| `content/assets/` | 跨文章复用 prompt、metadata、manifest 和 source material；不要放单篇文章的一次性素材 |
 
-> `docs/assets/` 是文档图片目录，应该进入 Git；写作任务产生的二进制图片、视频素材和剪辑产物默认留在 `.local-archive/` 或外部资产库，只提交可复现的 prompt、metadata、manifest、sources 和 notes。
+> `content/source/<slug>/assets/` 是 article-local assets。`docs/assets/` 是文档图片目录，应该进入 Git；写作任务产生的大体积二进制图片、视频素材和剪辑产物默认留在 `.local-archive/` 或外部资产库，只提交可复现的 prompt、metadata、manifest、sources 和 notes。
 
 ## Skill 分工
 
