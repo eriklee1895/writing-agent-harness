@@ -1,0 +1,24 @@
+{
+  "title": "ai-writing-harness-overview-v2",
+  "brief": "基于参考图的初版 AI 写作全景图继续优化，不要完全重画成普通 SVG。目标是 README 顶部 hero / blog banner 风格的白色背景信息图，保留初版的中心 harness core、输入到输出、反馈闭环、模块化 automation control-room 感，但整体改成明亮、干净、专业、现代的技术信息图。主题是 writing-agent-harness：个人 AI 自动化写作工作台。画面需要中文为主的短标签和简短说明，清楚展示：输入入口（飞书、Notion、灵感碎片、网页研究、本地草稿）、AGENTS.md 路由、docs runbooks、project skills、canonical Markdown / MDX source、readiness / preview、微信公众号、博客、未来渠道、human final review、自我进化闭环（closeout、retrospectives、memory、docs 更新、skills 修复）。信息密度中等，适合 README 首屏，不要密密麻麻，不要小到看不清。视觉风格：flat-tech-infographic，白底或浅色纸面背景，柔和蓝绿橙点缀，清晰模块、箭头、分组容器、小图标，中文标签尽量准确可读。避免：深色背景、纯装饰科幻感、聊天机器人形象、过多英文、过度复杂的流程线、错误或乱码文字。",
+  "content_type": "blog banner",
+  "content_category": "banner",
+  "mode": "reference+text",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "blog-banner",
+  "resolved_size": "2048x1152",
+  "quality": "high",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [
+    "/private/tmp/ai-writing-harness-overview-initial.png"
+  ],
+  "prompt": "Create a polished article illustration titled 'ai-writing-harness-overview-v2'. Diagram type: blog banner. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh. Target aspect ratio preset: blog-banner. Mode: reference+text. Use the provided reference image or images only for style guidance such as palette, line quality, spacing, icon treatment, and annotation tone. Do not copy their literal subject matter. Reference count: 1. Content brief:\n基于参考图的初版 AI 写作全景图继续优化，不要完全重画成普通 SVG。目标是 README 顶部 hero / blog banner 风格的白色背景信息图，保留初版的中心 harness core、输入到输出、反馈闭环、模块化 automation control-room 感，但整体改成明亮、干净、专业、现代的技术信息图。主题是 writing-agent-harness：个人 AI 自动化写作工作台。画面需要中文为主的短标签和简短说明，清楚展示：输入入口（飞书、Notion、灵感碎片、网页研究、本地草稿）、AGENTS.md 路由、docs runbooks、project skills、canonical Markdown / MDX source、readiness / preview、微信公众号、博客、未来渠道、human final review、自我进化闭环（closeout、retrospectives、memory、docs 更新、skills 修复）。信息密度中等，适合 README 首屏，不要密密麻麻，不要小到看不清。视觉风格：flat-tech-infographic，白底或浅色纸面背景，柔和蓝绿橙点缀，清晰模块、箭头、分组容器、小图标，中文标签尽量准确可读。避免：深色背景、纯装饰科幻感、聊天机器人形象、过多英文、过度复杂的流程线、错误或乱码文字。",
+  "created_at": "2026-06-10T12:34:28",
+  "output_files": [
+    "/private/tmp/ai-writing-harness-gen/20260610-123222-ai-writing-harness-overview-v2.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
