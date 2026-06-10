@@ -20,5 +20,12 @@
     "/private/tmp/ai-writing-harness-gen/20260610-123222-ai-writing-harness-overview-v2.png"
   ],
   "crop_hint": null,
-  "dry_run": false
+  "dry_run": false,
+  "local_edits": [
+    {
+      "date": "2026-06-10",
+      "tool": "ImageMagick",
+      "change": "Changed the left input-section title from \"输入入口\" to \"灵感输入\"."
+    }
+  ]
 }
