@@ -61,7 +61,7 @@
 - `article-illustration`
   - 生成文章封面、正文插图、章节视觉分隔图和技术图示。
   - 默认支持 `--style-profile auto`，但正式文章出图时应优先明确指定风格。
-  - 示例与优秀 prompt 见 [article-illustration.md](article-illustration.md)。
+  - 示例与优秀 prompt 见 [article-illustration-guide.md](article-illustration-guide.md)。
 
 - `baoyu-post-to-wechat`
   - 当前作为底层微信公众号上传器使用，只维护 browser/CDP 主路径。
