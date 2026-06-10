@@ -2,6 +2,10 @@
 
 ## 流程全景
 
+![AI 写作 Workflow + Skills 全景](../assets/ai-writing-skills-workflow-overview.png)
+
+这张图是面向真实写作任务的执行层视图：从灵感碎片进入 `content/inbox/` 和 `content/drafts/`，经过项目 skills 编排，沉淀到 `content/source/`，再派生到微信、博客和未来渠道。图片生成 metadata 归档在 [docs/assets/ai-writing-skills-workflow-overview.json](../assets/ai-writing-skills-workflow-overview.json)，方便后续用同一 prompt 和 reference 继续迭代。
+
 ```mermaid
 flowchart LR
     subgraph Inputs["Inputs / upstream writing material"]
