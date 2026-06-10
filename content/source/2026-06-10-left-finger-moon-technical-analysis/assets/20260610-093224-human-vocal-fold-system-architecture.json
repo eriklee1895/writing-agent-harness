@@ -1,0 +1,22 @@
+{
+  "title": "Human Vocal Fold System Architecture",
+  "brief": "A technical engineering-style illustration showing human vocal fold anatomy from a systems engineering perspective. Cross-section diagram of the larynx with vocal cords, styled like a hardware engineering schematic with technical labels, measurement arrows, and annotations. Include: vocal fold length measurement, thickness specs, tension mechanism metaphor (springs), airflow dynamics arrows, and a small frequency response curve chart. Dark navy blue background with neon cyan and orange accent highlights. HUD-style callouts with bilingual Chinese/English labels. Title: 'FIGURE 2: 声带系统架构图 (Vocal Fold System Architecture)'. Mix medical illustration with cyberpunk engineering aesthetic. Clean lines, blueprint feel.",
+  "content_type": "architecture diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-2k",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Human Vocal Fold System Architecture'. Diagram type: architecture diagram. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-2k. Mode: text-only. Content brief:\nA technical engineering-style illustration showing human vocal fold anatomy from a systems engineering perspective. Cross-section diagram of the larynx with vocal cords, styled like a hardware engineering schematic with technical labels, measurement arrows, and annotations. Include: vocal fold length measurement, thickness specs, tension mechanism metaphor (springs), airflow dynamics arrows, and a small frequency response curve chart. Dark navy blue background with neon cyan and orange accent highlights. HUD-style callouts with bilingual Chinese/English labels. Title: 'FIGURE 2: 声带系统架构图 (Vocal Fold System Architecture)'. Mix medical illustration with cyberpunk engineering aesthetic. Clean lines, blueprint feel.",
+  "created_at": "2026-06-10T09:33:35",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/output/article-illustration/20260610-093224-human-vocal-fold-system-architecture.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

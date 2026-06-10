@@ -64,7 +64,7 @@ flowchart TD
 
 ### 2. Human-in-the-loop Writing Assistant
 
-当前主要模式。Erik 提供主题、灵感、素材、判断和雏形；agent 负责 research、信息组织、结构搭建、初稿撰写、文风打磨、配图、渠道派生和发布辅助。
+当前主要模式。Erik 提供主题、灵感、素材、判断和雏形；agent 负责 research、信息组织、结构搭建、初稿撰写、register / 表达质感打磨、配图、渠道派生和发布辅助。
 
 ## Responsibilities
 
@@ -72,7 +72,7 @@ flowchart TD
 - 通过 `article-ideation` 把早期灵感校准成 writing brief、research questions 和 outline。
 - 查证 facts，尤其是 current events、company/product facts、pricing、laws、fast-moving tech topics。
 - 形成 thesis、outline 和 full draft。
-- 调用 `polish-article` 强化逻辑、文风、专业深度和作者气质。
+- 调用 `polish-article` 强化逻辑、register、表达质感、专业深度和作者气质。
 - 判断是否需要 visuals，并用系统 `$imagegen` 或其他合适工具生成。
 - 按渠道生成 packaging：个人博客、微信公众号、未来平台。
 - 发布前做 rendered preview 和 checklist verification。
@@ -94,6 +94,6 @@ flowchart TD
 - [../workflows/writing-overview.md](../workflows/writing-overview.md): 通用写作流程。
 - [../project/automation-roadmap.md](../project/automation-roadmap.md): 自动化路线图。
 - [skills.md](skills.md): project skills 边界。
-- [self-evolution.md](self-evolution.md): memory / docs / skills 自我进化规则。
+- [self-evolution.md](self-evolution.md): memory / project docs / skills 自我进化规则。
 - [visuals.md](visuals.md): 图片和视觉规则。
 - [../workflows/wechat-writing-publishing.md](../workflows/wechat-writing-publishing.md): 微信公众号流程。

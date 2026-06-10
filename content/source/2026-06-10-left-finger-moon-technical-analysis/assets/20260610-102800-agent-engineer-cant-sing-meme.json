@@ -1,0 +1,22 @@
+{
+  "title": "Agent Engineer Cant Sing Meme",
+  "brief": "A funny meme-style illustration for the end of an article. Split screen: Left side shows a confident female singer (stylized, not realistic) in elegant flowing dress standing on a glowing stage under a full moon, with '200 OK' and '99.99% Uptime' badges floating around her. Right side shows a tired software engineer at a desk with headphones, looking at a waveform on screen that crashes at E4 with a big red error message: '503 Service Unavailable' and 'Throat Gateway Timeout'. The contrast is humorous - one side is glamorous perfection, the other is relatable failure. Dark background on stage side, bright office light on engineer side. Comic/meme style with bold text. Bilingual Chinese/English labels.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "flat-illustration",
+  "resolved_style_profile": "flat-illustration",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'Agent Engineer Cant Sing Meme'. Style: flat illustration, simple geometric forms, concise annotations, soft editorial look. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a body illustration inside a WeChat article read on mobile phones (~390px wide). Compose for narrow-width readability. Use generous negative space. Language/region: zh-en. Target aspect ratio: doc-hd. Mode: text-only. Brief:\nA funny meme-style illustration for the end of an article. Split screen: Left side shows a confident female singer (stylized, not realistic) in elegant flowing dress standing on a glowing stage under a full moon, with '200 OK' and '99.99% Uptime' badges floating around her. Right side shows a tired software engineer at a desk with headphones, looking at a waveform on screen that crashes at E4 with a big red error message: '503 Service Unavailable' and 'Throat Gateway Timeout'. The contrast is humorous - one side is glamorous perfection, the other is relatable failure. Dark background on stage side, bright office light on engineer side. Comic/meme style with bold text. Bilingual Chinese/English labels.",
+  "created_at": "2026-06-10T10:28:40",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/output/article-illustration/20260610-102800-agent-engineer-cant-sing-meme.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

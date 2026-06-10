@@ -1,0 +1,22 @@
+{
+  "title": "Singing Difficulty Radar Chart",
+  "brief": "A technical radar chart (spider web chart) showing singing difficulty metrics for the song '左手指月'. Six axes: 音域跨度(Pitch Range), 气息控制(Breath Control), 真假声切换(Vocal Register Switching), 花腔技巧(Coloratura), 情感表达(Emotional Expression), 现场稳定性(Live Stability). The radar area is filled in glowing red-orange, extending to near-maximum on almost all axes. Background is dark with grid lines. A small annotation box shows '综合难度指数: 9.7/10'. Title: 'FIGURE 4: 演唱难度雷达图 (Performance Difficulty Radar)'. Clean technical infographic style with Chinese and English labels.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-2k",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Singing Difficulty Radar Chart'. Diagram type: article illustration. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-2k. Mode: text-only. Content brief:\nA technical radar chart (spider web chart) showing singing difficulty metrics for the song '左手指月'. Six axes: 音域跨度(Pitch Range), 气息控制(Breath Control), 真假声切换(Vocal Register Switching), 花腔技巧(Coloratura), 情感表达(Emotional Expression), 现场稳定性(Live Stability). The radar area is filled in glowing red-orange, extending to near-maximum on almost all axes. Background is dark with grid lines. A small annotation box shows '综合难度指数: 9.7/10'. Title: 'FIGURE 4: 演唱难度雷达图 (Performance Difficulty Radar)'. Clean technical infographic style with Chinese and English labels.",
+  "created_at": "2026-06-10T09:35:31",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/output/article-illustration/20260610-093447-singing-difficulty-radar-chart.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

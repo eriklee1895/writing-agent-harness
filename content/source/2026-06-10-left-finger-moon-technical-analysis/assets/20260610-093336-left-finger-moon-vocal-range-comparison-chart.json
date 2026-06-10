@@ -1,0 +1,22 @@
+{
+  "title": "Left Finger Moon Vocal Range Comparison Chart",
+  "brief": "A technical comparison chart showing vocal range comparison between different singers and songs. Horizontal piano keyboard layout with colored bars representing vocal ranges: normal human (green, narrow bar), average pop singer (blue, medium bar),萨顶顶 in 左手指月 (red/gold, very wide bar spanning almost 3 octaves), and标注出 E3, B5, C6等关键音高标记. Also show comparison bars for other famous songs like 青藏高原, 煎熬, 阿刁. Dark background with glowing colored bars. Title: 'FIGURE 3: 音域覆盖对比图 (Vocal Range Coverage Analysis)'. Tech infographic style with piano key pattern at bottom. Clean, scientific look with Chinese and English labels.",
+  "content_type": "WeChat article cover",
+  "content_category": "cover",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-2k",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Left Finger Moon Vocal Range Comparison Chart'. Diagram type: WeChat article cover. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-2k. Mode: text-only. Content brief:\nA technical comparison chart showing vocal range comparison between different singers and songs. Horizontal piano keyboard layout with colored bars representing vocal ranges: normal human (green, narrow bar), average pop singer (blue, medium bar),萨顶顶 in 左手指月 (red/gold, very wide bar spanning almost 3 octaves), and标注出 E3, B5, C6等关键音高标记. Also show comparison bars for other famous songs like 青藏高原, 煎熬, 阿刁. Dark background with glowing colored bars. Title: 'FIGURE 3: 音域覆盖对比图 (Vocal Range Coverage Analysis)'. Tech infographic style with piano key pattern at bottom. Clean, scientific look with Chinese and English labels.",
+  "created_at": "2026-06-10T09:34:36",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/output/article-illustration/20260610-093336-left-finger-moon-vocal-range-comparison-chart.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

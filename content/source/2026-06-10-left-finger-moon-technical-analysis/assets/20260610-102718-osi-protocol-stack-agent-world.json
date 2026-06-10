@@ -1,0 +1,22 @@
+{
+  "title": "OSI Protocol Stack Agent World",
+  "brief": "A fun illustration showing a vertical stack of 7 layers from bottom to top, styled like a playful Jenga tower or cake layers, but each layer represents a network/OSI protocol layer mapped to singing. From bottom to top: Layer 1 (物理层) shows lungs/breath as a bellows fan; Layer 2 (数据链路层) shows vocal cords as binary 0s and 1s; Layer 3 (网络层) shows a routing switch with arrows; Layer 4 (传输层) shows a TCP packet labeled 'reliable delivery'; Layer 5 (会话层) shows a session management icon; Layer 6 (表示层) shows musical notes being encoded; Layer 7 (应用层) shows a glowing moon with a hand pointing at it. Each layer is a different bright color. The whole stack is held up by a small cartoon person wearing headphones and looking proud. Fun, playful, NOT overly technical or dark. Flat illustration style with cheerful colors. White background. Bilingual Chinese/English labels.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "flat-illustration",
+  "resolved_style_profile": "flat-illustration",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'OSI Protocol Stack Agent World'. Style: flat illustration, simple geometric forms, concise annotations, soft editorial look. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a body illustration inside a WeChat article read on mobile phones (~390px wide). Compose for narrow-width readability. Use generous negative space. Language/region: zh-en. Target aspect ratio: doc-hd. Mode: text-only. Brief:\nA fun illustration showing a vertical stack of 7 layers from bottom to top, styled like a playful Jenga tower or cake layers, but each layer represents a network/OSI protocol layer mapped to singing. From bottom to top: Layer 1 (物理层) shows lungs/breath as a bellows fan; Layer 2 (数据链路层) shows vocal cords as binary 0s and 1s; Layer 3 (网络层) shows a routing switch with arrows; Layer 4 (传输层) shows a TCP packet labeled 'reliable delivery'; Layer 5 (会话层) shows a session management icon; Layer 6 (表示层) shows musical notes being encoded; Layer 7 (应用层) shows a glowing moon with a hand pointing at it. Each layer is a different bright color. The whole stack is held up by a small cartoon person wearing headphones and looking proud. Fun, playful, NOT overly technical or dark. Flat illustration style with cheerful colors. White background. Bilingual Chinese/English labels.",
+  "created_at": "2026-06-10T10:27:59",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/output/article-illustration/20260610-102718-osi-protocol-stack-agent-world.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

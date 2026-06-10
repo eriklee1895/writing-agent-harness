@@ -2,7 +2,7 @@
 
 这个 repo 是 Erik 个人高度定制的 `writing-agent-harness`。每一次真实写作、发布、调试和复盘，都应该让 harness 变强一点。
 
-目标不是制造沉重流程，而是把可复用经验及时沉淀成 docs、memory 或 skills。
+目标不是制造沉重流程，而是把可复用经验及时沉淀成项目 docs、memory 或 project-level skills。
 
 ## When To Update
 
@@ -29,7 +29,9 @@
 
 不要把所有信息都塞进 `AGENTS.md`。`AGENTS.md` 是 router 和高频规则，不是百科全书。
 
-如果只是临时想法、未判断价值的 todo、本机上下文或一次性 scratch，先放 `.local-memory/`。`.local-memory/` 不入 Git，不是 canonical memory；当内容被验证为可复用时，再迁移到上述 docs / skills。详细规则见 [local-memory.md](local-memory.md)。
+`docs/` 只接收项目技术文档、workflow、复盘和已验证的长期 harness memory；文章草稿、渠道预览和一次性写作 scratch 应放在 `content/*` 或 `.local-memory/`，不要放进 `docs/`。
+
+如果只是临时想法、未判断价值的 todo、本机上下文或一次性 scratch，先放 `.local-memory/`。`.local-memory/` 不入 Git，不是 canonical memory；当内容被验证为可复用时，再迁移到上述项目 docs、`AGENTS.md` 或 `.agents/skills/`。详细规则见 [local-memory.md](local-memory.md)。
 
 ## Skill Evolution Rules
 

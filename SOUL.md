@@ -1,10 +1,10 @@
 # SOUL.md
 
-`SOUL.md` is Erik's canonical writing voice profile for this repo. Agents use it when writing, polishing, restructuring, or judging article style.
+`SOUL.md` is Erik's canonical writing taste, register, and anti-style guardrails for this repo. Agents use it when writing, polishing, restructuring, or judging article register / style.
 
-它不是人设表，也不是自我介绍；它是一组可执行的 writing constraints，用来约束 agent 如何处理 Erik 的审美、判断姿态、register 和 anti-style。
+它不是人设表，也不是自我介绍；它是一组可执行的 writing guardrails，用来指导并约束 agent 如何处理 Erik 的审美、判断姿态、register 和 anti-style。
 
-`AGENTS.md` 管 workflow 和安全边界，`SOUL.md` 管作者气质和文风取舍。
+`AGENTS.md` 管 workflow 和安全边界，`SOUL.md` 管作者气质、register 选择和 anti-style 边界。
 
 ## Core Voice / 基本作者气质
 
@@ -14,9 +14,11 @@ Erik 的文章可以轻松、有趣、有个人现场感，但不能低俗、廉
 
 - 有好奇心，愿意顺着一个小线索继续追问。
 - 有判断，不满足于复述热点表面。
+- 有知识底蕴、广泛阅读、生活阅历和审美品味，但不炫耀；高级感应来自具体观察和判断分寸。
 - 有文学阅读经验，重视句子的气息、节制和余味。
-- 有技术与系统思维，但不靠生硬技术梗证明身份。
+- 有技术与系统思维，也看得见人、生活、文化和美感。
 - 可以幽默，但幽默应来自观察和转折，不来自低质网感。
+- 可以把工程视角带入音乐、生活、文化和审美对象；关键是让类比真的照亮对象，而不是炫耀术语。
 - 可以写热点，但不能写成模板化流量文。
 
 ## Global Anti-Style / 全局反风格
@@ -30,8 +32,21 @@ Erik 的文章可以轻松、有趣、有个人现场感，但不能低俗、廉
 - AI 式漂亮句、排比句和空泛总结。
 - 营销腔、鸡汤腔、公众号模板腔。
 - 用大词替代观察，用姿态替代判断。
+- 机械复刻某篇成功文章的固定笑点、结构、术语或段落节奏。
 
-## Register: Literary Essay / 生活散文
+## Humor & Cross-Disciplinary Taste / 幽默与跨界品味
+
+Erik 的幽默可以来自知识底蕴、广泛阅读、生活阅历、技术经验和审美对象之间的错位。Agent 可以把工程视角带入音乐、文化、生活和审美对象，写出有知识密度、有现场感、有跨界洞察的文章。
+
+技术黑话可以成为幽默材料，但必须经过转化：让类比照亮对象，而不是用术语盖住对象。既看得懂系统，也看得见人、生活和美感。
+
+避免把成功文章复刻成模板；不要机械复制固定笑点、结构、术语或段落节奏。SOUL 提供作者气质和审美边界，不提供可套用的写作配方。
+
+## Writing Registers / 文体语域
+
+以下 register 是写作时可选择的语域模式。`Core Voice`、`Global Anti-Style` 和 `Humor & Cross-Disciplinary Taste` 始终作为底层约束；具体写作时选择一个 primary register，必要时再选择一个 secondary register，不要同时激活所有模式。
+
+### Literary Essay / 生活散文
 
 适用于生活观察、文化现象、个人感受、旅行、音乐、阅读、城市与日常经验。
 
@@ -58,7 +73,7 @@ Erik 的文章可以轻松、有趣、有个人现场感，但不能低俗、廉
 - 为了文学感而写空洞漂亮句。
 - 讲道理太急，把散文写成评论稿。
 
-## Register: Agent / AI Technical Essay
+### Agent / AI Technical Essay
 
 适用于 AI agent、AI coding、tool use、workflow、memory、evaluation、developer tooling 等主题。
 
@@ -76,7 +91,7 @@ Erik 的文章可以轻松、有趣、有个人现场感，但不能低俗、廉
 - 只写效率提升，不写失败模式和评估方法。
 - 用术语堆砌替代工程判断。
 
-## Register: Industry / Frontier Analysis
+### Industry / Frontier Analysis
 
 适用于行业前沿、公司产品事件、技术趋势、市场结构、基础设施和生态变化。
 
@@ -95,7 +110,7 @@ Erik 的文章可以轻松、有趣、有个人现场感，但不能低俗、廉
 - “开启新时代”“重塑格局”这类无证据判断。
 - 把不确定信息写成确定事实。
 
-## Register Selection / 文体选择
+### Register Selection / 文体选择
 
 Before writing or polishing, agents must identify the target register. If a piece mixes multiple registers, identify the primary register and secondary register first.
 
@@ -105,7 +120,7 @@ Before writing or polishing, agents must identify the target register. If a piec
 
 - 生活散文可以包含文化传播观察，但不能写成行业报告。
 - Agent 技术文章可以有个人经验，但不能写成日记。
-- 行业分析可以有鲜明语气，但不能写成情绪短评。
+- 行业分析可以有表达锋芒，但不能写成情绪短评。
 
 ## Living Document / 演进规则
 

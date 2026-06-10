@@ -1,0 +1,22 @@
+{
+  "title": "Vocal Agent Harness Simple and Fun",
+  "brief": "A fun, simple, and playful illustration showing a human throat/vocal system as an 'Agent Harness'. Cross-section view of a singer's throat and vocal cords, but styled like a cute cartoon or comic illustration with clean bold lines and flat colors. The vocal cords are drawn like two tiny robots or agents working together inside a control room. Labels in a playful way: '声带Agent (Vocal Fold Agent)', '气流驱动 (Airflow Engine)', '共鸣腔Cache (Resonance Cache)', '调音台 (Mixing Console)'. Speech bubbles with funny technical comments like 'CPU 99%!', 'Still running!'. Simple, clean, NOT complex. Flat illustration style with vibrant colors (teal, coral, gold). White or light background. Bilingual Chinese/English labels. Looks like it belongs in a fun tech explainer article, not a medical textbook.",
+  "content_type": "architecture diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-illustration",
+  "resolved_style_profile": "flat-illustration",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'Vocal Agent Harness Simple and Fun'. Style: flat illustration, simple geometric forms, concise annotations, soft editorial look. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity.  Language/region: zh-en. Target aspect ratio: doc-hd. Mode: text-only. Brief:\nA fun, simple, and playful illustration showing a human throat/vocal system as an 'Agent Harness'. Cross-section view of a singer's throat and vocal cords, but styled like a cute cartoon or comic illustration with clean bold lines and flat colors. The vocal cords are drawn like two tiny robots or agents working together inside a control room. Labels in a playful way: '声带Agent (Vocal Fold Agent)', '气流驱动 (Airflow Engine)', '共鸣腔Cache (Resonance Cache)', '调音台 (Mixing Console)'. Speech bubbles with funny technical comments like 'CPU 99%!', 'Still running!'. Simple, clean, NOT complex. Flat illustration style with vibrant colors (teal, coral, gold). White or light background. Bilingual Chinese/English labels. Looks like it belongs in a fun tech explainer article, not a medical textbook.",
+  "created_at": "2026-06-10T10:27:16",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/output/article-illustration/20260610-102632-vocal-agent-harness-simple-and-fun.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Agent Engineer WeChat Cover v2",
+  "brief": "A stylized Chinese female singer in flowing traditional dress performing on a dark stage. She holds a microphone in one hand and points upward with the other hand toward a glowing full moon. Above her floats a holographic tech dashboard showing: 'Memory: 3 Octaves', 'Latency: 0ms', 'Status: PROD READY', 'Uptime: 99.99%'. The dashboard has a green-gold color scheme. Left side shows a live audio spectrum visualizer with orange bars. Right side shows a world map with connection nodes. Bottom shows a crowd of silhouettes with glowing green lights. The style blends ancient Chinese aesthetics with futuristic HUD elements. No Japanese text anywhere. All text is in Chinese or English only. Dramatic cinematic lighting with lens flares. Cinematic editorial style.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "cinematic-editorial",
+  "resolved_style_profile": "cinematic-editorial",
+  "size": "wechat-cover-hd",
+  "resolved_size": "1792x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'Agent Engineer WeChat Cover v2'. Style: cinematic editorial still, dramatic but natural lighting, grounded scene details, documentary-like framing with an illustrative finish, no text labels, no diagrams. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a body illustration inside a WeChat article read on mobile phones (~390px wide). Compose for narrow-width readability. Use generous negative space. Language/region: zh-en. Target aspect ratio: wechat-cover-hd. Mode: text-only. Brief:\nA stylized Chinese female singer in flowing traditional dress performing on a dark stage. She holds a microphone in one hand and points upward with the other hand toward a glowing full moon. Above her floats a holographic tech dashboard showing: 'Memory: 3 Octaves', 'Latency: 0ms', 'Status: PROD READY', 'Uptime: 99.99%'. The dashboard has a green-gold color scheme. Left side shows a live audio spectrum visualizer with orange bars. Right side shows a world map with connection nodes. Bottom shows a crowd of silhouettes with glowing green lights. The style blends ancient Chinese aesthetics with futuristic HUD elements. No Japanese text anywhere. All text is in Chinese or English only. Dramatic cinematic lighting with lens flares. Cinematic editorial style.",
+  "created_at": "2026-06-10T10:03:49",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/output/article-illustration/20260610-100309-agent-engineer-wechat-cover-v2-cropped.png"
+  ],
+  "crop_hint": "1080x460 (2.35:1)",
+  "dry_run": false
+}
