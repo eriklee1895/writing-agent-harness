@@ -41,8 +41,11 @@
 - Section: `泼天的流量，邯郸接住了`
 - Style profile: `modern-guochao-editorial`
 - Size: `portrait-hd`
-- Local archive output: `.local-archive/2026-06-08-落了白-邯郸学步/images/handan-traffic-caught-by-city.png`
+- Documentation image: `docs/assets/article-illustration/handan-traffic-caught-by-city.png`
+- Local archive source: `.local-archive/2026-06-08-落了白-邯郸学步/images/handan-traffic-caught-by-city.png`
 - Metadata: `docs/assets/article-illustration/handan-traffic-caught-by-city.json`
+
+![短视频流量被城市文旅接住的正文插图](../assets/article-illustration/handan-traffic-caught-by-city.png)
 
 为什么这次效果好：
 
