@@ -19,7 +19,7 @@ content/drafts/YYYY-MM-DD-topic/
 - `source/`: 可追踪 canonical Markdown / MDX source package，跨渠道共用。
 - `blog/`: 可追踪博客 Markdown / MDX，未来供 Astro / Cloudflare Pages 使用，按一级主题目录归档。
 - `wechat/`: 可追踪微信公众号文章、HTML preview、notes 和发布相关 metadata。
-- `assets/`: 可复用 prompt、metadata、manifest。二进制图片/视频默认放 `.local-archive/` 或外部资产库。
+- `assets/`: 可复用 prompt、metadata、manifest。写作内容的二进制图片/视频默认放 `.local-archive/` 或外部资产库；`docs/` 下的文档图片例外，应进入 Git。
 
 Canonical source package 建议使用：
 

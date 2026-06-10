@@ -11,6 +11,7 @@ OPENAI_BASE_URL
 
 ## Asset Rule
 
+- `docs/` 下的文档图片属于 repo 文档资产，应进入 Git，不要迁移到 `.local-archive/`。
 - 图片放在使用它们的 article folder 里，通常是 `assets/`。
 - 可复用素材可以放在 `content/assets/`。
 - 使用 descriptive alt text。微信公众号 renderer 会把 alt text 转成 caption。

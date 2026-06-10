@@ -43,6 +43,8 @@ Feishu / Notion / notes / etc.
 
 ## 🗺️ AI 写作工作流全景
 
+![AI Writing + WeChat Publishing Workflow](docs/assets/ai-writing-wechat-workflow.png)
+
 详细流程见 [docs/workflows/ai-writing-workflow.md](docs/workflows/ai-writing-workflow.md)。
 
 ```mermaid

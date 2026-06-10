@@ -79,6 +79,14 @@ content/drafts/**
 *.sketch
 *.fig
 
+# Documentation images are part of docs and may be tracked.
+!docs/**/*.png
+!docs/**/*.jpg
+!docs/**/*.jpeg
+!docs/**/*.webp
+!docs/**/*.gif
+!docs/**/*.avif
+
 # Superpowers / visual companion generated scratch files
 .superpowers/
 

@@ -8,7 +8,8 @@
 
 - Git
   - 本 repo 跟踪 Markdown / MDX、docs、skills、prompt、metadata、manifest 和 notes。
-  - 图片、视频、音频和设计源文件默认放在 `.local-archive/` 或外部资产库，不进入 Git。
+  - `docs/` 下的文档图片属于 docs 资产，应进入 Git。
+  - 写作内容的图片、视频、音频和设计源文件默认放在 `.local-archive/` 或外部资产库，不进入 Git。
 - Node.js
   - `wechat-article-renderer` 和 preview server 使用 Node.js 脚本。
 - uv
