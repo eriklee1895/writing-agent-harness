@@ -4,92 +4,46 @@
 
 ![AI 写作 Workflow + Skills 全景](../assets/ai-writing-skills-workflow-overview.png)
 
-这张图是面向真实写作任务的执行层视图：从灵感碎片进入 `content/inbox/` 和 `content/drafts/`，经过项目 skills 编排，沉淀到 `content/source/`，再派生到微信、博客和未来渠道。图片生成 metadata 归档在 [docs/assets/ai-writing-skills-workflow-overview.json](../assets/ai-writing-skills-workflow-overview.json)，方便后续用同一 prompt 和 reference 继续迭代。
+这张图是面向真实写作任务的执行层视图：从灵感碎片进入 `content/inbox/` 和 `content/drafts/`，经过 Skills Orchestration，沉淀到 `content/source/`，再派生到微信、博客和未来渠道。图片生成 metadata 归档在 [docs/assets/ai-writing-skills-workflow-overview.json](../assets/ai-writing-skills-workflow-overview.json)，方便后续用同一 prompt 和 reference 继续迭代。
+
+下面的 Mermaid 只作为维护用 compact map，不承担视觉展示职责，因此默认折叠。
+
+<details>
+<summary>维护用 Mermaid compact map</summary>
 
 ```mermaid
+---
+config:
+  theme: base
+  look: classic
+  themeVariables:
+    fontFamily: "ui-sans-serif, system-ui, sans-serif"
+    primaryColor: "#eff6ff"
+    primaryTextColor: "#172033"
+    primaryBorderColor: "#93c5fd"
+    lineColor: "#2563eb"
+    secondaryColor: "#ecfdf5"
+    tertiaryColor: "#fff7ed"
+---
 flowchart LR
-    subgraph Inputs["Inputs / upstream writing material"]
-        Feishu["Feishu / Notion docs"]
-        Notes["ideas, notes, screenshots"]
-        Web["web research / current facts"]
-        Scratch["content/inbox/ + content/drafts/ (local scratch)"]
-    end
+    Input["Ideas / Feishu / Notion / Web"] --> Scratch["inbox + drafts"]
+    Scratch --> Ideation["article-ideation"]
+    Ideation --> Source["content/source/{slug}"]
+    Source --> Skills["Skills Orchestration"]
+    Skills --> Source
+    Source --> Channels["WeChat / Blog / future"]
+    Channels --> Review["Human final review"]
+    Review --> Closeout["writing-task-closeout"]
+    Closeout --> Evolution["retrospectives / memory / docs / skills"]
+    Evolution -. improves .-> Ideation
 
-    subgraph Harness["writing-agent-harness core"]
-        Router["AGENTS.md docs router"]
-        Soul["SOUL.md author voice"]
-        Docs["docs runbooks + references"]
-        Skills[".agents/skills/*"]
-        Source["content/source/{slug}/ canonical Markdown / MDX"]
-        Verify["readiness checks + preview verification"]
-    end
-
-    subgraph Craft["Skill execution"]
-        Ideation["article-ideation -> brief + outline"]
-        Polish["polish-article"]
-        Readiness["article-readiness-check"]
-        Visuals["article-illustration"]
-        Video["video-material-ingest -> video-highlight-select -> article-video-clip"]
-        Renderer["wechat-article-renderer"]
-        Publish["wechat-publish-workflow + baoyu-post-to-wechat"]
-        Closeout["writing-task-closeout"]
-    end
-
-    subgraph Channels["Channel packages"]
-        Wechat["content/wechat/{slug}/ + WeChat draft"]
-        Blog["content/blog/{category}/{slug}/"]
-        Future["future downstream channels"]
-        Human["human final review before publish"]
-    end
-
-    subgraph Evolution["Self-evolution loop"]
-        Retro["docs/retrospectives/"]
-        Memory[".local-memory/"]
-        DocsUpdate["docs updates"]
-        SkillFix["skill/script improvements"]
-    end
-
-    Feishu --> Scratch
-    Notes --> Scratch
-    Web --> Ideation
-    Scratch --> Ideation
-
-    Router --> Docs
-    Router --> Skills
-    Soul --> Ideation
-    Soul --> Polish
-    Docs --> Skills
-
-    Ideation --> Source
-    Source --> Polish
-    Source --> Readiness
-    Source --> Visuals
-    Source --> Video
-    Polish --> Source
-    Visuals --> Source
-    Video --> Source
-    Readiness --> Verify
-
-    Source --> Renderer
-    Verify --> Renderer
-    Renderer --> Wechat
-    Wechat --> Publish
-    Publish --> Human
-    Source --> Blog
-    Source --> Future
-
-    Human --> Closeout
-    Blog --> Closeout
-    Future --> Closeout
-    Closeout --> Retro
-    Closeout --> Memory
-    Closeout --> DocsUpdate
-    Closeout --> SkillFix
-    DocsUpdate --> Docs
-    SkillFix --> Skills
+    Router["AGENTS.md + docs runbooks"] -. guides .-> Ideation
+    Soul["SOUL.md author voice"] -. guides .-> Skills
 ```
 
-这个图刻意把 repo 描述成 harness，而不是单线 pipeline：
+</details>
+
+这份 Mermaid 刻意保持简单：
 
 - **Router 层**：`AGENTS.md` 只保留高频规则和 docs 路由；低频细节通过 `docs/` progressive disclosure 加载。
 - **Source 层**：`content/source/{slug}/` 是 repo 内长期 canonical source；`content/drafts/` 和 `content/inbox/` 是本地 scratch，不默认提交。
