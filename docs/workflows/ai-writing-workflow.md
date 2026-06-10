@@ -1,55 +1,97 @@
-# AI 写作 + 微信公众号自动化发布工作流
+# AI 写作自动化 Harness 工作流
 
 ## 流程全景
 
 ```mermaid
-graph TD
-    subgraph "📥 输入"
-        A[飞书导出 / 网页剪藏 / 灵感碎片] --> B["content/inbox/"]
+flowchart LR
+    subgraph Inputs["Inputs / upstream writing material"]
+        Feishu["Feishu / Notion docs"]
+        Notes["ideas, notes, screenshots"]
+        Web["web research / current facts"]
+        Scratch["content/inbox/ + content/drafts/ (local scratch)"]
     end
 
-    subgraph "✏️ ideation & draft"
-        B --> C["article-ideation"]
-        C --> D["灵感 → writing brief → outline"]
-        D --> E["手写初稿 Markdown"]
-        E --> F["content/drafts/YY-MMDD-topic/"]
-        F --> S["promote to content/source/YY-MM-DD-topic/"]
+    subgraph Harness["writing-agent-harness core"]
+        Router["AGENTS.md docs router"]
+        Soul["SOUL.md author voice"]
+        Docs["docs runbooks + references"]
+        Skills[".agents/skills/*"]
+        Source["content/source/{slug}/ canonical Markdown / MDX"]
+        Verify["readiness checks + preview verification"]
     end
 
-    subgraph "🎨 polish & visual"
-        S --> G["polish-article (可选)"]
-        S --> H["article-illustration"]
-        H --> H1["插画/封面/信息图"]
-        H1 --> H2["uv run .agents/skills/article-illustration/..."]
-        S --> V["video-material-ingest"]
-        V --> V1["video-highlight-select"]
-        V1 --> V2["候选高光片段"]
-        V2 --> V3["article-video-clip"]
-        V3 --> V4["文章视频片段/素材再包装"]
+    subgraph Craft["Skill execution"]
+        Ideation["article-ideation -> brief + outline"]
+        Polish["polish-article"]
+        Readiness["article-readiness-check"]
+        Visuals["article-illustration"]
+        Video["video-material-ingest -> video-highlight-select -> article-video-clip"]
+        Renderer["wechat-article-renderer"]
+        Publish["wechat-publish-workflow + baoyu-post-to-wechat"]
+        Closeout["writing-task-closeout"]
     end
 
-    subgraph "📱 render & preview"
-        S --> I["wechat-article-renderer"]
-        G --> I
-        H1 --> I
-        V4 --> I
-        I --> I1[".wechat-preview.html"]
-        I1 --> I2["preview-server.mjs → localhost:49255"]
+    subgraph Channels["Channel packages"]
+        Wechat["content/wechat/{slug}/ + WeChat draft"]
+        Blog["content/blog/{category}/{slug}/"]
+        Future["future downstream channels"]
+        Human["human final review before publish"]
     end
 
-    subgraph "🚀 publish"
-        I1 --> J["wechat-publish-workflow"]
-        J --> K["baoyu-post-to-wechat CDP"]
-        K --> L["微信公众号草稿箱 (appmsgid)"]
-        L --> M["👤 人工 review → 群发"]
+    subgraph Evolution["Self-evolution loop"]
+        Retro["docs/retrospectives/"]
+        Memory[".local-memory/"]
+        DocsUpdate["docs updates"]
+        SkillFix["skill/script improvements"]
     end
 
-    subgraph "📦 archive"
-        S --> B1["content/blog/<category>/YY-MM-DD-topic/"]
-        M --> N["content/wechat/YY-MM-DD-topic/"]
-        B1 --> O["未来: Astro 发布"]
-    end
+    Feishu --> Scratch
+    Notes --> Scratch
+    Web --> Ideation
+    Scratch --> Ideation
+
+    Router --> Docs
+    Router --> Skills
+    Soul --> Ideation
+    Soul --> Polish
+    Docs --> Skills
+
+    Ideation --> Source
+    Source --> Polish
+    Source --> Readiness
+    Source --> Visuals
+    Source --> Video
+    Polish --> Source
+    Visuals --> Source
+    Video --> Source
+    Readiness --> Verify
+
+    Source --> Renderer
+    Verify --> Renderer
+    Renderer --> Wechat
+    Wechat --> Publish
+    Publish --> Human
+    Source --> Blog
+    Source --> Future
+
+    Human --> Closeout
+    Blog --> Closeout
+    Future --> Closeout
+    Closeout --> Retro
+    Closeout --> Memory
+    Closeout --> DocsUpdate
+    Closeout --> SkillFix
+    DocsUpdate --> Docs
+    SkillFix --> Skills
 ```
+
+这个图刻意把 repo 描述成 harness，而不是单线 pipeline：
+
+- **Router 层**：`AGENTS.md` 只保留高频规则和 docs 路由；低频细节通过 `docs/` progressive disclosure 加载。
+- **Source 层**：`content/source/{slug}/` 是 repo 内长期 canonical source；`content/drafts/` 和 `content/inbox/` 是本地 scratch，不默认提交。
+- **Skill 层**：`.agents/skills/*` 负责可重复执行的写作、配图、视频、排版、发布和 closeout 能力。
+- **Channel 层**：`content/wechat/`、`content/blog/` 和未来渠道都从同一个 source slug 派生，渠道稿 frontmatter 用 `source:` 指回 canonical article。
+- **Evolution 层**：真实任务结束后用 `writing-task-closeout` 把坑点、复盘、memory、docs 和 skill 改进回填到 harness。
 
 ## 目录约定
 
@@ -61,6 +103,8 @@ graph TD
 | `content/wechat/` | 可追踪微信公众号文章、HTML preview、notes 和 metadata |
 | `content/blog/` | 可追踪博客 Markdown / MDX，未来供 Astro/Cloudflare Pages 使用 |
 | `content/assets/` | 可复用 prompt、metadata、manifest；二进制素材默认不提交 |
+
+> `docs/assets/` 是文档图片目录，应该进入 Git；写作任务产生的二进制图片、视频素材和剪辑产物默认留在 `.local-archive/` 或外部资产库，只提交可复现的 prompt、metadata、manifest、sources 和 notes。
 
 ## Skill 分工
 

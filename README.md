@@ -41,41 +41,13 @@ Feishu / Notion / notes / etc.
 
 飞书文档和 Notion 可以继续作为原文写作、笔记和早期沉淀入口；进入 repo 后，再同步或转换为 Markdown / MDX，获得 diff、review、render、publish automation 和多渠道派生能力。
 
-## 🗺️ AI 写作工作流全景
+## 🗺️ AI 写作 Harness 全景
 
-![AI Writing + WeChat Publishing Workflow](docs/assets/ai-writing-wechat-workflow.png)
+![AI Writing Harness Overview](docs/assets/ai-writing-harness-overview.png)
 
-详细流程见 [docs/workflows/ai-writing-workflow.md](docs/workflows/ai-writing-workflow.md)。
+`writing-agent-harness` 的核心不是一条固定流水线，而是一个可追踪、可扩展、会复盘进化的写作自动化系统：`AGENTS.md` 负责把 agent 路由到最小必要文档，`docs/` 保存 runbooks 和决策，`.agents/skills/` 执行具体能力，`content/source/` 保存长期 canonical Markdown / MDX，再派生到微信公众号、博客和未来渠道。
 
-```mermaid
-flowchart LR
-    A["Idea / Feishu / Notion / Notes"] --> B["Ideation"]
-    B --> C["Writing Brief"]
-    C --> D["Research"]
-    D --> E["Outline"]
-    E --> F["Draft"]
-    F --> G["Polish"]
-    G --> H["Visuals"]
-    H --> I["Packaging"]
-    I --> J["Publish"]
-    J --> K["Review"]
-    K --> L["Memory / Skills"]
-    L --> B
-
-    subgraph Workspace["writing-agent-harness"]
-        Router["AGENTS.md router"]
-        Docs["docs runbooks"]
-        Skills["project skills"]
-        Source["Markdown / MDX source"]
-    end
-
-    Router -.guides.-> B
-    Docs -.loads on demand.-> I
-    Skills -.executes.-> B
-    Skills -.executes.-> G
-    Skills -.executes.-> J
-    Source -.canonical.-> F
-```
+详细 Mermaid 架构图和可维护流程见 [docs/workflows/ai-writing-workflow.md](docs/workflows/ai-writing-workflow.md)。
 
 ## ✍️ How to Start
 

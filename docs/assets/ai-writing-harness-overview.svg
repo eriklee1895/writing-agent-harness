@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1000" viewBox="0 0 1800 1000" role="img" aria-labelledby="title desc">
+  <title id="title">AI writing automation harness overview</title>
+  <desc id="desc">A polished overview image for the writing-agent-harness project, showing inputs, harness core, skills, channels, verification, and self-evolution loop.</desc>
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="45%" r="62%">
+      <stop offset="0%" stop-color="#1b6c7d" stop-opacity="0.58"/>
+      <stop offset="42%" stop-color="#132b46" stop-opacity="0.82"/>
+      <stop offset="100%" stop-color="#07090f"/>
+    </radialGradient>
+    <linearGradient id="panel" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#f7d774"/>
+      <stop offset="46%" stop-color="#52e0ce"/>
+      <stop offset="100%" stop-color="#8fa8ff"/>
+    </linearGradient>
+    <linearGradient id="flowA" x1="0%" x2="100%" y1="0%" y2="0%">
+      <stop offset="0%" stop-color="#52e0ce" stop-opacity="0.12"/>
+      <stop offset="50%" stop-color="#f7d774" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#ff7b7b" stop-opacity="0.18"/>
+    </linearGradient>
+    <linearGradient id="flowB" x1="0%" x2="100%" y1="0%" y2="0%">
+      <stop offset="0%" stop-color="#8fa8ff" stop-opacity="0.12"/>
+      <stop offset="50%" stop-color="#52e0ce" stop-opacity="0.72"/>
+      <stop offset="100%" stop-color="#f7d774" stop-opacity="0.16"/>
+    </linearGradient>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="22" stdDeviation="24" flood-color="#000000" flood-opacity="0.38"/>
+    </filter>
+    <filter id="coreGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.32 0 0 0 0 0.88 0 0 0 0 0.80 0 0 0 0.8 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
+      <path d="M 42 0 L 0 0 0 42" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+    <marker id="arrowGold" markerWidth="14" markerHeight="14" refX="10" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M 1 1 L 12 7 L 1 13 Z" fill="#f7d774" opacity="0.9"/>
+    </marker>
+    <marker id="arrowCyan" markerWidth="14" markerHeight="14" refX="10" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M 1 1 L 12 7 L 1 13 Z" fill="#52e0ce" opacity="0.86"/>
+    </marker>
+    <style>
+      .title { font-family: ui-serif, Georgia, "Times New Roman", serif; font-size: 58px; font-weight: 700; letter-spacing: 0; fill: #f7f1dc; }
+      .subtitle { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 22px; fill: #c7d5df; letter-spacing: 0; }
+      .tiny { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 16px; fill: #9eb3c0; letter-spacing: 0.6px; text-transform: uppercase; }
+      .label { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 25px; font-weight: 700; fill: #f8faf7; letter-spacing: 0; }
+      .body { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 18px; fill: #cbd8df; letter-spacing: 0; }
+      .small { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; fill: #b6c7cf; letter-spacing: 0; }
+      .mono { font-family: "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace; font-size: 18px; fill: #d7f7ef; letter-spacing: 0; }
+      .panel { fill: url(#panel); stroke: #ffffff; stroke-opacity: 0.15; stroke-width: 1.2; }
+      .chip { fill: #0b1824; stroke: #ffffff; stroke-opacity: 0.18; stroke-width: 1; }
+      .flow { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1000" fill="url(#bgGlow)"/>
+  <rect width="1800" height="1000" fill="url(#grid)"/>
+  <circle cx="900" cy="515" r="420" fill="#52e0ce" opacity="0.055"/>
+  <circle cx="900" cy="515" r="300" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="2"/>
+  <circle cx="900" cy="515" r="430" fill="none" stroke="#f7d774" stroke-opacity="0.10" stroke-width="2" stroke-dasharray="10 18"/>
+
+  <text x="100" y="116" class="title">writing-agent-harness</text>
+  <text x="102" y="154" class="subtitle">AI writing automation with traceable source, modular skills, channel packaging, and self-evolution.</text>
+  <text x="100" y="208" class="tiny">Human-in-the-loop publishing  /  Markdown as source of truth  /  Agents as execution runtime</text>
+
+  <g filter="url(#softShadow)">
+    <rect x="118" y="282" width="330" height="360" rx="28" class="panel"/>
+    <text x="150" y="332" class="tiny">Inputs</text>
+    <text x="150" y="372" class="label">Raw material</text>
+    <g>
+      <rect x="150" y="414" width="250" height="44" rx="14" class="chip"/>
+      <text x="171" y="443" class="body">Feishu / Notion</text>
+      <rect x="150" y="474" width="250" height="44" rx="14" class="chip"/>
+      <text x="171" y="503" class="body">Ideas, notes, clips</text>
+      <rect x="150" y="534" width="250" height="44" rx="14" class="chip"/>
+      <text x="171" y="563" class="body">Web research</text>
+      <rect x="150" y="594" width="250" height="44" rx="14" class="chip"/>
+      <text x="171" y="623" class="body">Local scratch drafts</text>
+    </g>
+  </g>
+
+  <g filter="url(#softShadow)">
+    <rect x="1352" y="282" width="330" height="360" rx="28" class="panel"/>
+    <text x="1384" y="332" class="tiny">Outputs</text>
+    <text x="1384" y="372" class="label">Channel packages</text>
+    <g>
+      <rect x="1384" y="414" width="250" height="44" rx="14" class="chip"/>
+      <text x="1405" y="443" class="body">WeChat draft</text>
+      <rect x="1384" y="474" width="250" height="44" rx="14" class="chip"/>
+      <text x="1405" y="503" class="body">Blog / Astro future</text>
+      <rect x="1384" y="534" width="250" height="44" rx="14" class="chip"/>
+      <text x="1405" y="563" class="body">Future channels</text>
+      <rect x="1384" y="594" width="250" height="44" rx="14" class="chip"/>
+      <text x="1405" y="623" class="body">Final human review</text>
+    </g>
+  </g>
+
+  <g filter="url(#softShadow)">
+    <rect x="640" y="242" width="520" height="520" rx="42" fill="#07131f" fill-opacity="0.72" stroke="#ffffff" stroke-opacity="0.16" stroke-width="1.4"/>
+    <circle cx="900" cy="502" r="146" fill="url(#core)" opacity="0.96" filter="url(#coreGlow)"/>
+    <circle cx="900" cy="502" r="116" fill="#07131f" opacity="0.88"/>
+    <text x="900" y="464" text-anchor="middle" class="tiny" fill="#d7f7ef">Harness Core</text>
+    <text x="900" y="505" text-anchor="middle" class="label" font-size="30">Canonical</text>
+    <text x="900" y="539" text-anchor="middle" class="label" font-size="30">Markdown / MDX</text>
+    <text x="900" y="580" text-anchor="middle" class="mono">content/source/</text>
+
+    <g>
+      <rect x="684" y="288" width="176" height="58" rx="18" class="chip"/>
+      <text x="772" y="324" text-anchor="middle" class="small">AGENTS.md router</text>
+      <rect x="940" y="288" width="176" height="58" rx="18" class="chip"/>
+      <text x="1028" y="324" text-anchor="middle" class="small">docs runbooks</text>
+      <rect x="684" y="660" width="176" height="58" rx="18" class="chip"/>
+      <text x="772" y="696" text-anchor="middle" class="small">project skills</text>
+      <rect x="940" y="660" width="176" height="58" rx="18" class="chip"/>
+      <text x="1028" y="696" text-anchor="middle" class="small">readiness checks</text>
+    </g>
+  </g>
+
+  <path class="flow" d="M 448 456 C 530 438, 568 392, 640 384" stroke="url(#flowA)" stroke-width="9" marker-end="url(#arrowGold)"/>
+  <path class="flow" d="M 448 520 C 540 526, 566 562, 640 586" stroke="url(#flowB)" stroke-width="7" marker-end="url(#arrowCyan)"/>
+  <path class="flow" d="M 1160 384 C 1230 400, 1275 438, 1352 456" stroke="url(#flowA)" stroke-width="9" marker-end="url(#arrowGold)"/>
+  <path class="flow" d="M 1160 586 C 1242 568, 1276 526, 1352 520" stroke="url(#flowB)" stroke-width="7" marker-end="url(#arrowCyan)"/>
+
+  <g filter="url(#softShadow)">
+    <rect x="530" y="805" width="740" height="96" rx="26" fill="#07131f" fill-opacity="0.68" stroke="#52e0ce" stroke-opacity="0.28" stroke-width="1.2"/>
+    <text x="568" y="842" class="tiny">Self-evolution loop</text>
+    <text x="568" y="875" class="body">closeout -> retrospectives -> docs updates -> skill fixes -> better next run</text>
+  </g>
+  <path class="flow" d="M 1384 660 C 1320 790, 1198 853, 1270 853" stroke="#f7d774" stroke-opacity="0.65" stroke-width="5" marker-end="url(#arrowGold)"/>
+  <path class="flow" d="M 530 853 C 370 820, 312 712, 282 642" stroke="#52e0ce" stroke-opacity="0.56" stroke-width="5" marker-end="url(#arrowCyan)"/>
+
+  <g>
+    <circle cx="591" cy="252" r="5" fill="#f7d774"/>
+    <circle cx="1211" cy="252" r="5" fill="#52e0ce"/>
+    <circle cx="591" cy="754" r="5" fill="#8fa8ff"/>
+    <circle cx="1211" cy="754" r="5" fill="#ff7b7b"/>
+    <path d="M 591 252 C 690 195, 1110 195, 1211 252" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2" stroke-dasharray="8 14"/>
+    <path d="M 591 754 C 690 810, 1110 810, 1211 754" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2" stroke-dasharray="8 14"/>
+  </g>
+</svg>
