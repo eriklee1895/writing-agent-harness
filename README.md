@@ -6,6 +6,14 @@
 
 它也是一个会自我进化的 writing harness：通过 memory、retrospectives、local scratch、docs runbooks 和 project skills，把真实写作、发布、调试中的踩坑经验沉淀下来，持续修复 workflow、优化 skills，让系统越用越贴合 Erik 的写作方式。
 
+## 🗺️ AI 写作 Harness 全景
+
+![AI 写作自动化 Harness 全景信息图](docs/assets/ai-writing-harness-overview.png)
+
+`writing-agent-harness` 的核心不是一条固定流水线，而是一个可追踪、可扩展、会复盘进化的写作自动化系统：`AGENTS.md` 负责把 agent 路由到最小必要文档，`docs/` 保存 runbooks 和决策，`.agents/skills/` 执行具体能力，`content/source/` 保存长期 canonical Markdown / MDX，再派生到微信公众号、博客和未来渠道。
+
+详细 Mermaid 架构图和可维护流程见 [docs/workflows/ai-writing-workflow.md](docs/workflows/ai-writing-workflow.md)。
+
 ## ⚡ Install Skills
 
 把本 repo 的 project skills 安装到本机 agent 环境：
@@ -34,9 +42,11 @@ npx skills add eriklee1895/writing-agent-harness --skill article-ideation
 | [`obra/superpowers`](https://github.com/obra/superpowers) | skills methodology、progressive disclosure、specs / plans 工作流启发 | 项目愿景和 `docs/superpowers/` 约定的重要灵感来源 |
 | [`JimLiu/baoyu-skills`](https://github.com/JimLiu/baoyu-skills) | 微信公众号草稿箱、API / CDP 发布自动化参考 | `baoyu-post-to-wechat` 已 vendored，作为底层上传器和 browser automation reference |
 
-边界：third-party skills 提供方法论、辅助能力或底层参考；本 repo 的写作语气、目录约定、文章 readiness、渲染风格、发布编排和 closeout 规则仍以 `AGENTS.md`、`docs/` 和 `.agents/skills/` 为准。
+With thanks to the authors and maintainers of these amazing skills and skill ecosystems.
 
-## 🌌 My Grand Design
+边界：third-party skills 提供方法论、辅助能力或底层参考；本 repo 的目录约定、文章 readiness、渲染风格、发布编排和 closeout 规则仍以 `AGENTS.md`、`docs/` 和 `.agents/skills/` 为准。
+
+## 🌌 Project Goal / Long-Term Direction
 
 我的目标是把 `writing-agent-harness` 做成 AI 写作领域的 Superpowers：不是单个 writer bot，而是一套面向写作 agents 的 skills methodology。
 
@@ -55,14 +65,6 @@ Feishu / Notion / notes / etc.
 
 飞书文档和 Notion 可以继续作为原文写作、笔记和早期沉淀入口；进入 repo 后，再同步或转换为 Markdown / MDX，获得 diff、review、render、publish automation 和多渠道派生能力。
 
-## 🗺️ AI 写作 Harness 全景
-
-![AI 写作自动化 Harness 全景信息图](docs/assets/ai-writing-harness-overview.png)
-
-`writing-agent-harness` 的核心不是一条固定流水线，而是一个可追踪、可扩展、会复盘进化的写作自动化系统：`AGENTS.md` 负责把 agent 路由到最小必要文档，`docs/` 保存 runbooks 和决策，`.agents/skills/` 执行具体能力，`content/source/` 保存长期 canonical Markdown / MDX，再派生到微信公众号、博客和未来渠道。
-
-详细 Mermaid 架构图和可维护流程见 [docs/workflows/ai-writing-workflow.md](docs/workflows/ai-writing-workflow.md)。
-
 ## ✍️ How to Start
 
 **万事起点：`article-ideation`。** 你有任何灵感、碎片、念头，直接告诉 agent，它会帮你从模糊想法一步步打磨成可执行的 writing brief 和 outline。不需要先整理，不需要先想清楚——把原材料扔给 agent，article-ideation 负责理清。
@@ -72,7 +74,7 @@ Feishu / Notion / notes / etc.
 
 🤖  article-ideation（万事起点）
      → 复述确认你的想法
-     → 校准：中心问题、读者、论题、切口、语气、不要什么
+     → 校准：中心问题、读者、论题、切口、tone / register、anti-goals
      → 提供 2-4 个可选角度和取舍
      → 输出 writing brief + outline
      → 讨论、调整、确认
@@ -156,7 +158,7 @@ Erik 提供主题、灵感、素材、判断和文章雏形；agent 负责：
 - 汇总事实和观点。
 - 建立文章结构。
 - 撰写初稿。
-- 用 `polish-article` 打磨逻辑、文风和专业深度。
+- 用 `polish-article` 打磨逻辑、register、表达质感和专业深度。
 - 根据渠道生成博客 / 微信公众号版本。
 
 这个模式强调 human-in-the-loop：人的判断是核心，agent 做研究、组织和表达增强。
@@ -196,7 +198,7 @@ Renderer 支持四种 style preset：`impact-rational`（技术评论/观点文�
 | Skill | 用途 |
 |-------|------|
 | `article-ideation` | 灵感脑暴 → writing brief + outline |
-| `polish-article` | 润色打磨，按题材强化逻辑、文风与作者气质 |
+| `polish-article` | 润色打磨，按题材强化逻辑、register、表达质感与作者气质 |
 | `article-readiness-check` | 发布前 readiness 检查，确认正文、frontmatter、引用、图片/视频和渠道 handoff 是否可进入包装 |
 | `article-illustration` | 通用文章生图：水彩插画、信息图、技术图表等多种风格，默认 `--style-profile auto`，Python `uv run` |
 | `video-material-ingest` | 用 `yt-dlp` 摄取已知视频 URL，生成本地素材包、manifest 和 sources 留痕 |
