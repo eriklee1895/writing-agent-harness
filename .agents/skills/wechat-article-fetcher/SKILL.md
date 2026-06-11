@@ -15,11 +15,11 @@ Use this skill when the user provides a WeChat article URL (`mp.weixin.qq.com/s/
 - 需要把公众号文章整理成可追踪的本地素材
 - 收集公众号文章中的数据、观点、案例用于后续写作
 
-Do not use this skill for:
-- Discovering articles by topic or keyword (no search capability)
-- Batch processing multiple URLs
-- Extracting video cards or embedded media
-- Republishing or redistributing content without permission
+Do not use this skill for / 禁止场景：
+- Discovering articles by topic or keyword (no search capability) — 不支持按主题或关键词搜索文章
+- Batch processing multiple URLs — 暂不支持批量处理多个链接
+- Extracting video cards or embedded media — 暂不支持提取视频卡片或嵌入式媒体
+- Republishing or redistributing content without permission — 禁止无授权转载或再分发
 
 ## Prerequisites
 
@@ -28,7 +28,7 @@ Do not use this skill for:
 - Google Chrome 已安装（macOS 默认路径 `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`）
 - Chrome 已登录微信（首次使用会弹出交互式登录引导）
 
-Never export, print, store, or commit browser cookies or login state data.
+禁止导出、打印、存储或提交浏览器 Cookie 和登录态数据。
 
 ## Default Command
 
@@ -85,7 +85,7 @@ Records source URL, account, fetch date, and a compliance reminder for personal 
 3. 用户完成登录后按回车
 4. 脚本自动刷新页面并继续提取
 
-If content is still unavailable after login, returns error code `LOGIN_FAILED`.
+如果登录后仍无法获取内容，返回错误码 `LOGIN_FAILED`。
 
 ## Error Handling
 
@@ -107,4 +107,4 @@ If content is still unavailable after login, returns error code `LOGIN_FAILED`.
 - Use `article-illustration` to generate companion visuals
 - Reference the article in a new draft with proper attribution
 
-Do not perform these follow-ups unless the user asks.
+除非用户明确要求，否则不要自动执行这些后续操作。
