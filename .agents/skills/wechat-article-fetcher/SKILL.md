@@ -3,25 +3,25 @@ name: wechat-article-fetcher
 description: 提取微信公众号文章（mp.weixin.qq.com）为结构化 Markdown + assets，用于 AI 写作素材收集。Use when the user provides a WeChat article URL and wants to extract its content for research, reference, or writing material.
 ---
 
-# WeChat Article Fetcher / 微信公众号文章提取
+# WeChat Article Fetcher
 
 提取微信公众号文章为结构化 Markdown + assets，用于 AI 写作素材收集和参考引用。
 
 Use this skill when the user provides a WeChat article URL (`mp.weixin.qq.com/s/...`) and wants to extract its content for research, reference, or writing material.
 
-## When To Use / 使用场景
+## When To Use
 
 - 用户给了一个公众号文章链接，要求提取内容作为写作参考
 - 需要把公众号文章整理成可追踪的本地素材
 - 收集公众号文章中的数据、观点、案例用于后续写作
 
 Do not use this skill for:
-- Discovering articles by topic or keyword (no search capability) — 不支持搜索发现
-- Batch processing multiple URLs — MVP 只支持单篇
-- Extracting video cards or embedded media — 暂不支持视频卡片
-- Republishing or redistributing content without permission — 禁止无授权转载
+- Discovering articles by topic or keyword (no search capability)
+- Batch processing multiple URLs
+- Extracting video cards or embedded media
+- Republishing or redistributing content without permission
 
-## Prerequisites / 前置条件
+## Prerequisites
 
 - `uv` 必须可用，且项目依赖已同步 (`uv sync`)
 - `playwright` 和 `markdownify` Python 包已安装（运行时自动检查）
@@ -29,9 +29,8 @@ Do not use this skill for:
 - Chrome 已登录微信（首次使用会弹出交互式登录引导）
 
 Never export, print, store, or commit browser cookies or login state data.
-禁止导出、打印、存储或提交浏览器 Cookie 和登录态数据。
 
-## Default Command / 默认命令
+## Default Command
 
 ```bash
 # 默认输出到 ./wechat-articles/YYYY-MM-DD-<slug>/
@@ -44,7 +43,7 @@ uv run python .agents/skills/wechat-article-fetcher/scripts/fetch.py <url> --out
 uv run python .agents/skills/wechat-article-fetcher/scripts/fetch.py <url> --no-images
 ```
 
-## Output / 产物结构
+## Output
 
 每次提取生成一个文件夹：
 
@@ -61,17 +60,23 @@ uv run python .agents/skills/wechat-article-fetcher/scripts/fetch.py <url> --no-
 
 ### article.md
 
+Contains YAML frontmatter with `title`, `account`, `publish_time`, `source_url`, followed by the article body in Markdown. Images reference `assets/` via relative paths.
+
 包含 YAML frontmatter（`title`, `account`, `publish_time`, `source_url`），后跟 Markdown 正文。图片通过相对路径引用 `assets/` 目录。
 
 ### manifest.json
+
+Structured metadata including title, account, publish time, fetch timestamp, content length, and an array of image records with `original_url`, `local_path`, and `alt` text.
 
 结构化元数据，包括标题、公众号名、发布时间、抓取时间戳、内容长度，以及图片记录数组（含 `original_url`, `local_path`, `alt`）。
 
 ### sources.md
 
+Records source URL, account, fetch date, and a compliance reminder for personal research use only.
+
 记录来源 URL、公众号名、抓取日期，以及个人研究用途的合规提醒。
 
-## Login Flow / 登录流程
+## Login Flow
 
 首次使用或 Cookie 过期时，如果未检测到微信登录态：
 
@@ -80,27 +85,26 @@ uv run python .agents/skills/wechat-article-fetcher/scripts/fetch.py <url> --no-
 3. 用户完成登录后按回车
 4. 脚本自动刷新页面并继续提取
 
-如果登录后仍无法获取内容，返回错误码 `LOGIN_FAILED`。
+If content is still unavailable after login, returns error code `LOGIN_FAILED`.
 
-## Error Handling / 错误处理
+## Error Handling
 
-| Error Code | Meaning / 含义 |
-|------------|---------------|
-| `CONTENT_NOT_RENDERED` | `#js_content` 渲染超时，正文未出现 |
-| `VERIFICATION_REQUIRED` | 页面出现验证码或人机验证 |
-| `ARTICLE_DELETED` | 文章已删除或不存在 |
-| `LOGIN_FAILED` | 尝试登录后仍无法获取内容 |
+| Error Code | Meaning |
+|------------|---------|
+| `CONTENT_NOT_RENDERED` | `#js_content` not found after timeout |
+| `VERIFICATION_REQUIRED` | Page shows verification or captcha |
+| `ARTICLE_DELETED` | Article appears deleted or not found |
+| `LOGIN_FAILED` | Login attempted but content still unavailable |
 
 错误以 JSON 形式返回，包含 `error_code` 和 `message` 字段。
 
-## Follow-Ups / 后续建议
+## Follow-Ups
 
 提取完成后，可以建议下一步：
 
-- 阅读 `article.md` 了解文章要点和关键信息
-- 如果文章成为核心素材，将文件夹移动到 `content/source/<slug>/`
-- 使用 `article-illustration` 生成配套插图
-- 在新建草稿中引用该文章并注明来源
+- Read `article.md` for content summary or key points
+- Move the folder to `content/source/<slug>/` if it becomes canonical material
+- Use `article-illustration` to generate companion visuals
+- Reference the article in a new draft with proper attribution
 
 Do not perform these follow-ups unless the user asks.
-除非用户要求，否则不自动执行这些后续操作。
