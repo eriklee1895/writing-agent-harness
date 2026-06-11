@@ -124,20 +124,30 @@ http://localhost:49255/
 wechat-publish-workflow
 ```
 
-当前底层可以继续复用：
+当前底层默认上传器：
 
 ```text
-baoyu-post-to-wechat
+wechat-article-publisher    # Playwright，默认
+baoyu-post-to-wechat        # CDP，fallback
 ```
 
-自动化工作流只维护 CDP 浏览器模式创建草稿；官方 API 不作为主线维护：
+发布器默认走 `wechat-article-publisher`（Playwright），通过持久化 profile 复用登录态，填 title/author/summary、注入正文 HTML、串行上传正文图片到微信 CDN、保存草稿。元数据取自 source `.md` frontmatter（作者缺省取 `config.toml`，已预填 李玉恒）；标题写入可见标题 ProseMirror（同步隐藏 `#title`），正文剔除 hero 大标题避免重复。代码约为 baoyu 文章流程的 1/4，auto-wait 更稳，无 `baoyu-chrome-cdp` 依赖。已验证文章流程、标题/作者/摘要、串行正文图片上传、草稿保存。迁移背景与对比数据见 [../future_plans/playwright-wechat-migration-analysis.md](../future_plans/playwright-wechat-migration-analysis.md)。
 
-- `browser`：当前唯一维护主路径。它通过 Chrome CDP 复用登录态，填 title/author/summary、插入 HTML、上传正文图片、保存草稿。不需要 AppID/AppSecret、access_token 或固定公网出口 IP，最符合个人写作 harness 的维护成本。
-- `api` / `remote-api`：保留为历史/实验能力，不围绕它设计自动化。它需要 AppID / AppSecret、可用 access_token、调用 IP 在公众号白名单中；正文图片先上传为微信图片 URL，封面上传为永久素材 `thumb_media_id`，再调用 `draft/add`。如果没有稳定白名单出口 IP，不值得维护。
+`baoyu-post-to-wechat` 的 CDP 模式保留为 fallback，不再扩展新功能。官方 API / remote-api 仍只作为历史/实验能力（需要 AppID/AppSecret、access_token、IP 白名单，富文本兼容成本高，不维护主线）。
 
-CDP 成功后的可靠信号是保存后编辑页 URL 出现 `appmsgid=...`；API 成功后的可靠信号是返回草稿 `media_id`。两种方式都只代表进入草稿箱，不代表已经发布。
+成功后的可靠信号是保存后编辑页 URL 出现 `appmsgid=...`（或保存成功 toast）。进入草稿箱不代表已经发布。
 
-CDP 模式唯一不可避免的人工参与点是微信登录确认。这是微信账号安全模型带来的物理/账号边界，不是自动化缺口；登录态可复用后，后续从 preview 到草稿箱同步已经接近 100% AI 自动化。
+用法：
+
+```bash
+uv run python .agents/skills/wechat-article-publisher/scripts/publish.py \
+  --article /absolute/path/to/source/article.md \
+  --html    /absolute/path/to/article.wechat-preview.html --save-draft
+```
+
+唯一不可避免的人工参与点是微信登录确认（首次扫码）。这是微信账号安全模型带来的边界，不是自动化缺口；登录态存独立 profile 可复用后，后续 `login_wait≈0`，从 preview 到草稿箱同步接近 100% AI 自动化。
+
+封面图当前需在草稿箱 final review 时手动设置（封面上传链路未自动化）。
 
 如果登录页显示「微信快捷登录」按钮而不是二维码，应直接点击该按钮继续登录流程，不要等待扫码超时；如果显示二维码，再由用户扫码确认。
 

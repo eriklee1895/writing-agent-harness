@@ -1,15 +1,15 @@
 ---
 name: wechat-publish-workflow
-description: "微信公众号文章发布 workflow。Use when the user wants to publish/sync/create 草稿箱 draft from a Markdown article: generate WeChat preview, verify HTML/images/封面, remove external href, use baoyu-post-to-wechat, save 草稿箱, and hand off final publish review."
+description: "微信公众号文章发布 workflow。Use when the user wants to publish/sync/create 草稿箱 draft from a Markdown article: generate WeChat preview, verify HTML/images/封面, remove external href, use wechat-article-publisher (默认；baoyu-post-to-wechat 为 fallback), save 草稿箱, and hand off final publish review."
 ---
 
 # 微信公众号发布 Workflow
 
 ## Overview
 
-这个 skill 是本 repo 的微信公众号发布 runbook。默认保持 `Markdown source` 作为 canonical source，用 `wechat-article-renderer` 生成 WeChat HTML preview，用 `baoyu-post-to-wechat` 的 CDP/browser 模式把已确认的 HTML 搬运到微信公众号编辑器/草稿箱。
+这个 skill 是本 repo 的微信公众号发布 runbook。默认保持 `Markdown source` 作为 canonical source，用 `wechat-article-renderer` 生成 WeChat HTML preview，用 `wechat-article-publisher` 把已确认的 HTML 搬运到微信公众号编辑器/草稿箱。
 
-本 repo 的自动化主线只维护 CDP/browser 模式。官方 API / remote-api 保留为历史/实验能力，不作为常规发布 workflow；原因是 API 需要白名单出口 IP，且富文本、正文图片、封面素材和字段兼容会带来额外维护成本。
+发布器默认走 `wechat-article-publisher`（Playwright，代码更少、auto-wait 更稳，已验证文章流程 + 正文图片上传 + 草稿保存）。`baoyu-post-to-wechat` 的 CDP 模式保留为 fallback，不再扩展新功能。迁移背景见 [docs/future_plans/playwright-wechat-migration-analysis.md](../../../docs/future_plans/playwright-wechat-migration-analysis.md)。官方 API / remote-api 仍只作为历史/实验能力。
 
 不要把 generated preview、已填好的编辑器页面、或已保存草稿理解成 published。真正发布必须由用户明确确认。
 
@@ -18,7 +18,7 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
 - 文章还在写作/润色阶段：先用 `polish-article`。
 - 文章需要公众号排版：用 `wechat-article-renderer`。
 - 文章包含本地视频素材：先确认视频来自 `video-material-ingest` 素材包，并在发布前确认使用权、插入位置和最终呈现。
-- 用户确认 preview 后要求同步/推送/创建草稿：用 `baoyu-post-to-wechat` 的 browser/CDP 路径。
+- 用户确认 preview 后要求同步/推送/创建草稿：用 `wechat-article-publisher`（默认）；如其失效再回退 `baoyu-post-to-wechat` 的 browser/CDP 路径。
 - 用户要求直接发布：先创建或确认草稿，再请求 explicit final confirmation，之后才能点击发布/群发。
 
 ## 标准流程
@@ -40,11 +40,20 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
    - mobile preview `390-430px` 无 horizontal overflow。
 4. 如需要，打开或刷新本地 preview，常见地址是 `http://localhost:49255/`。
 5. 在触碰微信公众号编辑器前，先让用户确认 preview。
-6. 用 `baoyu-post-to-wechat` 的 browser/CDP 路径填入微信公众号编辑器并创建草稿。默认偏向创建草稿，不直接发布。
-   - CDP 阶段实时读取 `data-local-path` 指向的本地图片；
-   - 上传正文图片到微信公众号；
-   - 将 `<img src>` 替换为微信 CDN URL；
-   - 不把图片 base64 内联进 HTML。
+6. 用 `wechat-article-publisher` 把 preview HTML 填入微信公众号编辑器并创建草稿（默认；失效时回退 `baoyu-post-to-wechat`）。默认偏向创建草稿，不直接发布。
+
+   ```bash
+   uv run python .agents/skills/wechat-article-publisher/scripts/publish.py \
+     --article /absolute/path/to/source/article.md \
+     --html    /absolute/path/to/article.wechat-preview.html --save-draft
+   ```
+
+   - 元数据（标题/作者/摘要/封面）取自 `--article` 的 frontmatter；作者缺省取 `config.toml`（已预填 李玉恒）；
+   - 标题写入可见标题 ProseMirror（同步隐藏 `#title`），正文剔除 hero 大标题避免重复；
+   - 自动读取 `data-local-path` 指向的本地图片；
+   - 串行上传正文图片到微信公众号，等其变成 `mmbiz.qpic.cn` CDN URL 再传下一张/保存；
+   - 不把图片 base64 内联进 HTML；
+   - 封面 best-effort，通常需在草稿箱 final review 时手动设置。
 7. 填入后检查：
    - title、author、summary；
    - 封面可见，上传后指向 WeChat CDN；

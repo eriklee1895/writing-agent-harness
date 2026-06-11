@@ -103,6 +103,10 @@ skills-lock.json
 **/Cookies
 **/Cookies-journal
 
+# PoC screenshots may capture WeChat backend / login state — never commit
+scripts/.poc-artifacts/
+.agents/skills/wechat-article-publisher/scripts/.artifacts/
+
 # Generated outputs and temporary working files
 output/
 tmp/
