@@ -41,6 +41,6 @@ Needs follow-up — content/HTML done & verified; git commit + push to `main` pe
 - 未新增 skill(本流程未达稳定复用阈值;构建工具已随仓库留存)。
 
 ## Git / Task
-- 工作区有大量与本 task 无关的既有改动 → 只 stage 本报告目录,绝不 `git add -A`。
-- `.env` 已忽略;`*.png`/`node_modules`/`qa`/`.local-archive` 已忽略。
-- 待用户确认:`report.html`(2.2MB base64)是否进 git;确认后 commit 到 `main` 并 push。
+- 只 stage 本报告目录,绝不 `git add -A`;`.env`/`*.png`/`node_modules`/`qa`/`.local-archive` 均已忽略。
+- `report.html`(2.2MB base64)已确认进 git。
+- 已合并 merge commit `3c0ecae` 并 push 到 `main`(origin/main 领先一 commit 时先 `git pull --no-rebase` 解决分离,再 push)。
