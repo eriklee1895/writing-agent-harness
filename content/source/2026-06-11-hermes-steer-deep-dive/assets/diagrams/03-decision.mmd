@@ -1,0 +1,29 @@
+flowchart TD
+    S(["进入 apply_pending_steer_to_tool_results"])
+    G1{"num_tool_msgs &lt;= 0<br/>或 messages 为空?"}
+    DR["_drain_pending_steer()"]
+    G2{"drain 出文本?"}
+    SCAN["在尾部窗口内倒序扫描<br/>找最后一条 role==tool 的消息"]
+    G3{"找到目标?"}
+    RESTASH["加锁放回 _pending_steer<br/>(已有则换行拼接)<br/>交给 fallback 路径下轮投递"]
+    MARK["format_steer_marker() 生成 marker"]
+    G4{"content 是字符串?"}
+    STR["字符串直接拼接 marker"]
+    MM["多模态: 复制 blocks 列表<br/>追加 text block(marker.lstrip)"]
+    DONE(["完成, INFO 记录投递"])
+
+    S --> G1
+    G1 -->|"是"| DONE
+    G1 -->|"否"| DR
+    DR --> G2
+    G2 -->|"否 (无 steer)"| DONE
+    G2 -->|"是"| SCAN
+    SCAN --> G3
+    G3 -->|"否"| RESTASH
+    RESTASH --> DONE
+    G3 -->|"是"| MARK
+    MARK --> G4
+    G4 -->|"是"| STR
+    G4 -->|"否"| MM
+    STR --> DONE
+    MM --> DONE

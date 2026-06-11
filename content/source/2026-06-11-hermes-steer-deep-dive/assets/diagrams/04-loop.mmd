@@ -1,0 +1,27 @@
+flowchart TD
+    Start([进入新一轮 loop]) --> PreDrain{{pre-API drain<br/>排空 _pending_steer}}
+    PreDrain -->|有 steer 且找到上一条 tool_result| InjectPre[追加 marker 到该 tool_result 尾部]
+    PreDrain -->|无 steer / 无 tool_result| Skip1[原样放回 buffer]
+    InjectPre --> API
+    Skip1 --> API
+
+    API[发起模型调用 / API call] --> Decide{模型返回什么?}
+    Decide -->|纯文本终态, 无 tool_call| Final([turn 结束<br/>leftover steer 转交下一轮])
+    Decide -->|含 tool_call| Exec[["工具执行<br/>npm install / 测试 / 读写文件<br/>(此处不被 steer 打断)"]]
+
+    Exec --> Budget[enforce_turn_budget 预算截断]
+    Budget --> PostDrain{{post-tool drain<br/>排空 _pending_steer}}
+    PostDrain -->|有 steer| InjectPost[追加 marker 到本批最后一条 tool_result]
+    PostDrain -->|无 steer| Skip2[no-op]
+    InjectPost --> Loop([回到 loop 顶部])
+    Skip2 --> Loop
+    Loop --> PreDrain
+
+    Mid[/用户 mid-turn 发来 steer<br/>写入线程安全 buffer/] -.随时到达, 只入 buffer.-> Bus(( ))
+    Bus -.下一个安全边界才被排空.-> PreDrain
+    Bus -.下一个安全边界才被排空.-> PostDrain
+
+    style Exec fill:#fff,stroke:#333,stroke-width:2px
+    style PreDrain fill:#fff,stroke:#333
+    style PostDrain fill:#fff,stroke:#333
+    style Mid fill:#fff,stroke:#999,stroke-dasharray: 4 3
