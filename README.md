@@ -1,5 +1,7 @@
 # writing-agent-harness
 
+[![GitHub repo](https://img.shields.io/badge/GitHub-eriklee1895%2Fwriting--agent--harness-181717?logo=github)](https://github.com/eriklee1895/writing-agent-harness)
+
 `writing-agent-harness` 是 Erik 的个人 AI 自动化写作 harness。
 
 它不是一个单一写作脚本，也不是 writer bot，而是一套面向写作活动的 agent harness：用项目级 skills、docs runbooks 和可追踪 source，把 Claude Code / Codex / Hermes / OpenClaw / Pi 等 agents 接入 Erik 的写作流程。
@@ -201,6 +203,7 @@ Renderer 支持四种 style preset：`impact-rational`（技术评论/观点文�
 | `polish-article` | 润色打磨，按题材强化逻辑、register、表达质感与作者气质 |
 | `article-readiness-check` | 发布前 readiness 检查，确认正文、frontmatter、引用、图片/视频和渠道 handoff 是否可进入包装 |
 | `article-illustration` | 通用文章生图：水彩插画、信息图、技术图表等多种风格，默认 `--style-profile auto`，Python `uv run` |
+| `wechat-article-fetcher` | 用 Playwright + 本地持久化 Profile 提取微信公众号文章到结构化 Markdown + assets，支持图片落地和交互式登录引导 |
 | `video-material-ingest` | 用 `yt-dlp` 摄取已知视频 URL，生成本地素材包、manifest 和 sources 留痕 |
 | `video-highlight-select` | 人工辅助选择文章相关高光片段，生成 contact sheet、候选片段表和 `article-video-clip` handoff |
 | `article-video-clip` | 从本地视频素材包裁切并轻包装文章视频片段，输出 `final.mp4`、预览帧和 clip manifest |

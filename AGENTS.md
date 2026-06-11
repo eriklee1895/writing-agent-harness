@@ -81,6 +81,7 @@
 - 文章打磨使用 project skill：`polish-article`。
 - 发布前文章 readiness 检查使用 project skill：`article-readiness-check`。
 - 微信公众号 HTML preview 使用 project skill：`wechat-article-renderer`；生成后可用 `node .agents/skills/wechat-article-renderer/scripts/preview-server.mjs <dir>` 本地预览。
+- 微信公众号文章提取使用 project skill：`wechat-article-fetcher`；输入 URL 提取正文、元数据和图片到结构化素材包，支持 `--output-dir content/inbox/articles/` 直接入库。
 - 微信公众号发布流程使用 project skill：`wechat-publish-workflow`；底层上传器当前可复用 `baoyu-post-to-wechat`。
 - 发布或交付后的写作任务收尾使用 project skill：`writing-task-closeout`。
 - 不使用 paid `md2wechat` API。
