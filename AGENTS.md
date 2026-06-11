@@ -75,14 +75,14 @@
 
 ## Current Defaults
 
-- 微信公众号 renderer 支持四种 style：`impact-rational`（技术评论/观点文，默认）、`literary-essay`（个人散文/随笔）、`cultural-essay`（文化现象/城市/音乐/文旅随笔）、`tech-blog`（通用技术博客）。
+- 微信公众号 renderer 支持五种 style：`agent-flow`（纯白底、无卡片、扇形流式排版，技术评论/观点文默认）、`impact-rational`（白底带左边框 hero + 目录/摘要面板的技术评论 style，备用）、`literary-essay`（个人散文/随笔）、`cultural-essay`（文化现象/城市/音乐/文旅随笔）、`tech-blog`（通用技术博客）。默认偏向 `agent-flow`：微信夜间模式会自动反色，带浅色卡片+背景的 style 在暗色下会显得很亮，纯白无卡片排版更稳。
 - 文章插图生成默认使用 `article-illustration --style-profile auto` 按文章气质选择画风。
 - 早期灵感脑暴使用 project skill：`article-ideation`。
 - 文章打磨使用 project skill：`polish-article`。
 - 发布前文章 readiness 检查使用 project skill：`article-readiness-check`。
 - 微信公众号 HTML preview 使用 project skill：`wechat-article-renderer`；生成后可用 `node .agents/skills/wechat-article-renderer/scripts/preview-server.mjs <dir>` 本地预览。
 - 微信公众号文章提取使用 project skill：`wechat-article-fetcher`；输入 URL 提取正文、元数据和图片到结构化素材包，支持 `--output-dir content/inbox/articles/` 直接入库。
-- 微信公众号发布流程使用 project skill：`wechat-publish-workflow`；底层上传器当前可复用 `baoyu-post-to-wechat`。
+- 微信公众号发布流程使用 project skill：`wechat-publish-workflow`；底层上传器默认用 `wechat-article-publisher`（Playwright，已验证文章流程 + 标题/作者/摘要 + 串行正文图片上传 + 草稿保存；封面 best-effort，通常手动），`baoyu-post-to-wechat` CDP 模式降级为 fallback。迁移背景见 [docs/future_plans/playwright-wechat-migration-analysis.md](docs/future_plans/playwright-wechat-migration-analysis.md)。
 - 发布或交付后的写作任务收尾使用 project skill：`writing-task-closeout`。
 - 不使用 paid `md2wechat` API。
 - `docs/superpowers/specs/` 和 `docs/superpowers/plans/` 是 Superpowers 长期文档目录；`.superpowers/` 是 generated scratch，通常忽略。

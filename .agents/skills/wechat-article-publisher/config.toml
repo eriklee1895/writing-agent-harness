@@ -1,0 +1,6 @@
+# wechat-article-publisher 配置（skill 只读，用户手编）
+# 解析优先级：CLI 参数 → 文章 frontmatter → 本配置 → （缺失时）首次运行询问并写回
+# 机器相关项（如 chrome profile 路径）不放这里，用 --profile / 环境变量。
+
+# 默认作者（公众号署名）。恒定身份字段，适合放配置。
+default_author = "李玉恒"
