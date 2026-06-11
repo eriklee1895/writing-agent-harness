@@ -39,9 +39,9 @@ except ImportError:
 
 from playwright.sync_api import sync_playwright
 
-CHROME_PATH = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+CHROME_PATH = os.environ.get("CHROME_EXECUTABLE", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
 if not os.path.exists(CHROME_PATH):
-    print(f"ERROR: Chrome not found at {CHROME_PATH}. Please install Google Chrome.", file=sys.stderr)
+    print(f"ERROR: Chrome not found at {CHROME_PATH}. Please install Google Chrome or set CHROME_EXECUTABLE env var.", file=sys.stderr)
     sys.exit(1)
 
 # ── Constants ──────────────────────────────────────────────────────────
@@ -64,8 +64,8 @@ def generate_slug(url: str, title: str | None = None) -> str:
     biz_match = re.search(r"[?&]biz=([^&]+)", query)
     mid_match = re.search(r"[?&]mid=([^&]+)", query)
     if biz_match and mid_match:
-        biz = biz_match.group(1).rstrip("==")
-        mid = mid_match.group(1)
+        biz = _clean_slug(biz_match.group(1))
+        mid = _clean_slug(mid_match.group(1))
         slug = f"{biz}-{mid}"
     elif title:
         slug = _clean_slug(title)
@@ -165,10 +165,9 @@ def download_images(content_html: str, base_path: Path, no_images: bool) -> tupl
             resp.raise_for_status()
             # Re-evaluate extension from Content-Type if needed
             ext = _ext_from_content_type(resp.headers.get("Content-Type", ""), ext)
-            if ext != local_name.split(".")[-1]:
-                local_name = f"img-{img_index:03d}.{ext}"
-                local_path = assets_dir / local_name
-                rel_path = f"assets/{local_name}"
+            local_name = f"img-{img_index:03d}.{ext}"
+            local_path = assets_dir / local_name
+            rel_path = f"assets/{local_name}"
             local_path.write_bytes(resp.content)
             img["src"] = rel_path
             images.append({
@@ -215,6 +214,15 @@ def _ext_from_content_type(ct: str, fallback: str) -> str:
 def fetch_article(url: str, output_dir: Path, no_images: bool) -> dict[str, Any]:
     USER_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
+    # Validate output directory is writable
+    try:
+        output_dir.mkdir(parents=True, exist_ok=True)
+        test_file = output_dir / ".write_test"
+        test_file.write_text("test")
+        test_file.unlink()
+    except OSError as exc:
+        return error_json("OUTPUT_NOT_WRITABLE", f"Cannot write to output directory: {exc}")
+
     with sync_playwright() as p:
         context = p.chromium.launch_persistent_context(
             user_data_dir=str(USER_DATA_DIR),
@@ -222,64 +230,60 @@ def fetch_article(url: str, output_dir: Path, no_images: bool) -> dict[str, Any]
             headless=False,
             args=["--disable-blink-features=AutomationControlled"],
         )
-        page = context.new_page()
-
-        # Navigate
         try:
-            page.goto(url, wait_until="networkidle", timeout=30000)
-        except Exception as exc:
+            page = context.new_page()
+
+            # Navigate
+            try:
+                page.goto(url, wait_until="networkidle", timeout=30000)
+            except Exception as exc:
+                return error_json("CONTENT_NOT_RENDERED", f"Navigation failed: {exc}")
+
+            # Wait for content or login
+            try:
+                page.wait_for_selector("#js_content", state="visible", timeout=15000)
+            except Exception:
+                # Check for login indicators
+                login_indicators = [
+                    "login", "登录", "扫码", "weui_btn_primary", "btn_login",
+                ]
+                page_text = page.inner_text("body") or ""
+                has_login = any(ind in page_text for ind in login_indicators)
+
+                if has_login:
+                    print("未检测到微信登录态。请在弹出的浏览器窗口中登录（扫码或密码），完成后按回车继续...")
+                    try:
+                        input()
+                    except EOFError:
+                        return error_json("LOGIN_FAILED", "Non-interactive environment: cannot prompt for login. Please login manually in Chrome first.")
+                    page.reload()
+                    try:
+                        page.wait_for_selector("#js_content", state="visible", timeout=15000)
+                    except Exception:
+                        return error_json("LOGIN_FAILED", "Login attempted but content still unavailable.")
+                else:
+                    # Check for other error states
+                    body_text = page.inner_text("body") or ""
+                    if "验证码" in body_text or "captcha" in body_text.lower():
+                        return error_json("VERIFICATION_REQUIRED", "Verification or captcha required.")
+                    if "删除" in body_text or "not found" in body_text.lower() or "404" in body_text:
+                        return error_json("ARTICLE_DELETED", "Article appears deleted or not found.")
+                    return error_json("CONTENT_NOT_RENDERED", "#js_content not found after timeout.")
+
+            # Extract metadata
+            meta = extract_metadata(page)
+            title = meta.get("title") or "Untitled"
+            account = meta.get("account") or ""
+            publish_time = meta.get("publish_time") or ""
+
+            # Extract content
+            content_el = page.query_selector("#js_content")
+            if not content_el:
+                return error_json("CONTENT_NOT_RENDERED", "#js_content disappeared after initial detection.")
+
+            raw_html = content_el.inner_html()
+        finally:
             context.close()
-            return error_json("CONTENT_NOT_RENDERED", f"Navigation failed: {exc}")
-
-        # Wait for content or login
-        try:
-            page.wait_for_selector("#js_content", timeout=15000)
-        except Exception:
-            # Check for login indicators
-            login_indicators = [
-                "login", "登录", "扫码", "weui_btn_primary", "btn_login",
-            ]
-            page_text = page.inner_text("body") or ""
-            has_login = any(ind in page_text for ind in login_indicators)
-
-            if has_login:
-                print("未检测到微信登录态。请在弹出的浏览器窗口中登录（扫码或密码），完成后按回车继续...")
-                try:
-                    input()
-                except EOFError:
-                    pass
-                page.reload()
-                try:
-                    page.wait_for_selector("#js_content", timeout=15000)
-                except Exception:
-                    context.close()
-                    return error_json("LOGIN_FAILED", "Login attempted but content still unavailable.")
-            else:
-                # Check for other error states
-                body_text = page.inner_text("body") or ""
-                if "验证码" in body_text or "captcha" in body_text.lower():
-                    context.close()
-                    return error_json("VERIFICATION_REQUIRED", "Verification or captcha required.")
-                if "删除" in body_text or "not found" in body_text.lower() or "404" in body_text:
-                    context.close()
-                    return error_json("ARTICLE_DELETED", "Article appears deleted or not found.")
-                context.close()
-                return error_json("CONTENT_NOT_RENDERED", "#js_content not found after timeout.")
-
-        # Extract metadata
-        meta = extract_metadata(page)
-        title = meta.get("title") or "Untitled"
-        account = meta.get("account") or ""
-        publish_time = meta.get("publish_time") or ""
-
-        # Extract content
-        content_el = page.query_selector("#js_content")
-        if not content_el:
-            context.close()
-            return error_json("CONTENT_NOT_RENDERED", "#js_content disappeared after initial detection.")
-
-        raw_html = content_el.inner_html()
-        context.close()
 
     # HTML pre-cleaning
     cleaned_html = pre_clean_html(raw_html)
