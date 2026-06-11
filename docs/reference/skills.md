@@ -63,6 +63,12 @@
   - 默认支持 `--style-profile auto`，但正式文章出图时应优先明确指定风格。
   - Guide 和历史优质生图案例见 [article-illustration/README.md](article-illustration/README.md)。
 
+- `wechat-article-fetcher`
+  - 用 Playwright + 本地持久化 Profile 提取微信公众号文章到结构化 Markdown + assets。
+  - 输入 URL 输出 `article.md` + `manifest.json` + `sources.md` + `assets/`，支持图片落地和交互式首次登录引导。
+  - CLI 参数：`--output-dir`（默认 `./wechat-articles/`）、`--no-images`（跳过图片下载）。
+  - 已验证 4/4 真实 URL 成功提取，无验证码触发。CDP 路线因进程管理复杂未采用。
+
 - `baoyu-post-to-wechat`
   - 当前作为底层微信公众号上传器使用，只维护 browser/CDP 主路径。
   - API / remote-api 仅作为历史/实验能力保留，不作为本 repo 的常规自动化路线。
