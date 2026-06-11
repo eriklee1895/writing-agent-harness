@@ -1,0 +1,22 @@
+{
+  "title": "Codex Steer Architecture",
+  "brief": "Codex 用 Rust 写的四层架构图,展示 steer 请求自上而下的路径。从上到下四个清晰层块:第一层 TUI codex-tui,Enter 发起 steer,Tab 排队,三态队列;第二层 App Server,turn/steer 请求处理与校验;第三层 App-Server-Protocol,TurnSteerParams 线协议含 input 与 expected_turn_id;第四层 Core codex-core,Session steer_input 校验链到 InputQueue pending_input 到 turn loop drain。层间箭头表示 steer 调用向下传递。右侧一条竖向标注 安全边界:turn loop 在工具或模型边界 drain pending_input。干净的仓库架构风,清晰块克制装饰,明确层级与依赖标签,中英文。",
+  "content_type": "repo architecture diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "repo-architecture-clean",
+  "resolved_style_profile": "repo-architecture-clean",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Codex Steer Architecture'. Diagram type: repo architecture diagram. Use a clean repository architecture diagram, crisp blocks, restrained decoration, clear ownership and dependency labels. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\nCodex 用 Rust 写的四层架构图,展示 steer 请求自上而下的路径。从上到下四个清晰层块:第一层 TUI codex-tui,Enter 发起 steer,Tab 排队,三态队列;第二层 App Server,turn/steer 请求处理与校验;第三层 App-Server-Protocol,TurnSteerParams 线协议含 input 与 expected_turn_id;第四层 Core codex-core,Session steer_input 校验链到 InputQueue pending_input 到 turn loop drain。层间箭头表示 steer 调用向下传递。右侧一条竖向标注 安全边界:turn loop 在工具或模型边界 drain pending_input。干净的仓库架构风,清晰块克制装饰,明确层级与依赖标签,中英文。",
+  "created_at": "2026-06-11T19:37:06",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/codex-steer-report/content/drafts/2026-06-11-codex-steer/assets/20260611-193547-codex-steer-architecture.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

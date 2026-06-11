@@ -1,0 +1,22 @@
+{
+  "title": "Codex vs Hermes Two Paths",
+  "brief": "并排双架构对比大图,主题 实现 mid-turn steer 的两条哲学路线。左半 Codex 协议优先加分离消息:turn/steer RPC、expected_turn_id 前置校验、turn-scoped pending_input 队列、async 并发、steer 作为独立 user 消息进入历史;核心顾虑 多客户端一致性。右半 Hermes 进程内加 marker 内联:agent.steer 写 _pending_steer 加 threading.Lock、多点 drain、追加到最后 tool result 的 OUT-OF-BAND marker、线程并发;核心顾虑 prompt cache 命中与 role 交替。中间一条共同基线 两者都在工具或模型边界注入,不打断 in-flight 不破坏 tool 配对。清晰对称布局,左右各一个标题与要点列表,冷静专业科技配色,中英文标签清晰。",
+  "content_type": "architecture diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-2k",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Codex vs Hermes Two Paths'. Diagram type: architecture diagram. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-2k. Mode: text-only. Content brief:\n并排双架构对比大图,主题 实现 mid-turn steer 的两条哲学路线。左半 Codex 协议优先加分离消息:turn/steer RPC、expected_turn_id 前置校验、turn-scoped pending_input 队列、async 并发、steer 作为独立 user 消息进入历史;核心顾虑 多客户端一致性。右半 Hermes 进程内加 marker 内联:agent.steer 写 _pending_steer 加 threading.Lock、多点 drain、追加到最后 tool result 的 OUT-OF-BAND marker、线程并发;核心顾虑 prompt cache 命中与 role 交替。中间一条共同基线 两者都在工具或模型边界注入,不打断 in-flight 不破坏 tool 配对。清晰对称布局,左右各一个标题与要点列表,冷静专业科技配色,中英文标签清晰。",
+  "created_at": "2026-06-11T19:37:21",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/codex-steer-report/content/drafts/2026-06-11-codex-steer/assets/20260611-193547-codex-vs-hermes-two-paths.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
