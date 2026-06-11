@@ -175,7 +175,7 @@ const STYLE_LABELS = {
 
 // ── Shared constants ─────────────────────────────────────────────
 const SAFE_WRAP = "box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word;";
-const DEFAULT_STYLE = "impact-rational";
+const DEFAULT_STYLE = "agent-flow";
 const SUPPORTED_STYLES = new Set(Object.keys(STYLE_TOKENS));
 let IMAGE_BASE_DIR = process.cwd();
 let ACTIVE_STYLE = DEFAULT_STYLE;
@@ -314,16 +314,20 @@ function parseBlocks(markdown) {
       continue;
     }
 
-    if (/^```/.test(trimmed)) {
-      const fence = trimmed;
+    const fenceOpen = trimmed.match(/^(`{3,})/);
+    if (fenceOpen) {
+      // Closing fence is a run of backticks at least as long as the opener,
+      // with no trailing content (info string only allowed on the opener).
+      const closeRe = new RegExp(`^\`{${fenceOpen[1].length},}\\s*$`);
+      const lang = trimmed.slice(fenceOpen[1].length).trim().split(/\s+/)[0] || "";
       const code = [];
       i += 1;
-      while (i < lines.length && lines[i].trim() !== fence) {
+      while (i < lines.length && !closeRe.test(lines[i].trim())) {
         code.push(lines[i]);
         i += 1;
       }
       i += 1;
-      blocks.push({ type: "code", text: code.join("\n") });
+      blocks.push({ type: "code", lang, text: code.join("\n") });
       continue;
     }
 
@@ -629,7 +633,7 @@ function tableHtml(block) {
   const rows = block.rows.map((row, index) => (
     `<tr>${row.map((cell, cellIndex) => `<td style="${SAFE_WRAP} border:1px solid rgba(74,124,155,.14); padding:12px 10px; font-size:14px; line-height:1.75; color:${cellIndex === 0 ? tokens.blue : tokens.text}; font-weight:${cellIndex === 0 ? "700" : "400"}; background:${index % 2 === 0 ? "#ffffff" : "#f8fbfc"}; vertical-align:top;">${inline(cell)}</td>`).join("")}</tr>`
   )).join("");
-  return `<div style="${SAFE_WRAP} overflow-x:auto; margin:4px 0 20px; border:1px solid rgba(74,124,155,.16); border-radius:10px; background:#ffffff;">
+  return `<div style="${SAFE_WRAP} overflow-x:auto; margin:4px 0 20px;">
   <table style="${SAFE_WRAP} border-collapse:collapse; width:100%; table-layout:fixed;">
     ${colgroup}
     <thead><tr>${headers}</tr></thead>
@@ -638,8 +642,82 @@ function tableHtml(block) {
 </div>`;
 }
 
+// Syntax highlight palette (inline styles — WeChat strips classes & <style> blocks).
+const CODE_COLORS = {
+  base: "#e6edf3",
+  comment: "#8b949e",
+  string: "#a5d6ff",
+  number: "#79c0ff",
+  keyword: "#ff7b72",
+  literal: "#79c0ff",
+  type: "#ffa657",
+  func: "#d2a8ff",
+};
+const CODE_KEYWORDS = new Set([
+  // rust
+  "fn","let","mut","pub","async","await","match","return","struct","enum","impl","use","mod","crate","as","ref","move","where","trait","dyn","unsafe","loop",
+  // python
+  "def","class","elif","with","import","from","try","except","finally","raise","lambda","yield","pass","global","nonlocal","and","or","not","is","del","assert","in",
+  // shared control / js / ts
+  "if","else","for","while","break","continue","function","var","const","static","new","this","export","default","typeof","instanceof","case","switch","throw","catch","do","void","extends","super","public","private","protected","interface","type",
+]);
+const CODE_LITERALS = new Set(["true","false","null","undefined","None","True","False","self","Self","Some","Ok","Err"]);
+
+function codeCommentLeaders(lang) {
+  const l = (lang || "").toLowerCase();
+  if (["python","py","bash","sh","shell","zsh","yaml","yml","ruby","rb","toml","ini","makefile","dockerfile","conf","r"].includes(l)) return ["#"];
+  if (["rust","rs","js","javascript","jsx","ts","typescript","tsx","go","c","cpp","h","java","json","jsonc","swift","kotlin","kt","scala","php"].includes(l)) return ["//"];
+  return ["//", "#"]; // unknown / plain fences (ASCII flows, daemon examples)
+}
+
+function highlightCodeLine(line, leaders) {
+  let out = "";
+  let i = 0;
+  const n = line.length;
+  while (i < n) {
+    const ch = line[i];
+    const leader = leaders.find((cl) => line.startsWith(cl, i));
+    if (leader) { // line comment → end of line
+      out += `<span style="color:${CODE_COLORS.comment};">${escapeHtml(line.slice(i))}</span>`;
+      break;
+    }
+    if (ch === '"' || ch === "'" || ch === "`") { // string literal
+      let j = i + 1;
+      while (j < n) { if (line[j] === "\\") { j += 2; continue; } if (line[j] === ch) { j += 1; break; } j += 1; }
+      out += `<span style="color:${CODE_COLORS.string};">${escapeHtml(line.slice(i, j))}</span>`;
+      i = j; continue;
+    }
+    if (/\d/.test(ch) && !/[A-Za-z_]/.test(line[i - 1] || "")) { // number
+      const m = /^\d[\d_]*(?:\.[\d_]+)?/.exec(line.slice(i));
+      out += `<span style="color:${CODE_COLORS.number};">${escapeHtml(m[0])}</span>`;
+      i += m[0].length; continue;
+    }
+    if (/[A-Za-z_$]/.test(ch)) { // identifier / keyword / type / call
+      const w = /^[A-Za-z_$][A-Za-z0-9_$]*/.exec(line.slice(i))[0];
+      let color = null;
+      if (CODE_KEYWORDS.has(w)) color = CODE_COLORS.keyword;
+      else if (CODE_LITERALS.has(w)) color = CODE_COLORS.literal;
+      else if (/^[A-Z]/.test(w)) color = CODE_COLORS.type;
+      else { let k = i + w.length; while (k < n && line[k] === " ") k += 1; if (line[k] === "(") color = CODE_COLORS.func; }
+      out += color ? `<span style="color:${color};">${escapeHtml(w)}</span>` : escapeHtml(w);
+      i += w.length; continue;
+    }
+    out += escapeHtml(ch); // punctuation / spaces
+    i += 1;
+  }
+  return out;
+}
+
 function codeHtml(block) {
-  return `<pre class="dark-code" style="${SAFE_WRAP} white-space:pre-wrap; background:#1f252c; color:#f4f7f8; border-radius:10px; padding:14px 16px; font-size:13px; line-height:1.75; margin:0 0 18px;"><code>${escapeHtml(block.text)}</code></pre>`;
+  // WeChat collapses \n and leading whitespace inside <pre>; emit <br> + &nbsp; so
+  // line breaks and indentation survive the paste, with inline-styled highlighting.
+  const leaders = codeCommentLeaders(block.lang);
+  const body = block.text.split("\n").map((line) => {
+    const lead = (line.match(/^[ \t]*/) || [""])[0];
+    const indent = "&nbsp;".repeat(lead.replace(/\t/g, "    ").length);
+    return indent + highlightCodeLine(line.slice(lead.length), leaders);
+  }).join("<br>");
+  return `<section class="dark-code" style="${SAFE_WRAP} overflow-x:auto; background:#1f252c; color:${CODE_COLORS.base}; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.7; font-family:'SF Mono',SFMono-Regular,ui-monospace,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace; margin:0 0 18px;">${body}</section>`;
 }
 
 function blockHtml(block) {

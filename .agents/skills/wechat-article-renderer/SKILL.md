@@ -48,7 +48,7 @@ node {baseDir}/scripts/render-wechat-article.mjs /absolute/path/to/article.md /a
 3. Open or refresh the preview in a browser, preferably with a mobile-width check around 390-430px.
 4. Verify no horizontal overflow, cropped cards, missing images, raw Markdown syntax, TODO/TBD text, or unreadable long links/code.
 5. Iterate on the renderer or Markdown only if the visual result needs improvement.
-6. When the user approves, publish or sync using `baoyu-post-to-wechat` if requested.
+6. When the user approves, publish or sync using `wechat-article-publisher`（默认；或 `wechat-publish-workflow` 编排）if requested.
 
 ## Style Presets
 
@@ -86,7 +86,7 @@ When a WeChat article needs a new cover image, prefer the system `$imagegen` ski
 
 This skill creates reviewable HTML. Do not assume the article is published.
 
-For WeChat draft publishing, use `baoyu-post-to-wechat` after the user confirms the preview. If the user wants to paste manually, provide the generated HTML path and the preview URL/file path.
+For WeChat draft publishing, use `wechat-article-publisher`（默认，Playwright；`wechat-publish-workflow` 编排）after the user confirms the preview. If the user wants to paste manually, provide the generated HTML path and the preview URL/file path.
 
 ## Validation Checklist
 
