@@ -1,0 +1,14 @@
+{
+  "name": "hermes-steer-report-build",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
+    "gsap": "^3.12.5",
+    "highlight.js": "^11.9.0",
+    "marked": "^12.0.2",
+    "marked-highlight": "^2.1.1",
+    "puppeteer-core": "^23.11.1"
+  }
+}

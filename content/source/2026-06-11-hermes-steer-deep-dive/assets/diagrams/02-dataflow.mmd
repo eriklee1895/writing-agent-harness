@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant U as 用户 (CLI/UI 线程)
+    participant C as cli.process_command
+    participant A as agent.steer()
+    participant B as _pending_steer 加锁槽位
+    participant L as agent 执行循环
+    participant D as drain + 注入
+    participant M as 模型 (下次 API 调用)
+
+    U->>C: 输入 /steer 文本
+    C->>A: agent 运行中, 直接调用 steer(payload)
+    A->>B: strip 后加锁写入 (已有则换行拼接)
+    Note over L: 模型思考 / 工具执行进行中
+    L->>D: 到达 drain 点 (pre-API 或 post-tool)
+    D->>B: _drain_pending_steer() 读出并清空
+    D->>D: 倒序找最后一条 role==tool 的消息
+    D->>D: format_steer_marker() 包裹后追加到末尾
+    D->>M: 下一次 API 调用携带改写后的 tool result
+    M-->>U: 据此调整后续动作
