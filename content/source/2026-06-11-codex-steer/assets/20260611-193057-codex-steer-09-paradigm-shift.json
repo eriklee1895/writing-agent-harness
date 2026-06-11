@@ -1,0 +1,22 @@
+{
+  "title": "codex-steer-09-paradigm-shift",
+  "brief": "概念氛围图,表达从单一聊天对话到 Agent 任务控制台的范式转变。画面隐喻:左侧一个简单的对话气泡逐渐演化延展为右侧一个像任务控制中心 mission control 的操作台,台上有多条正在运行的任务轨迹和一个可随时微调方向的控制旋钮或方向盘。冷静克制有纵深的光影,工程感与未来感,不要任何文字或标签,纯视觉隐喻。",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "cinematic-editorial",
+  "resolved_style_profile": "cinematic-editorial",
+  "size": "blog-banner",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'codex-steer-09-paradigm-shift'. Style: cinematic editorial still, dramatic but natural lighting, grounded scene details, documentary-like framing with an illustrative finish, no text labels, no diagrams. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a body illustration inside a WeChat article read on mobile phones (~390px wide). Compose for narrow-width readability. Use generous negative space. Language/region: zh. Target aspect ratio: blog-banner. Mode: text-only. Brief:\n概念氛围图,表达从单一聊天对话到 Agent 任务控制台的范式转变。画面隐喻:左侧一个简单的对话气泡逐渐演化延展为右侧一个像任务控制中心 mission control 的操作台,台上有多条正在运行的任务轨迹和一个可随时微调方向的控制旋钮或方向盘。冷静克制有纵深的光影,工程感与未来感,不要任何文字或标签,纯视觉隐喻。",
+  "created_at": "2026-06-11T19:31:33",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/codex-steer-report/content/drafts/2026-06-11-codex-steer/assets/20260611-193057-codex-steer-09-paradigm-shift.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

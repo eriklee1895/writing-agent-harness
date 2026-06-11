@@ -1,0 +1,22 @@
+{
+  "title": "codex-steer-cover",
+  "brief": "封面 hero。主标题用醒目大字渲染英文单词 STEER,副标题小字 边跑边转向 · mid-turn steering。核心视觉隐喻:一条横向的 agent 长任务流水线,由若干节点组成(model 思考 → tool 调用 → result 结果 → 再 model),在两个节点之间的边界处,一条来自用户的新指令像方向盘输入一样被注入,使后续路径平滑地转向一个新方向;用一个清晰的箭头表示这是在'安全边界'注入,而不是从中间打断。冷静专业的工程科技配色:深色背景加一个强调色(青或琥珀)。构图大量留白,只保留 STEER 主标题和极少量英文小标签(model/tool/result/steer),不要堆满文字,要像一张高级技术报告头图。",
+  "content_type": "WeChat article cover",
+  "content_category": "cover",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "blog-banner",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'codex-steer-cover'. Diagram type: WeChat article cover. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: blog-banner. Mode: text-only. Content brief:\n封面 hero。主标题用醒目大字渲染英文单词 STEER,副标题小字 边跑边转向 · mid-turn steering。核心视觉隐喻:一条横向的 agent 长任务流水线,由若干节点组成(model 思考 → tool 调用 → result 结果 → 再 model),在两个节点之间的边界处,一条来自用户的新指令像方向盘输入一样被注入,使后续路径平滑地转向一个新方向;用一个清晰的箭头表示这是在'安全边界'注入,而不是从中间打断。冷静专业的工程科技配色:深色背景加一个强调色(青或琥珀)。构图大量留白,只保留 STEER 主标题和极少量英文小标签(model/tool/result/steer),不要堆满文字,要像一张高级技术报告头图。",
+  "created_at": "2026-06-11T19:27:31",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/codex-steer-report/content/drafts/2026-06-11-codex-steer/assets/20260611-192628-codex-steer-cover.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
