@@ -19,9 +19,9 @@
 ## Optional Runtime
 
 - Bun
-  - `baoyu-post-to-wechat` 的 CDP 上传器脚本使用 Bun，或通过 `npx -y bun` 临时运行。
+  - （历史：`baoyu-post-to-wechat` CDP 上传器脚本使用 Bun；自建 `wechat-article-publisher` 后对 Bun 的 hard dependency 已解除，API 模式也不再维护。）
 - Chrome / Chromium
-  - 微信公众号草稿箱同步依赖 browser / CDP 模式。
+  - 微信公众号草稿箱同步由 `wechat-article-publisher`（Playwright）驱动。
 - yt-dlp
   - `video-material-ingest` 使用本机 `yt-dlp` 抓取 YouTube / Bilibili / Douyin 等已知视频 URL。
   - 需要登录态的平台依赖本机浏览器状态，默认命令使用 `--cookies-from-browser chrome`。
@@ -53,7 +53,7 @@
 - `article-illustration`
 - `wechat-article-renderer`
 - `wechat-publish-workflow`
-- `baoyu-post-to-wechat`
+- `wechat-article-publisher`
 
 标准安装方式：
 

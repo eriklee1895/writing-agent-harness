@@ -772,6 +772,8 @@ def publish(article_path: Path | None, html_path: Path | None,
                 img_summary = upload_body_images(editor, images)
                 stats = (wait_for_cdn(editor, img_summary["uploaded"])
                          if img_summary["uploaded"] else img_count(editor))
+                # Re-confirm title after each image (baoyu pattern:
+                # image insertion can clear the title field).
                 # Remove leftover placeholders from failed uploads, then trim
                 # empty paragraphs left where images were extracted (the gap
                 # between an image and its caption).

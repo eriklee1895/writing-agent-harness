@@ -75,7 +75,7 @@ flowchart LR
 | 视频高光选择 | `video-highlight-select` | 本地素材包 + 文章意图 | contact sheet + 候选片段表 |
 | 文章视频剪辑 | `article-video-clip` | 已确认片段 + preset | `assets/video-clips/<slug>/final.mp4` |
 | 排版渲染 | `wechat-article-renderer` | article.md + assets | `.wechat-preview.html` |
-| 发布草稿 | `wechat-publish-workflow` → `baoyu-post-to-wechat` | HTML + 元数据 | 草稿箱 (appmsgid) |
+| 发布草稿 | `wechat-publish-workflow` → `wechat-article-publisher` | HTML + 元数据 | 草稿箱 (appmsgid) |
 | 最终发布 | 👤 人工 review | 草稿箱 | 群发 |
 
 ## 渲染器风格

@@ -1,4 +1,6 @@
 # 项目愿景
+**GitHub:** [eriklee1895/writing-agent-harness](https://github.com/eriklee1895/writing-agent-harness)
+
 
 `writing-agent-harness` 是 Erik 的个人 AI 自动化写作 harness。
 

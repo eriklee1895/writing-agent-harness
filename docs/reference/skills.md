@@ -69,11 +69,11 @@
   - CLI 参数：`--output-dir`（默认 `./wechat-articles/`）、`--no-images`（跳过图片下载）。
   - 已验证 4/4 真实 URL 成功提取，无验证码触发。CDP 路线因进程管理复杂未采用。
 
-- `baoyu-post-to-wechat`
-  - 当前作为底层微信公众号上传器使用，只维护 browser/CDP 主路径。
-  - API / remote-api 仅作为历史/实验能力保留，不作为本 repo 的常规自动化路线。
-  - 不负责本文 repo 的排版风格。
-  - 后续可以把常用子集蒸馏成 project-specific uploader。
+- `wechat-article-publisher`
+  - Playwright 微信公众号发布器，替换 `baoyu-post-to-wechat` CDP 模式。
+  - 输入 source `.md`（frontmatter 元数据权威源）+ renderer HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 `appmsgid`。
+  - 仅创建草稿，不点发布/群发。不负责排版风格（由 `wechat-article-renderer` 负责）。
+  - 迁移背景与对比数据见 [docs/future_plans/playwright-wechat-migration-analysis.md](../future_plans/playwright-wechat-migration-analysis.md)。
 
 ## Language
 
