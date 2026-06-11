@@ -1,0 +1,22 @@
+{
+  "title": "Steer vs Queue vs Interrupt",
+  "brief": "技术信息图,横向三栏对比 agent 运行中三种用户干预原语。第一栏 STEER 转方向盘:方向盘图标;含义 修改当前任务方向;生效 尽快在下一个工具或模型边界注入当前 turn;适合 纠偏、补充约束。第二栏 QUEUE 下个路口:路口红绿灯图标;含义 安排下一个任务;生效 当前任务结束后;适合 后续独立需求。第三栏 INTERRUPT 急刹车:刹车图标;含义 终止当前任务;生效 立即;适合 方向完全错误需重来。每栏一个清晰图标加三行短标签(含义/生效/适合)。冷静专业科技配色,清晰信息层级,中英文标签简洁。",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Steer vs Queue vs Interrupt'. Diagram type: article illustration. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\n技术信息图,横向三栏对比 agent 运行中三种用户干预原语。第一栏 STEER 转方向盘:方向盘图标;含义 修改当前任务方向;生效 尽快在下一个工具或模型边界注入当前 turn;适合 纠偏、补充约束。第二栏 QUEUE 下个路口:路口红绿灯图标;含义 安排下一个任务;生效 当前任务结束后;适合 后续独立需求。第三栏 INTERRUPT 急刹车:刹车图标;含义 终止当前任务;生效 立即;适合 方向完全错误需重来。每栏一个清晰图标加三行短标签(含义/生效/适合)。冷静专业科技配色,清晰信息层级,中英文标签简洁。",
+  "created_at": "2026-06-11T19:37:02",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/codex-steer-report/content/drafts/2026-06-11-codex-steer/assets/20260611-193547-steer-vs-queue-vs-interrupt.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

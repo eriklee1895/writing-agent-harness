@@ -1,0 +1,22 @@
+{
+  "title": "The Mid-Turn Injection Problem",
+  "brief": "技术示意图,主题 中途注入的三道关卡:为什么不能随便把消息插进正在运行的 turn。中间一条 agent 运行流 model 到 tool 到 result,上方一条用户的新指令要注入。三个虚线容器表示三道必须守住的关卡:关卡一 Tool-call 配对完整性,tool call 与 tool result 必须成对不能被中途打乱;关卡二 Prompt cache 命中,注入点要尽量不破坏已缓存前缀;关卡三 模型归因,模型必须把它当用户指令而不是工具输出也不是 prompt injection。强调注入只能发生在 安全边界,即下一次模型调用前。柔和学术科技风,虚线分组容器,中英文简洁标签。",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "soft-tech-diagram",
+  "resolved_style_profile": "soft-tech-diagram",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'The Mid-Turn Injection Problem'. Diagram type: article illustration. Use a soft technical diagram, subtle dashed containers, layered modules, light academic visual language. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\n技术示意图,主题 中途注入的三道关卡:为什么不能随便把消息插进正在运行的 turn。中间一条 agent 运行流 model 到 tool 到 result,上方一条用户的新指令要注入。三个虚线容器表示三道必须守住的关卡:关卡一 Tool-call 配对完整性,tool call 与 tool result 必须成对不能被中途打乱;关卡二 Prompt cache 命中,注入点要尽量不破坏已缓存前缀;关卡三 模型归因,模型必须把它当用户指令而不是工具输出也不是 prompt injection。强调注入只能发生在 安全边界,即下一次模型调用前。柔和学术科技风,虚线分组容器,中英文简洁标签。",
+  "created_at": "2026-06-11T19:37:13",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/codex-steer-report/content/drafts/2026-06-11-codex-steer/assets/20260611-193547-the-mid-turn-injection-problem.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
