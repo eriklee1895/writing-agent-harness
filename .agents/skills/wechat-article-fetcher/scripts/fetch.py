@@ -21,6 +21,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
+import html as html_mod
 import requests
 
 # ── Startup dependency checks ──────────────────────────────────────────
@@ -57,6 +58,39 @@ def error_json(error_code: str, message: str) -> dict[str, Any]:
 
 # ── Slug generation ────────────────────────────────────────────────────
 
+def normalize_wechat_url(raw: str) -> str:
+    """Normalize a pasted WeChat article URL.
+    Handles zsh backslash escapes, HTML entities, quote wrappers, bare hostnames.
+    """
+    s = str(raw or "").strip()
+    if not s:
+        return s
+
+    # Strip wrapping quotes / angle brackets
+    if (s.startswith('"') and s.endswith('"')) or (s.startswith("'") and s.endswith("'")):
+        s = s[1:-1].strip()
+    if s.startswith("<") and s.endswith(">"):
+        s = s[1:-1].strip()
+
+    # Remove backslash escapes before URL-significant characters
+    s = re.sub(r"\\+([:/&?=#%])", r"\1", s)
+
+    # Decode HTML entities
+    s = html_mod.unescape(s)
+
+    # Allow bare hostnames
+    if s.startswith("mp.weixin.qq.com/") or s.startswith("//mp.weixin.qq.com/"):
+        s = "https://" + s.lstrip("/")
+
+    # Force https for mp.weixin.qq.com
+    parsed = urlparse(s)
+    if parsed.scheme in ("http", "https") and (parsed.hostname or "").lower() == "mp.weixin.qq.com":
+        from urllib.parse import urlunparse
+        s = urlunparse(("https", "mp.weixin.qq.com", parsed.path, parsed.params, parsed.query, parsed.fragment))
+
+    return s
+
+
 def generate_slug(url: str, title: str | None = None) -> str:
     """Generate a URL-safe slug from URL params or title."""
     parsed = urlparse(url)
@@ -83,22 +117,30 @@ def _clean_slug(text: str) -> str:
 # ── HTML pre-cleaning ──────────────────────────────────────────────────
 
 def pre_clean_html(html: str) -> str:
-    """Fix <pre> blocks where <p> tags are used for line breaks."""
-    def replace_pre(match: re.Match) -> str:
-        pre_content = match.group(1)
-        # Replace <p>...</p> with content + \n
-        pre_content = re.sub(r"<p[^>]*>(.*?)</p>", r"\1\n", pre_content, flags=re.DOTALL)
-        # Clean up extra newlines
-        pre_content = re.sub(r"\n\n+", "\n", pre_content)
-        return f"<pre>{pre_content}</pre>"
+    """Pre-process HTML before markdownify: fix <pre> blocks, remove noise elements."""
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(html, "html.parser")
 
-    return re.sub(r"<pre[^>]*>(.*?)</pre>", replace_pre, html, flags=re.DOTALL)
+    # Remove noise elements
+    for sel in ("script", "style", ".qr_code_pc", ".reward_area"):
+        for tag in soup.select(sel):
+            tag.decompose()
+
+    # Fix <pre> blocks where <p> tags are used for line breaks
+    for pre in soup.find_all("pre"):
+        for p in pre.find_all("p"):
+            p.replace_with(f"{p.get_text()}\n")
+
+    return str(soup)
 
 # ── Markdown post-cleaning ─────────────────────────────────────────────
 
 def post_clean_markdown(md: str) -> str:
-    """Compress consecutive blank lines to exactly two."""
-    return re.sub(r"\n{3,}", "\n\n", md)
+    """Post-process Markdown: clean nbsp, trailing whitespace, compress blank lines."""
+    md = md.replace(" ", " ")
+    md = re.sub(r"[ \t]+$", "", md, flags=re.MULTILINE)
+    md = re.sub(r"\n{3,}", "\n\n", md)
+    return md
 
 # ── Metadata extraction ────────────────────────────────────────────────
 
@@ -116,13 +158,12 @@ def extract_metadata(page) -> dict[str, str]:
     if time_el:
         meta["publish_time"] = time_el.inner_text().strip()
     else:
-        # Fallback 1: extract var ct from page content
-        ct_match = re.search(r'var\s+ct\s*=\s*["\']?(\d+)["\']?', page.content())
-        if ct_match:
-            ts = int(ct_match.group(1))
-            meta["publish_time"] = datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+        html = page.content()
+        ts = _extract_create_time(html)
+        if ts:
+            meta["publish_time"] = _format_timestamp(ts)
         else:
-            # Fallback 2: meta tags
+            # Final fallback: meta tags
             meta["publish_time"] = page.evaluate("""
                 () => {
                     const el = document.querySelector('meta[name="publish_time"]') ||
@@ -132,6 +173,38 @@ def extract_metadata(page) -> dict[str, str]:
             """)
 
     return meta
+
+
+def _extract_create_time(html: str) -> int | None:
+    """Extract Unix timestamp from WeChat article HTML (multiple formats)."""
+    # JsDecode format
+    m = re.search(r"create_time\s*:\s*JsDecode\('([^']+)'\)", html)
+    if m:
+        try:
+            return int(m.group(1))
+        except ValueError:
+            pass
+    # Single-quoted number
+    m = re.search(r"create_time\s*:\s*'(\d+)'", html)
+    if m:
+        return int(m.group(1))
+    # Unquoted or double-quoted, with colon or equals
+    m = re.search(r'create_time\s*[:=]\s*["\']?(\d+)["\']?', html)
+    if m:
+        return int(m.group(1))
+    # Legacy var ct
+    m = re.search(r'var\s+ct\s*=\s*["\']?(\d+)["\']?', html)
+    if m:
+        return int(m.group(1))
+    return None
+
+
+def _format_timestamp(ts: int) -> str:
+    """Unix timestamp (seconds) -> 'YYYY-MM-DD HH:mm:ss' (Asia/Shanghai, UTC+8)."""
+    from datetime import timedelta
+    tz = timezone(timedelta(hours=8))
+    dt = datetime.fromtimestamp(ts, tz=tz)
+    return dt.strftime("%Y-%m-%d %H:%M:%S")
 
 # ── Image handling ─────────────────────────────────────────────────────
 
@@ -355,7 +428,14 @@ def main() -> int:
     parser.add_argument("--no-images", action="store_true", help="Skip image download")
     args = parser.parse_args()
 
-    result = fetch_article(args.url, args.output_dir, args.no_images)
+    normalized_url = normalize_wechat_url(args.url)
+    if normalized_url != args.url:
+        print("已自动清理 URL 中的转义字符 / HTML 实体。", file=sys.stderr)
+    if not normalized_url.startswith("https://mp.weixin.qq.com/"):
+        print("错误：请输入有效的微信文章 URL (mp.weixin.qq.com)", file=sys.stderr)
+        sys.exit(1)
+
+    result = fetch_article(normalized_url, args.output_dir, args.no_images)
     if "error_code" in result:
         print(json.dumps(result, ensure_ascii=False, indent=2), file=sys.stderr)
         return 1
