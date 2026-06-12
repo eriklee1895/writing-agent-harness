@@ -1,0 +1,34 @@
+{
+  "slug": "hermes-agent-self-evolution-source",
+  "title": "Hermes Agent 自我进化：源码与文档的对照研究",
+  "date": "2026-06-12",
+  "status": "draft-polished",
+  "register": "agent-technical-essay",
+  "distribution": "blog-only",
+  "assets": [
+    {
+      "id": "cover-v3",
+      "type": "cover",
+      "path": "assets/20260612-184559-hermes-agent-self-evolution-cover-v3.png",
+      "metadata": "assets/20260612-184559-hermes-agent-self-evolution-cover-v3.json",
+      "style_profile": "editorial-atmospheric",
+      "size": "blog-banner",
+      "mode": "reference+text",
+      "reference_image": "external:hermes-agent/apps/desktop/assets/icon.png",
+      "used_in_article": true,
+      "archived_to": ".local-archive/2026-06-12-hermes-agent-self-evolution-source/images/cover-v3.png"
+    },
+    {
+      "id": "three-layer-loop-light",
+      "type": "inset-diagram",
+      "path": "assets/20260612-190050-hermes-self-evolution-three-layer-loop-light.png",
+      "metadata": "assets/20260612-190050-hermes-self-evolution-three-layer-loop-light.json",
+      "style_profile": "flat-tech-infographic",
+      "size": "doc-hd",
+      "mode": "text-only",
+      "language": "zh-en",
+      "used_in_article": true,
+      "archived_to": ".local-archive/2026-06-12-hermes-agent-self-evolution-source/images/three-layer-loop-light.png"
+    }
+  ]
+}
