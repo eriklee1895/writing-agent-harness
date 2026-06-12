@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Claude Code 典型工作流常用命令速查</title>
+<style>
+  /* ---- A4 single-page print setup ---- */
+  @page { size: A4 portrait; margin: 0; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Pure white print surface */
+    --bg: #FFFFFF;
+    --paper: #FFFFFF;
+
+    /* Ink (high contrast for desk print) */
+    --ink:   #0E0E10;
+    --ink-2: #4A4A4F;
+    --ink-3: #8A8A8E;
+    --rule:  #E2E2E5;
+    --rule-2:#F2F2F4;
+
+    /* Six phase colors (refined, print-safe) */
+    --c1: #4338CA;  /* init  - indigo   */
+    --c2: #0E7490;  /* work  - cyan     */
+    --c3: #047857;  /* par   - emerald  */
+    --c4: #B45309;  /* pub   - amber    */
+    --c5: #BE185D;  /* swi   - rose     */
+    --c6: #B91C1C;  /* debug - red      */
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC',
+                 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+  }
+
+  /* ---------- Page frame ---------- */
+  .page {
+    width: 210mm;
+    height: 297mm;
+    padding: 14mm 15mm 12mm;
+    display: flex;
+    flex-direction: column;
+    gap: 6mm;
+    background: var(--bg);
+  }
+
+  /* ---------- Header (masthead) ---------- */
+  .header {
+    border-top: 1.6pt solid var(--ink);
+    border-bottom: 0.5pt solid var(--rule);
+    padding: 4mm 0 3.5mm;
+  }
+  .eyebrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 7.5pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 4mm;
+  }
+  .eyebrow .left  { font-weight: 600; color: var(--ink); }
+  .eyebrow .right { color: var(--ink-2); }
+
+  .title-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 6mm;
+  }
+  .title-zh {
+    font-size: 30pt;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1.05;
+    color: var(--ink);
+  }
+  .title-en {
+    font-size: 11pt;
+    font-style: italic;
+    color: var(--ink-2);
+    font-weight: 400;
+    text-align: right;
+    line-height: 1.25;
+    max-width: 60mm;
+  }
+  .meta-line {
+    margin-top: 3.5mm;
+    font-size: 8pt;
+    color: var(--ink-2);
+    letter-spacing: 0.01em;
+    line-height: 1.45;
+  }
+  .meta-line strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ---------- Flow strip ---------- */
+  .flow {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    padding: 1mm 0 0;
+  }
+  .flow::before {
+    content: "";
+    position: absolute;
+    left: 8.33%;
+    right: 8.33%;
+    top: 4.6mm;
+    height: 0.3pt;
+    background: var(--ink);
+    opacity: 0.35;
+  }
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4mm;
+    position: relative;
+  }
+  .dot {
+    width: 7mm;
+    height: 7mm;
+    border-radius: 50%;
+    background: var(--c);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+  .step .name {
+    font-size: 10pt;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+  .step .en {
+    font-size: 6.8pt;
+    color: var(--ink-3);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* ---------- Phase card grid ---------- */
+  .grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 4mm;
+  }
+  .card {
+    --c: var(--ink);
+    background: var(--paper);
+    border: 0.4pt solid var(--rule);
+    border-top: 1.2mm solid var(--c);
+    padding: 4.2mm 4.2mm 3.8mm;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5mm;
+    position: relative;
+  }
+  .card .head {
+    display: flex;
+    align-items: baseline;
+    gap: 2.5mm;
+  }
+  .card .num {
+    font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+    font-size: 11pt;
+    font-weight: 700;
+    color: var(--c);
+    letter-spacing: 0.02em;
+  }
+  .card .en-name {
+    font-size: 7.2pt;
+    color: var(--ink-3);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .card .title-zh {
+    font-size: 17pt;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    margin-top: 0.3mm;
+  }
+  .card .tag {
+    font-size: 8.6pt;
+    color: var(--ink-2);
+    font-style: italic;
+    line-height: 1.25;
+  }
+  .card .divider {
+    height: 0.4pt;
+    background: var(--rule);
+    margin: 0.8mm 0 0.2mm;
+  }
+  .cmds {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4mm;
+  }
+  .cmds li {
+    display: grid;
+    grid-template-columns: 23mm 1fr;
+    column-gap: 1.8mm;
+    font-size: 9pt;
+    line-height: 1.32;
+    align-items: baseline;
+  }
+  .cmds .cmd {
+    font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+    font-size: 8.7pt;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cmds .cmd::before {
+    content: "/";
+    color: var(--c);
+    opacity: 0.65;
+    margin-right: 0.5px;
+  }
+  .cmds .desc {
+    color: var(--ink-2);
+    line-height: 1.32;
+  }
+
+  /* Per-card color hook */
+  .c1 { --c: var(--c1); }
+  .c2 { --c: var(--c2); }
+  .c3 { --c: var(--c3); }
+  .c4 { --c: var(--c4); }
+  .c5 { --c: var(--c5); }
+  .c6 { --c: var(--c6); }
+
+  .s1 .dot { background: var(--c1); }
+  .s2 .dot { background: var(--c2); }
+  .s3 .dot { background: var(--c3); }
+  .s4 .dot { background: var(--c4); }
+  .s5 .dot { background: var(--c5); }
+  .s6 .dot { background: var(--c6); }
+
+  /* ---------- Footer ---------- */
+  .footer {
+    border-top: 0.4pt solid var(--rule);
+    padding-top: 2.5mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 7.2pt;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .footer .left  { font-weight: 600; color: var(--ink-2); }
+  .footer .right { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============ HEADER ============ -->
+  <header class="header">
+    <div class="eyebrow">
+      <span class="left">Claude Code · Cheatsheet</span>
+      <span class="right">Single-page reference · v.2026.06</span>
+    </div>
+    <div class="title-row">
+      <div class="title-zh">典型工作流常用命令速查</div>
+      <div class="title-en">Six Phases of a<br>Claude Code Session</div>
+    </div>
+    <div class="meta-line">
+      命令不是孤立工具,而是嵌在 <strong>初始化 · 干活 · 并行 · 发布 · 切换 · 排错</strong> 这条主线上的节点 · 记住每个阶段该用哪几个,就能把整套流程串起来
+    </div>
+  </header>
+
+  <!-- ============ FLOW STRIP ============ -->
+  <section class="flow" aria-label="workflow phases">
+    <div class="step s1"><div class="dot">01</div><div class="name">初始化</div><div class="en">Init</div></div>
+    <div class="step s2"><div class="dot">02</div><div class="name">干活</div><div class="en">Work</div></div>
+    <div class="step s3"><div class="dot">03</div><div class="name">并行</div><div class="en">Parallel</div></div>
+    <div class="step s4"><div class="dot">04</div><div class="name">发布</div><div class="en">Publish</div></div>
+    <div class="step s5"><div class="dot">05</div><div class="name">切换</div><div class="en">Switch</div></div>
+    <div class="step s6"><div class="dot">06</div><div class="name">排错</div><div class="en">Debug</div></div>
+  </section>
+
+  <!-- ============ GRID ============ -->
+  <main class="grid">
+
+    <!-- 01 · Initialize -->
+    <article class="card c1">
+      <div class="head">
+        <div class="num">01</div>
+        <div class="en-name">Initialize</div>
+      </div>
+      <div class="title-zh">初始化</div>
+      <div class="tag">搭好地基</div>
+      <div class="divider"></div>
+      <ul class="cmds">
+        <li><span class="cmd">init</span><span class="desc">生成起步用的 CLAUDE.md</span></li>
+        <li><span class="cmd">memory</span><span class="desc">打磨、精修项目记忆</span></li>
+        <li><span class="cmd">mcp</span><span class="desc">配置 MCP 服务器</span></li>
+        <li><span class="cmd">agents</span><span class="desc">配置子代理</span></li>
+        <li><span class="cmd">permissions</span><span class="desc">设定审批 / 授权规则</span></li>
+      </ul>
+    </article>
+
+    <!-- 02 · Work -->
+    <article class="card c2">
+      <div class="head">
+        <div class="num">02</div>
+        <div class="en-name">Working</div>
+      </div>
+      <div class="title-zh">干活</div>
+      <div class="tag">控制节奏与上下文</div>
+      <div class="divider"></div>
+      <ul class="cmds">
+        <li><span class="cmd">plan</span><span class="desc">大改动前进入计划模式</span></li>
+        <li><span class="cmd">model</span><span class="desc">调整所用模型</span></li>
+        <li><span class="cmd">effort</span><span class="desc">调整推理投入</span></li>
+        <li><span class="cmd">context</span><span class="desc">查看上下文窗口被什么占满</span></li>
+        <li><span class="cmd">compact</span><span class="desc">压缩过长对话,腾出空间</span></li>
+        <li><span class="cmd">btw</span><span class="desc">旁白提问,不撑大历史记录</span></li>
+      </ul>
+    </article>
+
+    <!-- 03 · Parallel -->
+    <article class="card c3">
+      <div class="head">
+        <div class="num">03</div>
+        <div class="en-name">Parallel</div>
+      </div>
+      <div class="title-zh">并行</div>
+      <div class="tag">把活儿铺开</div>
+      <div class="divider"></div>
+      <ul class="cmds">
+        <li><span class="cmd">agents</span><span class="desc">打开子代理管理器,委派支线</span></li>
+        <li><span class="cmd">tasks</span><span class="desc">列出当前会话后台任务</span></li>
+        <li><span class="cmd">background</span><span class="desc">会话转入后台,腾出终端</span></li>
+        <li><span class="cmd">batch</span><span class="desc">大改动拆 worktree 并行执行</span></li>
+      </ul>
+    </article>
+
+    <!-- 04 · Publish -->
+    <article class="card c4">
+      <div class="head">
+        <div class="num">04</div>
+        <div class="en-name">Publish</div>
+      </div>
+      <div class="title-zh">发布</div>
+      <div class="tag">检查改动</div>
+      <div class="divider"></div>
+      <ul class="cmds">
+        <li><span class="cmd">diff</span><span class="desc">查看具体改了什么</span></li>
+        <li><span class="cmd">code-review</span><span class="desc">审查 diff · <code>--fix</code> 直接修 · <code>ultra</code> 深度</span></li>
+        <li><span class="cmd">review</span><span class="desc">更深入的只读审阅</span></li>
+        <li><span class="cmd">security-review</span><span class="desc">安全相关的只读审阅</span></li>
+      </ul>
+    </article>
+
+    <!-- 05 · Switch -->
+    <article class="card c5">
+      <div class="head">
+        <div class="num">05</div>
+        <div class="en-name">Switch</div>
+      </div>
+      <div class="title-zh">切换</div>
+      <div class="tag">开新局或回头</div>
+      <div class="divider"></div>
+      <ul class="cmds">
+        <li><span class="cmd">clear</span><span class="desc">保留项目记忆,重开会话</span></li>
+        <li><span class="cmd">resume</span><span class="desc">回到某段早期对话</span></li>
+        <li><span class="cmd">branch</span><span class="desc">分叉某段对话</span></li>
+        <li><span class="cmd">teleport</span><span class="desc">把网页端会话拉进当前终端</span></li>
+        <li><span class="cmd">remote-control</span><span class="desc">让另一台设备继续操作</span></li>
+      </ul>
+    </article>
+
+    <!-- 06 · Debug -->
+    <article class="card c6">
+      <div class="head">
+        <div class="num">06</div>
+        <div class="en-name">Debug</div>
+      </div>
+      <div class="title-zh">排错</div>
+      <div class="tag">回滚与诊断</div>
+      <div class="divider"></div>
+      <ul class="cmds">
+        <li><span class="cmd">rewind</span><span class="desc">回退代码 / 对话到检查点</span></li>
+        <li><span class="cmd">doctor</span><span class="desc">诊断安装问题</span></li>
+        <li><span class="cmd">debug</span><span class="desc">诊断运行时问题</span></li>
+        <li><span class="cmd">feedback</span><span class="desc">上报 bug,自动附会话上下文</span></li>
+      </ul>
+    </article>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <span class="left">Source · Anthropic Claude Code official reference</span>
+    <span class="right">Page 01 / 01 · 2026.06.12</span>
+  </footer>
+
+</div>
+</body>
+</html>
