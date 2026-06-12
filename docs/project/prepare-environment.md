@@ -19,7 +19,6 @@
 ## Optional Runtime
 
 - Bun
-  - （历史：`baoyu-post-to-wechat` CDP 上传器脚本使用 Bun；自建 `wechat-article-publisher` 后对 Bun 的 hard dependency 已解除，API 模式也不再维护。）
 - Chrome / Chromium
   - 微信公众号草稿箱同步由 `wechat-article-publisher`（Playwright）驱动。
 - yt-dlp
