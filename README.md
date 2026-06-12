@@ -42,11 +42,11 @@ npx skills add eriklee1895/writing-agent-harness --skill article-ideation
 | --- | --- | --- |
 | [`grill-me`](https://github.com/mattpocock/skills/tree/main/skills/productivity/grill-me) | 在设计、目录、workflow、自动化方案定型前，连续追问并压实决策树 | 用于 pre-request / planning grill，避免把模糊想法过早写进 docs 或 skills |
 | [`obra/superpowers`](https://github.com/obra/superpowers) | skills methodology、progressive disclosure、specs / plans 工作流启发 | 项目愿景和 `docs/superpowers/` 约定的重要灵感来源 |
-| [`JimLiu/baoyu-skills`](https://github.com/JimLiu/baoyu-skills) | 微信公众号 CDP 草稿箱、API 发布自动化 | 项目的微信公众号发布自动化起点，为后续 Playwright 自建 `wechat-article-publisher` 提供了工程基础 |
+| [`JimLiu/baoyu-skills`](https://github.com/JimLiu/baoyu-skills) | 微信公众号 CDP 草稿箱、API 发布自动化 | 项目的微信公众号发布自动化起点，激发后续 Playwright 自建 `wechat-article-publisher` |
 
 With thanks to the authors and maintainers of these amazing skills and skill ecosystems.
 
-特别致谢 [JimLiu/baoyu-skills](https://github.com/JimLiu/baoyu-skills)：本项目早期的微信公众号发布自动化以 `baoyu-post-to-wechat` 的 CDP 模式为基础，在持续写作中积累了大量坑点和经验，这些工程基础为后续迁移到 Playwright 自建 `wechat-article-publisher` 铺平了道路。
+特别致谢 [JimLiu/baoyu-skills](https://github.com/JimLiu/baoyu-skills)，为本项目微信公众号发布自动化提供了灵感和工程起点。
 
 边界：third-party skills 提供方法论、辅助能力或底层参考；本 repo 的目录约定、文章 readiness、渲染风格、发布编排和 closeout 规则仍以 `AGENTS.md`、`docs/` 和 `.agents/skills/` 为准。
 
