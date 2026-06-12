@@ -5,9 +5,9 @@ description: 用 Playwright 把微信公众号文章（文章流程）同步到�
 
 # WeChat 公众号文章发布器（Playwright）
 
-用 Playwright 驱动微信公众号后台的「文章」编辑器，把渲染好的文章同步到草稿箱。这是本项目替换 `baoyu-post-to-wechat` CDP 模式的首选发布器：代码约 1/4、依赖更少（无 `baoyu-chrome-cdp`）、auto-wait 更稳。延续 `wechat-article-renderer` / `wechat-article-fetcher` 命名家族。
+用 Playwright 驱动微信公众号后台的「文章」编辑器，把渲染好的文章同步到草稿箱。无缝替换 `baoyu-post-to-wechat` CDP 模式：代码约 1/4、依赖更少（无 `baoyu-chrome-cdp`）、auto-wait 更稳。延续 `wechat-article-renderer` / `wechat-article-fetcher` 命名家族。
 
-迁移背景与对比数据见 [docs/future_plans/playwright-wechat-migration-analysis.md](../../../docs/future_plans/playwright-wechat-migration-analysis.md)。
+迁移背景与对比数据见 [docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](../../../docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。
 
 ## 发布边界（重要）
 
@@ -87,4 +87,4 @@ uv run python .agents/skills/wechat-article-publisher/scripts/publish.py \
 
 ## 与 baoyu-post-to-wechat 的关系
 
-baoyu CDP 模式保留为 fallback，不再扩展新功能。新文章默认走本 skill。两者都只到草稿箱，最终发布由用户确认。
+baoyu CDP 模式已从本 repo 移除（历史代码可在 upstream [JimLiu/baoyu-skills](https://github.com/JimLiu/baoyu-skills) 找到）。新文章走本 skill。两者都只到草稿箱，最终发布由用户确认。

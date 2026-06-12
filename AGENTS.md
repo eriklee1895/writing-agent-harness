@@ -82,7 +82,7 @@
 - 发布前文章 readiness 检查使用 project skill：`article-readiness-check`。
 - 微信公众号 HTML preview 使用 project skill：`wechat-article-renderer`；生成后可用 `node .agents/skills/wechat-article-renderer/scripts/preview-server.mjs <dir>` 本地预览。
 - 微信公众号文章提取使用 project skill：`wechat-article-fetcher`；输入 URL 提取正文、元数据和图片到结构化素材包，支持 `--output-dir content/inbox/articles/` 直接入库。
-- 微信公众号发布流程使用 project skill：`wechat-publish-workflow`；底层上传器默认用 `wechat-article-publisher`（Playwright，已验证文章流程 + 标题/作者/摘要 + 串行正文图片上传 + 草稿保存；封面 best-effort，通常手动），`baoyu-post-to-wechat` CDP 模式降级为 fallback。迁移背景见 [docs/future_plans/playwright-wechat-migration-analysis.md](docs/future_plans/playwright-wechat-migration-analysis.md)。
+- 微信公众号发布流程使用 project skill：`wechat-publish-workflow`；底层上传器默认用 `wechat-article-publisher`（Playwright，已验证文章流程 + 标题/作者/摘要 + 串行正文图片上传 + 草稿保存；封面通常在草稿箱 final review 时手动设置）。迁移背景见 [docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。
 - 发布或交付后的写作任务收尾使用 project skill：`writing-task-closeout`。
 - 不使用 paid `md2wechat` API。
 - `docs/superpowers/specs/` 和 `docs/superpowers/plans/` 是 Superpowers 长期文档目录；`.superpowers/` 是 generated scratch，通常忽略。
