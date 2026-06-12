@@ -1,0 +1,24 @@
+{
+  "title": "Hermes Agent Self-Evolution Cover v2",
+  "brief": "WeChat headline cover (2.35:1 ultra-wide, 1080x460). Subject: Hermes Agent, the self-evolving AI agent framework. Key visual elements: a CADUCEUS symbol (herald staff with two snakes wrapped around it, the classic symbol of Hermes the messenger god) at center, rendered with geometric precision and pixel-art circuit-board trace lines radiating outward — warm yellow/gold/terracotta metallic gradient on a matte black background. The caduceus should feel like it's generating branching recursive growth patterns, symbolizing self-evolution. Style: retro-futuristic, pixel-grid geometry, no organic curves, purely geometric. Leave generous negative space at top for title overlay. No text, no labels, no arrows.",
+  "content_type": "WeChat article cover",
+  "content_category": "cover",
+  "mode": "reference+text",
+  "style_profile": "auto",
+  "resolved_style_profile": "editorial-atmospheric",
+  "size": "wechat-cover-hd",
+  "resolved_size": "1792x1024",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [
+    "/private/tmp/hermes-banner.png"
+  ],
+  "prompt": "Create an illustration titled 'Hermes Agent Self-Evolution Cover v2'. Style: contemporary editorial illustration, layered composition, subtle texture, restrained color palette, atmospheric but concrete, article-friendly visual metaphor, no text labels, no diagrams, no arrows. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a WeChat Official Account headline cover image (公众号头条封面). Compose for a 2.35:1 ultra-wide crop (1080x460). Keep key subjects centered or in the bottom third — top area will be cropped. Design for readability as a small thumbnail in WeChat's subscription feed. Title text will be overlaid by the editor, so leave ample negative space. Language/region: zh. Target aspect ratio: wechat-cover-hd. Mode: reference+text. Use the provided reference image or images only for style guidance such as palette, line quality, spacing, icon treatment, and annotation tone. Do not copy their literal subject matter. Reference count: 1. Brief:\nWeChat headline cover (2.35:1 ultra-wide, 1080x460). Subject: Hermes Agent, the self-evolving AI agent framework. Key visual elements: a CADUCEUS symbol (herald staff with two snakes wrapped around it, the classic symbol of Hermes the messenger god) at center, rendered with geometric precision and pixel-art circuit-board trace lines radiating outward — warm yellow/gold/terracotta metallic gradient on a matte black background. The caduceus should feel like it's generating branching recursive growth patterns, symbolizing self-evolution. Style: retro-futuristic, pixel-grid geometry, no organic curves, purely geometric. Leave generous negative space at top for title overlay. No text, no labels, no arrows.",
+  "created_at": "2026-06-12T13:01:02",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/source/hermes-agent-self-evolution/assets/20260612-130013-hermes-agent-self-evolution-cover-v2-cropped.png"
+  ],
+  "crop_hint": "1080x460 (2.35:1)",
+  "dry_run": false
+}

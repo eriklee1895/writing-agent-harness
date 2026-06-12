@@ -24,6 +24,22 @@ from typing import Any
 from openai import OpenAI
 
 
+def _load_dotenv() -> None:
+    """Load .env from the current working directory if it exists and values are not already set."""
+    env_path = Path.cwd() / ".env"
+    if not env_path.is_file():
+        return
+    # Only load values that aren't already in the environment
+    for line in env_path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, val = line.partition("=")
+        key, val = key.strip(), val.strip()
+        if key and key not in os.environ:
+            os.environ[key] = val
+
+
 STYLE_PROFILES = {
     "editorial-atmospheric": {
         "style_text": (
@@ -471,6 +487,7 @@ def generate_from_reference(
 
 
 def main() -> int:
+    _load_dotenv()
     args = parse_args()
     brief = load_brief(args)
     args.resolved_style_profile = resolve_style_profile(args.style_profile, brief)

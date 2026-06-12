@@ -1,0 +1,22 @@
+{
+  "title": "GEPA Reflection-Based Mutation",
+  "brief": "Technical infographic explaining the GEPA (Genetic-Pareto Prompt Optimizer) algorithm. Show a pipeline: execution trajectory enters → strong LLM reads full trace → produces ASI (Actionable Side Information) as natural language diagnosis → reflection-based mutation integrates lessons from all ancestor lineages → Pareto Front selection maintains diverse candidates. Use a compact pipeline layout with clear modules, short Chinese/English bilingual labels, clean flat-tech style. Suitable for mobile-width reading in a WeChat tech article.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "auto",
+  "resolved_size": "auto",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'GEPA Reflection-Based Mutation'. Diagram type: article illustration. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: auto. Mode: text-only. Content brief:\nTechnical infographic explaining the GEPA (Genetic-Pareto Prompt Optimizer) algorithm. Show a pipeline: execution trajectory enters → strong LLM reads full trace → produces ASI (Actionable Side Information) as natural language diagnosis → reflection-based mutation integrates lessons from all ancestor lineages → Pareto Front selection maintains diverse candidates. Use a compact pipeline layout with clear modules, short Chinese/English bilingual labels, clean flat-tech style. Suitable for mobile-width reading in a WeChat tech article.",
+  "created_at": "2026-06-12T12:56:20",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/source/hermes-agent-self-evolution/assets/20260612-125514-gepa-reflection-based-mutation.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

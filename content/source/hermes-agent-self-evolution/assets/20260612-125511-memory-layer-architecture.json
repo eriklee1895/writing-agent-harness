@@ -1,0 +1,22 @@
+{
+  "title": "Memory Layer Architecture",
+  "brief": "Technical infographic showing a four-layer memory hierarchy for AI agent self-evolution. Bottom to top: L1 Working Memory (session-level, ephemeral), L2 Episodic Memory (cross-session, SQLite + FTS5 retrieval), L3 Structured Knowledge (validated docs + rules, Git-tracked markdown), L4 Procedural Skills (executable SKILL.md + scripts). Show these as ascending horizontal layers with upward arrows indicating the promotion path, with gate conditions like 'reused ≥3 times' between layers. Clean soft-tech diagram style, Chinese/English bilingual labels, suitable for mobile-width reading in a WeChat article.",
+  "content_type": "knowledge card",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "soft-tech-diagram",
+  "resolved_style_profile": "soft-tech-diagram",
+  "size": "auto",
+  "resolved_size": "auto",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Memory Layer Architecture'. Diagram type: knowledge card. Use a soft technical diagram, subtle dashed containers, layered modules, light academic visual language. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: auto. Mode: text-only. Content brief:\nTechnical infographic showing a four-layer memory hierarchy for AI agent self-evolution. Bottom to top: L1 Working Memory (session-level, ephemeral), L2 Episodic Memory (cross-session, SQLite + FTS5 retrieval), L3 Structured Knowledge (validated docs + rules, Git-tracked markdown), L4 Procedural Skills (executable SKILL.md + scripts). Show these as ascending horizontal layers with upward arrows indicating the promotion path, with gate conditions like 'reused ≥3 times' between layers. Clean soft-tech diagram style, Chinese/English bilingual labels, suitable for mobile-width reading in a WeChat article.",
+  "created_at": "2026-06-12T12:56:17",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/source/hermes-agent-self-evolution/assets/20260612-125511-memory-layer-architecture.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
