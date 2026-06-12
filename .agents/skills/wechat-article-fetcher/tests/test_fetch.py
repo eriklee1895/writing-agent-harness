@@ -19,6 +19,8 @@ sys.path.insert(0, str(SCRIPTS_DIR))
 
 import pytest
 
+import markdownify as md_lib  # noqa: E402
+
 from fetch import (  # noqa: E402
     pre_clean_html,
     post_clean_markdown,
@@ -55,10 +57,13 @@ class TestPreBlockFixing:
         assert "line2\nline3" in out
 
     def test_pre_with_br_between_spans(self):
+        """<br> inside <pre> is converted to a real newline (for code block
+        readability, markdown's hard-break syntax "  \\n" looks wrong in code)."""
         out = pre_clean_html("<pre><span>line1</span><br><span>line2</span></pre>")
-        # <br> should remain (markdownify will render as `  \n` = hard break)
-        assert "<br" in out
+        assert "<br" not in out
         assert "line1" in out and "line2" in out
+        # newline between the two
+        assert "line1\nline2" in out
 
     def test_pre_with_text_newline_between_spans(self):
         """If the HTML already has a text \\n between spans, don't double up."""
@@ -81,6 +86,51 @@ class TestPreBlockFixing:
     def test_inline_code_untouched(self):
         out = pre_clean_html("<p>use <code>foo()</code> here</p>")
         assert "<code>foo()</code>" in out
+
+    def test_pre_with_code_snippet_each_code_gets_break(self):
+        """WeChat's pasted code blocks wrap each line in its own <code>
+        element. markdownify treats <code> as inline, so pre_clean must
+        replace direct-child <code> with text + \\n to preserve line breaks.
+        """
+        html = (
+            '<pre class="code-snippet__js">'
+            '<code><span>class AgentState(CopilotKitState):</span></code>'
+            '<code><span>    search_history: list = []</span></code>'
+            '<code><span>    completed: bool</span></code>'
+            '</pre>'
+        )
+        cleaned = pre_clean_html(html)
+        md = md_lib.markdownify(cleaned, heading_style='ATX')
+        # Each line in its own row, not merged
+        assert "class AgentState(CopilotKitState):" in md
+        assert "search_history" in md
+        # Critical: the three lines should be on separate visual lines
+        assert "class AgentState(CopilotKitState):\n" in md
+
+    def test_pre_with_br_separated_lines_in_single_code(self):
+        """The code-snippet__js class structure can also put all lines
+        inside ONE <code> tag, separated by <br><br>. Markdown's <br>
+        rendering is a hard break "  \\n", which is wrong for code blocks.
+        WeChat's pre_clean replaces <br> inside <pre> with real newlines.
+        """
+        html = (
+            '<pre><code>'
+            '<span>import</span> {<span> foo </span>}<br><br>'
+            '<span>const x = 1</span><br><br>'
+            '<span>export x</span>'
+            '</code></pre>'
+        )
+        cleaned = pre_clean_html(html)
+        md = md_lib.markdownify(cleaned, heading_style='ATX')
+        # The three logical lines should be on separate visual lines
+        assert "import" in md
+        assert "const x" in md
+        assert "export x" in md
+        # Critical: each line has its own newline, not merged
+        assert "import" in md and "const x" in md
+        lines = [l for l in md.split("\n") if l.strip() and not l.startswith("```")]
+        # Should have 3+ meaningful lines (import, const, export)
+        assert len(lines) >= 3
 
 
 # ── pre_clean_html: video marker placement ─────────────────────────────
@@ -259,18 +309,27 @@ class TestURLNormalization:
 # ── Slug generation ────────────────────────────────────────────────────
 
 class TestSlugGeneration:
-    def test_from_biz_and_mid(self):
-        """When URL has biz+mid params, slug should be derived from them, not title."""
+    def test_title_takes_priority_over_biz_mid(self):
+        """Title-based slug is more readable than base64 biz+mid. We prefer
+        it whenever the title is available, even if the URL has biz+mid."""
+        url = "https://mp.weixin.qq.com/s?__biz=MzkwNzg4MjM1Ng==&mid=2247490808"
+        slug = generate_slug(url, "【GitHub趋势】CopilotKit：Agent 前端栈与 AG-UI 协议")
+        # Should be derived from the title, not the base64 biz
+        assert "copilotkit" in slug.lower()
+        assert "agent" in slug.lower()
+        # Should NOT contain the base64-encoded biz
+        assert "mzkwnzg4mjm1ng" not in slug.lower()
+
+    def test_falls_back_to_biz_mid_when_no_title(self):
         url = "https://mp.weixin.qq.com/s?__biz=abc123&mid=def456"
-        slug = generate_slug(url, "Some Title")
-        # Current impl: prefers biz+mid when both present
+        slug = generate_slug(url, None)
         assert "abc123" in slug
         assert "def456" in slug
 
-    def test_from_title_when_no_biz_mid(self):
-        url = "https://mp.weixin.qq.com/s?xxx=1"  # no biz/mid
-        slug = generate_slug(url, "Hello World")
-        assert "hello-world" in slug
+    def test_falls_back_to_path_when_no_title_no_params(self):
+        url = "https://mp.weixin.qq.com/article/abc"
+        slug = generate_slug(url, None)
+        assert "abc" in slug
 
 
 # ── Markdown post-cleaning ─────────────────────────────────────────────
