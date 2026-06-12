@@ -103,7 +103,7 @@ Records source URL, account, fetch date, and a compliance reminder for personal 
 提取完成后，可以建议下一步：
 
 - Read `article.md` for content summary or key points
-- Move the folder to `content/source/<slug>/` if it becomes canonical material
+- Move the folder to `content/origin/<slug>/` if it becomes canonical material
 - Use `article-illustration` to generate companion visuals
 - Reference the article in a new draft with proper attribution
 

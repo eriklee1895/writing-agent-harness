@@ -9,8 +9,8 @@ Needs follow-up — content/HTML done & verified; git commit + push to `main` pe
 - wechatStyle (frontmatter): `agent-flow`(如未来发微信沿用)。
 
 ## Deliverables
-- Canonical source: `content/source/2026-06-11-hermes-steer-deep-dive/article.md`(中文,带 frontmatter,10 节,4 个 Mermaid,代码逐字核证自 hermes-agent)。
-- Self-contained HTML: `content/source/2026-06-11-hermes-steer-deep-dive/report.html`(2.2MB 单文件:粘性导航+scroll-spy、GSAP、内嵌 Inter/JetBrains Mono 字体、4 张内联 SVG 流程图 + 4 张概念插图 base64)。
+- Canonical source: `content/origin/2026-06-11-hermes-steer-deep-dive/article.md`(中文,带 frontmatter,10 节,4 个 Mermaid,代码逐字核证自 hermes-agent)。
+- Self-contained HTML: `content/origin/2026-06-11-hermes-steer-deep-dive/report.html`(2.2MB 单文件:粘性导航+scroll-spy、GSAP、内嵌 Inter/JetBrains Mono 字体、4 张内联 SVG 流程图 + 4 张概念插图 base64)。
 - Build tooling: `assets/html-build/`(`build.mjs` MD→HTML 构建、`qa.mjs` headless QA、`dedent.mjs`、`verify-tighten.mjs`);`assets/diagrams/`(4 个 `.mmd` 源 + 渲染 SVG + extract/config)。
 
 ## Archive

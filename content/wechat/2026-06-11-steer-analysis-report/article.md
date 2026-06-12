@@ -1,6 +1,6 @@
 ---
 channel: wechat
-sourceArticle: content/source/2026-06-11-steer-analysis-report/article.md
+sourceArticle: content/origin/2026-06-11-steer-analysis-report/article.md
 note: "微信渠道版 —— 超长代码块已精简、mermaid 时序图已渲染为图片；完整代码见 canonical source。"
 ---
 

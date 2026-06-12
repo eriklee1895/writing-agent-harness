@@ -21,7 +21,7 @@ description: "写作任务发布后 closeout。Use after WeChat/blog draft creat
    - `handoff-only`: 已交给用户 final review，暂不发布。
    - `abandoned`: 本次写作停止，但需要清理和记录原因。
 2. 找到 canonical Markdown / MDX 和渠道产物：
-   - article source；
+   - canonical article file（`content/origin/&lt;slug&gt;/`）；
    - generated preview / draft notes；
    - images / prompts / metadata；
    - video material packages / clips；
@@ -88,7 +88,7 @@ description: "写作任务发布后 closeout。Use after WeChat/blog draft creat
 
 ### What Stays In Git
 
-- Markdown / MDX source and channel-specific text versions.
+- Canonical Markdown / MDX articles（in `content/origin/`）and channel-specific text versions.
 - Frontmatter and publish status.
 - Image prompt / metadata JSON, if small and not containing secrets.
 - Asset manifest / notes, alt text, caption, usage, insertion point.
@@ -128,7 +128,7 @@ Do not use base64 as an archive strategy. It bloats HTML and Git history while m
 - Clean only files clearly belonging to this task and safe to regenerate or discard.
 - `inbox/` material can be deleted, moved, or summarized only after confirming it has no independent future value.
 - Failed `drafts/` intermediate versions can be removed or moved to `.local-archive/YYYY-MM-DD-slug/` when they are not meaningful writing variants.
-- Do not delete user edits, source material, or unconfirmed assets.
+- Do not delete user edits, canonical article files, or unconfirmed assets.
 
 ## Retrospective
 

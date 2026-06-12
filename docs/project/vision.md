@@ -26,7 +26,7 @@ research -> outline -> draft -> polish -> visuals -> packaging -> publish -> rev
 - 管理项目级 AI writing skills。
 - 存放文章源稿、渠道派生稿、视觉资产和发布流程文档。
 
-写作的 canonical source 以 `content/source/` 中的 Markdown / MDX 为主。原始思考和初稿可能来自飞书文档，后续会自动同步或转换为 Markdown / MDX，再分发到个人博客、微信公众号和其他平台。
+写作的 canonical article 以 `content/origin/` 中的 Markdown / MDX 为主。原始思考和初稿可能来自飞书文档，后续会自动同步或转换为 Markdown / MDX，再分发到个人博客、微信公众号和其他平台。
 
 ## 写作场景
 
@@ -70,7 +70,7 @@ Astro + Cloudflare Pages + GitHub Actions
 微信公众号已经跑通过一次完整流程：
 
 ```text
-Markdown source -> WeChat HTML preview -> 草稿箱 -> final human review -> publish
+Canonical Markdown → WeChat HTML preview → 草稿箱 → final human review → publish
 ```
 
 当前默认微信公众号 style preset：

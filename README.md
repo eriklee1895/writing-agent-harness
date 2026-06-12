@@ -12,7 +12,7 @@
 
 ![AI 写作自动化 Harness 全景信息图](docs/assets/ai-writing-harness-overview.png)
 
-`writing-agent-harness` 的核心不是一条固定流水线，而是一个可追踪、可扩展、会复盘进化的写作自动化系统：`AGENTS.md` 负责把 agent 路由到最小必要文档，`docs/` 保存 runbooks 和决策，`.agents/skills/` 执行具体能力，`content/source/` 保存长期 canonical Markdown / MDX，再派生到微信公众号、博客和未来渠道。
+`writing-agent-harness` 的核心不是一条固定流水线，而是一个可追踪、可扩展、会复盘进化的写作自动化系统：`AGENTS.md` 负责把 agent 路由到最小必要文档，`docs/` 保存 runbooks 和决策，`.agents/skills/` 执行具体能力，`content/origin/` 保存长期 canonical Markdown / MDX，再派生到微信公众号、博客和未来渠道。
 
 详细 Mermaid 架构图和可维护流程见 [docs/workflows/ai-writing-workflow.md](docs/workflows/ai-writing-workflow.md)。
 
@@ -107,27 +107,27 @@ uv run .agents/skills/article-illustration/scripts/generate_article_illustration
 # 已知 URL 视频素材摄取
 node .agents/skills/video-material-ingest/scripts/ingest-video-material.mjs \
   "https://example.com/video" \
-  --target content/source/YYYY-MM-DD-topic
+  --target content/origin/YYYY-MM-DD-topic
 
 # 人工辅助选择文章高光片段
 node .agents/skills/video-highlight-select/scripts/select-video-highlights.mjs \
-  --material content/source/YYYY-MM-DD-topic/assets/media/source-slug \
+  --material content/origin/YYYY-MM-DD-topic/assets/media/source-slug \
   --intent "放在文章开头抓人"
 
 # 从本地素材包生成文章视频片段
 node .agents/skills/article-video-clip/scripts/create-article-video-clip.mjs \
-  --material content/source/YYYY-MM-DD-topic/assets/media/source-slug \
+  --material content/origin/YYYY-MM-DD-topic/assets/media/source-slug \
   --start 00:12 --end 00:38 \
   --preset wechat-landscape \
   --title "视频标题"
 
 # 渲染微信公众号 HTML（四种风格可选）
 node .agents/skills/wechat-article-renderer/scripts/render-wechat-article.mjs \
-  content/source/YYYY-MM-DD-topic/article.md --style literary-essay
+  content/origin/YYYY-MM-DD-topic/article.md --style literary-essay
 
 # 本地预览
 node .agents/skills/wechat-article-renderer/scripts/preview-server.mjs \
-  content/source/YYYY-MM-DD-topic/
+  content/origin/YYYY-MM-DD-topic/
 # → http://localhost:49255/
 ```
 
@@ -210,7 +210,7 @@ Renderer 支持四种 style preset：`impact-rational`（技术评论/观点文�
 | `video-highlight-select` | 人工辅助选择文章相关高光片段，生成 contact sheet、候选片段表和 `article-video-clip` handoff |
 | `article-video-clip` | 从本地视频素材包裁切并轻包装文章视频片段，输出 `final.mp4`、预览帧和 clip manifest |
 | `wechat-article-renderer` | Markdown → 微信公众号 HTML，支持 `impact-rational`/`literary-essay`/`cultural-essay`/`tech-blog` 四种风格 |
-| `wechat-article-publisher` | Playwright 微信公众号发布器。输入 source .md（frontmatter 元数据权威源）+ renderer HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 appmsgid |
+| `wechat-article-publisher` | Playwright 微信公众号发布器。输入 origin .md（`content/origin/&lt;slug&gt;/`，frontmatter 元数据权威源）+ renderer HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 appmsgid |
 | `wechat-publish-workflow` | 编排微信公众号草稿箱同步、验证和发布交接 |
 | `writing-task-closeout` | 发布或最终交付后的任务收尾：归档、复盘、memory/skill/docs 改进和 git/task handoff |
 
@@ -251,7 +251,7 @@ writing-agent-harness/
 ├── content/
 │   ├── inbox/                   # 本地原始输入 scratch，gitignored
 │   ├── drafts/                  # 本地写作工作区，gitignored
-│   ├── source/                  # 可追踪 canonical Markdown / MDX
+│   ├── origin/                  # 可追踪 canonical Markdown / MDX
 │   ├── blog/                    # 可追踪博客 Markdown / MDX，按一级主题目录归档
 │   ├── wechat/                  # 微信公众号派生稿和 preview
 │   └── assets/                  # 跨文章复用 prompts / metadata / manifests
@@ -267,10 +267,10 @@ content/drafts/YYYY-MM-DD-topic/
 └── notes.md                     # optional research notes
 ```
 
-进入可追踪状态后，canonical source 放在：
+进入可追踪状态后，canonical article 放在：
 
 ```text
-content/source/YYYY-MM-DD-topic/
+content/origin/YYYY-MM-DD-topic/
 ├── article.md
 ├── article.mdx                  # optional, for blog
 ├── notes.md                     # optional research notes
@@ -284,11 +284,11 @@ content/wechat/YYYY-MM-DD-topic/
 content/blog/<category>/YYYY-MM-DD-topic/
 ```
 
-同一篇文章跨 `source` / `wechat` / `blog` 使用同一个 folder slug；渠道稿 frontmatter 用 `source:` 指回 canonical article。当前 `content/drafts/` 按本地 scratch 处理，不会默认提交。新文章可以先在这里写作；进入可追踪状态时，再把 Markdown / MDX、notes 和 metadata promote 到 `content/source/`。渠道版本再从 `content/source/` 派生到 `content/wechat/` 和 `content/blog/`。文章目录里的 `assets/` 是 article-local assets；全局 `content/assets/` 只放跨文章复用素材。二进制素材默认留在 `.local-archive/` 或外部资产库，只提交可复现的 prompt、metadata、manifest 和 notes。
+同一篇文章跨 `origin` / `wechat` / `blog` 使用同一个 folder slug；渠道稿 frontmatter 用 `source:` 指回 canonical article。当前 `content/drafts/` 按本地 scratch 处理，不会默认提交。新文章可以先在这里写作；进入可追踪状态时，再把 Markdown / MDX、notes 和 metadata promote 到 `content/origin/`。渠道版本再从 `content/origin/` 派生到 `content/wechat/` 和 `content/blog/`。文章目录里的 `assets/` 是 article-local assets；全局 `content/assets/` 只放跨文章复用素材。二进制素材默认留在 `.local-archive/` 或外部资产库，只提交可复现的 prompt、metadata、manifest 和 notes。
 
 ## 🧱 Principles
 
-- `content/source/` 中的 Markdown / MDX 是 repo 内长期 canonical source。
+- `content/origin/` 中的 Markdown / MDX 是 repo 内长期 canonical source。
 - 飞书文档、Notion 等可以作为上游写作入口，但进入 repo 后需要可追踪地同步到 Markdown / MDX。
 - 先证明 small practical workflow，再扩大自动化范围。
 - 不打印或提交 secrets、本地运行态、账号态数据和依赖目录。

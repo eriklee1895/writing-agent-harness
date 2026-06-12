@@ -9,7 +9,7 @@
 - 保留用户 edits；不要 revert 用户改动，除非用户明确要求。
 - 不要打印、提交或泄漏 secrets、本地运行态、账号态数据和依赖目录。
 - Current events、company/product facts、pricing、laws、fast-moving tech topics 必须查证，并写清具体日期。
-- repo 内长期 canonical source 放在 `content/source/`，格式是 Markdown / MDX。飞书文档、Notion 等可以作为上游写作入口；进入 repo 后要同步或转换成可追踪文本。
+- repo 内长期 canonical source 放在 `content/origin/`，格式是 Markdown / MDX。飞书文档、Notion 等可以作为上游写作入口；进入 repo 后要同步或转换成可追踪文本。
 - 内容写作、选题构思、文章润色、改稿、标题和风格判断时读取 [SOUL.md](SOUL.md)，对齐 Erik 的作者写作气质、register、anti-style 和审美边界；非写作任务不要默认加载。
 - 图片生成优先使用系统 `$imagegen` skill，不要重建项目重复的 `gpt-image-gen`。
 - 任何最终发布动作都需要 user final review，除非用户明确授权自动发布。
@@ -40,10 +40,10 @@
 
 - `content/inbox/`：原始输入和待整理材料 scratch。
 - `content/drafts/`：本地写作草稿 scratch。
-- `content/source/`：可追踪 canonical Markdown / MDX 文章源稿。
-- `content/wechat/`、`content/blog/`：从 canonical source 派生的渠道版本。
-- `content/source/<slug>/assets/`：article-local assets，跟随 canonical source 使用；大体积二进制素材默认不提交，除非任务明确需要 repo 追踪。
-- `content/wechat/<slug>/assets/`：微信渠道专用 assets；如果图片已在 source assets 且体积较大，可用相对路径指回 source，避免重复提交。
+- `content/origin/`：可追踪 canonical Markdown / MDX 文章源稿。
+- `content/wechat/`、`content/blog/`：从 `content/origin/` 派生的渠道版本。
+- `content/origin/<slug>/assets/`：article-local assets，跟随 origin article 使用；大体积二进制素材默认不提交，除非任务明确需要 repo 追踪。
+- `content/wechat/<slug>/assets/`：微信渠道专用 assets；如果图片已在 origin assets 且体积较大，可用相对路径指回 origin，避免重复提交。
 - `content/assets/`：跨文章复用的 prompts、metadata、manifest 和 sources；不要放单篇文章的一次性素材。
 - `.local-archive/`：本机归档的图片、视频、音频、设计源文件和发布后素材，不入 Git。
 - 不要把文章草稿、渠道预览或一次性写作 scratch 放到 `docs/`；不确定时读取 [docs/project/directory-layout.md](docs/project/directory-layout.md)。

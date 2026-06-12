@@ -201,7 +201,7 @@ agent 调用 fetch.py --output-dir content/inbox/articles/
   ↓
 写作时引用 article.md 和 assets/ 中的图片
   ↓
-定稿后写作 agent 负责决定是否搬运到 content/source/<slug>/
+定稿后写作 agent 负责决定是否搬运到 content/origin/<slug>/
 ```
 
 ## 文件布局

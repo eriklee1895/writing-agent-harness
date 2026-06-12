@@ -16,7 +16,7 @@ Publish boundary: this script only saves a DRAFT (草稿箱). It never clicks
 
 Usage:
     uv run python scripts/poc_wechat_publish_playwright.py \
-        --markdown content/source/2026-05-24-wechat-opening/article.md \
+        --markdown content/origin/2026-05-24-wechat-opening/article.md \
         --title "静待鹅鸣" --author "Erik"
 
     # add --save-draft to actually persist the draft and report appmsgid

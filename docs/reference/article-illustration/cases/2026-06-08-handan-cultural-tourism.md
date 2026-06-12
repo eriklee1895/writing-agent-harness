@@ -2,7 +2,7 @@
 
 ## Context
 
-- Article: `content/source/2026-06-08-luolebai-handanxuebu/article.md`
+- Article: `content/origin/2026-06-08-luolebai-handanxuebu/article.md`
 - Section: `泼天的流量，邯郸接住了`
 - Style profile: `modern-guochao-editorial`
 - Size: `portrait-hd`

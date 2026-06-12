@@ -46,7 +46,7 @@
 <section class="dark-code" style="box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word; overflow-x:auto; background:#1f252c; color:#e6edf3; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.7; font-family:'SF Mono',SFMono-Regular,ui-monospace,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace; margin:0 0 18px;">任务执行 → 自动生成技能 → 使用中自我修复 → <span style="color:#ffa657;">Curator</span> 定期合并归档 → 回到任务执行</section>
 <p style="box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word; font-size:16px; line-height:1.9; color:#1a1a2e; margin:0 0 16px; letter-spacing:0;">注意，自动生成和自我修复是在<strong style="color:#ff6b35; font-weight:700;">使用</strong>中发生的，Curator 是在<strong style="color:#ff6b35; font-weight:700;">不使用</strong>时发生的。这是一种关键的设计节奏：用的时候长，不用的时候整理。不浪费任务执行时的上下文窗口。</p>
 <figure style="box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word; width:100%; margin:20px 0; text-align:center;">
-  <img src="assets/20260612-125510-self-evolution-triangular-architecture.png" data-local-path="/Users/eriklee/code/my_project/writing-agent-harness/content/source/hermes-agent-self-evolution/assets/20260612-125510-self-evolution-triangular-architecture.png" alt="三角架构：自动技能生成、运行时自修复、Curator 整理形成闭环" style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:10px; display:block; margin:0 auto;">
+  <img src="assets/20260612-125510-self-evolution-triangular-architecture.png" data-local-path="/Users/eriklee/code/my_project/writing-agent-harness/content/origin/hermes-agent-self-evolution/assets/20260612-125510-self-evolution-triangular-architecture.png" alt="三角架构：自动技能生成、运行时自修复、Curator 整理形成闭环" style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:10px; display:block; margin:0 auto;">
   <figcaption style="box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word; font-size:13px; line-height:1.65; color:#6a727a; margin:10px 0 0;">三角架构：自动技能生成、运行时自修复、Curator 整理形成闭环</figcaption>
 </figure>
 </section>
@@ -66,7 +66,7 @@
   </table>
 </div>
 <figure style="box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word; width:100%; margin:20px 0; text-align:center;">
-  <img src="assets/20260612-125516-self-evolution-loop-timescales.png" data-local-path="/Users/eriklee/code/my_project/writing-agent-harness/content/source/hermes-agent-self-evolution/assets/20260612-125516-self-evolution-loop-timescales.png" alt="时间尺度：战术级、战略级、编排级三级并行运作" style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:10px; display:block; margin:0 auto;">
+  <img src="assets/20260612-125516-self-evolution-loop-timescales.png" data-local-path="/Users/eriklee/code/my_project/writing-agent-harness/content/origin/hermes-agent-self-evolution/assets/20260612-125516-self-evolution-loop-timescales.png" alt="时间尺度：战术级、战略级、编排级三级并行运作" style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:10px; display:block; margin:0 auto;">
   <figcaption style="box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word; font-size:13px; line-height:1.65; color:#6a727a; margin:10px 0 0;">时间尺度：战术级、战略级、编排级三级并行运作</figcaption>
 </figure>
 <p style="box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word; font-size:16px; line-height:1.9; color:#1a1a2e; margin:0 0 16px; letter-spacing:0;">这种多时间尺度设计的意义在于：它同时解决了&quot;这个 bug 立刻要修&quot;和&quot;我发现自己总是在重复创建相似的技能&quot;这两种完全不同性质的问题。前者需要实时，后者需要后见之明。</p>
@@ -88,7 +88,7 @@
 <p style="box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word; font-size:16px; line-height:1.9; color:#1a1a2e; margin:0 0 16px; letter-spacing:0;">这件事的工程含义非常具体：<strong style="color:#ff6b35; font-weight:700;">信息保存优于信息压缩</strong>。你应该增量地增长可搜索的 itemized 知识条目，而不是把经验压缩成越来越短的摘要。压缩会破坏 agent 的行为可获取性——你自以为总结了精华，但 agent 读不懂你的总结，只认原始轨迹。</p>
 <p style="box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word; font-size:16px; line-height:1.9; color:#1a1a2e; margin:0 0 16px; letter-spacing:0;">这也是为什么 Hermes 的技能存储是以完整 SKILL.md（详细步骤）而非抽象的&quot;要点提示&quot;进行的。一个三四百字的 SKILL.md 可能费 token，但它能被 agent 用对。一句&quot;微信文章要注意排版风格&quot;的摘要更省 token，但 agent 不会用。</p>
 <figure style="box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word; width:100%; margin:20px 0; text-align:center;">
-  <img src="assets/20260612-125511-memory-layer-architecture.png" data-local-path="/Users/eriklee/code/my_project/writing-agent-harness/content/source/hermes-agent-self-evolution/assets/20260612-125511-memory-layer-architecture.png" alt="记忆分层：从工作记忆到程序性技能的晋升路径" style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:10px; display:block; margin:0 auto;">
+  <img src="assets/20260612-125511-memory-layer-architecture.png" data-local-path="/Users/eriklee/code/my_project/writing-agent-harness/content/origin/hermes-agent-self-evolution/assets/20260612-125511-memory-layer-architecture.png" alt="记忆分层：从工作记忆到程序性技能的晋升路径" style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:10px; display:block; margin:0 auto;">
   <figcaption style="box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word; font-size:13px; line-height:1.65; color:#6a727a; margin:10px 0 0;">记忆分层：从工作记忆到程序性技能的晋升路径</figcaption>
 </figure>
 </section>
@@ -116,7 +116,7 @@
 </div>
 <p style="box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word; font-size:16px; line-height:1.9; color:#1a1a2e; margin:0 0 16px; letter-spacing:0;">GEPA 用 GRPO 约 1/35 的评测调用量，超越了 GRPO 6-20%。最少 3 个示例即可开始工作。</p>
 <figure style="box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word; width:100%; margin:20px 0; text-align:center;">
-  <img src="assets/20260612-125514-gepa-reflection-based-mutation.png" data-local-path="/Users/eriklee/code/my_project/writing-agent-harness/content/source/hermes-agent-self-evolution/assets/20260612-125514-gepa-reflection-based-mutation.png" alt="GEPA 反射式突变流程：执行轨迹 → ASI 诊断 → 累积教训 → 帕累托前沿选择" style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:10px; display:block; margin:0 auto;">
+  <img src="assets/20260612-125514-gepa-reflection-based-mutation.png" data-local-path="/Users/eriklee/code/my_project/writing-agent-harness/content/origin/hermes-agent-self-evolution/assets/20260612-125514-gepa-reflection-based-mutation.png" alt="GEPA 反射式突变流程：执行轨迹 → ASI 诊断 → 累积教训 → 帕累托前沿选择" style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:10px; display:block; margin:0 auto;">
   <figcaption style="box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word; font-size:13px; line-height:1.65; color:#6a727a; margin:10px 0 0;">GEPA 反射式突变流程：执行轨迹 → ASI 诊断 → 累积教训 → 帕累托前沿选择</figcaption>
 </figure>
 </section>

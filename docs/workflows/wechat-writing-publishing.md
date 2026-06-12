@@ -17,7 +17,7 @@ impact-rational
 
 ```text
 Feishu / idea notes
--> Markdown source
+-> Canonical Markdown (content/origin/)
 -> polish-article
 -> wechat-article-renderer
 -> mobile visual verification
@@ -38,11 +38,11 @@ content/wechat/YYYY-MM-DD-topic/
 └── assets/
 ```
 
-`content/drafts/` 可以作为本地写作工作区，但默认 gitignored。文章进入草稿箱同步、发布交付或 repo review 前，应把 canonical Markdown / MDX、notes 和 metadata promote 到 `content/source/`，再把微信公众号派生稿和 preview 放到 `content/wechat/`。微信目录可以有自己的 `assets/`；如果图片已在 `content/source/<slug>/assets/` 且体积较大，可以用相对路径指回 source，避免重复二进制文件。
+`content/drafts/` 可以作为本地写作工作区，但默认 gitignored。文章进入草稿箱同步、发布交付或 repo review 前，应把 canonical Markdown / MDX、notes 和 metadata promote 到 `content/origin/`，再把微信公众号派生稿和 preview 放到 `content/wechat/`。微信目录可以有自己的 `assets/`；如果图片已在 `content/origin/<slug>/assets/` 且体积较大，可以用相对路径指回 origin 目录，避免重复二进制文件。
 
-## Step 1: 准备 Markdown source
+## Step 1: 准备 canonical Markdown
 
-`content/source/` 里的 Markdown / MDX 是 repo 内 canonical source。飞书文档可以作为原始写作入口，但进入发布流程前应转换为 Markdown / MDX。
+`content/origin/` 里的 Markdown / MDX 是 repo 内 canonical article。飞书文档可以作为原始写作入口，但进入发布流程前应转换为 Markdown / MDX。
 
 建议 frontmatter 至少包含：
 
@@ -187,7 +187,7 @@ CDP 同步草稿箱时实时处理图片：
 
 处理规则：
 
-- Markdown source 继续保留真实 URL。
+- Canonical Markdown 继续保留真实 URL。
 - 微信公众号 HTML 不输出 external `href`。
 - 参考资料渲染成 plain text reference。
 - 不默认展示完整 raw URL。
