@@ -69,6 +69,7 @@
 | 使用本机 scratch memory | [docs/reference/local-memory.md](docs/reference/local-memory.md) |
 | 图片、封面、正文插图、视频素材/剪辑 | [docs/reference/visuals.md](docs/reference/visuals.md) |
 | 微信发布复盘与坑点 | [docs/retrospectives/2026-06-05-wechat-publish.md](docs/retrospectives/2026-06-05-wechat-publish.md) |
+| 选 HTML 解析 / 内容抽取栈（bs4 / selectolax / trafilatura / markdownify） | [docs/benchmark/html-parser-stack-bench.md](docs/benchmark/html-parser-stack-bench.md) |
 | Superpowers specs / plans 约定 | [docs/README.md](docs/README.md#superpowers) |
 
 总索引见 [docs/README.md](docs/README.md)。

@@ -8,13 +8,19 @@ dependencies = [
     "agno>=2.6.11",
     "anthropic>=0.105.2",
     "beautifulsoup4>=4.15.0",
+    "lxml>=6.1.1",
     "markdownify>=1.1.0",
     "openai>=2.41.0",
     "pillow>=10.0.0",
     "playwright>=1.43.0",
     "requests>=2.34.2",
-    "trafilatura>=2.0.0",
+    "trafilatura>=2.0.0",  # reserved for future generic-article-fetcher skill; not used by wechat-article-fetcher
 ]
 
 [tool.uv]
 package = false
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]

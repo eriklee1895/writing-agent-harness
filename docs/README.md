@@ -50,6 +50,9 @@
 - [reference/article-illustration/README.md](reference/article-illustration/README.md)
   - `article-illustration` 的 guide、风格选择、prompt pattern 和历史优质生图案例。
 
+- [benchmark/html-parser-stack-bench.md](benchmark/html-parser-stack-bench.md)
+  - HTML 解析与内容抽取栈选型：BeautifulSoup4 / Selectolax / Trafilatura / markdownify 的定位、benchmark、维护状态、按场景的选型矩阵和当前 `wechat-article-fetcher` 决策。
+
 ## Retrospectives
 
 - [retrospectives/2026-06-05-wechat-publish.md](retrospectives/2026-06-05-wechat-publish.md)

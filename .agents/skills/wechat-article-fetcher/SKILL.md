@@ -24,7 +24,7 @@ Do not use this skill for / 禁止场景：
 ## Prerequisites
 
 - `uv` 必须可用，且项目依赖已同步 (`uv sync`)
-- `playwright` 和 `markdownify` Python 包已安装（运行时自动检查）
+- `playwright`、`beautifulsoup4`、`markdownify` 和 `lxml` Python 包已安装（运行时自动检查；`lxml` 是可选 fallback，没装会自动回退到 `html.parser`）
 - Google Chrome 已安装（macOS 默认路径 `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`）
 - Chrome 已登录微信（首次使用会弹出交互式登录引导）
 

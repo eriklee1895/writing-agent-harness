@@ -95,8 +95,10 @@ def generate_slug(url: str, title: str | None = None) -> str:
     """Generate a URL-safe slug from URL params or title."""
     parsed = urlparse(url)
     query = parsed.query
-    biz_match = re.search(r"[?&]biz=([^&]+)", query)
-    mid_match = re.search(r"[?&]mid=([^&]+)", query)
+    # WeChat uses both `__biz=` and `biz=`; match either. The double-
+    # underscore form is the modern one in canonical mp.weixin.qq.com URLs.
+    biz_match = re.search(r"(?:__)?biz=([^&]+)", query)
+    mid_match = re.search(r"(?:__)?mid=([^&]+)", query)
     if biz_match and mid_match:
         biz = _clean_slug(biz_match.group(1))
         mid = _clean_slug(mid_match.group(1))
@@ -116,20 +118,169 @@ def _clean_slug(text: str) -> str:
 
 # ── HTML pre-cleaning ──────────────────────────────────────────────────
 
+# WeChat public account HTML noise: editor-specific tags, profile cards,
+# "read original" CTAs, and rich-text leftover wrappers. Class names are
+# stable in mp.weixin.qq.com articles as of 2026-06.
+#
+# NOTE: `mpcover` is a legitimate media card container in newer articles —
+# it often wraps a captioned image. Do NOT add it to REMOVE_SELECTORS.
+WECHAT_NOISE_SELECTORS = (
+    "script",
+    "style",
+    ".qr_code_pc",
+    ".reward_area",
+    ".original_area_primary",   # "阅读原文" card at article end
+    ".wx_profile_card_inner",   # 公众号名片卡
+    ".mp-video-player",         # 视频播放器外层 Vue 组件
+    ".video_iframe_area",       # 视频 iframe 容器
+    ".video_player_card",       # 视频播放器卡片
+    ".txp_video_controls",      # 微信内置视频控件
+    ".js_mpvedio",              # 视频弹层
+    ".video_full-screen",       # 全屏控制条
+    ".video_btn",               # 视频按钮
+    ".video_switch",            # 倍速切换
+    ".video_desc",              # 视频描述
+    "mpcps",
+    "mp-common-profile",
+    "mp-miniprogram",
+    "mp-weapp",
+    "mpvoice",
+    "mpprofile",
+    "video",                    # 直接的视频标签
+    # NOTE: <iframe> is handled specially above (we insert a `[视频]`
+    # placeholder before deleting, so readers know the original article
+    # had a video). All non-video <iframe> elements are also caught by
+    # that pass.
+)
+
+
+def _get_bs4_parser() -> str:
+    """Prefer lxml when available (4x faster, more robust on WeChat rich text);
+    fall back to pure-Python html.parser if lxml is not installed.
+    """
+    try:
+        import lxml  # noqa: F401
+        return "lxml"
+    except ImportError:
+        return "html.parser"
+
+
+# CSS class signatures that mark a <video> or <iframe> as a "WeChat video
+# player" — every parent in this list is part of the player chrome and will
+# be removed by the noise selectors below, so we walk past them to find
+# where to safely place the `[视频]` marker.
+_VIDEO_WRAPPER_CLASSES = (
+    "js_mpvedio",
+    "page_video_wrapper",
+    "mp-video-player",
+    "js_page_video",
+    "page_video",
+    "js_inner",
+    "video_poster",
+    "js_video_poster",
+    "video_mask",
+    "video_fill",
+    "video_iframe",
+    "video_iframe_area",
+    "video_player_card",
+    "txp_video_controls",
+)
+
+
+def _is_video_wrapper(node) -> bool:
+    """True if a Tag is part of a WeChat video player chrome that we will
+    later remove. Used by `pre_clean_html` to walk past nested wrappers
+    before placing the `[视频]` placeholder.
+    """
+    if not hasattr(node, "get"):
+        return False
+    classes = node.get("class") or []
+    for cls in classes:
+        if cls in _VIDEO_WRAPPER_CLASSES:
+            return True
+    return False
+
+
 def pre_clean_html(html: str) -> str:
     """Pre-process HTML before markdownify: fix <pre> blocks, remove noise elements."""
     from bs4 import BeautifulSoup
-    soup = BeautifulSoup(html, "html.parser")
+    soup = BeautifulSoup(html, _get_bs4_parser())
 
-    # Remove noise elements
-    for sel in ("script", "style", ".qr_code_pc", ".reward_area"):
+    # Step 1: Mark video iframes with a `[视频]` placeholder BEFORE removing
+    # them, so the Markdown reader knows the original article had a video.
+    #
+    # WeChat wraps <video> elements in deeply-nested divs (e.g. .js_mpvedio,
+    # .video_iframe, .mp-video-player). The noise selectors below will delete
+    # those wrapper divs — and would take our placeholder with it if we
+    # inserted the marker as a sibling of the <video>. So we insert the
+    # marker OUTSIDE the outermost wrapper, by walking up the parent chain
+    # until we find a tag that is NOT one of the noise-targeted wrappers.
+    for tag in soup.select("iframe, video"):
+        if tag.find_parent("mpcps") is not None:
+            # Handled in Pass 1b below
+            continue
+        # Find the outermost video wrapper: walk up while the parent will be
+        # removed by the noise selectors. The placeholder goes BEFORE that
+        # outermost wrapper, so it survives the noise-removal step.
+        outermost = tag
+        while True:
+            parent = outermost.parent
+            if parent is None or not _is_video_wrapper(parent):
+                break
+            outermost = parent
+        outermost.insert_before(soup.new_string("\n\n[视频]\n\n"))
+        # Now decompose the video subtree
+        tag.decompose()
+
+    # Step 1b: <iframe>/<video> nested inside <mpcps> — mark the mpcps
+    # itself, so the marker survives the mpcps noise removal.
+    for mpcps in soup.select("mpcps"):
+        if mpcps.select_one("iframe, video"):
+            mpcps.insert_before(soup.new_string("\n\n[视频]\n\n"))
+
+    # Step 2: Remove other noise elements
+    for sel in WECHAT_NOISE_SELECTORS:
         for tag in soup.select(sel):
             tag.decompose()
 
-    # Fix <pre> blocks where <p> tags are used for line breaks
+    # Fix <pre> blocks: WeChat rich-text editor nests <span>/<p>/<div>/<section>
+    # inside <pre> for "fake" line breaks, which markdownify would emit as
+    # inline content with no structure. Strategy:
+    #   1. Walk all <span> descendants in document order. For each, look
+    #      at ALL previous siblings (including text nodes) to decide
+    #      whether to insert a "\n" before it:
+    #        - any sibling <br> is present → don't insert (markdownify
+    #          will emit `  \n` from the <br>, which already breaks the line)
+    #        - any sibling text node contains "\n" → don't insert
+    #        - otherwise (last sibling was another span that we just
+    #          replaced with its text) → insert "\n" so the implicit
+    #          WeChat line break between adjacent spans is preserved.
+    #      Then replace the span with its inner text.
+    #   2. Replace direct-child <p>/<div>/<section> with text + "\n"
+    #      (these are WeChat's "soft line break" markers and should always
+    #      produce a real line break in Markdown).
     for pre in soup.find_all("pre"):
-        for p in pre.find_all("p"):
-            p.replace_with(f"{p.get_text()}\n")
+        for span in list(pre.find_all("span")):
+            prev_siblings = list(span.previous_siblings)
+            has_break = False
+            has_text_break = False
+            for sibling in prev_siblings:
+                name = getattr(sibling, "name", None)
+                if name == "br":
+                    has_break = True
+                    break
+                if name == "-text" and "\n" in sibling:
+                    has_text_break = True
+                    break
+            # Skip inserting "\n" if <br> is already present (markdownify
+            # handles <br> as a hard break) or if a text "\n" is already
+            # there. Otherwise insert "\n" to mark the implicit break.
+            if not has_break and not has_text_break:
+                span.insert_before("\n")
+            span.replace_with(span.get_text())
+        for child in list(pre.children):
+            if getattr(child, "name", None) in ("p", "div", "section"):
+                child.replace_with(child.get_text() + "\n")
 
     return str(soup)
 
@@ -217,13 +368,15 @@ def download_images(content_html: str, base_path: Path, no_images: bool) -> tupl
     assets_dir.mkdir(parents=True, exist_ok=True)
 
     from bs4 import BeautifulSoup
-    soup = BeautifulSoup(content_html, "html.parser")
+    soup = BeautifulSoup(content_html, _get_bs4_parser())
     images = []
     img_index = 0
 
     for img in soup.find_all("img"):
         src = img.get("data-src") or img.get("src") or ""
-        if not src or "mmbiz.qpic.cn" not in src:
+        # Only download real article images; skip WeChat video covers/thumbnails
+        # hosted on mpvideo.qpic.cn (out of scope: writing material, not video republish).
+        if not src or "mmbiz.qpic.cn" not in src or "mpvideo.qpic.cn" in src:
             continue
 
         img_index += 1
