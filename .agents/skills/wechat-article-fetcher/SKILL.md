@@ -49,7 +49,7 @@ uv run python .agents/skills/wechat-article-fetcher/scripts/fetch.py <url> --no-
 
 ```text
 <output-dir>/
-└── YYYY-MM-DD-<slug>/
+└── YYYY-MM-DD-<slug>/      # <slug> 为裸 topic，目录名带日期前缀
     ├── article.md          # Markdown 正文，含 YAML frontmatter
     ├── manifest.json       # 结构化元数据和图片索引
     ├── sources.md          # 来源声明和合规提醒
@@ -103,7 +103,7 @@ Records source URL, account, fetch date, and a compliance reminder for personal 
 提取完成后，可以建议下一步：
 
 - Read `article.md` for content summary or key points
-- Move the folder to `content/origin/<slug>/` if it becomes canonical material
+- Move the folder to `content/inbox/articles/YYYY-MM-DD-<slug>/` or `content/origin/YYYY-MM-DD-<slug>/` if it becomes canonical material.
 - Use `article-illustration` to generate companion visuals
 - Reference the article in a new draft with proper attribution
 

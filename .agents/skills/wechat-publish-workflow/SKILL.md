@@ -35,7 +35,7 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
    - no `<script>`, external stylesheet dependency, `TODO`, `TBD`；
    - no base64 image payload；
    - no external link `href`，引用来源用 plain text reference；
-   - local images 带 `data-local-path`，可解析到文章 `assets/`、`.local-archive/YYYY-MM-DD-slug/images/` 或其他本地归档路径，方便上传器读取本地图片；
+   - local images 带 `data-local-path`，可解析到文章 `assets/`、`.local-archive/YYYY-MM-DD-<slug>/images/` 或其他本地归档路径，方便上传器读取本地图片；
    - 如含本地视频，video placeholder / embed marker 带本地视频路径和素材来源说明；
    - mobile preview `390-430px` 无 horizontal overflow。
 4. 如需要，打开或刷新本地 preview，常见地址是 `http://localhost:49255/`。
@@ -88,7 +88,7 @@ VoidZero is joining Cloudflare
 
 ### 图片与封面
 
-正文图片可以放在文章目录的 `assets/` 中，也可以按任务归档到 `.local-archive/YYYY-MM-DD-slug/images/`。Renderer 通过 `data-local-path` 或本地 archive hint 让上传器找到文件。
+正文图片可以放在文章目录的 `assets/` 中，也可以按任务归档到 `.local-archive/YYYY-MM-DD-<slug>/images/`。Renderer 通过 `data-local-path` 或本地 archive hint 让上传器找到文件。
 
 不要把图片以 base64 写进 WeChat preview HTML。HTML artifact 保持轻量；发布时由 CDP 上传器实时读取本地图片、上传到微信，并替换为微信 CDN URL。上传后检查正文图片 URL 是否变成 `https://mmbiz.qpic.cn/`。
 

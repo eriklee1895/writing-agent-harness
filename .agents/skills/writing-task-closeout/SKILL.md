@@ -1,6 +1,6 @@
 ---
 name: writing-task-closeout
-description: "写作任务发布后 closeout。Use after WeChat/blog draft creation, publishing, or final handoff when the user says 任务收尾/归档/复盘/回填链接/清理素材/整理 memory/git/task; archive final article state, move image/video binaries to .local-archive/YYYY-MM-DD-slug/, preserve prompts/metadata/manifests/notes, update publish status, decide memory/skill improvements, and prepare git/task handoff without publishing."
+description: "写作任务发布后 closeout。Use after WeChat/blog draft creation, publishing, or final handoff when the user says 任务收尾/归档/复盘/回填链接/清理素材/整理 memory/git/task; archive final article state, move image/video binaries to .local-archive/YYYY-MM-DD-<slug>/, preserve prompts/metadata/manifests/notes, update publish status, decide memory/skill improvements, and prepare git/task handoff without publishing."
 ---
 
 # Writing Task Closeout
@@ -21,16 +21,16 @@ description: "写作任务发布后 closeout。Use after WeChat/blog draft creat
    - `handoff-only`: 已交给用户 final review，暂不发布。
    - `abandoned`: 本次写作停止，但需要清理和记录原因。
 2. 找到 canonical Markdown / MDX 和渠道产物：
-   - canonical article file（`content/origin/&lt;slug&gt;/`）；
+   - canonical article file（`content/origin/YYYY-MM-DD-&lt;slug&gt;/`）；
    - generated preview / draft notes；
    - images / prompts / metadata；
    - video material packages / clips；
    - publish URL、`appmsgid`、blog URL 或其他平台 ID。
-3. 按 `YYYY-MM-DD-slug` 创建或使用本机归档目录：
+3. 按 `YYYY-MM-DD-<slug>` 创建或使用本机归档目录（`<slug>` 为裸 topic）：
 
    ```text
    .local-archive/
-     YYYY-MM-DD-slug/
+     YYYY-MM-DD-<slug>/
        images/
        video-materials/
        video-clips/
@@ -86,6 +86,21 @@ description: "写作任务发布后 closeout。Use after WeChat/blog draft creat
 
 ## Archive Policy
 
+**重要：图片和视频素材在生成阶段不要双写。** 生成期版本（如 cover v1/v2/v3）只保留在 `content/origin/YYYY-MM-DD-<slug>/assets/` 工作副本中；在 closeout 收尾时，再把最终 `index.md` 和实际被引用的素材统一归档到 `.local-archive/YYYY-MM-DD-<slug>/`。
+
+归档目录 `<slug>` 为裸 topic，目录名格式为 `YYYY-MM-DD-<slug>`，含日期前缀，避免同名冲突。
+
+```text
+.local-archive/
+  YYYY-MM-DD-<slug>/
+    index.md                  # 最终文章快照
+    archive-manifest.md       # 归档说明
+    images/                   # 实际使用的图片
+    prompts/                  # 图片/视频生成 prompts 与 metadata JSON
+    video-materials/          # 原始视频素材
+    video-clips/              # 最终剪辑
+```
+
 ### What Stays In Git
 
 - Canonical Markdown / MDX articles（in `content/origin/`）and channel-specific text versions.
@@ -103,31 +118,30 @@ description: "写作任务发布后 closeout。Use after WeChat/blog draft creat
 - Video binaries: `*.mp4`, `*.mov`, `*.m4v`, `*.webm`, `*.mkv`, `*.avi`.
 - Raw video downloads, final clips, transcode intermediates, HyperFrames rendered video outputs.
 
-Keep binary media in `.local-archive/YYYY-MM-DD-slug/` or external storage. If future blog assets move to a separate Astro repo, record the target repo/path or published URL in tracked notes here.
+Keep binary media in `.local-archive/YYYY-MM-DD-<slug>/` or external storage. If future blog assets move to a separate Astro repo, record the target repo/path or published URL in tracked notes here.
 
 Do not use base64 as an archive strategy. It bloats HTML and Git history while making failures harder to debug.
 
 ### Image Archive
 
-- Move final images and generated variants to `.local-archive/YYYY-MM-DD-slug/images/`.
-- Keep source prompt, style profile, model/provider, size/ratio, generation time, usage and article reference.
-- If `article-illustration` generated `.json` metadata, preserve it with the image.
-- If an image was compressed/cropped/retouched, record the post-processing note.
-- Repo should retain only prompt/metadata/manifest/alt/caption/published URL unless the user explicitly force-adds an exception.
-- For WeChat, publishing should resolve `.local-archive` paths at CDP time, upload images to WeChat, replace `src` with WeChat CDN URLs, and then record the final CDN URL / draft status in tracked notes when available.
+- **只在 closeout 时移动图片。** 生成阶段不要双写到 `.local-archive/`。
+- 移动最终图片到 `.local-archive/YYYY-MM-DD-<slug>/images/`，只移动 `index.md` 中实际引用的图片；未使用的生成版本可保留在 `content/origin/YYYY-MM-DD-<slug>/assets/` 中作为本地工作副本，不强制清理。
+- 同时复制最终 `index.md` 到 `.local-archive/YYYY-MM-DD-<slug>/index.md` 作为文章快照。
+- 保留源 prompt、style profile、model/provider、size/ratio、generation time、usage 和 article reference；将对应 `.json` metadata 放入 `.local-archive/YYYY-MM-DD-<slug>/prompts/`。
+- Repo 中保留 `content/origin/YYYY-MM-DD-<slug>/assets/manifest.json` 作为轻量 provenance，记录每张图的来源、生成参数、归档路径、使用状态。
 
 ### Video Archive
 
-- Move `media.*`, `final.*`, transcode intermediates and rendered video outputs to `.local-archive/YYYY-MM-DD-slug/video-materials/` or `video-clips/`.
+- Move `media.*`, `final.*`, transcode intermediates and rendered video outputs to `.local-archive/YYYY-MM-DD-<slug>/video-materials/` or `video-clips/`.
 - Keep tracked `sources.md`, `manifest.json`, `clip-manifest.json`, `notes.md` with source URL, retrieved date, segment timestamps, rights reminder, publish status and recovery hint.
-- Do not record cookies, login state, account state, private browser profile paths, or sensitive absolute local paths. If needed, use a relative `.local-archive/YYYY-MM-DD-slug/...` hint.
+- Do not record cookies, login state, account state, private browser profile paths, or sensitive absolute local paths. If needed, use a relative `.local-archive/YYYY-MM-DD-<slug>/...` hint.
 - Do not `git add` video files.
 
 ## Cleanup
 
 - Clean only files clearly belonging to this task and safe to regenerate or discard.
 - `inbox/` material can be deleted, moved, or summarized only after confirming it has no independent future value.
-- Failed `drafts/` intermediate versions can be removed or moved to `.local-archive/YYYY-MM-DD-slug/` when they are not meaningful writing variants.
+- Failed `drafts/` intermediate versions can be removed or moved to `.local-archive/YYYY-MM-DD-<slug>/` when they are not meaningful writing variants.
 - Do not delete user edits, canonical article files, or unconfirmed assets.
 
 ## Retrospective

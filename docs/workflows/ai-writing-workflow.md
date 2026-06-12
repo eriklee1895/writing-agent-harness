@@ -46,7 +46,7 @@ flowchart LR
 这份 Mermaid 刻意保持简单：
 
 - **Router 层**：`AGENTS.md` 只保留高频规则和 docs 路由；低频细节通过 `docs/` progressive disclosure 加载。
-- **Origin 层**：`content/origin/{slug}/` 是 repo 内长期 canonical article；`content/drafts/` 和 `content/inbox/` 是本地 scratch，不默认提交。
+- **Origin 层**：`content/origin/YYYY-MM-DD-<slug>/` 是 repo 内长期 canonical article；`content/drafts/` 和 `content/inbox/` 是本地 scratch，不默认提交。
 - **Skill 层**：`.agents/skills/*` 负责可重复执行的写作、配图、视频、排版、发布和 closeout 能力。
 - **Channel 层**：`content/wechat/`、`content/blog/` 和未来渠道都从同一个 origin slug 派生，渠道稿 frontmatter 用 `source:` 指回 canonical article。
 - **Evolution 层**：真实任务结束后用 `writing-task-closeout` 把坑点、复盘、memory、docs 和 skill 改进回填到 harness。
@@ -62,7 +62,7 @@ flowchart LR
 | `content/blog/` | 可追踪博客 Markdown / MDX，未来供 Astro/Cloudflare Pages 使用 |
 | `content/assets/` | 跨文章复用 prompt、metadata、manifest 和 reference material；不要放单篇文章的一次性素材 |
 
-> `content/origin/<slug>/assets/` 是 article-local assets。`docs/assets/` 是文档图片目录，应该进入 Git；写作任务产生的大体积二进制图片、视频素材和剪辑产物默认留在 `.local-archive/` 或外部资产库，只提交可复现的 prompt、metadata、manifest、sources 和 notes。
+> `content/origin/YYYY-MM-DD-<slug>/assets/` 是 article-local assets。`docs/assets/` 是文档图片目录，应该进入 Git；写作任务产生的大体积二进制图片、视频素材和剪辑产物默认留在 `.local-archive/` 或外部资产库，只提交可复现的 prompt、metadata、manifest、sources 和 notes。
 
 ## Skill 分工
 
@@ -71,9 +71,9 @@ flowchart LR
 | 灵感脑暴 | `article-ideation` | 灵感碎片、链接、截图 | writing brief + outline |
 | 写作打磨 | `polish-article` | Markdown 草稿 | 打磨后 Markdown |
 | 插图生成 | `article-illustration` | 风格/尺寸描述 | 插画/封面/信息图 |
-| 视频素材摄取 | `video-material-ingest` | 已知视频 URL | `assets/media/<slug>/` 素材包 |
+| 视频素材摄取 | `video-material-ingest` | 已知视频 URL | `assets/media/` 素材包 |
 | 视频高光选择 | `video-highlight-select` | 本地素材包 + 文章意图 | contact sheet + 候选片段表 |
-| 文章视频剪辑 | `article-video-clip` | 已确认片段 + preset | `assets/video-clips/<slug>/final.mp4` |
+| 文章视频剪辑 | `article-video-clip` | 已确认片段 + preset | `assets/video-clips/<clip-name>/final.mp4` |
 | 排版渲染 | `wechat-article-renderer` | article.md + assets | `.wechat-preview.html` |
 | 发布草稿 | `wechat-publish-workflow` → `wechat-article-publisher` | HTML + 元数据 | 草稿箱 (appmsgid) |
 | 最终发布 | 👤 人工 review | 草稿箱 | 群发 |

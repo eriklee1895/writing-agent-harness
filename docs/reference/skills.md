@@ -30,7 +30,7 @@
 - `writing-task-closeout`
   - 写作任务发布后 closeout。
   - 用于微信公众号草稿/发布、blog 发布或最终交付之后，关闭一次写作任务。
-  - 负责回填发布状态、把图片/视频二进制移动到 `.local-archive/YYYY-MM-DD-slug/`、保留 prompt/metadata/manifest/notes、复盘、memory 决策、skill 改进和 git / task handoff；不执行最终发布。
+  - 负责回填发布状态、把图片/视频二进制移动到 `.local-archive/YYYY-MM-DD-<slug>/`、保留 prompt/metadata/manifest/notes、复盘、memory 决策、skill 改进和 git / task handoff；不执行最终发布。
 
 - `wechat-article-renderer`
   - 从 Markdown 生成微信公众号 HTML preview。

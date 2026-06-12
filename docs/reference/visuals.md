@@ -13,8 +13,11 @@ OPENAI_BASE_URL
 
 - `docs/` 下的文档图片属于 repo 文档资产，应进入 Git，不要迁移到 `.local-archive/`。
 - 单篇文章使用的图片放在对应 article folder 的 `assets/`。
-- 渠道稿可以引用 `content/origin/&lt;slug&gt;/assets/` 的 assets，也可以在渠道目录放 channel-specific assets；避免无意义复制大体积图片。
+- `index.md` 只引用 `assets/` 中的图片，**不要直接引用 `.local-archive/` 路径**。`.local-archive/` 是收尾归档快照，不是工作引用位置。
+- 图片生成阶段不要双写。生成期版本（如 cover v1/v2/v3）保留在 `assets/`；最终版本在 `writing-task-closeout` 时随 `index.md` 一起归档到 `.local-archive/YYYY-MM-DD-<slug>/`。
+- 渠道稿可以引用 `content/origin/YYYY-MM-DD-<slug>/assets/` 的 assets，也可以在渠道目录放 channel-specific assets；避免无意义复制大体积图片。
 - 跨文章复用素材可以放在 `content/assets/`；不要把单篇文章的一次性素材放到全局 assets。
+- 每篇文章建议在 `assets/manifest.json` 中记录图片文件名、alt、prompt、生成参数、归档路径、使用状态，该 manifest 进入 Git 作为 provenance。
 - 使用 descriptive alt text。微信公众号 renderer 会把 alt text 转成 caption。
 - 避免 `文章配图` 这种 generic caption。
 
@@ -22,8 +25,8 @@ OPENAI_BASE_URL
 
 已知视频 URL 的素材摄取使用 `video-material-ingest` skill。
 
-- 视频素材优先放在文章目录的 `assets/media/<slug>/`。
-- 没有文章上下文时放在 `content/inbox/media/YYYY-MM-DD-<slug>/`。
+- 视频素材优先放在文章目录的 `assets/media/`。
+- 没有文章上下文时放在 `content/inbox/media/YYYY-MM-DD-<slug>/`（`<slug>` 为裸 topic）。
 - 每个素材包必须保留 `manifest.json` 和 `sources.md`，用于后续写作、配图、短视频或 HyperFrames 生产前复核。
 - `video-material-ingest` 不负责图片 web search；图片搜索、图片生成和最终版权判断仍走独立 workflow。
 - 早期直接放在 `content/inbox/` 的裸 `.mp4` 不能直接作为 `article-video-clip --material`；先包装成 `media.ext + manifest.json + sources.md` 的素材包。为避免复制大视频，可以用 `media.mp4` symlink 指向原文件。
@@ -43,7 +46,7 @@ OPENAI_BASE_URL
 文章内插入的视频剪辑使用 `article-video-clip` skill 从本地素材包生成。
 
 - 输入必须优先来自 `video-material-ingest` 的素材包。
-- 输出放在文章目录的 `assets/video-clips/<slug>/`。
+- 输出放在文章目录的 `assets/video-clips/<clip-name>/`。
 - 第一版只做轻包装：裁片段、横/竖 preset、标题、caption、来源提示。
 - `article-video-clip` 不负责微信公众号上传；插入草稿由 `wechat-publish-workflow` 编排。
 - 说剪辑 ready 前，至少确认 `final.mp4` 的尺寸、时长、音轨，并检查 `preview-frame.jpg` 不是黑屏或明显越界。

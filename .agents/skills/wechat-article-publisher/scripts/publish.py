@@ -27,8 +27,8 @@ Publish boundary: saves a DRAFT only. Never clicks 发布/群发.
 
 Usage:
     uv run python .agents/skills/wechat-article-publisher/scripts/publish.py \
-        --article content/origin/<slug>/article.md \
-        --html    content/wechat/<slug>/article.wechat-preview.html \
+        --article content/origin/YYYY-MM-DD-<slug>/index.md \
+        --html    content/wechat/YYYY-MM-DD-<slug>/index.wechat-preview.html \
         --save-draft
 """
 

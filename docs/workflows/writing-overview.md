@@ -24,7 +24,7 @@
 9. 按不同渠道做 packaging。
 10. 在声称 ready 之前先 verify rendered output。
 11. 用户确认 preview/draft 后，才进入 publish。
-12. 发布、创建草稿或最终交付之后，使用 `writing-task-closeout` 做任务收尾：回填发布状态、归档媒体到 `.local-archive/YYYY-MM-DD-slug/`、复盘、memory / skill 决策和 git / task handoff。
+12. 发布、创建草稿或最终交付之后，使用 `writing-task-closeout` 做任务收尾：回填发布状态、归档媒体到 `.local-archive/YYYY-MM-DD-<slug>/`、复盘、memory / skill 决策和 git / task handoff。
 
 ## Ideation First
 
