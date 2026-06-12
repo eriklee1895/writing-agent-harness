@@ -68,6 +68,6 @@ The default output lives beside article assets:
 - `video-material-ingest` handles URL download and source material provenance.
 - `article-video-clip` handles local clipping and light article packaging.
 - `wechat-publish-workflow` handles whether and where the resulting clip is inserted into a WeChat draft.
-- `baoyu-post-to-wechat` may later automate actual WeChat video upload/insert.
+- `wechat-article-publisher` may later automate actual WeChat video upload/insert.
 
 Do not claim WeChat video upload is complete from this skill alone.
