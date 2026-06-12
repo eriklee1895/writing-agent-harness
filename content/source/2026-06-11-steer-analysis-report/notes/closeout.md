@@ -29,3 +29,15 @@ Fix: capture the backtick run on the opener and close on any line that is a bare
 
 - User: final review + publish/群发 of appmsgid 100000195; delete superseded 100000193.
 - Images live in `.local-archive/2026-06-11-steer-analysis-report/images/` (not in git).
+
+## Cleanup (2026-06-12)
+
+After the user marked the draft as "写好，归档", I finished the closeout pass:
+
+- Moved `content/drafts/steer-analysis-report/` → `.local-archive/2026-06-11-steer-analysis-report/drafts-scratch/`. Reason: stale scratch intermediates, content already promoted into canonical `article.md` / `article.en.md`. Kept rather than deleted because `report.html` is the impact-rational HTML rendered before the renderer bug fix + style switch, useful as a debug reference.
+- `.local-archive/.../archive-manifest.md` updated to point at the new drafts-scratch location.
+- `content/drafts/` is gitignored, so no git churn; nothing was committed.
+
+## Remaining follow-ups (unchanged)
+
+- User: final review + publish/群发 of appmsgid 100000195; delete superseded 100000193.
