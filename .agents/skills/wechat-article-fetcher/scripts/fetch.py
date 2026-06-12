@@ -92,9 +92,18 @@ def normalize_wechat_url(raw: str) -> str:
 
 
 def generate_slug(url: str, title: str | None = None) -> str:
-    """Generate a URL-safe slug from URL params or title."""
+    """Generate a URL-safe slug for the article directory name.
+
+    Priority:
+      1. Cleaned title (most readable for human browsing of the corpus)
+      2. biz+mid from URL (unique per article, but base64-encoded and
+         unreadable — only used as fallback when title is missing)
+      3. URL path (very last resort)
+    """
     parsed = urlparse(url)
     query = parsed.query
+    if title:
+        return _clean_slug(title)
     # WeChat uses both `__biz=` and `biz=`; match either. The double-
     # underscore form is the modern one in canonical mp.weixin.qq.com URLs.
     biz_match = re.search(r"(?:__)?biz=([^&]+)", query)
@@ -102,12 +111,8 @@ def generate_slug(url: str, title: str | None = None) -> str:
     if biz_match and mid_match:
         biz = _clean_slug(biz_match.group(1))
         mid = _clean_slug(mid_match.group(1))
-        slug = f"{biz}-{mid}"
-    elif title:
-        slug = _clean_slug(title)
-    else:
-        slug = _clean_slug(parsed.path.strip("/").replace("/", "-")) or "article"
-    return slug
+        return f"{biz}-{mid}"
+    return _clean_slug(parsed.path.strip("/").replace("/", "-")) or "article"
 
 def _clean_slug(text: str) -> str:
     text = text.lower().strip()
@@ -256,30 +261,59 @@ def pre_clean_html(html: str) -> str:
     #          replaced with its text) → insert "\n" so the implicit
     #          WeChat line break between adjacent spans is preserved.
     #      Then replace the span with its inner text.
-    #   2. Replace direct-child <p>/<div>/<section> with text + "\n"
+    #   2. Replace <br> tags inside <pre> with "\n" (markdownify would
+    #      render <br> as a hard break "  \n" but for code blocks we
+    #      want a real line break). Especially important for the
+    #      code-snippet__js class structure: one <code> wraps many
+    #      lines, each separated by <br><br>.
+    #   3. Replace direct-child <p>/<div>/<section>/<code> with text + "\n"
     #      (these are WeChat's "soft line break" markers and should always
-    #      produce a real line break in Markdown).
+    #      produce a real line break in Markdown). The <code> case matters
+    #      for the code-snippet__js class that WeChat uses for pasted code:
+    #      each line is wrapped in its own <code> element, and markdownify
+    #      treats <code> as inline.
     for pre in soup.find_all("pre"):
+        # Step 1: unwrap spans, inserting "\n" between adjacent spans that
+        # are not separated by an explicit break signal (<br>).
+        #
+        # We look BACKWARDS through previous siblings, skipping text nodes
+        # (which may include the "\n" we previously inserted), to find the
+        # nearest element-level sibling. If that element is a <br>, the
+        # break signal is already there and we don't insert "\n" before
+        # the span. For any other element (span/p/div/etc.), insert "\n"
+        # to preserve the implicit WeChat line break.
+        #
+        # We deliberately do NOT replace <br> with "\n" here. markdownify
+        # renders <br> as a hard-break "  \n" which looks wrong inside a
+        # code block, but we need <br> to STAY so Step 1 can detect it.
+        # The "\n" that markdownify will emit from the <br> after Step 1
+        # is acceptable in a code block (renders as a blank line).
         for span in list(pre.find_all("span")):
             prev_siblings = list(span.previous_siblings)
+            # No previous sibling at all → first child, no need to insert
+            if not prev_siblings:
+                span.replace_with(span.get_text())
+                continue
             has_break = False
-            has_text_break = False
             for sibling in prev_siblings:
-                name = getattr(sibling, "name", None)
-                if name == "br":
+                # Skip text nodes (including "\n" we inserted earlier)
+                if not hasattr(sibling, "name") or sibling.name is None:
+                    continue
+                # Found an element sibling
+                if sibling.name == "br":
                     has_break = True
-                    break
-                if name == "-text" and "\n" in sibling:
-                    has_text_break = True
-                    break
-            # Skip inserting "\n" if <br> is already present (markdownify
-            # handles <br> as a hard break) or if a text "\n" is already
-            # there. Otherwise insert "\n" to mark the implicit break.
-            if not has_break and not has_text_break:
+                # Any other element (span/p/div/etc.) → no explicit break;
+                # the loop ends here either way
+                break
+            if not has_break:
                 span.insert_before("\n")
             span.replace_with(span.get_text())
+        # Step 2: <br> -> "\n" inside <pre> (after unwrap so it stays)
+        for br in pre.find_all("br"):
+            br.replace_with("\n")
+        # Step 3: direct-child block elements
         for child in list(pre.children):
-            if getattr(child, "name", None) in ("p", "div", "section"):
+            if getattr(child, "name", None) in ("p", "div", "section", "code"):
                 child.replace_with(child.get_text() + "\n")
 
     return str(soup)
