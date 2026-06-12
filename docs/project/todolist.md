@@ -24,7 +24,7 @@ Feishu / Notion / etc.
 - 原文写作主力：飞书文档 / Notion。
 - 不把直接 Markdown 写作作为默认要求；Typora 也不是当前最顺手的主入口。
 - 笔记沉淀主力：Notion。
-- repo 内长期 canonical source：`content/source/` 中的 Markdown / MDX。
+- repo 内长期 canonical article：`content/origin/` 中的 Markdown / MDX。
 - 飞书文档 `<->` Markdown：当前已通过 `lark-cli` 跑得比较顺手，优先继续固化。
 - Notion `<->` Markdown：尚未完全打通，待调研 Notion MCP、Notion API 和 `notion-to-md` 方案。
 
@@ -40,9 +40,9 @@ Feishu / Notion / etc.
   - [ ] Notion API：确认认证、database 查询、page 拉取、block 遍历、rate limit 和图片下载策略。
   - [ ] `notion-to-md`：做一个小样本 page 转换实验，检查 frontmatter、嵌套 block、callout、toggle、database relation、media 的保真度。
   - [ ] 决定 Notion sync 的首个最小可用范围：单 page 导出、database 批量导出，还是指定 collection 增量同步。
-- [ ] 定义统一 source package：
-  - [x] 使用 `content/source/YYYY-MM-DD-topic/` 作为可追踪 canonical Markdown / MDX 目录。
-  - [x] 回填第一批现有文章到 `content/source/`，形成 source package 样例。
+- [ ] 定义统一 origin package：
+  - [x] 使用 `content/origin/YYYY-MM-DD-topic/` 作为可追踪 canonical Markdown / MDX 目录。
+  - [x] 回填第一批现有文章到 `content/origin/`，形成 origin package 样例。
   - [x] 统一现有 `content/wechat/` 目录 slug，并在渠道稿 frontmatter 增加 `source:` 反向指针。
   - [ ] 每篇文章一个目录，包含 `article.md` / `article.mdx`、`notes.md` 和 `assets/`。
   - [ ] frontmatter 统一字段：title、subtitle、slug、date、updated、source、source_url、channels、tags、status。
@@ -94,7 +94,7 @@ Feishu / Notion / etc.
 1. 把飞书文档 `<->` Markdown 的现有成功经验写成 runbook。
 2. 用一个真实 Notion page 做 `Notion -> Markdown / MDX` 小实验。
 3. 定义统一 frontmatter 和 article folder contract。
-4. 让一篇文章从 `content/drafts/` promote 到 `content/source/`，再派生到微信公众号 preview。
+4. 让一篇文章从 `content/drafts/` promote 到 `content/origin/`，再派生到微信公众号 preview。
 5. 建立 Astro 博客最小工程，让同一篇文章能被博客消费。
 6. 继续验证视频素材链路：用真实文章测试 `video-highlight-select`，再决定 ASR/TTS 是否进入实现。
 7. 再抽象 project-level skills，避免把没跑通的能力包装成“已完成”。

@@ -42,7 +42,7 @@
 - [ ] 想法或任务
   - context: 为什么想到它
   - promote when: 什么条件下迁移到 repo docs
-  - destination: 如果提升，应该进入 `docs/`、`AGENTS.md`、`.agents/skills/` 还是 `content/source/`
+  - destination: 如果提升，应该进入 `docs/`、`AGENTS.md`、`.agents/skills/` 还是 `content/origin/`
 ```
 
 ## Promotion Rule
@@ -60,6 +60,6 @@
 - 坑点复盘 → `docs/retrospectives/*.md`
 - skill 变化 → `.agents/skills/*`
 - 高频行为规则 → `AGENTS.md`
-- 文章源稿 → `content/source/`，不要迁移到 `docs/`
+- 文章源稿 → `content/origin/`，不要迁移到 `docs/`
 
 如果答案是 no，继续留在 `.local-memory/` 或删除。

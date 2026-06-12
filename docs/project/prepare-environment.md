@@ -112,7 +112,7 @@ npx hyperframes --version # optional, required for article-video-clip
 
 ```bash
 node .agents/skills/wechat-article-renderer/scripts/render-wechat-article.mjs \
-  content/source/YYYY-MM-DD-topic/article.md --style impact-rational
+  content/origin/YYYY-MM-DD-topic/article.md --style impact-rational
 ```
 
 生成插图：

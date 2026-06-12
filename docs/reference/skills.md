@@ -71,9 +71,9 @@
 
 - `wechat-article-publisher`
   - Playwright 微信公众号发布器。
-  - 输入 source `.md`（frontmatter 元数据权威源）+ renderer HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 `appmsgid`。
+  - 输入 origin `.md`（`content/origin/&lt;slug&gt;/`，frontmatter 元数据权威源）+ renderer HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 `appmsgid`。
   - 仅创建草稿，不点发布/群发。不负责排版风格（由 `wechat-article-renderer` 负责）。
-  - 迁移背景与对比数据见 [docs/future_plans/playwright-wechat-migration-analysis.md](../future_plans/playwright-wechat-migration-analysis.md)。
+  - 迁移背景与对比数据见 [docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](../retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。
 
 ## Language
 

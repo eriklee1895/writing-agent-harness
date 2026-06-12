@@ -56,7 +56,7 @@ description: "发布前文章 readiness 检查。Use when the user says ready/�
 - 无 `TODO`、`TBD`、占位标题、空链接、调试备注或未处理批注。
 - frontmatter 与正文一致：title、description/summary、date、tags、cover、canonical channel、publish status。
 - Markdown links 有效且语义清楚；公众号版本不应依赖 external `href`。
-- images、video refs、local asset paths 存在，并可追溯到文章目录、素材包或 `.local-archive/` 记录。
+- images、video refs、local asset paths 存在，并可追溯到 `content/origin/&lt;slug&gt;/assets/`、素材包或 `.local-archive/` 记录。
 - 代码块、表格、脚注、引用块、MDX components 没有破坏语法。
 - 文件名、目录、资产命名符合 repo 的目录约定；不确定时读取 `docs/project/directory-layout.md`。
 
@@ -73,7 +73,7 @@ description: "发布前文章 readiness 检查。Use when the user says ready/�
 
 - 微信公众号：内容 ready 后交给 `wechat-article-renderer`；preview 确认后再交给 `wechat-publish-workflow`。
 - Blog / MDX：确认 frontmatter、canonical URL、图片引用、MDX 组件和 build/render 风险。
-- 多渠道：保留 canonical Markdown / MDX source，再派生 channel-specific version；不要把渠道版本反向覆盖 source。
+- 多渠道：保留 canonical Markdown / MDX article，再派生 channel-specific version；不要把渠道版本反向覆盖 origin article。
 - 跨渠道复用：判断是否值得同步到 blog、知乎、即刻、小红书等；如需要，记录每个渠道要改的标题、摘要、长度、链接和图片策略。
 - 最终发布、群发、上线动作必须由用户 final review 或明确授权。
 

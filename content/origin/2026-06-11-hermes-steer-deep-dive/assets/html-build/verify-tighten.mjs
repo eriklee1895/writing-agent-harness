@@ -3,7 +3,7 @@
 // must still appear (by caption) elsewhere — i.e. only true duplicates dropped.
 import { readFileSync } from 'node:fs';
 const A = '/tmp/article.dedented.md';
-const B = '/Users/eriklee/code/my_project/writing-agent-harness/content/source/2026-06-11-hermes-steer-deep-dive/article.md';
+const B = '/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-11-hermes-steer-deep-dive/article.md';
 const rd = f => readFileSync(f, 'utf8');
 const blocks = s => s.match(/```\w*\n[\s\S]*?```/g) || [];
 const count = (s, re) => (s.match(re) || []).length;
