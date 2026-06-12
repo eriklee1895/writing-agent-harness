@@ -40,7 +40,7 @@
 
 - `content/inbox/`：原始输入和待整理材料 scratch。
 - `content/drafts/`：本地写作草稿 scratch。
-- `content/origin/`：可追踪 canonical Markdown / MDX 文章源稿。
+- `content/origin/YYYY-MM-DD-topic/`：可追踪 canonical Markdown / MDX 文章源稿（目录名必带日期，不写无日期歧义的 slug）。
 - `content/wechat/`、`content/blog/`：从 `content/origin/` 派生的渠道版本。
 - `content/origin/<slug>/assets/`：article-local assets，跟随 origin article 使用；大体积二进制素材默认不提交，除非任务明确需要 repo 追踪。
 - `content/wechat/<slug>/assets/`：微信渠道专用 assets；如果图片已在 origin assets 且体积较大，可用相对路径指回 origin，避免重复提交。
@@ -59,7 +59,7 @@
 | 了解完整 AI 写作工作流、skill 分工、目录约定 | [docs/workflows/ai-writing-workflow.md](docs/workflows/ai-writing-workflow.md) |
 | 理解 writing-agent-harness 身份和边界 | [docs/reference/writing-agent-harness-profile.md](docs/reference/writing-agent-harness-profile.md) |
 | 查看当前建设 todo | [docs/project/todolist.md](docs/project/todolist.md) |
-| 新建或整理文章目录 | [docs/project/directory-layout.md](docs/project/directory-layout.md) |
+| 新建或整理文章目录（`content/origin/` 必须使用 `YYYY-MM-DD-topic` 格式） | [docs/project/directory-layout.md](docs/project/directory-layout.md) |
 | 规划自动化能力 | [docs/project/automation-roadmap.md](docs/project/automation-roadmap.md) |
 | 常规写作、研究、润色 | [docs/workflows/writing-overview.md](docs/workflows/writing-overview.md) |
 | 早期灵感脑暴、确定 writing brief / outline | [docs/workflows/writing-overview.md](docs/workflows/writing-overview.md#ideation-first) |
