@@ -39,7 +39,50 @@ description: "写作任务发布后 closeout。Use after WeChat/blog draft creat
 
 4. 移动或确认二进制素材归档；repo 只保留轻量 provenance。
 5. 写复盘、memory / skill 决策、git / task handoff。
+   复盘时同步写入任务索引（`.local-memory/task-index.json`）。
 6. 最终回复说明 closeout 状态和剩余人工动作。
+
+### Contrastive Retrospective（自进化 1：Compare, don't just record）
+
+单次复盘容易放大偶发事件。每次 closeout 必须反问三个对比问题：
+
+1. **这次和上次同类任务有什么不同？**（成功/失败模式是否重现？）
+2. **上次 closeout 标记的改进方向，这次验证了吗？**（如果没落地，blocker 是什么？）
+3. **这次发现的问题在上次是否已经出现过？**（如果是，这是重复模式，必须写入 skill 或 anti-pattern。）
+
+产出形式：Retrospective 中新增 `## Contrastive` 段落，记录对比结论而非感觉。
+
+### Skill Staleness Check（自进化 2：Staleness detection）
+
+每次 closeout 扫描当前任务执行过程中是否有已有 skill 与实际情况不匹配的信号：
+
+- 运行时 agent 是否忽略了某个 skill 指令而用别的方式完成任务？
+- 某个 skill 引用的工具/API/路径是否已经变更？
+- 用户是否在任务中纠正了某个 skill 假设的行为？
+- publisher/renderer 是否因为 skill 过时导致额外 debug 循环？
+
+如果发现 >=1 个腐化信号，在 `.local-memory/` 下写入 `skill-staleness-<name>.md`，并在 Retrospective 中标记 `⚠️ 技能腐化风险`。
+
+### Task Index
+
+每次 closeout 追加 `.local-memory/task-index.json`：
+
+```json
+{
+  "slug": "hermes-agent-self-evolution",
+  "date": "2026-06-12",
+  "status": "draft-created",
+  "appmsgid": "100000313",
+  "skills_used": ["wechat-article-renderer", "wechat-article-publisher"],
+  "patterns_detected": ["closeout-img-path-broken"],
+  "staleness_flags": ["publisher-cover-auto-upload-unreliable"]
+}
+```
+
+字段说明：
+- `patterns_detected`：本次发现的重复模式或反模式（>=3 次出现在索引中 → 建议 skill 化）
+- `staleness_flags`：发现的技能腐化信号
+- `appmsgid` 或 `url` 作为 task ID
 
 ## Archive Policy
 
