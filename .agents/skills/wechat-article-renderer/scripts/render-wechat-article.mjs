@@ -616,31 +616,36 @@ function imageGroupHtml(block) {
 }
 
 function tableHtml(block) {
-  const tokens = getTokens();
-  const columnCount = Math.max(block.header.length, ...block.rows.map((row) => row.length));
-  let columnWidths = [];
-  if (columnCount === 2) {
-    columnWidths = ["34%", "66%"];
-  } else if (columnCount === 3) {
-    columnWidths = ["24%", "32%", "44%"];
-  } else {
-    columnWidths = Array.from({ length: columnCount }, () => `${Math.floor(100 / columnCount)}%`);
-  }
-  const colgroup = `<colgroup>${columnWidths.map((width) => `<col style="width:${width};">`).join("")}</colgroup>`;
-  const headers = block.header.map((cell) => (
-    `<th style="${SAFE_WRAP} border:1px solid rgba(74,124,155,.18); padding:11px 10px; background:#edf4f8; color:${tokens.blue}; font-size:14px; line-height:1.55; font-weight:700; text-align:left; vertical-align:top;">${inline(cell)}</th>`
-  )).join("");
-  const rows = block.rows.map((row, index) => (
-    `<tr>${row.map((cell, cellIndex) => `<td style="${SAFE_WRAP} border:1px solid rgba(74,124,155,.14); padding:12px 10px; font-size:14px; line-height:1.75; color:${cellIndex === 0 ? tokens.blue : tokens.text}; font-weight:${cellIndex === 0 ? "700" : "400"}; background:${index % 2 === 0 ? "#ffffff" : "#f8fbfc"}; vertical-align:top;">${inline(cell)}</td>`).join("")}</tr>`
-  )).join("");
-  return `<div style="${SAFE_WRAP} overflow-x:auto; margin:4px 0 20px;">
-  <table style="${SAFE_WRAP} border-collapse:collapse; width:100%; table-layout:fixed;">
-    ${colgroup}
-    <thead><tr>${headers}</tr></thead>
-    <tbody>${rows}</tbody>
-  </table>
-</div>`;
-}
+	  const tokens = getTokens();
+	  const columnCount = Math.max(block.header.length, ...block.rows.map((row) => row.length));
+	  let columnWidths = [];
+	  if (columnCount === 2) {
+	    columnWidths = ["34%", "66%"];
+	  } else if (columnCount === 3) {
+	    columnWidths = ["24%", "32%", "44%"];
+	  } else {
+	    columnWidths = Array.from({ length: columnCount }, () => `${Math.floor(100 / columnCount)}%`);
+	  }
+	  const colgroup = `<colgroup>${columnWidths.map((width) => `<col style="width:${width};padding-right:8px;">`).join("")}</colgroup>`;
+	  const headerBg = tokens.tableHeaderBg || "#f8fafc";
+	  const headers = block.header.map((cell) => (
+	    `<th style="${SAFE_WRAP} padding:10px 8px; background:${headerBg}; color:#6b7d8e; font-size:12px; line-height:1.4; font-weight:500; text-align:left; text-transform:uppercase; letter-spacing:.04em; border-top:1.5px solid rgba(0,0,0,.08); border-bottom:1.5px solid rgba(0,0,0,.08);">${inline(cell)}</th>`
+	  )).join("");
+	  const rows = block.rows.map((row, index) => {
+	    const last = index === block.rows.length - 1;
+	    return `<tr>${row.map((cell, cellIndex) => {
+	      const bb = last ? "border-bottom:1.5px solid rgba(0,0,0,.08);" : "";
+	      return `<td style="${SAFE_WRAP} padding:10px 8px; font-size:14px; line-height:1.7; color:${cellIndex === 0 ? tokens.blue : tokens.text}; font-weight:${cellIndex === 0 ? "600" : "400"}; ${bb} border-left:none; border-right:none;">${inline(cell)}</td>`;
+	    }).join("")}</tr>`;
+	  }).join("");
+	  return `<div style="${SAFE_WRAP} overflow-x:auto; margin:4px 0 20px;">
+	  <table style="${SAFE_WRAP} border-collapse:collapse; width:100%; table-layout:fixed; border:none;">
+	    ${colgroup}
+	    <thead><tr>${headers}</tr></thead>
+	    <tbody>${rows}</tbody>
+	  </table>
+	</div>`;
+	}
 
 // Syntax highlight palette (inline styles — WeChat strips classes & <style> blocks).
 const CODE_COLORS = {
