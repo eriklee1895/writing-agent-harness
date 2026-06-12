@@ -61,7 +61,7 @@ Curator 模块和前面两块有本质不同：它不是在任务执行时触发
 
 注意，自动生成和自我修复是在**使用**中发生的，Curator 是在**不使用**时发生的。这是一种关键的设计节奏：用的时候长，不用的时候整理。不浪费任务执行时的上下文窗口。
 
-![三角架构：自动技能生成、运行时自修复、Curator 整理形成闭环](.local-archive/2026-06-12-hermes-agent-self-evolution/images/20260612-125510-self-evolution-triangular-architecture.png)
+![三角架构：自动技能生成、运行时自修复、Curator 整理形成闭环](assets/20260612-125510-self-evolution-triangular-architecture.png)
 
 ## 自进化循环的工程结构：三阶段、三级、多时间尺度
 
@@ -83,7 +83,7 @@ Curator 模块和前面两块有本质不同：它不是在任务执行时触发
 | 战略级 | 小时-天 | 提炼行为模式 | Nudge 引擎从多轮对话中蒸馏洞察 |
 | 编排级 | 天-周 | 重塑技能拓扑 | Curator 合并窄技能为伞形技能 |
 
-![时间尺度：战术级、战略级、编排级三级并行运作](.local-archive/2026-06-12-hermes-agent-self-evolution/images/20260612-125516-self-evolution-loop-timescales.png)
+![时间尺度：战术级、战略级、编排级三级并行运作](assets/20260612-125516-self-evolution-loop-timescales.png)
 
 这种多时间尺度设计的意义在于：它同时解决了"这个 bug 立刻要修"和"我发现自己总是在重复创建相似的技能"这两种完全不同性质的问题。前者需要实时，后者需要后见之明。
 
@@ -125,7 +125,7 @@ MUR 框架（2025）把这个晋升过程形式化了一个更完善的成熟度
 
 这也是为什么 Hermes 的技能存储是以完整 SKILL.md（详细步骤）而非抽象的"要点提示"进行的。一个三四百字的 SKILL.md 可能费 token，但它能被 agent 用对。一句"微信文章要注意排版风格"的摘要更省 token，但 agent 不会用。
 
-![记忆分层：从工作记忆到程序性技能的晋升路径](.local-archive/2026-06-12-hermes-agent-self-evolution/images/20260612-125511-memory-layer-architecture.png)
+![记忆分层：从工作记忆到程序性技能的晋升路径](assets/20260612-125511-memory-layer-architecture.png)
 
 ## GEPA：用自然语言替代梯度来优化 Prompt
 
@@ -163,7 +163,7 @@ GEPA 的解法是**帕累托前沿（Pareto Front）选择**。不是只追踪�
 
 GEPA 用 GRPO 约 1/35 的评测调用量，超越了 GRPO 6-20%。最少 3 个示例即可开始工作。
 
-![GEPA 反射式突变流程：执行轨迹 → ASI 诊断 → 累积教训 → 帕累托前沿选择](.local-archive/2026-06-12-hermes-agent-self-evolution/images/20260612-125514-gepa-reflection-based-mutation.png)
+![GEPA 反射式突变流程：执行轨迹 → ASI 诊断 → 累积教训 → 帕累托前沿选择](assets/20260612-125514-gepa-reflection-based-mutation.png)
 
 ## 工程上的反模式和真实教训
 

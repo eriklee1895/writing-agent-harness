@@ -42,10 +42,10 @@
 - `content/drafts/`：本地写作草稿 scratch。
 - `content/origin/YYYY-MM-DD-topic/`：可追踪 canonical Markdown / MDX 文章源稿（目录名必带日期，不写无日期歧义的 slug）。
 - `content/wechat/`、`content/blog/`：从 `content/origin/` 派生的渠道版本。
-- `content/origin/<slug>/assets/`：article-local assets，跟随 origin article 使用；大体积二进制素材默认不提交，除非任务明确需要 repo 追踪。
-- `content/wechat/<slug>/assets/`：微信渠道专用 assets；如果图片已在 origin assets 且体积较大，可用相对路径指回 origin，避免重复提交。
+- `content/origin/YYYY-MM-DD-<slug>/assets/`：article-local assets，跟随 origin article 使用；图片、封面、正文插图等应放此处并由 `index.md` 引用。大体积二进制素材默认不提交（受 `.gitignore` 全局忽略），除非任务明确需要 repo 追踪。
+- `content/wechat/YYYY-MM-DD-<slug>/assets/`：微信渠道专用 assets；如果图片已在 origin assets 且体积较大，可用相对路径指回 origin，避免重复提交。
 - `content/assets/`：跨文章复用的 prompts、metadata、manifest 和 sources；不要放单篇文章的一次性素材。
-- `.local-archive/`：本机归档的图片、视频、音频、设计源文件和发布后素材，不入 Git。
+- `.local-archive/YYYY-MM-DD-<slug>/`：本机归档快照，`<slug>` 为裸 topic，目录名带日期前缀。写作收尾时由 `writing-task-closeout` 把最终 `index.md`、实际使用的图片、生成 prompts/metadata 统一归档至此，不入 Git。图片生成阶段不要双写，只保留一份在 `assets/` 工作副本中。
 - 不要把文章草稿、渠道预览或一次性写作 scratch 放到 `docs/`；不确定时读取 [docs/project/directory-layout.md](docs/project/directory-layout.md)。
 
 ## Docs Router

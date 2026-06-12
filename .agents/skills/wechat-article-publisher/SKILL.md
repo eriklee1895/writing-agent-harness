@@ -1,6 +1,6 @@
 ---
 name: wechat-article-publisher
-description: 用 Playwright 把微信公众号文章（文章流程）同步到草稿箱。输入 origin article.md（content/origin/&lt;slug&gt;/，frontmatter 元数据权威源）+ wechat-article-renderer 产出的 HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 appmsgid。本项目替换 baoyu-post-to-wechat CDP 模式的首选发布器。当用户要"发布公众号草稿""同步到草稿箱""publish wechat draft"时使用。仅创建草稿，不点发布/群发。
+description: 用 Playwright 把微信公众号文章（文章流程）同步到草稿箱。输入 origin index.md（content/origin/YYYY-MM-DD-&lt;slug&gt;/，frontmatter 元数据权威源）+ wechat-article-renderer 产出的 HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 appmsgid。本项目替换 baoyu-post-to-wechat CDP 模式的首选发布器。当用户要"发布公众号草稿""同步到草稿箱""publish wechat draft"时使用。仅创建草稿，不点发布/群发。
 ---
 
 # WeChat 公众号文章发布器（Playwright）
@@ -48,13 +48,13 @@ article.md（frontmatter）→ wechat-article-renderer → *.wechat-preview.html
 ```bash
 # 推荐：frontmatter 来自 source .md，正文用 renderer 产出的 HTML
 uv run python .agents/skills/wechat-article-publisher/scripts/publish.py \
-  --article content/origin/<slug>/article.md \
-  --html    content/wechat/<slug>/article.wechat-preview.html \
+  --article content/origin/YYYY-MM-DD-<slug>/index.md \
+  --html    content/wechat/YYYY-MM-DD-<slug>/index.wechat-preview.html \
   --save-draft
 
 # 备用：只给 .md（极简排版，无 renderer 样式）
 uv run python .agents/skills/wechat-article-publisher/scripts/publish.py \
-  --article content/origin/<slug>/article.md --save-draft
+  --article content/origin/YYYY-MM-DD-<slug>/index.md --save-draft
 ```
 
 | 参数 | 说明 |

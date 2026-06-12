@@ -73,7 +73,7 @@ Shared renderer rules:
 - Keep all layout styling inline; avoid external CSS and JavaScript.
 - Do not output external link `href` attributes in WeChat HTML. Render links and references as readable text because the WeChat editor rejects non-`mp.weixin.qq.com` links when saving drafts.
 - Do not inline image binaries as base64. WeChat preview HTML should stay lightweight and reviewable.
-- Preserve local image references with `data-local-path`; paths may point to article `assets/`, `.local-archive/YYYY-MM-DD-slug/images/`, or another local archive hint.
+- Preserve local image references with `data-local-path`; paths may point to article `assets/`, `.local-archive/YYYY-MM-DD-<slug>/images/`, or another local archive hint.
 - CDP publishing resolves `data-local-path` at draft creation time, uploads images to WeChat, and replaces `src` with WeChat CDN URLs.
 - Make small-screen safety non-negotiable: `box-sizing:border-box`, width constraints, and long-token wrapping.
 - Keep `一句话总结` and `文章大纲` available when the selected style supports long-form reading aids.

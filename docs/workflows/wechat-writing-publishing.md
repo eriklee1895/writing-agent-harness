@@ -38,7 +38,7 @@ content/wechat/YYYY-MM-DD-topic/
 └── assets/
 ```
 
-`content/drafts/` 可以作为本地写作工作区，但默认 gitignored。文章进入草稿箱同步、发布交付或 repo review 前，应把 canonical Markdown / MDX、notes 和 metadata promote 到 `content/origin/`，再把微信公众号派生稿和 preview 放到 `content/wechat/`。微信目录可以有自己的 `assets/`；如果图片已在 `content/origin/<slug>/assets/` 且体积较大，可以用相对路径指回 origin 目录，避免重复二进制文件。
+`content/drafts/` 可以作为本地写作工作区，但默认 gitignored。文章进入草稿箱同步、发布交付或 repo review 前，应把 canonical Markdown / MDX、notes 和 metadata promote 到 `content/origin/`，再把微信公众号派生稿和 preview 放到 `content/wechat/`。微信目录可以有自己的 `assets/`；如果图片已在 `content/origin/YYYY-MM-DD-<slug>/assets/` 且体积较大，可以用相对路径指回 origin 目录，避免重复二进制文件。
 
 ## Step 1: 准备 canonical Markdown
 
@@ -95,7 +95,7 @@ Renderer 必须保证：
 - no external stylesheet；
 - no external `href`；
 - no base64 image payload；
-- local images 带 `data-local-path`，可指向文章 `assets/` 或 `.local-archive/YYYY-MM-DD-slug/images/`；
+- local images 带 `data-local-path`，可指向文章 `assets/` 或 `.local-archive/YYYY-MM-DD-<slug>/images/`；
 - mobile width `390-430px` 不横向溢出。
 
 ## Step 4: 本地预览与检查

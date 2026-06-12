@@ -1,0 +1,69 @@
+{
+  "article": {
+    "slug": "2026-06-12-hermes-agent-self-evolution",
+    "title": "Hermes Agent 自进化原理拆解",
+    "canonical_path": "content/origin/2026-06-12-hermes-agent-self-evolution/index.md",
+    "archive_path": ".local-archive/2026-06-12-hermes-agent-self-evolution/"
+  },
+  "images": [
+    {
+      "filename": "20260612-130013-hermes-agent-self-evolution-cover-v2-cropped.png",
+      "role": "cover",
+      "alt": "Hermes Agent 自进化原理拆解封面",
+      "archive_path": ".local-archive/2026-06-12-hermes-agent-self-evolution/images/20260612-130013-hermes-agent-self-evolution-cover-v2-cropped.png",
+      "prompt_file": "assets/20260612-130013-hermes-agent-self-evolution-cover-v2.json",
+      "status": "active",
+      "replaces": [
+        "20260612-125509-hermes-self-evolution-cover-cropped.png",
+        "20260612-125935-hermes-agent-self-evolution-cover-cropped.png"
+      ]
+    },
+    {
+      "filename": "20260612-125510-self-evolution-triangular-architecture.png",
+      "role": "body",
+      "alt": "三角架构：自动技能生成、运行时自修复、Curator 整理形成闭环",
+      "archive_path": ".local-archive/2026-06-12-hermes-agent-self-evolution/images/20260612-125510-self-evolution-triangular-architecture.png",
+      "prompt_file": "assets/20260612-125510-self-evolution-triangular-architecture.json",
+      "status": "active"
+    },
+    {
+      "filename": "20260612-125516-self-evolution-loop-timescales.png",
+      "role": "body",
+      "alt": "时间尺度：战术级、战略级、编排级三级并行运作",
+      "archive_path": ".local-archive/2026-06-12-hermes-agent-self-evolution/images/20260612-125516-self-evolution-loop-timescales.png",
+      "prompt_file": "assets/20260612-125516-self-evolution-loop-timescales.json",
+      "status": "active"
+    },
+    {
+      "filename": "20260612-125511-memory-layer-architecture.png",
+      "role": "body",
+      "alt": "记忆分层：从工作记忆到程序性技能的晋升路径",
+      "archive_path": ".local-archive/2026-06-12-hermes-agent-self-evolution/images/20260612-125511-memory-layer-architecture.png",
+      "prompt_file": "assets/20260612-125511-memory-layer-architecture.json",
+      "status": "active"
+    },
+    {
+      "filename": "20260612-125514-gepa-reflection-based-mutation.png",
+      "role": "body",
+      "alt": "GEPA 反射式突变流程：执行轨迹 → ASI 诊断 → 累积教训 → 帕累托前沿选择",
+      "archive_path": ".local-archive/2026-06-12-hermes-agent-self-evolution/images/20260612-125514-gepa-reflection-based-mutation.png",
+      "prompt_file": "assets/20260612-125514-gepa-reflection-based-mutation.json",
+      "status": "active"
+    }
+  ],
+  "unused": [
+    {
+      "filename": "20260612-125509-hermes-self-evolution-cover-cropped.png",
+      "role": "cover",
+      "status": "superseded",
+      "note": "v1 cover，被 v2 替代"
+    },
+    {
+      "filename": "20260612-125935-hermes-agent-self-evolution-cover-cropped.png",
+      "role": "cover",
+      "status": "superseded",
+      "note": "v1.5 cover，被 v2 替代"
+    }
+  ],
+  "schema_version": "1.0"
+}
