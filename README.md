@@ -42,6 +42,7 @@ npx skills add eriklee1895/writing-agent-harness --skill article-ideation
 | --- | --- | --- |
 | [`grill-me`](https://github.com/mattpocock/skills/tree/main/skills/productivity/grill-me) | 在设计、目录、workflow、自动化方案定型前，连续追问并压实决策树 | 用于 pre-request / planning grill，避免把模糊想法过早写进 docs 或 skills |
 | [`obra/superpowers`](https://github.com/obra/superpowers) | skills methodology、progressive disclosure、specs / plans 工作流启发 | 项目愿景和 `docs/superpowers/` 约定的重要灵感来源 |
+| [`JimLiu/baoyu-skills`](https://github.com/JimLiu/baoyu-skills) | 微信公众号 CDP 草稿箱、API 发布自动化 | 项目的微信公众号发布自动化起点，为后续 Playwright 自建 `wechat-article-publisher` 提供了工程基础 |
 
 With thanks to the authors and maintainers of these amazing skills and skill ecosystems.
 
@@ -209,13 +210,13 @@ Renderer 支持四种 style preset：`impact-rational`（技术评论/观点文�
 | `video-highlight-select` | 人工辅助选择文章相关高光片段，生成 contact sheet、候选片段表和 `article-video-clip` handoff |
 | `article-video-clip` | 从本地视频素材包裁切并轻包装文章视频片段，输出 `final.mp4`、预览帧和 clip manifest |
 | `wechat-article-renderer` | Markdown → 微信公众号 HTML，支持 `impact-rational`/`literary-essay`/`cultural-essay`/`tech-blog` 四种风格 |
-| `wechat-article-publisher` | Playwright 微信公众号发布器，替换 baoyu-post-to-wechat CDP 模式。输入 source .md（frontmatter 元数据权威源）+ renderer HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 appmsgid |
+| `wechat-article-publisher` | Playwright 微信公众号发布器。输入 source .md（frontmatter 元数据权威源）+ renderer HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 appmsgid |
 | `wechat-publish-workflow` | 编排微信公众号草稿箱同步、验证和发布交接 |
 | `writing-task-closeout` | 发布或最终交付后的任务收尾：归档、复盘、memory/skill/docs 改进和 git/task handoff |
 
 ## 🙏 Third-Party Acknowledgement
 
-本项目早期微信公众号发布自动化──从 CDP 草稿箱同步、登录态复用、正文图片上传到 ProseMirror 编辑器交互──建立在 [JimLiu/baoyu-skills](https://github.com/JimLiu/baoyu-skills) 的工程积累之上。后续项目将这些经验沉淀并迁移到自建 `wechat-article-publisher`（Playwright），但 baoyu CDP 模式仍然是项目发布能力成长路径上重要的一环。
+感谢 [JimLiu/baoyu-skills](https://github.com/JimLiu/baoyu-skills)，为本项目的微信公众号发布自动化提供了工程起点。
 
 特别感谢宝玉 (Jim Liu) 和所有 `baoyu-skills` 的贡献者。
 
