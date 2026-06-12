@@ -132,7 +132,7 @@ wechat-article-publisher    # Playwright，默认
 
 发布器走 `wechat-article-publisher`（Playwright），通过持久化 profile 复用登录态，填 title/author/summary、注入正文 HTML、串行上传正文图片到微信 CDN、保存草稿。元数据取自 source `.md` frontmatter（作者缺省取 `config.toml`，已预填 李玉恒）；标题写入可见标题 ProseMirror（同步隐藏 `#title`），正文剔除 hero 大标题避免重复。已验证文章流程、标题/作者/摘要、串行正文图片上传、草稿保存。迁移背景与对比数据见 [../retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](../retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。
 
-`baoyu-post-to-wechat` 的 CDP 模式保留为 fallback，不再扩展新功能。官方 API / remote-api 仍只作为历史/实验能力（需要 AppID/AppSecret、access_token、IP 白名单，富文本兼容成本高，不维护主线）。
+官方 API / remote-api 仅作为历史/实验能力（需要 AppID/AppSecret、access_token、IP 白名单，富文本兼容成本高，不维护主线）。
 
 成功后的可靠信号是保存后编辑页 URL 出现 `appmsgid=...`（或保存成功 toast）。进入草稿箱不代表已经发布。
 
