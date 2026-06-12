@@ -252,12 +252,11 @@ await cdp.send('Input.dispatchMouseEvent', {
 **目标**：正式替换 CDP 方案。
 
 **任务**：
-- [ ] 更新 `wechat-publish-workflow` skill，默认调用 Playwright 版本
-- [ ] 更新 AGENTS.md 和 workflow 文档，移除 baoyu CDP 主路径描述
-- [ ] 保留 CDP 代码 1-2 个月作为 fallback（但不维护新功能）
+- [x] 更新 `wechat-publish-workflow` skill，默认调用 Playwright 版本
+- [x] 更新 AGENTS.md 和 workflow 文档，移除 baoyu CDP 主路径描述
+- [x] 删除 baoyu-post-to-wechat 相关代码和依赖（2026-06-12）
 - [ ] 观察 2-3 次真实发布，确认稳定性
-- [ ] 若无问题，删除 baoyu-post-to-wechat 相关代码和依赖
-- [ ] 更新项目依赖：移除 `baoyu-chrome-cdp`，确认 `playwright` 已在 `pyproject.toml`
+- [x] 确认 `playwright` 已在 `pyproject.toml`
 
 ---
 
@@ -310,8 +309,6 @@ await cdp.send('Input.dispatchMouseEvent', {
 | [../../docs/retrospectives/2026-06-05-wechat-publish.md](../../docs/retrospectives/2026-06-05-wechat-publish.md) | CDP 发布复盘 |
 | [../../docs/retrospectives/2026-06-06-wechat-cdp-only-decision.md](../../docs/retrospectives/2026-06-06-wechat-cdp-only-decision.md) | CDP Only 决策记录（将被本方案替代） |
 | [../../memory/baoyu-browser-draft-save-issue.md](../../memory/baoyu-browser-draft-save-issue.md) | CDP 点击不响应的具体问题记录 |
-| [../../.agents/skills/baoyu-post-to-wechat/scripts/wechat-browser.ts](../../.agents/skills/baoyu-post-to-wechat/scripts/wechat-browser.ts) | CDP 图文发布实现（742 行） |
-| [../../.agents/skills/baoyu-post-to-wechat/scripts/cdp.ts](../../.agents/skills/baoyu-post-to-wechat/scripts/cdp.ts) | CDP 连接管理实现（256 行） |
 
 ### B. Playwright 核心参考代码（来自已验证的 wechat-article-fetcher）
 
