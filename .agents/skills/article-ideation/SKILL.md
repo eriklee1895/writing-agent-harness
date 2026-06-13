@@ -134,10 +134,15 @@ For WeChat longform, include reading rhythm: where to add summary card, reader m
 
 ### 6. Ask For Confirmation
 
-结束时让用户确认 brief 和 outline，再进入下一阶段：
+结束时让用户确认 brief 和 outline。如果任务较重（多步骤、跨多轮 agent 执行），主动询问是否需要生成 writing plan 落盘：
 
 ```text
-如果这个 writing brief 方向对，我下一步可以按 research questions 去查证资料，然后再扩成初稿。
+如果这个 writing brief 方向对，下一步有两个选择：
+
+1. **直接开写** —— 适合轻量任务，你直接说"开始写"就行。
+2. **先做一个 writing plan** —— 如果你的任务涉及 research + draft + visuals + polish + 多渠道发布，或者担心多轮执行中 context 丢失，建议先把决策和偏好落盘到 `content/drafts/YYYY-MM-DD-<slug>/writing-plan.md`。要用这个的话我切到 `create-article-writing-plan`。
+
+你倾向哪个？
 ```
 
 ## Output Rules
@@ -154,3 +159,4 @@ For WeChat longform, include reading rhythm: where to add summary card, reader m
 - 需要写初稿：使用 writing brief 和 outline 作为约束。
 - 需要润色已有稿件：交给 `polish-article`。
 - 需要微信公众号排版：内容完成后交给 `wechat-article-renderer`。
+- 需要制定写作执行计划：交给 `create-article-writing-plan`。当任务涉及多步骤（research + draft + visuals + polish + channel packaging），或者用户希望关键决策落盘防止 context lost 时，主动建议此 handoff。

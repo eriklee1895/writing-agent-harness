@@ -14,8 +14,13 @@
 
 - `article-ideation`
   - 把模糊写作灵感打磨成清晰 writing brief、research questions 和初版 outline。
-  - 用于“我想写一篇”“帮我理一下思路”“脑暴选题”“先定 outline”这类早期写作阶段。
+  - 用于”我想写一篇””帮我理一下思路””脑暴选题””先定 outline”这类早期写作阶段。
   - 它不负责写完整正文；它负责避免 agent 在没理解清楚前直接开写。
+
+- `create-article-writing-plan`
+  - 将 writing brief 转化为轻量、开放性的写作执行计划，落盘 `writing-plan.md`。
+  - 用于 ideation 确认方向之后，任务涉及多步骤（research + draft + visuals + polish + channel packaging）或用户希望防 context lost 时。
+  - 不拆分死步骤，不限制 agent 创造力；所有内容都是”建议”和”偏好”。
 
 - `polish-article`
   - 润色和打磨文章写作。
@@ -63,6 +68,18 @@
   - 默认支持 `--style-profile auto`，但正式文章出图时应优先明确指定风格。
   - Guide 和历史优质生图案例见 [article-illustration/README.md](article-illustration/README.md)。
 
+- `gpt-image-2`
+  - 用 OpenAI 的 gpt-image-2 生成、编辑和批量生成位图。
+  - 支持文生图、参考图编辑（背景替换、物体移除、文字替换、风格迁移）、最多 16 张参考图、批量提示词变体。
+  - gpt-image-2 是 2026-06 时点的 SOTA，擅长文字精准渲染、照片级真实感和身份敏感编辑。
+  - 不用于 SVG/矢量图标、代码原生图示、确定性布局工作或需要干净透明背景的场景（gpt-image-2 的透明背景建议先生成不透明再用下游 rembg 处理）。
+
+- `seedance-video`
+  - 用火山引擎 Seedance 2.0 生成视频。
+  - 支持文生视频、图生视频（首帧/首尾帧）、多模态参考、批量镜头、提示词优化和首帧图生成。
+  - 前置依赖：`uv`、`ARK_API_KEY` 环境变量或 `.env` 文件。
+  - 生成的视频素材包包含 `video.mp4`、`manifest.json`、`prompt.md`，可选 `last-frame.jpg`。
+
 - `wechat-article-fetcher`
   - 用 Playwright + 本地持久化 Profile 提取微信公众号文章到结构化 Markdown + assets。
   - 输入 URL 输出 `article.md` + `manifest.json` + `sources.md` + `assets/`，支持图片落地和交互式首次登录引导。
@@ -73,7 +90,6 @@
   - Playwright 微信公众号发布器。
   - 输入 origin `.md`（`content/origin/&lt;slug&gt;/`，frontmatter 元数据权威源）+ renderer HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 `appmsgid`。
   - 仅创建草稿，不点发布/群发。不负责排版风格（由 `wechat-article-renderer` 负责）。
-  - 迁移背景与对比数据见 [docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](../retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。
 
 - `markdown-article-to-lark-doc`
   - 把本地 Markdown 文章转写为飞书云文档（docx）。
