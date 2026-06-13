@@ -147,7 +147,8 @@ Agent 按需读取，不必全部加载：
 | 文件 | 用途 | 何时读 |
 |---|---|---|
 | `references/key-constraints.md` | 30s 速查：能力边界、限制、翻车清单 | **每次任务前先读** |
-| `references/prompt-guide.md` | 提示词技巧：公式、分镜写法、运镜/光影词表、情绪外化 | 写 Seedance 提示词时 |
+| `references/multimodal-reference.md` | 多模态输入：图片/视频/音频参考详解、编辑/延长、asset:// 协议 | 需要准备参考素材时 |
+| `references/prompt-guide.md` | 提示词技巧：公式、分镜写法、运镜/光影词表、情绪外化、音频提示词 | 写 Seedance 提示词时 |
 | `references/scene-cookbook.md` | 完整场景示例：教育动画、短剧、产品、竖屏、首帧、编辑、延长 | 需要模板参照时 |
 | `references/api-reference.md` | API 端点、参数、状态机、错误码、计费 | 调试 API 调用时 |
 
