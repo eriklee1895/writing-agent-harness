@@ -75,6 +75,13 @@
   - 仅创建草稿，不点发布/群发。不负责排版风格（由 `wechat-article-renderer` 负责）。
   - 迁移背景与对比数据见 [docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](../retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。
 
+- `markdown-article-to-lark-doc`
+  - 把本地 Markdown 文章转写为飞书云文档（docx）。
+  - 解析 frontmatter，保留标题层级、列表、代码块、表格、引用块；本地图片按原始尺寸上传，` ```mermaid ` 代码块自动渲染为飞书画板，`==高亮文本==` 转换为黄色 callout。
+  - 会清洗 `<video>` / `<source>` / HTML 注释等飞书 markdown 模式不支持的标签；缺失的本地图片降级为 `[图片缺失]` 提示，不阻塞整篇转换。
+  - 默认新建飞书文档；若用户提供已有 docx URL，会先 fetch 探测并确认后再 overwrite。
+  - 底层依赖 `lark-cli` 和 `lark-doc` / `lark-whiteboard` / `lark-shared` skills，本 skill 只负责预处理和编排。
+
 ## Language
 
 面向中文产品/中文工作流的 project skills 可以中文为主；流程、技术约束、工具名和 checklist 中更清楚的地方使用 English。
