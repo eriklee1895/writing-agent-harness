@@ -1,6 +1,8 @@
 # writing-agent-harness
 
 [![GitHub repo](https://img.shields.io/badge/GitHub-eriklee1895%2Fwriting--agent--harness-181717?logo=github)](https://github.com/eriklee1895/writing-agent-harness)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![GitHub tag (with filter)](https://img.shields.io/github/v/tag/eriklee1895/writing-agent-harness?sort=semver&label=version)
 
 `writing-agent-harness` 是 Erik 的个人 AI 自动化写作 harness。
 
