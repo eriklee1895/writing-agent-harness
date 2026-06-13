@@ -13,22 +13,23 @@
 1. 捕捉 idea / inspiration。用户可以先给灵感、素材、判断、链接或几段粗糙想法。
 2. 进入 `article-ideation`，通过脑暴校准 central question、target reader、thesis、angle、tone、anti-goals 和 distribution channel。
 3. 产出 `writing brief`、`research questions` 和初版 outline。不要在没理解清楚前急着写正文。
-4. 做 research。遇到 current events、company/product facts、pricing、laws、fast-moving tech topics 时，必须查证并写清具体日期。
-5. 根据 writing brief 和 research 形成 full draft。
-6. 使用 `polish-article` 打磨逻辑、register、表达质感、专业深度和题材气质。
-7. 只有当图片或视频能帮助理解、传播或渠道呈现时，才生成或优化 visuals。
+4. （可选）如果任务涉及多步骤（research + draft + visuals + polish + 多渠道发布），或担心多轮 agent 执行中 context 丢失，可在进入 research 前使用 `create-article-writing-plan` 将决策和偏好落盘到 `content/drafts/YYYY-MM-DD-<slug>/writing-plan.md`。这个 plan 是轻量的、开放性的——它保存方向，不拆分死步骤。轻量任务可跳过此步。
+5. 做 research。遇到 current events、company/product facts、pricing、laws、fast-moving tech topics 时，必须查证并写清具体日期。
+6. 根据 writing brief 和 research 形成 full draft。
+7. 使用 `polish-article` 打磨逻辑、register、表达质感、专业深度和题材气质。
+8. 只有当图片或视频能帮助理解、传播或渠道呈现时，才生成或优化 visuals。
    - 图片/封面/信息图走 `article-illustration`。
    - 已知视频 URL 先走 `video-material-ingest` 留痕。
    - 文章内视频先走 `video-highlight-select` 做人工辅助选片，再走 `article-video-clip` 做轻包装。
-8. 使用 `article-readiness-check` 做发布前检查：正文 readiness、事实边界、Markdown/MDX hygiene、frontmatter、图片/视频引用、渠道 handoff 和 publish blockers。
-9. 按不同渠道做 packaging。
-10. 在声称 ready 之前先 verify rendered output。
-11. 用户确认 preview/draft 后，才进入 publish。
-12. 发布、创建草稿或最终交付之后，使用 `writing-task-closeout` 做任务收尾：回填发布状态、归档媒体到 `.local-archive/YYYY-MM-DD-<slug>/`、复盘、memory / skill 决策和 git / task handoff。
+9. 使用 `article-readiness-check` 做发布前检查：正文 readiness、事实边界、Markdown/MDX hygiene、frontmatter、图片/视频引用、渠道 handoff 和 publish blockers。
+10. 按不同渠道做 packaging。
+11. 在声称 ready 之前先 verify rendered output。
+12. 用户确认 preview/draft 后，才进入 publish。
+13. 发布、创建草稿或最终交付之后，使用 `writing-task-closeout` 做任务收尾：回填发布状态、归档媒体到 `.local-archive/YYYY-MM-DD-<slug>/`、复盘、memory / skill 决策和 git / task handoff。
 
 ## Ideation First
 
-高质量写作不要从“直接写稿”开始，而要先把灵感校准成可执行的写作设计。
+高质量写作不要从”直接写稿”开始，而要先把灵感校准成可执行的写作设计。
 
 `article-ideation` 阶段应该帮助 Erik 和 agent 对齐：
 
@@ -42,6 +43,22 @@
 - 初版 outline 应该如何组织。
 
 这个阶段的产物是 `writing brief`，不是完整正文。确认 brief 后，再进入 research / draft，文章质量会更稳定。
+
+## Writing Plan (Optional)
+
+对于涉及多步骤、跨多轮 agent 执行的重任务，建议在 brief 确认后使用 `create-article-writing-plan` 生成 `writing-plan.md`。
+
+`writing-plan.md` 是轻量、开放性的写作执行计划——它保存关键决策和偏好，不拆分死步骤，不限制 agent 创造力。内容覆盖：
+
+- `What We Think We Know`：来自 brief 的核心决策
+- `Output Guidelines`：格式和呈现偏好
+- `Voice & Register Notes`：作者气质快速提示
+- `Possible Structure`：建议的文章结构
+- `Research & Fact-Check Notes`：查证方向和来源
+- `Suggested Flow`：建议的执行阶段
+- `Open Questions`：待探索的问题
+
+轻量任务（如短文、一次性写完的博客）可以跳过这一步，直接从 brief 进入 research 或 draft。
 
 ## Two Modes
 
