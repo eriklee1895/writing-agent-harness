@@ -63,7 +63,7 @@ uv run .agents/skills/seedance-video-gen/scripts/generate_seedance_video.py down
   --video-url https://example.com/video.mp4
 ```
 
-## Claude 工作流程
+## 工作流程
 
 1. **理解需求**
    - 确认模式：文生视频 / 首帧 / 首尾帧 / 多模态参考 / 批量镜头。
@@ -100,9 +100,9 @@ uv run .agents/skills/seedance-video-gen/scripts/generate_seedance_video.py down
 ```text
 content/inbox/videos/YYYY-MM-DD-<slug>/
 ├── video.mp4
-├── manifest.json          # task_id, model, params, video_url, usage, output paths
-├── prompt.md              # 最终提示词
-└── last-frame.jpg         # 仅当 --return-last-frame
+├── manifest.json           # task_id, model, params, video_url, usage, output paths
+├── prompt.md               # 最终提示词
+└── last-frame.jpg          # 仅当 --return-last-frame
 ```
 
 ## 重要约束
