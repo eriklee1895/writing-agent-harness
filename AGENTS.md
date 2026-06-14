@@ -62,6 +62,7 @@
 | 新建或整理文章目录（`content/origin/` 必须使用 `YYYY-MM-DD-topic` 格式） | [docs/project/directory-layout.md](docs/project/directory-layout.md) |
 | 规划自动化能力 | [docs/project/automation-roadmap.md](docs/project/automation-roadmap.md) |
 | 常规写作、研究、润色 | [docs/workflows/writing-overview.md](docs/workflows/writing-overview.md) |
+| 开始写文章初稿（draft）前 | [docs/reference/format-standards.md](docs/reference/format-standards.md) 然后 [SOUL.md](SOUL.md) |
 | 早期灵感脑暴、确定 writing brief / outline | [docs/workflows/writing-overview.md](docs/workflows/writing-overview.md#ideation-first) |
 | 微信公众号排版、草稿箱、发布 | [docs/workflows/wechat-writing-publishing.md](docs/workflows/wechat-writing-publishing.md) |
 | 查看项目 skills 边界 | [docs/reference/skills.md](docs/reference/skills.md) |
@@ -80,6 +81,7 @@
 - 文章插图生成默认使用 `article-illustration --style-profile auto` 按文章气质选择画风。
 - 早期灵感脑暴使用 project skill：`article-ideation`。
 - 文章打磨使用 project skill：`polish-article`。
+- **❗ 写作开始前必须先读取 [docs/reference/format-standards.md](docs/reference/format-standards.md)。** 无论文章是 Markdown 技术报告、HTML 单页报告还是微信渠道，agent 都应在动笔前理解目标格式的写作方法论、视觉手段和质量标准。这条不是建议，是前置要求。
 - 发布前文章 readiness 检查使用 project skill：`article-readiness-check`。
 - 微信公众号 HTML preview 使用 project skill：`wechat-article-renderer`；生成后可用 `node .agents/skills/wechat-article-renderer/scripts/preview-server.mjs <dir>` 本地预览。
 - 微信公众号文章提取使用 project skill：`wechat-article-fetcher`；输入 URL 提取正文、元数据和图片到结构化素材包，支持 `--output-dir content/inbox/articles/` 直接入库。

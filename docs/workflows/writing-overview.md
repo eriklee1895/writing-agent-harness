@@ -13,7 +13,7 @@
 1. 捕捉 idea / inspiration。用户可以先给灵感、素材、判断、链接或几段粗糙想法。
 2. 进入 `article-ideation`，通过脑暴校准 central question、target reader、thesis、angle、tone、anti-goals 和 distribution channel。
 3. 产出 `writing brief`、`research questions` 和初版 outline。不要在没理解清楚前急着写正文。
-4. （可选）如果任务涉及多步骤（research + draft + visuals + polish + 多渠道发布），或担心多轮 agent 执行中 context 丢失，可在进入 research 前使用 `create-article-writing-plan` 将决策和偏好落盘到 `content/drafts/YYYY-MM-DD-<slug>/writing-plan.md`。这个 plan 是轻量的、开放性的——它保存方向，不拆分死步骤。轻量任务可跳过此步。
+4. brief 确认后直接进入 research 或 draft。agent 在写作前读取 [docs/reference/format-standards.md](../reference/format-standards.md) 了解格式偏好。如果任务涉及多轮 agent 执行，建议将 brief 落盘到 `content/drafts/YYYY-MM-DD-<slug>/writing-brief.md` 防止 context 丢失。
 5. 做 research。遇到 current events、company/product facts、pricing、laws、fast-moving tech topics 时，必须查证并写清具体日期。
 6. 根据 writing brief 和 research 形成 full draft。
 7. 使用 `polish-article` 打磨逻辑、register、表达质感、专业深度和题材气质。
@@ -44,21 +44,15 @@
 
 这个阶段的产物是 `writing brief`，不是完整正文。确认 brief 后，再进入 research / draft，文章质量会更稳定。
 
-## Writing Plan (Optional)
+### Writing Plan 替代方案
 
-对于涉及多步骤、跨多轮 agent 执行的重任务，建议在 brief 确认后使用 `create-article-writing-plan` 生成 `writing-plan.md`。
+原本独立的 `create-article-writing-plan` 已移除。它的核心知识（格式偏好、视觉标准、写作方法论）已下沉为 reference doc：
 
-`writing-plan.md` 是轻量、开放性的写作执行计划——它保存关键决策和偏好，不拆分死步骤，不限制 agent 创造力。内容覆盖：
+- 格式偏好和视觉标准：[docs/reference/format-standards.md](../reference/format-standards.md) — agent 在写作前应读取。
 
-- `What We Think We Know`：来自 brief 的核心决策
-- `Output Guidelines`：格式和呈现偏好
-- `Voice & Register Notes`：作者气质快速提示
-- `Possible Structure`：建议的文章结构
-- `Research & Fact-Check Notes`：查证方向和来源
-- `Suggested Flow`：建议的执行阶段
-- `Open Questions`：待探索的问题
+对于涉及多步骤、跨多轮 agent 执行的重任务，建议在 brief 确认后直接将 brief 和关键决策保存到 `content/drafts/YYYY-MM-DD-<slug>/writing-brief.md`。不再需要单独的 `writing-plan.md` 中间产物——brief 本身已经包含足够信息让 agent 继续执行。
 
-轻量任务（如短文、一次性写完的博客）可以跳过这一步，直接从 brief 进入 research 或 draft。
+轻量任务可跳过落盘步骤，直接从 brief 进入 research 或 draft。
 
 ## Two Modes
 

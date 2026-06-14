@@ -17,11 +17,6 @@
   - 用于”我想写一篇””帮我理一下思路””脑暴选题””先定 outline”这类早期写作阶段。
   - 它不负责写完整正文；它负责避免 agent 在没理解清楚前直接开写。
 
-- `create-article-writing-plan`
-  - 将 writing brief 转化为轻量、开放性的写作执行计划，落盘 `writing-plan.md`。
-  - 用于 ideation 确认方向之后，任务涉及多步骤（research + draft + visuals + polish + channel packaging）或用户希望防 context lost 时。
-  - 不拆分死步骤，不限制 agent 创造力；所有内容都是”建议”和”偏好”。
-
 - `polish-article`
   - 润色和打磨文章写作。
   - 按题材强化逻辑、register、表达质感、专业深度与作者气质。
