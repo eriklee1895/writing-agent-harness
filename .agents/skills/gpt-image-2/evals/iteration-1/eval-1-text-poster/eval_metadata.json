@@ -1,0 +1,27 @@
+{
+  "eval_id": 1,
+  "eval_name": "text-poster",
+  "prompt": "Generate a movie poster with exact text: a 2.35:1 ultra-wide poster, centered title typography reading EXACT, VERBATIM, NO EXTRA CHARACTERS 'AURORA 2026' in bold condensed sans-serif (Helvetica Condensed style), subtitle in italic serif 'A short film by Lin Wei'. Use a deep navy background with a single gold accent. Letter-by-letter A-U-R-O-R-A for the title to ensure spelling. No other text anywhere.",
+  "assertions": [
+    {
+      "name": "image file is created",
+      "description": "An output file matching *aurora-poster*.png exists in output/gpt-image-2/"
+    },
+    {
+      "name": "image is 2.35:1 wide",
+      "description": "The output image's aspect ratio is approximately 2.35:1 (wider than tall)"
+    },
+    {
+      "name": "metadata JSON is written",
+      "description": "A .json file with the same stem exists, containing prompt, model, and size"
+    },
+    {
+      "name": "model is gpt-image-2",
+      "description": "The metadata.json shows model = gpt-image-2 (not gpt-image-1.5 or gpt-image-1)"
+    },
+    {
+      "name": "size is wide preset",
+      "description": "The metadata.json shows size in {1792x1024, auto} (matching the --size wide preset or auto fallback)"
+    }
+  ]
+}

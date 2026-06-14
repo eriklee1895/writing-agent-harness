@@ -1,0 +1,84 @@
+{
+  "skill_name": "gpt-image-2",
+  "evals": [
+    {
+      "id": 1,
+      "name": "text-poster",
+      "prompt": "Generate a movie poster with exact text: a 2.35:1 ultra-wide poster, centered title typography reading EXACT, VERBATIM, NO EXTRA CHARACTERS 'AURORA 2026' in bold condensed sans-serif (Helvetica Condensed style), subtitle in italic serif 'A short film by Lin Wei'. Use a deep navy background with a single gold accent. Letter-by-letter A-U-R-O-R-A for the title to ensure spelling. No other text anywhere.",
+      "expected_output": "A 2.35:1 wide PNG (1792x1024) saved to output/gpt-image-2/aurora-poster.png with a sibling .json metadata file. The title 'AURORA 2026' should be legible and correctly spelled, and the subtitle should be present.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "image file is created",
+          "description": "An output file matching *aurora-poster*.png exists in output/gpt-image-2/"
+        },
+        {
+          "name": "image is 2.35:1 wide",
+          "description": "The output image's aspect ratio is approximately 2.35:1 (wider than tall)"
+        },
+        {
+          "name": "metadata JSON is written",
+          "description": "A .json file with the same stem exists, containing prompt, model, and size"
+        },
+        {
+          "name": "model is gpt-image-2",
+          "description": "The metadata.json shows model = gpt-image-2 (not gpt-image-1.5 or gpt-image-1)"
+        },
+        {
+          "name": "size is wide preset",
+          "description": "The metadata.json shows size in {1792x1024, auto} (matching the --size wide preset or auto fallback)"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "product-edit",
+      "prompt": "I have a product photo at /tmp/eval-fixtures/product.png (a 1024x1024 ceramic mug on a white background). Edit it: replace ONLY the background with a warm sunset gradient. Keep the product, the product edges, the lighting on the product, and the camera angle UNCHANGED. No text, no logos, no watermark. Output to output/gpt-image-2/mug-sunset.png.",
+      "expected_output": "A 1024x1024 (or larger) PNG with the mug intact and a warm gradient background. Metadata JSON notes the reference image path.",
+      "files": ["/tmp/eval-fixtures/product.png"],
+      "assertions": [
+        {
+          "name": "image file is created",
+          "description": "An output file matching *mug-sunset*.png exists in output/gpt-image-2/"
+        },
+        {
+          "name": "metadata references the input image",
+          "description": "The .json metadata lists reference_images including the product.png path"
+        },
+        {
+          "name": "endpoint is /v1/images/edits",
+          "description": "Either the dry-run payload or the request flow used the edits endpoint, not generations"
+        },
+        {
+          "name": "edit command was used",
+          "description": "The CLI was invoked with `edit`, not `generate`"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "batch-variants",
+      "prompt": "Generate three variants for a product card series from /tmp/eval-fixtures/batch-prompts.jsonl: 1) a vintage travel poster with EXACT verbatim text 'KYOTO SPRING' (letter-by-letter K-Y-O-T-O S-P-R-I-N-G) in square format at high quality, 2) a studio shot of a fountain pen in portrait at medium quality, 3) a flat 3D low-poly arctic fox in square. Output to output/gpt-image-2/batch/.",
+      "expected_output": "Three PNG files in output/gpt-image-2/batch/, each with a sibling .json metadata file. The KYOTO SPRING poster's title should be spelled correctly.",
+      "files": ["/tmp/eval-fixtures/batch-prompts.jsonl"],
+      "assertions": [
+        {
+          "name": "three output images are created",
+          "description": "output/gpt-image-2/batch/ contains three .png files (one per job) plus metadata .json"
+        },
+        {
+          "name": "sizes match per-job overrides",
+          "description": "The metadata .json files record square / portrait / square as the size"
+        },
+        {
+          "name": "qualities match per-job overrides",
+          "description": "The metadata .json files record high / medium / auto (or unset) qualities"
+        },
+        {
+          "name": "metadata is consistent across the batch",
+          "description": "All three .json files share the same model and base_url"
+        }
+      ]
+    }
+  ]
+}

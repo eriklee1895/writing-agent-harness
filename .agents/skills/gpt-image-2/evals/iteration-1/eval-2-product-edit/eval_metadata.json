@@ -1,0 +1,24 @@
+{
+  "eval_id": 2,
+  "eval_name": "product-edit",
+  "prompt": "I have a product photo at /tmp/eval-fixtures/product.png (a 1024x1024 ceramic mug on a white background). Edit it: replace ONLY the background with a warm sunset gradient. Keep the product, the product edges, the lighting on the product, and the camera angle UNCHANGED. No text, no logos, no watermark. Output to output/gpt-image-2/mug-sunset.png.",
+  "files": ["/tmp/eval-fixtures/product.png"],
+  "assertions": [
+    {
+      "name": "image file is created",
+      "description": "An output file matching *mug-sunset*.png exists in output/gpt-image-2/"
+    },
+    {
+      "name": "metadata references the input image",
+      "description": "The .json metadata lists reference_images including the product.png path"
+    },
+    {
+      "name": "endpoint is /v1/images/edits",
+      "description": "Either the dry-run payload or the request flow used the edits endpoint, not generations"
+    },
+    {
+      "name": "edit command was used",
+      "description": "The CLI was invoked with `edit`, not `generate`"
+    }
+  ]
+}
