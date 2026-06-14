@@ -39,9 +39,6 @@ SUPPORTED_IMAGE_ROLES = {"first_frame", "last_frame", "reference_image"}
 SUPPORTED_VIDEO_ROLES = {"reference_video"}
 SUPPORTED_AUDIO_ROLES = {"reference_audio"}
 
-# Try multiple env var names for the API key, then fall back to .env
-_API_KEY_ENV_NAMES = ("ARK_API_KEY", "MODEL_AGENT_API_KEY", "MODEL_VIDEO_API_KEY")
-
 
 def _load_dotenv() -> None:
     env_path = Path.cwd() / ".env"
@@ -63,18 +60,12 @@ def slugify(text: str) -> str:
 
 
 def get_auth() -> tuple[str, str]:
-    api_key = ""
-    for name in _API_KEY_ENV_NAMES:
-        api_key = os.getenv(name, "")
-        if api_key:
-            break
+    api_key = os.getenv("ARK_API_KEY", "")
     base_url = os.getenv("ARK_BASE_URL", DEFAULT_BASE_URL).rstrip("/")
-    # Normalise coding-plan-style base URLs that end with /api/coding/.../v3
-    base_url = re.sub(r"/api/coding/(?:lite/|pro/)?v3$", "/api/v3", base_url)
     if not api_key:
         raise SystemExit(
-            "Error: no API key found. Set one of these environment variables or add it to .env:\n"
-            "  ARK_API_KEY, MODEL_AGENT_API_KEY, MODEL_VIDEO_API_KEY"
+            "Error: ARK_API_KEY not found. Set it in your shell or .env file:\n"
+            "  export ARK_API_KEY='sk-...'"
         )
     return api_key, base_url
 
