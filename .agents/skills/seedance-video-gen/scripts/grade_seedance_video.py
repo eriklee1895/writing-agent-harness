@@ -13,12 +13,19 @@ from pathlib import Path
 from typing import Any
 
 
-def find_manifests(outputs_dir: Path) -> list[Path]:
-    return sorted(outputs_dir.rglob("manifest.json"))
-
-
 def find_videos(outputs_dir: Path) -> list[Path]:
     return sorted(outputs_dir.rglob("video.mp4"))
+
+
+def find_any_mp4(outputs_dir: Path) -> list[Path]:
+    flat = sorted(p for p in outputs_dir.iterdir() if p.is_file() and p.suffix.lower() == ".mp4")
+    if flat:
+        return flat
+    return find_videos(outputs_dir)
+
+
+def find_manifests(outputs_dir: Path) -> list[Path]:
+    return sorted(outputs_dir.rglob("manifest.json"))
 
 
 def load_manifest(path: Path) -> dict[str, Any]:
@@ -39,10 +46,36 @@ def _load_metadata_json(outputs_dir: Path) -> dict[str, Any]:
     return {}
 
 
+def _has_first_frame_role(manifest: dict[str, Any]) -> bool:
+    content = manifest.get("request_payload", {}).get("content", [])
+    if any(item.get("role") == "first_frame" for item in content):
+        return True
+    if manifest.get("output_files", {}).get("first_frame"):
+        return True
+    return False
+
+
+def _has_audio_enabled(manifest: dict[str, Any]) -> bool:
+    """Check if generate_audio was true in request."""
+    if manifest.get("request_payload", {}).get("generate_audio") is True:
+        return True
+    return False
+
+
+def _prompt_has_audio_content(prompt_path: Path) -> bool:
+    """Check if prompt.md mentions audio/music/sound effects."""
+    if not prompt_path.is_file():
+        return False
+    text = prompt_path.read_text(encoding="utf-8").lower()
+    keywords = ["background music", "sound effect", "音频", "音效", "音乐", "bgm",
+                "（）", "()", "<>", "{}"]
+    return any(kw in text for kw in keywords)
+
+
+# ---- Graders for existing evals (1-3) ----
+
 def grade_product_ad(outputs_dir: Path) -> list[dict[str, Any]]:
-    videos = find_videos(outputs_dir)
-    flat_mp4s = sorted(p for p in outputs_dir.iterdir() if p.is_file() and p.suffix.lower() == ".mp4")
-    all_videos = videos or flat_mp4s
+    all_videos = find_any_mp4(outputs_dir)
     prompt_path = outputs_dir / "prompt.md"
     manifest = _load_metadata_json(outputs_dir)
 
@@ -76,28 +109,17 @@ def grade_product_ad(outputs_dir: Path) -> list[dict[str, Any]]:
     return results
 
 
-def _has_first_frame_role(manifest: dict[str, Any]) -> bool:
-    content = manifest.get("request_payload", {}).get("content", [])
-    if any(item.get("role") == "first_frame" for item in content):
-        return True
-    # Fallback: some agents write manifests with output_files.first_frame
-    if manifest.get("output_files", {}).get("first_frame"):
-        return True
-    return False
-
-
 def grade_first_frame(outputs_dir: Path) -> list[dict[str, Any]]:
     videos = find_videos(outputs_dir)
-    manifests = find_manifests(outputs_dir)
-    manifest = load_manifest(manifests[0]) if manifests else {}
-    images = sorted(p for p in outputs_dir.rglob("*") if p.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"})
     flat_mp4s = sorted(p for p in outputs_dir.iterdir() if p.is_file() and p.suffix.lower() == ".mp4")
     all_videos = videos or flat_mp4s
+    manifests = find_manifests(outputs_dir)
+    manifest = load_manifest(manifests[0]) if manifests else _load_metadata_json(outputs_dir)
+    images = sorted(p for p in outputs_dir.rglob("*") if p.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"})
     video = all_videos[0] if all_videos else None
 
     results = []
     first_frame_used = _has_first_frame_role(manifest)
-    # without_skill agents may not produce a manifest; accept image + video as evidence
     results.append({
         "text": "首帧图存在且被脚本成功引用",
         "passed": bool(images) and (first_frame_used or video is not None),
@@ -119,7 +141,6 @@ def grade_first_frame(outputs_dir: Path) -> list[dict[str, Any]]:
 def grade_batch_shots(outputs_dir: Path) -> list[dict[str, Any]]:
     videos = find_videos(outputs_dir)
     manifests = find_manifests(outputs_dir)
-    # without_skill agents may produce flat .mp4 files instead of video.mp4 in subdirs
     flat_mp4s = sorted(p for p in outputs_dir.iterdir() if p.is_file() and p.suffix.lower() == ".mp4")
     all_videos = videos or flat_mp4s
 
@@ -163,10 +184,152 @@ def grade_batch_shots(outputs_dir: Path) -> list[dict[str, Any]]:
     return results
 
 
+# ---- Graders for new evals (4-8) ----
+
+
+def _generic_basic_check(outputs_dir: Path, expect_audio: bool = False, expect_ratio: str | None = None, expect_duration: int | None = None) -> tuple[dict, list, list, Path]:
+    """Return (manifest, all_videos, all_manifests, prompt_path)."""
+    manifest = _load_metadata_json(outputs_dir)
+    all_videos = find_any_mp4(outputs_dir)
+    all_manifests = find_manifests(outputs_dir)
+    prompt_path = outputs_dir / "prompt.md" if not all_manifests else all_manifests[0].parent / "prompt.md"
+    return manifest, all_videos, all_manifests, prompt_path
+
+
+def grade_education_animation(outputs_dir: Path) -> list[dict[str, Any]]:
+    manifest, all_videos, all_manifests, prompt_path = _generic_basic_check(outputs_dir)
+    video = all_videos[0] if all_videos else None
+    results = []
+    results.append({
+        "text": "视频文件 video.mp4 存在且非空",
+        "passed": video is not None and video.stat().st_size > 0,
+        "evidence": f"Found {video} ({video.stat().st_size} bytes)" if video else "No video file found",
+    })
+    results.append({
+        "text": "manifest.json 的 generate_audio=true",
+        "passed": _has_audio_enabled(manifest) or manifest.get("generate_audio") is True,
+        "evidence": f"generate_audio in manifest: {manifest.get('generate_audio') or manifest.get('request_payload', {}).get('generate_audio')}",
+    })
+    results.append({
+        "text": "prompt.md 包含音频提示词（背景音乐或音效符号）",
+        "passed": _prompt_has_audio_content(prompt_path),
+        "evidence": f"Prompt at {prompt_path}" if prompt_path.is_file() else "No prompt.md found",
+    })
+    return results
+
+
+def grade_drama_dialogue(outputs_dir: Path) -> list[dict[str, Any]]:
+    manifest, all_videos, all_manifests, prompt_path = _generic_basic_check(outputs_dir)
+    video = all_videos[0] if all_videos else None
+    results = []
+    results.append({
+        "text": "视频文件 video.mp4 存在",
+        "passed": video is not None and video.stat().st_size > 0,
+        "evidence": f"Found {video}" if video else "No video file found",
+    })
+    results.append({
+        "text": "manifest.json 的 generate_audio=true",
+        "passed": _has_audio_enabled(manifest) or manifest.get("generate_audio") is True,
+        "evidence": f"generate_audio: {manifest.get('generate_audio') or manifest.get('request_payload', {}).get('generate_audio')}",
+    })
+    results.append({
+        "text": "prompt.md 中包含 {} 格式的台词或对白",
+        "passed": _prompt_has_audio_content(prompt_path),
+        "evidence": f"Prompt at {prompt_path}" if prompt_path.is_file() else "No prompt.md found",
+    })
+    return results
+
+
+def grade_first_last_frame(outputs_dir: Path) -> list[dict[str, Any]]:
+    manifest, all_videos, all_manifests, prompt_path = _generic_basic_check(outputs_dir)
+    video = all_videos[0] if all_videos else None
+    content = manifest.get("request_payload", {}).get("content", [])
+    has_first = any(item.get("role") == "first_frame" for item in content)
+    has_last = any(item.get("role") == "last_frame" for item in content)
+    results = []
+    results.append({
+        "text": "视频文件 video.mp4 存在",
+        "passed": video is not None and video.stat().st_size > 0,
+        "evidence": f"Found {video}" if video else "No video file found",
+    })
+    results.append({
+        "text": "manifest.json 中使用首尾帧模式（content 中有 first_frame 和 last_frame role）",
+        "passed": has_first and has_last,
+        "evidence": json.dumps({"has_first_frame": has_first, "has_last_frame": has_last}),
+    })
+    results.append({
+        "text": "manifest.json 的 duration=5、generate_audio=false",
+        "passed": (
+            manifest.get("duration") in (5, None)
+            and manifest.get("request_payload", {}).get("generate_audio") is False
+        ),
+        "evidence": f"duration={manifest.get('duration')}, generate_audio={manifest.get('request_payload', {}).get('generate_audio')}",
+    })
+    return results
+
+
+def grade_multimodal_ref(outputs_dir: Path) -> list[dict[str, Any]]:
+    manifest, all_videos, all_manifests, prompt_path = _generic_basic_check(outputs_dir)
+    video = all_videos[0] if all_videos else None
+    content = manifest.get("request_payload", {}).get("content", [])
+    has_ref_image = any(item.get("role") == "reference_image" for item in content)
+    has_ref_audio = any(item.get("role") == "reference_audio" for item in content)
+    results = []
+    results.append({
+        "text": "视频文件 video.mp4 存在",
+        "passed": video is not None and video.stat().st_size > 0,
+        "evidence": f"Found {video}" if video else "No video file found",
+    })
+    results.append({
+        "text": "manifest.json 的 content 中包含 reference_image 和 reference_audio role",
+        "passed": has_ref_image and has_ref_audio,
+        "evidence": json.dumps({"has_reference_image": has_ref_image, "has_reference_audio": has_ref_audio}),
+    })
+    results.append({
+        "text": "manifest.json 的 duration=8、generate_audio=true",
+        "passed": (
+            manifest.get("duration") in (8, None)
+            and (_has_audio_enabled(manifest) or manifest.get("generate_audio") is True)
+        ),
+        "evidence": f"duration={manifest.get('duration')}, generate_audio={_has_audio_enabled(manifest)}",
+    })
+    return results
+
+
+def grade_social_vertical(outputs_dir: Path) -> list[dict[str, Any]]:
+    manifest, all_videos, all_manifests, prompt_path = _generic_basic_check(outputs_dir)
+    video = all_videos[0] if all_videos else None
+    results = []
+    results.append({
+        "text": "视频文件 video.mp4 存在且非空",
+        "passed": video is not None and video.stat().st_size > 0,
+        "evidence": f"Found {video} ({video.stat().st_size} bytes)" if video else "No video file found",
+    })
+    results.append({
+        "text": "manifest.json 的 ratio=9:16、generate_audio=true",
+        "passed": (
+            manifest.get("ratio") == "9:16"
+            and (_has_audio_enabled(manifest) or manifest.get("generate_audio") is True)
+        ),
+        "evidence": f"ratio={manifest.get('ratio')}, generate_audio={_has_audio_enabled(manifest)}",
+    })
+    results.append({
+        "text": "prompt.md 中包含字幕描述",
+        "passed": _prompt_has_audio_content(prompt_path),
+        "evidence": f"Prompt at {prompt_path}" if prompt_path.is_file() else "No prompt.md found",
+    })
+    return results
+
+
 GRADERS = {
     "eval-product-ad": grade_product_ad,
     "eval-first-frame": grade_first_frame,
     "eval-batch-shots": grade_batch_shots,
+    "eval-education-animation": grade_education_animation,
+    "eval-drama-dialogue": grade_drama_dialogue,
+    "eval-first-last-frame": grade_first_last_frame,
+    "eval-multimodal-ref": grade_multimodal_ref,
+    "eval-social-vertical": grade_social_vertical,
 }
 
 
