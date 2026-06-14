@@ -111,3 +111,4 @@ scripts/.poc-artifacts/
 output/
 tmp/
 .backups/
+.agents/skills/seedance-video-workspace/
