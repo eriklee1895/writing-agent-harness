@@ -1,5 +1,5 @@
 ---
-name: seedance-video
+name: seedance-video-gen
 description: |
   用火山引擎 Seedance 2.0 生成视频。触发：用户说“用 Seedance 生成视频”“把这张图/脚本/文章做成短视频”“做几个视频镜头”“帮我优化 Seedance 提示词”等。支持文生视频、图生视频（首帧/首尾帧）、多模态参考、批量镜头、提示词优化和首帧图生成。
 ---
@@ -32,34 +32,34 @@ description: |
 
 ```bash
 # 文生视频
-uv run .agents/skills/seedance-video/scripts/generate_seedance_video.py \
+uv run .agents/skills/seedance-video-gen/scripts/generate_seedance_video.py \
   --prompt "一只橘猫在阳光下缓慢眨眼，微风吹动毛发，镜头轻微推进" \
   --duration 5 --ratio 1:1 --resolution 720p
 
 # 首帧图生视频
-uv run .agents/skills/seedance-video/scripts/generate_seedance_video.py \
+uv run .agents/skills/seedance-video-gen/scripts/generate_seedance_video.py \
   --prompt "让人物自然转身看向镜头，保持电影级光影" \
   --first-frame assets/start-frame.png \
   --duration 5 --ratio 9:16
 
 # 首尾帧
-uv run .agents/skills/seedance-video/scripts/generate_seedance_video.py \
+uv run .agents/skills/seedance-video-gen/scripts/generate_seedance_video.py \
   --prompt "顺滑的产品外观转场，不出现人物" \
   --first-frame assets/start.png \
   --last-frame assets/end.png \
   --duration 4
 
 # 只创建任务，拿到 task_id
-uv run .agents/skills/seedance-video/scripts/generate_seedance_video.py create \
+uv run .agents/skills/seedance-video-gen/scripts/generate_seedance_video.py create \
   --prompt "霓虹雨夜街道，摩托车飞驰而过" \
   --duration 5
 
 # 查询已有任务
-uv run .agents/skills/seedance-video/scripts/generate_seedance_video.py poll \
+uv run .agents/skills/seedance-video-gen/scripts/generate_seedance_video.py poll \
   --task-id cgt-xxx
 
 # 下载已有视频 URL
-uv run .agents/skills/seedance-video/scripts/generate_seedance_video.py download \
+uv run .agents/skills/seedance-video-gen/scripts/generate_seedance_video.py download \
   --video-url https://example.com/video.mp4
 ```
 
