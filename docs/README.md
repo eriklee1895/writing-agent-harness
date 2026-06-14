@@ -73,7 +73,7 @@
   - `brainstorming` skill 的默认设计文档目录。
 
 - [superpowers/plans/](superpowers/plans/)
-  - `writing-plans` skill 的默认实施计划目录。
+  - Superpowers 生成的实施计划目录。
 
 `.superpowers/` 是运行时 scratch / visual companion 预览产物目录，通常不需要读取，也不应提交。
 
