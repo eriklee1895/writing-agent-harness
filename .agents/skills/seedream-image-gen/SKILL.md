@@ -1,6 +1,6 @@
 ---
 name: seedream-image-gen
-description: Generate high-quality images with ByteDance Seedream 5.0 (doubao-seedream-5-0-260128) via Volcengine Ark API. Use when cost-sensitive image generation is needed, when Chinese-language prompts and styles are important, or as an alternative to gpt-image-2. Supports text-to-image, image-to-image, multi-reference fusion, sequential group generation (storyboards/comics), web search-enhanced generation, and batch generation.
+description: Generate high-quality images with the Seedream image model. Use for text-to-image, image-to-image with reference images, sequential group generation (storyboards/comics), web search-enhanced generation, and batch generation.
 ---
 
 # Seedream Image Gen
