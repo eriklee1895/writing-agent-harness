@@ -33,6 +33,61 @@
         "每个 manifest.json 的 ratio=16:9、duration=4、generate_audio=false、watermark=false",
         "脚本/调用报告了 3 个输出路径"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "用 Seedance 2.0 生成一段 5 秒、16:9、720p 的 2D 教育动画短视频：一个卡通火箭在发射台上，火箭身上写着倒计时数字【3...2...1...】，然后火箭缓慢点火升空，白色烟雾从底部喷出，火箭逐渐升到画面上方。配轻快背景音乐和数字倒数音效。无字幕，无Logo。保存到 content/inbox/videos/ 下。",
+      "expected_output": "一段 5 秒 16:9 720p 的 2D 教育动画短视频，带背景音乐和音效，输出目录包含 video.mp4、manifest.json 和 prompt.md。",
+      "files": [],
+      "expectations": [
+        "视频文件 video.mp4 存在且非空",
+        "manifest.json 的 generate_audio=true",
+        "prompt.md 包含音频提示词（背景音乐或音效符号）"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "用 Seedance 2.0 生成一段 6 秒、16:9 的短剧镜头：傍晚，宿舍门口，一个女孩脚步轻快地走到门口，深呼吸，表情略带紧张，然后推开门走进宿舍，舍友笑着问{考得怎么样呀，过了吗}，女孩先低头露出落寞表情，随后抬头憋不住笑意，哈哈大笑说{骗你们的}。环境音效与场景自然融合。温暖色调，电影纪实风。无字幕。保存到 content/inbox/videos/ 下。",
+      "expected_output": "一段 6 秒 16:9 短剧对白视频，含 {} 台词和环境音效，输出目录包含 video.mp4、manifest.json。",
+      "files": [],
+      "expectations": [
+        "视频文件 video.mp4 存在",
+        "manifest.json 的 generate_audio=true",
+        "prompt.md 中包含 {} 格式的台词或对白"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "用 Seedance 2.0 的首尾帧模式：我提供两张图——第一张是一个合上的旧书在木桌上，第二张是同一本书翻开、书页轻轻翻动。生成一段 5 秒、1:1、720p 的平滑过渡视频，无音频，无字幕。保存到 content/inbox/videos/ 下。",
+      "expected_output": "一段 5 秒 1:1 首尾帧转场视频，输出目录包含 video.mp4、manifest.json。如果首尾帧图需要先生成，agent 应先调用 article-illustration。",
+      "files": [],
+      "expectations": [
+        "视频文件 video.mp4 存在",
+        "manifest.json 中使用首尾帧模式（content 中有 first_frame 和 last_frame role）",
+        "manifest.json 的 duration=5、generate_audio=false"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "用 Seedance 2.0 的多模态参考模式：我有一个角色图片（卡通风格的探险少年）、一个场景图片（魔法森林）、一段运镜参考视频（缓慢跟拍），还有一段背景音乐。把他们作为参考素材组合生成一段 8 秒、16:9 的视频——角色在阳光斑驳的森林小径上行走，匹配参考视频中缓慢的跟拍运镜，背景音乐用参考音频。无文字，无人脸。保存到 content/inbox/videos/ 下。",
+      "expected_output": "一段 8 秒 16:9 多模态参考视频，content 中包含 reference_image + reference_video + reference_audio role。",
+      "files": [],
+      "expectations": [
+        "视频文件 video.mp4 存在",
+        "manifest.json 的 content 中包含 reference_image 和 reference_audio role",
+        "manifest.json 的 duration=8、generate_audio=true"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "用 Seedance 2.0 生成一段 5 秒、9:16、720p 的社交媒体竖屏视频：一杯冒着热气的咖啡在木桌上，蒸汽在画面中央升起缭绕，清晨阳光从窗口洒入。画面底部出现字幕，字幕内容为{每一个清晨，都值得一杯好咖啡}，字幕需与背景轻音乐节奏同步。温暖金色光线，慢推镜，无Logo。保存到 content/inbox/videos/ 下。",
+      "expected_output": "一段 5 秒 9:16 竖屏视频带字幕和背景音乐，输出目录包含 video.mp4、manifest.json。",
+      "files": [],
+      "expectations": [
+        "视频文件 video.mp4 存在且非空",
+        "manifest.json 的 ratio=9:16、generate_audio=true",
+        "prompt.md 中包含字幕描述"
+      ]
     }
   ]
 }
