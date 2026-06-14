@@ -105,7 +105,19 @@
     table { font-size: 0.78rem; }
     th, td { padding: 0.4rem 0.6rem; }
   }
+  .mermaid {
+    max-width: 100%;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    text-align: center;
+    overflow-x: auto;
+  }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, theme: 'neutral' });</script>
 </head>
 <body>
 
@@ -137,6 +149,19 @@
 <p>skill-creator 不是一次性生成工具——它把软件开发的生命周期搬到了 agent skill 世界：</p>
 
 <pre><code>[Create] → [Eval] → [Improve] → [Benchmark] → (重复)</code></pre>
+
+<div class="mermaid">
+flowchart LR
+    subgraph Lifecycle["skill-creator 四模式生命周期"]
+        A["🎯 Create<br/>交互式 interview<br/>生成 SKILL.md 骨架<br/>+ scripts/ + references/"] --> B["🧪 Eval<br/>并行 spawn 子 agent<br/>with-skill vs without-skill<br/>A/B 对比执行"]
+        B --> C["🔧 Improve<br/>读取 eval 评分反馈<br/>+ human review<br/>迭代修改技能"]
+        C --> D["📊 Benchmark<br/>多轮运行统计分析<br/>mean ± stddev<br/>输出 benchmark.json"]
+        D --> B
+    end
+
+    B -.-> F["📦 每轮迭代产物<br/>iteration-N/eval-*/with_skill/run-1/grading.json<br/>iteration-N/eval-*/without_skill/run-1/grading.json"]
+    D -.-> G["📊 聚合产物<br/>benchmark.json<br/>benchmark.md<br/>eval viewer HTML"]
+</div>
 
 <table>
   <tr><th>模式</th><th>功能</th></tr>
@@ -178,6 +203,46 @@
         └──→ without-skill agent（裸跑 → 凭通用知识操作 → 输出无结构产物）</code></pre>
 
 <p>两个 agent <strong>同时启动</strong>，在同一环境下独立完成任务。with-skill agent 的目标是按技能指导进行操作；without-skill 是基线——模拟"如果没有这个技能，agent 能做到什么程度"。</p>
+
+<div class="mermaid">
+flowchart TD
+    Start["📄 evals.json<br/>8 条 eval 定义<br/>每一条含 prompt + expectations"] --> Fork
+
+    subgraph Fork["并行执行（16 个 Agent 同时 spawn）"]
+        direction LR
+        WS1["🤖 WS Agent 1<br/>读 SKILL.md<br/>用 CLI 脚本<br/>产生标准输出"] --> |"video.mp4 + manifest.json + prompt.md"| OutWS1["with_skill/outputs"]
+        WOS1["🤖 WOS Agent 1<br/>裸跑，无 skill<br/>凭通用知识操作<br/>自己写脚本调 API"] --> |"smartwatch-ad.mp4 + task_metadata.json"| OutWOS1["without_skill/outputs"]
+        WS2["🤖 WS Agent 2<br/>读 prompt-guide.md<br/>优化提示词<br/>调 article-illustration"] --> OutWS2["with_skill/outputs"]
+        WOS2["🤖 WOS Agent 2<br/>自己写 seedance_video.py"] --> OutWOS2["without_skill/outputs"]
+        WS8["... 共 8 条 eval × 2 配置 = 16 agents"] --> OutWS8["with_skill/outputs 目录"]
+        WOS8["..."] --> OutWOS8["without_skill/outputs 目录"]
+    end
+
+    OutWS1 --> Grade
+    OutWOS1 --> Grade
+
+    subgraph Grade["📏 Grader（机械评分，非 LLM）"]
+        GCode["grade_seedance_video.py<br/>每个 expectation 用代码验证<br/>stat().st_size > 0<br/>json.get('ratio') == '9:16'<br/>prompt.md 是否包含音频符号"]
+    end
+
+    Grade --> GradingJSON["📊 grading.json<br/>每个 run: { passed, failed, pass_rate }"]
+
+    GradingJSON --> Timing["⏱️ timing.json<br/>从 Agent 通知中提取<br/>total_tokens + duration_ms"]
+
+    GradingJSON --> Aggregate
+
+    subgraph Aggregate["📐 aggregate_benchmark.py"]
+        AggCalc["按 with_skill / without_skill 分组<br/>计算 mean ± stddev<br/>pass_rate / time / tokens<br/>计算 Delta"]
+    end
+
+    Aggregate --> BenchmarkJSON["📊 benchmark.json + benchmark.md"]
+    BenchmarkJSON --> Viewer["🌐 generate_review.py<br/>交互式浏览器 viewer<br/>逐条 eval 展示 outputs + grading"]
+
+    Viewer --> Review["👤 Human Review<br/>填反馈 → feedback.json<br/>决定是否进入下一轮迭代"]
+
+    Review -->|"不满意，修改 skill"| Start
+</div>
+
 
 <h3>3.2 evals.json：把测试用例变成机械断言</h3>
 
@@ -247,6 +312,26 @@
 </ol>
 
 <p><code>run_eval.py</code> 测试这个信号的质量：把 skill description 临时注册为一个 command，对每个查询跑 <code>claude -p</code> 三次，检测 Claude 是否触发了 <code>Skill()</code> 工具或读取了 skill 文件。</p>
+
+<div class="mermaid">
+flowchart TD
+    Start["📋 20 条 trigger eval 查询<br/>10 should-trigger + 10 should-not-trigger<br/>含近失案例（near-miss）"] --> Split
+
+    Split["📊 60% train / 40% test 分割<br/>test set 在整个优化过程中不被看到"] --> Loop
+
+    subgraph Loop["🔁 run_loop.py 优化循环（最多 5 次迭代）"]
+        direction TB
+        Reg["1️⃣ 临时注册 skill command<br/>description 注入 .claude/commands/"] --> Test
+        Test["2️⃣ 每个查询 run_eval.py 跑 3 次<br/>claude -p + stream-json<br/>--include-partial-messages"] --> Detect["3️⃣ stream event 早期检测<br/>content_block_start + tool_use?<br/>name == 'Skill' or 'Read'?<br/>partial_json 含 skill 名称?"]
+        Detect --> Calc["4️⃣ 计算 trigger_rate = 触发次数 / 3<br/>should_trigger=true → rate ≥ 0.5 才 pass<br/>should_trigger=false → rate < 0.5 才 pass"]
+    end
+
+    Calc --> Score["train 分数（用于迭代）<br/>test 分数（用于选择最优 description）<br/>按 test 分数而非 train 选择 → 反过拟合"]
+
+    Score --> Best["✅ best_description<br/>从 5 轮迭代中选出<br/>test score 最高的版本"]
+
+    Best -.->|"应用到 SKILL.md"| Apply["writes best_description to SKILL.md frontmatter"]
+</div>
 
 <h3>4.2 精妙之处：stream event 早期检测</h3>
 
