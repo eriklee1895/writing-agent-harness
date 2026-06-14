@@ -70,7 +70,8 @@ flowchart LR
 |------|-------|------|------|
 | 灵感脑暴 | `article-ideation` | 灵感碎片、链接、截图 | writing brief + outline |
 | 写作打磨 | `polish-article` | Markdown 草稿 | 打磨后 Markdown |
-| 插图生成 | `article-illustration` | 风格/尺寸描述 | 插画/封面/信息图 |
+| 插图生成 | `article-illustration` / `gpt-image-2` | 风格/尺寸描述 | 插画/封面/信息图 |
+| 视频生成 | `seedance-video-gen` | 文字/首帧图/提示词 | 视频素材 |
 | 视频素材摄取 | `video-material-ingest` | 已知视频 URL | `assets/media/` 素材包 |
 | 视频高光选择 | `video-highlight-select` | 本地素材包 + 文章意图 | contact sheet + 候选片段表 |
 | 文章视频剪辑 | `article-video-clip` | 已确认片段 + preset | `assets/video-clips/<clip-name>/final.mp4` |
@@ -101,7 +102,7 @@ flowchart LR
 
 - Python 脚本一律使用 `uv run`（pyproject.toml + .venv）
 - Node.js 脚本使用 `bun` 或 `node`
-- CDP 模式为唯一发布路径（不用官方 API）
+- Playwright 浏览器自动化为唯一发布路径（不用官方 API）
 - Agent 可创建草稿，最终发布必须人工确认
 - 标题和摘要发布时显式传入 `--title` 和 `--summary`
 - `content/inbox/**` 和 `content/drafts/**` 默认是本地 scratch，不提交 Git。可追踪文章源稿应 promote 到 `content/origin/`，再派生到 `content/wechat/` 或 `content/blog/`。

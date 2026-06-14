@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill System 快速参考卡</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --accent: #ff6b35;
+            --blue: #2d8cff;
+            --text: #1a1a2e;
+            --muted: #6b7280;
+            --bg: #ffffff;
+            --card-bg: #f9fafb;
+            --border: rgba(0,0,0,.08);
+            --shadow: 0 4px 16px rgba(0,0,0,.06);
+            --code-bg: #f3f4f6;
+            --font: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',Arial,sans-serif;
+        }
+        body {
+            font-family: var(--font);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .card {
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,.12);
+        }
+        .card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent), var(--blue));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        .card h3 {
+            font-size: 1rem;
+            margin: 20px 0 10px;
+            color: var(--text);
+            border-left: 3px solid var(--blue);
+            padding-left: 12px;
+        }
+        .card p {
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+        .code {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 16px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+        .path {
+            color: var(--blue);
+            font-weight: 500;
+        }
+        .list {
+            list-style: none;
+            margin: 12px 0;
+        }
+        .list li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--muted);
+        }
+        .list li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+        .checklist {
+            list-style: none;
+            margin: 12px 0;
+        }
+        .checklist li {
+            padding: 8px 0;
+            padding-left: 28px;
+            position: relative;
+            color: var(--muted);
+        }
+        .checklist li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 0.9rem;
+        }
+        .table th, .table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .table th {
+            background: var(--card-bg);
+            font-weight: 600;
+            color: var(--text);
+        }
+        .table td {
+            color: var(--muted);
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+        .badge-project {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .badge-user {
+            background: #fce7f3;
+            color: #9f1239;
+        }
+        .badge-required {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .badge-optional {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            opacity: 0.8;
+        }
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,.1);
+            padding: 6px;
+            border-radius: 12px;
+            max-width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,.7);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .tab.active {
+            background: white;
+            color: var(--text);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .two-col { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛠 Skill System 快速参考卡</h1>
+            <p>项目级与全局级 Skills 配置、目录结构、使用速查</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('quickstart')">快速开始</button>
+            <button class="tab" onclick="showTab('structure')">目录结构</button>
+            <button class="tab" onclick="showTab('skillmd')">SKILL.md</button>
+            <button class="tab" onclick="showTab('commands')">常用命令</button>
+        </div>
+
+        <div id="quickstart" class="tab-content active">
+            <div class="grid">
+                <div class="card">
+                    <h2><span class="icon">1</span> 初始化项目级 Skills</h2>
+                    <p>在你的项目中配置 Skills</p>
+
+                    <h3>创建目录</h3>
+                    <div class="code">mkdir -p .agents/skills</div>
+
+                    <h3>Claude Code 软链接（如需要）</h3>
+                    <div class="code">mkdir -p claude && ln -s ../.agents/skills claude/skills</div>
+
+                    <h3>验证</h3>
+                    <div class="code">ls -la .agents/skills/</div>
+                </div>
+
+                <div class="card">
+                    <h2><span class="icon">2</span> 安装全局 Skills</h2>
+                    <p>跨项目使用的通用 Skills</p>
+
+                    <h3>标准位置</h3>
+                    <div class="code">mkdir -p ~/.agents/skills</div>
+
+                    <h3>从 GitHub 安装</h3>
+                    <div class="code">npx skills add username/repo</div>
+
+                    <h3>安装指定 Skill</h3>
+                    <div class="code">npx skills add eriklee1895/writing-agent-harness --skill article-ideation</div>
+                </div>
+
+                <div class="card">
+                    <h2><span class="icon">3</span> 创建新 Skill</h2>
+                    <p>从零创建一个新 Skill</p>
+
+                    <h3>基本结构</h3>
+                    <div class="code">cd .agents/skills
+mkdir my-new-skill
+cd my-new-skill
+touch SKILL.md</div>
+
+                    <h3>可选目录</h3>
+                    <div class="code">mkdir -p scripts references agents</div>
+                </div>
+
+                <div class="card">
+                    <h2><span class="icon">✓</span> Git 配置检查</h2>
+                    <p>确保 Skills 正确提交</p>
+
+                    <ul class="checklist">
+                        <li><span class="path">.agents/skills/</span> 被 Git 跟踪</li>
+                        <li><span class="path">.env</span> 在 .gitignore 中</li>
+                        <li><span class="path">.local-memory/</span> 在 .gitignore 中</li>
+                        <li>Secrets 不提交</li>
+                    </ul>
+
+                    <h3>验证命令</h3>
+                    <div class="code">git check-ignore -v .agents/skills/*/SKILL.md</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="structure" class="tab-content">
+            <div class="grid">
+                <div class="card">
+                    <h2><span class="icon">📁</span> 完整目录结构</h2>
+
+                    <div class="code">your-project/
+├── .agents/
+│   └── skills/                    <span class="badge badge-project">项目级</span>
+│       ├── skill-name/
+│       │   ├── SKILL.md          <span class="badge badge-required">必需</span>
+│       │   ├── README.md         <span class="badge badge-optional">可选</span>
+│       │   ├── agents/
+│       │   │   ├── claude/
+│       │   │   └── codex/
+│       │   ├── scripts/
+│       │   ├── references/
+│       │   └── tests/
+│
+├── ~/.agents/skills/             <span class="badge badge-user">全局级</span>
+│   ├── tavily-search/
+│   └── imagegen/</div>
+                </div>
+
+                <div class="card">
+                    <h2><span class="icon">📋</span> 目录说明</h2>
+
+                    <table class="table">
+                        <thead>
+                            <tr><th>目录</th><th>说明</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="path">SKILL.md</span></td><td>Skill 定义（唯一必需）</td></tr>
+                            <tr><td><span class="path">scripts/</span></td><td>可执行脚本</td></tr>
+                            <tr><td><span class="path">references/</span></td><td>参考资料</td></tr>
+                            <tr><td><span class="path">agents/</span></td><td>Agent 特定配置</td></tr>
+                            <tr><td><span class="path">tests/</span></td><td>测试用例</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h2><span class="icon">⚖️</span> 层级对比</h2>
+
+                    <table class="table">
+                        <thead>
+                            <tr><th>维度</th><th>项目级</th><th>全局级</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>位置</td><td>.agents/skills/</td><td>~/.agents/skills/</td></tr>
+                            <tr><td>Git</td><td>✅ 跟踪</td><td>❌ 不跟踪</td></tr>
+                            <tr><td>范围</td><td>特定项目</td><td>所有项目</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h3>加载优先级</h3>
+                    <div class="code">1. 项目级 (.agents/skills/)
+2. 全局级 (~/.agents/skills/)
+3. 内置 Skills</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="skillmd" class="tab-content">
+            <div class="grid">
+                <div class="card" style="grid-column: span 2;">
+                    <h2><span class="icon">📝</span> SKILL.md 模板</h2>
+
+                    <div class="two-col">
+                        <div>
+                            <h3>Frontmatter（YAML）</h3>
+                            <div class="code">---
+name: skill-name
+description: |
+  中文触发语义。
+  Use when: user says X, Y, Z.
+  Do not use when: ...
+metadata:
+  requires:
+    bins: ["node", "uv"]
+    skills: ["other-skill"]
+    env: ["API_KEY"]
+---</div>
+                        </div>
+                        <div>
+                            <h3>正文（Markdown）</h3>
+                            <div class="code"># Skill Title
+
+## Overview
+
+简要说明。
+
+## When To Use
+
+- 什么时候用
+
+## When NOT To Use
+
+- 什么时候不用
+
+## Workflow
+
+步骤说明。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><span class="icon">🎯</span> 触发描述示例</h2>
+
+                    <table class="table">
+                        <thead>
+                            <tr><th>Skill</th><th>触发关键词</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>article-ideation</td><td>"我想写一篇"、"脑暴"、"outline"</td></tr>
+                            <tr><td>polish-article</td><td>"润色"、"打磨"、"改改"</td></tr>
+                            <tr><td>wechat-article-renderer</td><td>"排版"、"预览"、"微信公众号"</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h2><span class="icon">🔗</span> 路径变量 {baseDir}</h2>
+
+                    <p>在文档中引用 skill 目录：</p>
+
+                    <h3>在 SKILL.md 中写</h3>
+                    <div class="code">node {baseDir}/scripts/render.mjs</div>
+
+                    <h3>运行时替换为</h3>
+                    <div class="code">node /path/to/.agents/skills/skill-name/scripts/render.mjs</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="commands" class="tab-content">
+            <div class="grid">
+                <div class="card">
+                    <h2><span class="icon">📦</span> 安装与管理</h2>
+
+                    <h3>安装所有 Skills</h3>
+                    <div class="code">npx skills add eriklee1895/writing-agent-harness</div>
+
+                    <h3>安装指定 Skill</h3>
+                    <div class="code">npx skills add eriklee1895/writing-agent-harness --skill article-ideation</div>
+
+                    <h3>查看已安装 Skills</h3>
+                    <div class="code">ls -la ~/.agents/skills/
+ls -la .agents/skills/</div>
+                </div>
+
+                <div class="card">
+                    <h2><span class="icon">🐍</span> Python 脚本</h2>
+
+                    <p>统一使用 uv 运行：</p>
+
+                    <div class="code">uv run scripts/your-script.py --help</div>
+
+                    <h3>添加依赖</h3>
+                    <div class="code">uv add requests</div>
+
+                    <h3>同步环境</h3>
+                    <div class="code">uv sync</div>
+                </div>
+
+                <div class="card">
+                    <h2><span class="icon">🟢</span> Node.js 脚本</h2>
+
+                    <div class="code">node scripts/your-script.mjs</div>
+
+                    <h3>预览微信文章</h3>
+                    <div class="code">node .agents/skills/wechat-article-renderer/scripts/render-wechat-article.mjs \
+  content/origin/YYYY-MM-DD-slug/article.md \
+  --style agent-flow</div>
+                </div>
+
+                <div class="card">
+                    <h2><span class="icon">🔍</span> 验证与检查</h2>
+
+                    <h3>检查文件是否被忽略</h3>
+                    <div class="code">git check-ignore -v .agents/skills/*/SKILL.md</div>
+
+                    <h3>验证软链接</h3>
+                    <div class="code">ls -la claude/skills</div>
+
+                    <h3>测试二进制依赖</h3>
+                    <div class="code">which node uv lark-cli</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card" style="grid-column: span 2;">
+                <h2><span class="icon">📚</span> writing-agent-harness 核心 Skills</h2>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                    <div>
+                        <h3>写作流程</h3>
+                        <span class="badge badge-project">article-ideation</span>
+                        <span class="badge badge-project">polish-article</span>
+                        <span class="badge badge-project">article-readiness-check</span>
+                        <span class="badge badge-project">writing-task-closeout</span>
+                    </div>
+                    <div>
+                        <h3>微信发布</h3>
+                        <span class="badge badge-project">wechat-article-renderer</span>
+                        <span class="badge badge-project">wechat-article-publisher</span>
+                        <span class="badge badge-project">wechat-article-fetcher</span>
+                        <span class="badge badge-project">wechat-publish-workflow</span>
+                    </div>
+                    <div>
+                        <h3>多媒体</h3>
+                        <span class="badge badge-project">article-illustration</span>
+                        <span class="badge badge-project">video-material-ingest</span>
+                        <span class="badge badge-project">video-highlight-select</span>
+                        <span class="badge badge-project">article-video-clip</span>
+                    </div>
+                    <div>
+                        <h3>飞书集成</h3>
+                        <span class="badge badge-project">markdown-article-to-lark-doc</span>
+                        <span class="badge badge-user">lark-doc</span>
+                        <span class="badge badge-user">lark-markdown</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📖 完整文档：docs/guides/skill-system-usage.md | docs/guides/skill-system-internals.md</p>
+            <p>💡 提示：打印此页面作为桌面参考卡</p>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

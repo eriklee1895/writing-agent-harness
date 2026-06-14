@@ -127,7 +127,7 @@ wechat-publish-workflow
 当前底层默认上传器：
 
 ```text
-wechat-article-publisher    # Playwright，默认
+wechat-article-publisher    # Playwright
 ```
 
 发布器走 `wechat-article-publisher`（Playwright），通过持久化 profile 复用登录态，填 title/author/summary、注入正文 HTML、串行上传正文图片到微信 CDN、保存草稿。元数据取自 source `.md` frontmatter（作者缺省取 `config.toml`，已预填 李玉恒）；标题写入可见标题 ProseMirror（同步隐藏 `#title`），正文剔除 hero 大标题避免重复。已验证文章流程、标题/作者/摘要、串行正文图片上传、草稿保存。迁移背景与对比数据见 [../retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](../retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。
@@ -154,7 +154,7 @@ uv run python .agents/skills/wechat-article-publisher/scripts/publish.py \
 
 不要把正文图片以 base64 内联进 WeChat preview HTML。Markdown / HTML preview 只保留轻量引用和 `data-local-path` / archive hint。
 
-CDP 同步草稿箱时实时处理图片：
+Playwright 同步草稿箱时实时处理图片：
 
 1. 读取 HTML 中的 `data-local-path` 或 `.local-archive` 相对路径；
 2. 找到本地图片；
@@ -239,8 +239,10 @@ Agent 不应未经用户明确确认点击最终发布/群发。扫码登录可�
 
 ## Retrospective
 
-2026-06-05，Cloudflare/Vite 文章已按 CDP 流程成功发布。详细复盘见 [../retrospectives/2026-06-05-wechat-publish.md](../retrospectives/2026-06-05-wechat-publish.md)。
+2026-06-05，Cloudflare/Vite 文章已按 Playwright 前的流程成功发布。详细复盘见 [../retrospectives/2026-06-05-wechat-publish.md](../retrospectives/2026-06-05-wechat-publish.md)。
 
-2026-06-06，确认不维护 API 主路径，只维护 CDP 自动化。决策记录见 [../retrospectives/2026-06-06-wechat-cdp-only-decision.md](../retrospectives/2026-06-06-wechat-cdp-only-decision.md)。
+2026-06-06，确认不维护 API 主路径，只维护浏览器自动化。决策记录见 [../retrospectives/2026-06-06-wechat-cdp-only-decision.md](../retrospectives/2026-06-06-wechat-cdp-only-decision.md)。
 
 2026-06-08，跑通视频素材再包装测试，确认裸 mp4 需要先包装成标准素材包，并修复 HyperFrames 模板 contract。复盘见 [../retrospectives/2026-06-08-video-material-clip.md](../retrospectives/2026-06-08-video-material-clip.md)。
+
+2026-06-11，迁移到 Playwright，移除 CDP 路线，确认 Playwright 是更优方案。复盘见 [../retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](../retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。
