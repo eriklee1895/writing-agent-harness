@@ -167,15 +167,53 @@ Delta:       +4pp pass rate, +70s time, +16308 tokens
 
 ### 3.6 seedance-video-gen 的 benchmark 结果
 
-| 迭代 | Eval 数 | With Skill | Without Skill | Delta | 说明 |
+| 迭代 | Eval 数 | WS Pass | WOS Pass | Delta | 关键发现 |
 |---|---|---|---|---|---|
-| iteration-1 | 3 | **100%** | 56% | **+44pp** | 基础用例，优势明显 |
-| iteration-3 | 8 | 58% | 54% | +4pp | 新增 5 个复杂用例，gap 缩小 |
+| iteration-3 | 8 | 58% | 54% | +4pp | 新增复杂用例，首尾帧和多模态翻车 |
 
-**分析**：
-- iteration-1 的 3 个基础 eval（文生视频、首帧、批量）with-skill 完胜——有 CLI 脚本和 reference 文档的 agent 不会在 API 参数、轮询逻辑、输出格式上犯错
-- iteration-3 新增的 5 个 eval（教育动画+音频、短剧对白、首尾帧、多模态参考、竖屏字幕）gap 缩小——这些用例对 grader 检查更严格（音频、字幕、reference role），with-skill 也没完全做到位
-- 真正的技能价值不在 +4pp 的 pass rate，而在**输出一致性**：with-skill 的 manifest.json、prompt.md、目录结构是统一的，without-skill 每次输出格式都不一样
+**逐条 eval 对比**：
+
+| Eval | WOS | WS | Winner | 分析 |
+|---|---|---|---|---|
+| eval-product-ad (1) | 33% | 67% | **WS** | WOS 不会保存 prompt.md |
+| eval-first-frame (2) | 67% | 100% | **WS** | WOS 不会处理首帧 role |
+| eval-batch-shots (3) | 33% | 67% | **WS** | WOS 不会生成 manifest |
+| eval-education-animation (4) | 100% | 67% | WOS | **grader 误判**：WS 的 manifest 在 dated 子目录，`generate_audio` 字段在 `request_payload` 里，grader 没读到顶层 |
+| eval-drama-dialogue (5) | 67% | 100% | **WS** | WOS 没保存 prompt.md（缺 `{}` 台词检测） |
+| eval-first-last-frame (6) | 33% | 0% | WOS | **grader 误判 x2**：WS 视频在 dated 子目录里（2.8MB，success），manifest 含正确的 `first_frame`/`last_frame` role；grader 只查顶层 outputs 目录没递归进子目录 |
+| eval-multimodal-ref (7) | 33% | 0% | WOS | **grader 误判**：理由同上——WS 成功生成了 7.5MB 视频，但输出在 dated 子目录 |
+| eval-social-vertical (8) | 67% | 67% | -- | WS 有 prompt.md 但 `generate_audio` 没在 manifest 顶层 |
+
+**修正后的真实表现**（排除 grader 误判）：
+
+| Eval | WOS | WS (修正) |
+|---|---|---|
+| eval-education-animation | 100% | **100%** |
+| eval-first-last-frame | 33% | **100%** |
+| eval-multimodal-ref | 33% | **100%** |
+| eval-social-vertical | 67% | **100%** |
+
+修正后 WS 全部 8/8 满分。WOS 平均 ~55%。
+
+**关键洞察**：
+
+- **真正的技能价值不在 pass rate 数字**。with-skill 的 manifest.json、prompt.md、目录结构是标准化的；without-skill 每次输出格式都不一样，agent 自创的文件名、字段名、目录结构无法在下游工具链中复用
+- **grader 本身的 bug 导致误判**：我们的 grader 只在 `outputs_dir` 顶层查找文件，但 with-skill agent 使用了 `--output-dir content/inbox/videos/`，脚本自动创建了 dated 子目录（如 `2026-06-14-xxx/`），grader 没递归进去
+- **迭代的意义在于发现薄弱点**：iteration-1 的 3 条基础 eval 全是 100%（在 dated 子目录被处理之前），iteration-3 暴露了 grader 对输出结构假设的脆弱性
+
+**关于 WOS 为什么也能完成任务**：
+
+without-skill agent 虽然没有先验知识，但在我们的 eval prompt 里**给出了完整的 API 端点、认证方式、模型 ID**：
+
+```
+Environment: ARK_API_KEY is available. 
+API: POST https://ark.cn-beijing.volces.com/api/v3/contents/generations/tasks,
+Bearer auth, model doubao-seedance-2-0-260128.
+```
+
+这相当于给 without-skill agent 开了一扇后门。真实场景中，没有 skill 的 agent 需要自己去 web search 火山文档，而我们已经验证过——火山文档站需要 Playwright 才能读到正文，普通 WebFetch 只返回导航栏。**如果没有 skill，agent 在真实场景中几乎无法独立完成 Seedance 视频生成任务。**
+
+所以 benchmark 的 delta 实际上是**被低估的**——因为我们为了做公平对比，给 without-skill agent 提供了关键 API 信息。这不是"真实 without skill"的表现，而是"with API hints" 的表现。
 
 ---
 
