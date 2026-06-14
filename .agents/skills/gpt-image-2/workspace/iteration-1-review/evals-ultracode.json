@@ -1,0 +1,23 @@
+{
+  "skill_name": "gpt-image-2",
+  "evals": [
+    {
+      "id": "text-poster",
+      "prompt": "用 gpt-image-2 生成一张 2K 横版技术海报，主题是 'Claude Code 的 Agent 工作流'。图中需要包含清晰的英文标题 'Claude Code Agent Workflow'，以及 3 个步骤：Sense / Plan / Act，每个步骤配一个简洁图标。整体风格是 dark-mode 科技海报，深蓝色背景，霓虹青色高光，无人物。输出到 output/gpt-image-2-eval/ 目录。",
+      "expected_output": "一张 2048x1152 的 dark-mode 海报，包含准确渲染的英文标题和步骤文字，三个图标，文件保存到指定目录并附带 metadata JSON。",
+      "files": []
+    },
+    {
+      "id": "reference-edit",
+      "prompt": "先在这里用 gpt-image-2 生成一张简单图片：'A minimal ceramic mug on a white marble table, soft studio lighting'，保存到 output/gpt-image-2-eval/mug.png。然后基于这张图片做编辑：把背景换成温暖的日落橙色渐变，保持杯子的形状、材质和光照不变。输出编辑后的图片到 output/gpt-image-2-eval/mug-sunset.png。",
+      "expected_output": "先生成 mug.png，再用 edit endpoint 生成 mug-sunset.png；杯子主体保持清晰可辨，背景变为日落色渐变。",
+      "files": []
+    },
+    {
+      "id": "batch-variants",
+      "prompt": "用 gpt-image-2 批量生成 4 张不同风格的 '机器人在图书馆读书' 插图，尺寸都是 1024x1024。风格分别是：1) 水彩绘本风 2) 扁平矢量插画 3) 赛博朋克 3D 渲染 4) 黑白钢笔素描。把 4 张图都保存到 output/gpt-image-2-eval/batch/ 目录，并确认每张都有 metadata JSON。",
+      "expected_output": "4 张 1024x1024 图片在 batch 目录中，风格差异明显，每张图附带同名的 metadata JSON。",
+      "files": []
+    }
+  ]
+}
