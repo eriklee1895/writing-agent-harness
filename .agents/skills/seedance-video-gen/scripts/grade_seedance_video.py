@@ -171,7 +171,7 @@ GRADERS = {
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Grade seedance-video benchmark outputs.")
+    parser = argparse.ArgumentParser(description="Grade seedance-video-gen benchmark outputs.")
     parser.add_argument("--eval-name", required=True, choices=sorted(GRADERS))
     parser.add_argument("--outputs-dir", required=True)
     args = parser.parse_args()

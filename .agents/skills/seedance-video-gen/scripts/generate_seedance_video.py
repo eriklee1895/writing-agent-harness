@@ -2,13 +2,14 @@
 # /// script
 # requires-python = ">=3.11"
 # dependencies = [
-#   "requests>=2.34.2",
+#   "httpx>=0.28.0",
 # ]
 # ///
 
 from __future__ import annotations
 
 import argparse
+import asyncio
 import base64
 import datetime as dt
 import json
@@ -20,7 +21,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
-import requests
+import httpx
 
 
 DEFAULT_BASE_URL = "https://ark.cn-beijing.volces.com/api/v3"
@@ -37,6 +38,9 @@ VALID_RESOLUTIONS = {"480p", "720p", "1080p"}
 SUPPORTED_IMAGE_ROLES = {"first_frame", "last_frame", "reference_image"}
 SUPPORTED_VIDEO_ROLES = {"reference_video"}
 SUPPORTED_AUDIO_ROLES = {"reference_audio"}
+
+# Try multiple env var names for the API key, then fall back to .env
+_API_KEY_ENV_NAMES = ("ARK_API_KEY", "MODEL_AGENT_API_KEY", "MODEL_VIDEO_API_KEY")
 
 
 def _load_dotenv() -> None:
@@ -55,16 +59,22 @@ def _load_dotenv() -> None:
 
 def slugify(text: str) -> str:
     slug = re.sub(r"[^a-zA-Z0-9]+", "-", text).strip("-").lower()
-    return slug or "seedance-video"
+    return slug or "seedance-video-gen"
 
 
 def get_auth() -> tuple[str, str]:
-    api_key = os.getenv("ARK_API_KEY")
+    api_key = ""
+    for name in _API_KEY_ENV_NAMES:
+        api_key = os.getenv(name, "")
+        if api_key:
+            break
     base_url = os.getenv("ARK_BASE_URL", DEFAULT_BASE_URL).rstrip("/")
+    # Normalise coding-plan-style base URLs that end with /api/coding/.../v3
+    base_url = re.sub(r"/api/coding/(?:lite/|pro/)?v3$", "/api/v3", base_url)
     if not api_key:
         raise SystemExit(
-            "Error: ARK_API_KEY not found. Set it in your shell or .env file:\n"
-            "  export ARK_API_KEY='sk-...'"
+            "Error: no API key found. Set one of these environment variables or add it to .env:\n"
+            "  ARK_API_KEY, MODEL_AGENT_API_KEY, MODEL_VIDEO_API_KEY"
         )
     return api_key, base_url
 
@@ -93,7 +103,9 @@ def validate_local_media(path: str, allowed_exts: set[str]) -> Path:
         raise SystemExit(f"Error: file not found: {p}")
     ext = p.suffix.lower().lstrip(".")
     if ext not in allowed_exts:
-        raise SystemExit(f"Error: unsupported file extension '{ext}' for {p}. Allowed: {allowed_exts}")
+        raise SystemExit(
+            f"Error: unsupported file extension '{ext}' for {p}. Allowed: {allowed_exts}"
+        )
     return p
 
 
@@ -123,7 +135,9 @@ def validate_mode_constraints(content: list[dict[str, Any]]) -> None:
     has_first_last = any(r in {"first_frame", "last_frame"} for r in roles)
     has_reference = any(r and r.startswith("reference_") for r in roles)
     if has_first_last and has_reference:
-        raise SystemExit("Error: first/last frame mode and reference mode are mutually exclusive.")
+        raise SystemExit(
+            "Error: first/last frame mode and reference mode are mutually exclusive."
+        )
     images = [r for r in roles if r in SUPPORTED_IMAGE_ROLES]
     videos = [r for r in roles if r in SUPPORTED_VIDEO_ROLES]
     audios = [r for r in roles if r in SUPPORTED_AUDIO_ROLES]
@@ -136,7 +150,40 @@ def validate_mode_constraints(content: list[dict[str, Any]]) -> None:
     if len(images) + len(videos) + len(audios) > 12:
         raise SystemExit("Error: total reference media must be <= 12.")
     if audios and not (images or videos):
-        raise SystemExit("Error: audio reference requires at least one image or video reference.")
+        raise SystemExit(
+            "Error: audio reference requires at least one image or video reference."
+        )
+
+
+def _image_mime(ext: str) -> str:
+    return {
+        "png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg",
+        "webp": "image/webp", "gif": "image/gif", "bmp": "image/bmp",
+    }.get(ext, f"image/{ext}")
+
+
+def _video_mime(ext: str) -> str:
+    return {
+        "mp4": "video/mp4", "mov": "video/quicktime",
+        "avi": "video/x-msvideo", "mkv": "video/x-matroska", "webm": "video/webm",
+    }.get(ext, f"video/{ext}")
+
+
+def _audio_mime(ext: str) -> str:
+    return {
+        "mp3": "audio/mpeg", "wav": "audio/wav", "aac": "audio/aac",
+        "flac": "audio/flac", "m4a": "audio/mp4", "ogg": "audio/ogg",
+    }.get(ext, f"audio/{ext}")
+
+
+def _media_mime(ext: str, item_type: str) -> str:
+    if item_type == "image_url":
+        return _image_mime(ext)
+    if item_type == "video_url":
+        return _video_mime(ext)
+    if item_type == "audio_url":
+        return _audio_mime(ext)
+    return f"application/octet-stream"
 
 
 def build_payload(args: argparse.Namespace) -> dict[str, Any]:
@@ -164,33 +211,8 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
             content.append(build_content_item(item_type, path_or_url, role))
         else:
             local_path = validate_local_media(path_or_url, allowed_exts)
-            # Convert local file to base64 data URL
             ext = local_path.suffix.lower().lstrip(".")
-            mime_type = {
-                "png": "image/png",
-                "jpg": "image/jpeg",
-                "jpeg": "image/jpeg",
-                "webp": "image/webp",
-                "gif": "image/gif",
-                "bmp": "image/bmp",
-            }.get(ext, f"image/{ext}")
-            if item_type == "video_url":
-                mime_type = {
-                    "mp4": "video/mp4",
-                    "mov": "video/quicktime",
-                    "avi": "video/x-msvideo",
-                    "mkv": "video/x-matroska",
-                    "webm": "video/webm",
-                }.get(ext, f"video/{ext}")
-            elif item_type == "audio_url":
-                mime_type = {
-                    "mp3": "audio/mpeg",
-                    "wav": "audio/wav",
-                    "aac": "audio/aac",
-                    "flac": "audio/flac",
-                    "m4a": "audio/mp4",
-                    "ogg": "audio/ogg",
-                }.get(ext, f"audio/{ext}")
+            mime_type = _media_mime(ext, item_type)
             file_bytes = local_path.read_bytes()
             b64 = base64.b64encode(file_bytes).decode("ascii")
             data_url = f"data:{mime_type};base64,{b64}"
@@ -225,7 +247,9 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
     return payload
 
 
-def create_task(api_key: str, base_url: str, payload: dict[str, Any]) -> dict[str, Any]:
+async def _create_task_async(
+    client: httpx.AsyncClient, api_key: str, base_url: str, payload: dict[str, Any]
+) -> dict[str, Any]:
     url = f"{base_url}/contents/generations/tasks"
     headers = {
         "Authorization": f"Bearer {api_key}",
@@ -234,18 +258,21 @@ def create_task(api_key: str, base_url: str, payload: dict[str, Any]) -> dict[st
     }
     if os.getenv("SEEDANCE_ACCEPT_ENCODING_IDENTITY"):
         headers["Accept-Encoding"] = "identity"
-    resp = requests.post(url, headers=headers, json=payload, timeout=60)
+    resp = await client.post(url, headers=headers, json=payload, timeout=60)
     if resp.status_code != 200:
         raise SystemExit(f"Error creating task: HTTP {resp.status_code} {resp.text}")
     return resp.json()
 
 
-def poll_task(api_key: str, base_url: str, task_id: str, interval: int, max_wait: int, verbose: bool) -> dict[str, Any]:
+async def _poll_task_async(
+    client: httpx.AsyncClient, api_key: str, base_url: str,
+    task_id: str, interval: int, max_wait: int, verbose: bool,
+) -> dict[str, Any]:
     url = f"{base_url}/contents/generations/tasks/{task_id}"
     headers = {"Authorization": f"Bearer {api_key}", "Accept": "application/json"}
     start = time.time()
     while True:
-        resp = requests.get(url, headers=headers, timeout=60)
+        resp = await client.get(url, headers=headers, timeout=60)
         if resp.status_code != 200:
             raise SystemExit(f"Error polling task: HTTP {resp.status_code} {resp.text}")
         data = resp.json()
@@ -256,15 +283,14 @@ def poll_task(api_key: str, base_url: str, task_id: str, interval: int, max_wait
             return data
         if time.time() - start > max_wait:
             raise SystemExit(f"Timeout after {max_wait}s. Last status: {status}")
-        time.sleep(interval)
+        await asyncio.sleep(interval)
 
 
-def download_video(video_url: str, output_path: Path) -> None:
-    # Video URL download should NOT include Authorization header
-    resp = requests.get(video_url, stream=True, timeout=120)
+async def _download_video_async(client: httpx.AsyncClient, video_url: str, output_path: Path) -> None:
+    resp = await client.get(video_url, timeout=120)
     resp.raise_for_status()
     with output_path.open("wb") as f:
-        for chunk in resp.iter_content(chunk_size=8192):
+        async for chunk in resp.aiter_bytes(chunk_size=8192):
             if chunk:
                 f.write(chunk)
 
@@ -305,7 +331,7 @@ def write_prompt(output_dir: Path, prompt: str) -> Path:
     return path
 
 
-def cmd_generate(args: argparse.Namespace) -> int:
+async def cmd_generate_async(args: argparse.Namespace) -> int:
     _load_dotenv()
     api_key, base_url = get_auth()
     payload = build_payload(args)
@@ -326,36 +352,43 @@ def cmd_generate(args: argparse.Namespace) -> int:
         print(f"\nOutput dir: {output_dir}")
         return 0
 
-    print(f"Creating task at {base_url} ...")
-    task = create_task(api_key, base_url, payload)
-    task_id = task.get("id")
-    print(f"Task ID: {task_id}")
+    async with httpx.AsyncClient() as client:
+        print(f"Creating task at {base_url} ...")
+        task = await _create_task_async(client, api_key, base_url, payload)
+        task_id = task.get("id")
+        print(f"Task ID: {task_id}")
 
-    print(f"Polling (interval={args.poll_interval}s, max_wait={args.max_wait}s) ...")
-    result = poll_task(api_key, base_url, task_id, args.poll_interval, args.max_wait, args.verbose)
-    status = result.get("status")
-    print(f"Final status: {status}")
+        print(f"Polling (interval={args.poll_interval}s, max_wait={args.max_wait}s) ...")
+        result = await _poll_task_async(
+            client, api_key, base_url, task_id, args.poll_interval, args.max_wait, args.verbose,
+        )
+        status = result.get("status")
+        print(f"Final status: {status}")
 
-    video_path: Path | None = None
-    last_frame_path: Path | None = None
-    if status in {"succeeded", "completed"}:
-        video_url = result.get("content", {}).get("video_url")
-        if video_url:
-            video_path = output_dir / "video.mp4"
-            print(f"Downloading video to {video_path} ...")
-            download_video(video_url, video_path)
-        last_frame_url = result.get("content", {}).get("last_frame_url")
-        if last_frame_url:
-            last_frame_path = output_dir / "last-frame.jpg"
-            print(f"Downloading last frame to {last_frame_path} ...")
-            download_video(last_frame_url, last_frame_path)
-    else:
-        print(f"Task did not succeed: {result.get('error')}")
+        video_path: Path | None = None
+        last_frame_path: Path | None = None
+        if status in {"succeeded", "completed"}:
+            video_url = result.get("content", {}).get("video_url")
+            if video_url:
+                video_path = output_dir / "video.mp4"
+                print(f"Downloading video to {video_path} ...")
+                await _download_video_async(client, video_url, video_path)
+            last_frame_url = result.get("content", {}).get("last_frame_url")
+            if last_frame_url:
+                last_frame_path = output_dir / "last-frame.jpg"
+                print(f"Downloading last frame to {last_frame_path} ...")
+                await _download_video_async(client, last_frame_url, last_frame_path)
+        else:
+            print(f"Task did not succeed: {result.get('error')}")
 
-    manifest_path = write_manifest(output_dir, payload, result, video_path, last_frame_path)
-    print(f"Manifest: {manifest_path}")
-    print(f"Output dir: {output_dir}")
-    return 0 if status in {"succeeded", "completed"} else 1
+        manifest_path = write_manifest(output_dir, payload, result, video_path, last_frame_path)
+        print(f"Manifest: {manifest_path}")
+        print(f"Output dir: {output_dir}")
+        return 0 if status in {"succeeded", "completed"} else 1
+
+
+def cmd_generate(args: argparse.Namespace) -> int:
+    return asyncio.run(cmd_generate_async(args))
 
 
 def cmd_create(args: argparse.Namespace) -> int:
@@ -365,7 +398,10 @@ def cmd_create(args: argparse.Namespace) -> int:
     if args.dry_run:
         print(json.dumps(payload, ensure_ascii=False, indent=2))
         return 0
-    task = create_task(api_key, base_url, payload)
+    async def _run():
+        async with httpx.AsyncClient() as client:
+            return await _create_task_async(client, api_key, base_url, payload)
+    task = asyncio.run(_run())
     print(json.dumps(task, ensure_ascii=False, indent=2))
     return 0
 
@@ -375,7 +411,13 @@ def cmd_poll(args: argparse.Namespace) -> int:
     api_key, base_url = get_auth()
     if not args.task_id:
         raise SystemExit("Error: --task-id required for poll.")
-    result = poll_task(api_key, base_url, args.task_id, args.poll_interval, args.max_wait, args.verbose)
+    async def _run():
+        async with httpx.AsyncClient() as client:
+            return await _poll_task_async(
+                client, api_key, base_url, args.task_id,
+                args.poll_interval, args.max_wait, args.verbose,
+            )
+    result = asyncio.run(_run())
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
 
@@ -385,8 +427,11 @@ def cmd_download(args: argparse.Namespace) -> int:
         raise SystemExit("Error: --video-url required for download.")
     output_dir = make_output_dir(args.output_dir, Path(args.video_url).name or "seedance-download")
     video_path = output_dir / "video.mp4"
+    async def _run():
+        async with httpx.AsyncClient() as client:
+            await _download_video_async(client, args.video_url, video_path)
     print(f"Downloading {args.video_url} to {video_path} ...")
-    download_video(args.video_url, video_path)
+    asyncio.run(_run())
     print(f"Saved: {video_path}")
     return 0
 
