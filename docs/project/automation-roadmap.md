@@ -15,7 +15,7 @@ Feishu / notes -> Markdown / MDX -> research -> polish -> channel packaging -> p
 重点：
 
 - 微信公众号流程已跑通，继续完善 `wechat-article-renderer` 和 `wechat-publish-workflow`。
-- 微信公众号草稿箱同步只维护 CDP/browser 自动化；扫码登录是唯一不可避免的人工参与点。
+- 微信公众号草稿箱同步只维护 Playwright/browser 自动化；扫码登录是唯一不可避免的人工参与点。
 - 用 `polish-article` 做高质量文章打磨，而不是只做 “humanizer”。
 - 所有发布前都要有 rendered preview 和用户确认。
 
