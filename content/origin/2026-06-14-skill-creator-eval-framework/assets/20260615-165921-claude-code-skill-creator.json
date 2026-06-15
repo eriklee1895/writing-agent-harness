@@ -1,0 +1,22 @@
+{
+  "title": "Claude Code Skill Creator 评测体系深度解析",
+  "brief": "技术分析文章封面，极简信息图风格。主体为两条并行流水线：左侧代表带技能的Agent执行流程，右侧代表不带技能的基线执行，中间汇聚到一个仪表盘面板显示评测指标（通过率、耗时、Token）。采用深蓝灰底色搭配点缀性的暗红色作为数据高亮点，留白干净，现代开发者工具审美。",
+  "content_type": "WeChat article cover",
+  "content_category": "cover",
+  "mode": "text-only",
+  "style_profile": "auto",
+  "resolved_style_profile": "editorial-atmospheric",
+  "size": "wechat-cover-hd",
+  "resolved_size": "1792x1024",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'Claude Code Skill Creator 评测体系深度解析'. Style: contemporary editorial illustration, layered composition, subtle texture, restrained color palette, atmospheric but concrete, article-friendly visual metaphor, no text labels, no diagrams, no arrows. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a WeChat Official Account headline cover image (公众号头条封面). Compose for a 2.35:1 ultra-wide crop (1080x460). Keep key subjects centered or in the bottom third — top area will be cropped. Design for readability as a small thumbnail in WeChat's subscription feed. Title text will be overlaid by the editor, so leave ample negative space. Language/region: zh. Target aspect ratio: wechat-cover-hd. Mode: text-only. Brief:\n技术分析文章封面，极简信息图风格。主体为两条并行流水线：左侧代表带技能的Agent执行流程，右侧代表不带技能的基线执行，中间汇聚到一个仪表盘面板显示评测指标（通过率、耗时、Token）。采用深蓝灰底色搭配点缀性的暗红色作为数据高亮点，留白干净，现代开发者工具审美。",
+  "created_at": "2026-06-15T17:00:11",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-14-skill-creator-eval-framework/assets/20260615-165921-claude-code-skill-creator-cropped.png"
+  ],
+  "crop_hint": "1080x460 (2.35:1)",
+  "dry_run": false
+}

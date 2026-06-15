@@ -1,0 +1,22 @@
+{
+  "title": "skill-creator 四模式生命周期",
+  "brief": "技术信息图，横向流程图。展示一个循环的四阶段开发生命周期，四个圆角方块从左到右用箭头连接：① Create（创建）：交互式访谈，生成 SKILL.md 骨架；② Eval（评测）：并行启动子 agent，with-skill 对比 without-skill 的 A/B 执行；③ Improve（改进）：读取评测反馈，迭代修改技能；④ Benchmark（基准）：多轮运行统计分析，输出 mean±stddev。从 Benchmark 有一条箭头回到 Eval 表示循环迭代。底部用虚线连出两个产物节点：每轮迭代产物（grading.json）和聚合产物（benchmark.json）。配色采用深蓝灰主体加焦糖橙色点缀，干净的模块化布局，现代开发者工具审美，留白充足。",
+  "content_type": "process diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'skill-creator 四模式生命周期'. Diagram type: process diagram. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\n技术信息图，横向流程图。展示一个循环的四阶段开发生命周期，四个圆角方块从左到右用箭头连接：① Create（创建）：交互式访谈，生成 SKILL.md 骨架；② Eval（评测）：并行启动子 agent，with-skill 对比 without-skill 的 A/B 执行；③ Improve（改进）：读取评测反馈，迭代修改技能；④ Benchmark（基准）：多轮运行统计分析，输出 mean±stddev。从 Benchmark 有一条箭头回到 Eval 表示循环迭代。底部用虚线连出两个产物节点：每轮迭代产物（grading.json）和聚合产物（benchmark.json）。配色采用深蓝灰主体加焦糖橙色点缀，干净的模块化布局，现代开发者工具审美，留白充足。",
+  "created_at": "2026-06-15T17:51:45",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-14-skill-creator-eval-framework/assets/20260615-175034-skill-creator.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

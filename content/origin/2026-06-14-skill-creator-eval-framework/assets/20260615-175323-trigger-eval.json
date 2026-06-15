@@ -1,0 +1,22 @@
+{
+  "title": "触发评测 Trigger Eval 优化循环",
+  "brief": "技术信息图，自上而下的流程图。顶部 20 条 trigger eval 查询（10 个应触发 + 10 个不应触发，含近失案例）→ 60% train / 40% test 分割（test set 优化过程中不可见）→ 进入 run_loop.py 优化循环（最多 5 次迭代）：① 临时注册 skill command 把 description 注入；② 每个查询跑 3 次 claude -p stream-json；③ stream event 早期检测（检查 tool_use 是否为 Skill/Read）；④ 计算 trigger_rate。循环结束后用 test 分数（而非 train）选出 best_description，反过拟合，最后写入 SKILL.md frontmatter。配色采用深蓝灰主体加焦糖橙色点缀，循环部分用方框圈起来，清晰的步骤编号模块布局，现代开发者工具审美。",
+  "content_type": "atmospheric divider",
+  "content_category": "divider",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled '触发评测 Trigger Eval 优化循环'. Diagram type: atmospheric divider. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\n技术信息图，自上而下的流程图。顶部 20 条 trigger eval 查询（10 个应触发 + 10 个不应触发，含近失案例）→ 60% train / 40% test 分割（test set 优化过程中不可见）→ 进入 run_loop.py 优化循环（最多 5 次迭代）：① 临时注册 skill command 把 description 注入；② 每个查询跑 3 次 claude -p stream-json；③ stream event 早期检测（检查 tool_use 是否为 Skill/Read）；④ 计算 trigger_rate。循环结束后用 test 分数（而非 train）选出 best_description，反过拟合，最后写入 SKILL.md frontmatter。配色采用深蓝灰主体加焦糖橙色点缀，循环部分用方框圈起来，清晰的步骤编号模块布局，现代开发者工具审美。",
+  "created_at": "2026-06-15T17:54:39",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-14-skill-creator-eval-framework/assets/20260615-175323-trigger-eval.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
