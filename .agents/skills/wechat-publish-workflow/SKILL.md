@@ -1,6 +1,6 @@
 ---
 name: wechat-publish-workflow
-description: "微信公众号文章发布 workflow。Use when the user wants to publish/sync/create 草稿箱 draft from a Markdown article: generate WeChat preview, verify HTML/images/封面, remove external href, use wechat-article-publisher (默认；baoyu-post-to-wechat 为 fallback), save 草稿箱, and hand off final publish review."
+description: "微信公众号文章发布 workflow。Use when the user wants to publish/sync/create 草稿箱 draft from a Markdown article: generate WeChat preview, verify HTML/images/封面, remove external href, use wechat-article-publisher, save 草稿箱, and hand off final publish review."
 ---
 
 # 微信公众号发布 Workflow
@@ -9,7 +9,7 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
 
 这个 skill 是本 repo 的微信公众号发布 runbook。默认保持 `content/origin/` 下的 Markdown 作为 canonical article，用 `wechat-article-renderer` 生成 WeChat HTML preview，用 `wechat-article-publisher` 把已确认的 HTML 搬运到微信公众号编辑器/草稿箱。
 
-发布器默认走 `wechat-article-publisher`（Playwright，代码更少、auto-wait 更稳，已验证文章流程 + 正文图片上传 + 草稿保存）。`baoyu-post-to-wechat` 的 CDP 模式保留为 fallback，不再扩展新功能。迁移背景见 [docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](../../../docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。官方 API / remote-api 仍只作为历史/实验能力。
+发布器只用 `wechat-article-publisher`（Playwright，代码更少、auto-wait 更稳，已验证文章流程 + 正文图片上传 + 草稿保存）。`baoyu-post-to-wechat` 的 CDP 模式已删除。迁移背景见 [docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](../../../docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。官方 API / remote-api 仍只作为历史/实验能力。
 
 不要把 generated preview、已填好的编辑器页面、或已保存草稿理解成 published。真正发布必须由用户明确确认。
 
@@ -18,7 +18,7 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
 - 文章还在写作/润色阶段：先用 `polish-article`。
 - 文章需要公众号排版：用 `wechat-article-renderer`。
 - 文章包含本地视频素材：先确认视频来自 `video-material-ingest` 素材包，并在发布前确认使用权、插入位置和最终呈现。
-- 用户确认 preview 后要求同步/推送/创建草稿：用 `wechat-article-publisher`（默认）；如其失效再回退 `baoyu-post-to-wechat` 的 browser/CDP 路径。
+- 用户确认 preview 后要求同步/推送/创建草稿：用 `wechat-article-publisher`。
 - 用户要求直接发布：先创建或确认草稿，再请求 explicit final confirmation，之后才能点击发布/群发。
 
 ## 标准流程
@@ -40,7 +40,7 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
    - mobile preview `390-430px` 无 horizontal overflow。
 4. 如需要，打开或刷新本地 preview，常见地址是 `http://localhost:49255/`。
 5. 在触碰微信公众号编辑器前，先让用户确认 preview。
-6. 用 `wechat-article-publisher` 把 preview HTML 填入微信公众号编辑器并创建草稿（默认；失效时回退 `baoyu-post-to-wechat`）。默认偏向创建草稿，不直接发布。
+6. 用 `wechat-article-publisher` 把 preview HTML 填入微信公众号编辑器并创建草稿。默认偏向创建草稿，不直接发布。
 
    ```bash
    uv run python .agents/skills/wechat-article-publisher/scripts/publish.py \
@@ -103,7 +103,7 @@ VoidZero is joining Cloudflare
 - `video-material-ingest`：抓取已知视频 URL，保留 `manifest.json` 和 `sources.md`，形成本地可追溯素材包。
 - `wechat-article-renderer`：未来可把 Markdown 中的视频引用渲染成 WeChat-ready placeholder，并保留本地视频路径和素材来源说明。
 - `wechat-publish-workflow`：编排视频素材发布前确认、上传/插入、草稿保存和最终检查。
-- `baoyu-post-to-wechat`：未来负责具体 CDP/browser 上传视频、插入编辑器和读取插入结果。
+- `wechat-article-publisher`：未来负责具体 Playwright/browser 上传视频、插入编辑器和读取插入结果。
 
 发布前必须确认：
 
@@ -131,10 +131,10 @@ CDP 模式唯一不可避免的人工参与点是扫码登录。这来自微信�
 
 ## Successful Run Memory
 
-Cloudflare/Vite 文章已经按这个流程成功发布：
+Cloudflare/Vite 文章已经按这个流程成功发布（当时用的是 baoyu-post-to-wechat CDP，现已迁移到 wechat-article-publisher Playwright）：
 
 ```text
-Canonical Markdown (content/origin/) → WeChat HTML preview → mobile/visual verification → WeChat editor via baoyu-post-to-wechat → remove external hrefs → save 草稿箱 → user final publish
+Canonical Markdown (content/origin/) → WeChat HTML preview → mobile/visual verification → WeChat editor via Playwright → remove external hrefs → save 草稿箱 → user final publish
 ```
 
 关键修复：参考资料里的 external links 导致微信保存失败。将 reference links 渲染成 plain text 后，草稿保存和后续发布成功，同时 canonical Markdown 仍保留真实链接，方便博客等其他渠道复用。

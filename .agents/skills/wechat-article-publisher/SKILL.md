@@ -1,13 +1,11 @@
 ---
 name: wechat-article-publisher
-description: 用 Playwright 把微信公众号文章（文章流程）同步到草稿箱。输入 origin index.md（content/origin/YYYY-MM-DD-&lt;slug&gt;/，frontmatter 元数据权威源）+ wechat-article-renderer 产出的 HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 appmsgid。本项目替换 baoyu-post-to-wechat CDP 模式的首选发布器。当用户要"发布公众号草稿""同步到草稿箱""publish wechat draft"时使用。仅创建草稿，不点发布/群发。
+description: 用 Playwright 把微信公众号文章（文章流程）同步到草稿箱。输入 origin index.md（content/origin/YYYY-MM-DD-&lt;slug&gt;/，frontmatter 元数据权威源）+ wechat-article-renderer 产出的 HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 appmsgid。当用户要"发布公众号草稿""同步到草稿箱""publish wechat draft"时使用。仅创建草稿，不点发布/群发。
 ---
 
 # WeChat 公众号文章发布器（Playwright）
 
-用 Playwright 驱动微信公众号后台的「文章」编辑器，把渲染好的文章同步到草稿箱。无缝替换 `baoyu-post-to-wechat` CDP 模式：代码约 1/4、依赖更少（无 `baoyu-chrome-cdp`）、auto-wait 更稳。延续 `wechat-article-renderer` / `wechat-article-fetcher` 命名家族。
-
-迁移背景与对比数据见 [docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](../../../docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。
+用 Playwright 驱动微信公众号后台的「文章」编辑器，把渲染好的文章同步到草稿箱。
 
 ## 发布边界（重要）
 
@@ -84,7 +82,3 @@ uv run python .agents/skills/wechat-article-publisher/scripts/publish.py \
 - **草稿保存确认是微信侧 flaky 行为**：同样内容可能 2s 或数十秒。脚本用 robust 点击 + 多信号 + 120s 容忍；仍失败时截图存 `scripts/.artifacts/` 并提示去草稿箱人工确认（草稿常已自动保存）。
 - **多账号**：用不同 `--profile` 目录隔离登录态，无内置账号管理。
 - 失败/校验截图存 `scripts/.artifacts/`（gitignored，可能含后台/登录态，勿提交）。
-
-## 与 baoyu-post-to-wechat 的关系
-
-baoyu CDP 模式已从本 repo 移除（历史代码可在 upstream [JimLiu/baoyu-skills](https://github.com/JimLiu/baoyu-skills) 找到）。新文章走本 skill。两者都只到草稿箱，最终发布由用户确认。
