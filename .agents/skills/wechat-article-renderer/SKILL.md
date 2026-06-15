@@ -11,7 +11,7 @@ Use this skill to turn a Markdown article into a polished WeChat Official Accoun
 
 Markdown remains the source of truth. Generate HTML for review first; publishing is a separate step handled by `wechat-publish-workflow`.
 
-Current default style preset: `impact-rational`（中文名：冲击开场，理性正文），适合技术长文、AI infrastructure、developer tooling commentary。未来新增风格时，继续保留这个 skill 作为统一 renderer，通过 `--style <name>` 和 `references/styles/<name>.md` 扩展，不要为每个 style 新建一个 skill。
+Current default style preset: `warm-editorial`（中文名：暖色纸张，编辑随笔），适合技术深度长文、AI infrastructure、developer tooling commentary，成品/杂志质感更好。`agent-flow` / `impact-rational` 作为备用技术 style 保留。未来新增风格时，继续保留这个 skill 作为统一 renderer，通过 `--style <name>` 和 `references/styles/<name>.md` 扩展，不要为每个 style 新建一个 skill。
 
 ## Quick Start
 
@@ -52,16 +52,16 @@ node {baseDir}/scripts/render-wechat-article.mjs /absolute/path/to/article.md /a
 
 ## Style Presets
 
-Use `references/styles/impact-rational.md` for the current default style decisions. Load only the selected style reference when style-specific visual decisions are needed.
+Use `references/styles/warm-editorial.md` for the current default style decisions. Load only the selected style reference when style-specific visual decisions are needed.
 
 Current style presets:
 
-- `impact-rational`: 技术评论/观点文，默认。
+- `warm-editorial`: 暖色纸张、编辑随笔质感，技术深度长文，**默认**。见 `references/styles/warm-editorial.md`。
+- `agent-flow`: 纯白底、无卡片、流式排版，技术评论/观点文备用（微信夜间模式最稳）。
+- `impact-rational`: 白底带左边框 hero + 目录/摘要面板的技术评论 style，备用。
 - `literary-essay`: 个人散文/随笔。
 - `cultural-essay`: 文化现象、城市、音乐、文旅观察类随笔。
 - `tech-blog`: 通用技术博客。
-- `agent-flow`: 纯白底、无卡片、流式排版，技术评论/观点文优先（微信夜间模式最稳）。
-- `warm-editorial`: 暖色纸张、编辑随笔质感，技术深度长文的设计感升级选项。见 `references/styles/warm-editorial.md`。
 
 Style extension convention:
 

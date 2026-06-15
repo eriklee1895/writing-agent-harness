@@ -218,7 +218,7 @@ const STYLE_LABELS = {
 
 // ── Shared constants ─────────────────────────────────────────────
 const SAFE_WRAP = "box-sizing:border-box; max-width:100%; overflow-wrap:break-word; word-break:break-word;";
-const DEFAULT_STYLE = "agent-flow";
+const DEFAULT_STYLE = "warm-editorial";
 const SUPPORTED_STYLES = new Set(Object.keys(STYLE_TOKENS));
 let IMAGE_BASE_DIR = process.cwd();
 let ACTIVE_STYLE = DEFAULT_STYLE;

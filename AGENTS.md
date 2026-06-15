@@ -77,7 +77,7 @@
 
 ## Current Defaults
 
-- 微信公众号 renderer 支持五种 style：`agent-flow`（纯白底、无卡片、扇形流式排版，技术评论/观点文默认）、`impact-rational`（白底带左边框 hero + 目录/摘要面板的技术评论 style，备用）、`literary-essay`（个人散文/随笔）、`cultural-essay`（文化现象/城市/音乐/文旅随笔）、`tech-blog`（通用技术博客）。默认偏向 `agent-flow`：微信夜间模式会自动反色，带浅色卡片+背景的 style 在暗色下会显得很亮，纯白无卡片排版更稳。
+- 微信公众号 renderer 支持六种 style：`warm-editorial`（暖纸张底 `#faf9f5` + 陶土橙 accent + 黑底白字表头 + 深色代码块的编辑随笔风，技术深度长文默认）、`agent-flow`（纯白底、无卡片、扇形流式排版，备用，夜间模式最稳）、`impact-rational`（白底带左边框 hero + 目录/摘要面板的技术评论 style，备用）、`literary-essay`（个人散文/随笔）、`cultural-essay`（文化现象/城市/音乐/文旅随笔）、`tech-blog`（通用技术博客）。默认偏向 `warm-editorial`：成品/杂志质感更好看，且无卡片纯流式在夜间模式自动反色下也稳。表格统一用 flex `<div>` 渲染（不用 `<table>` 标签，否则微信会套虚线编辑框）。
 - 文章插图生成默认使用 `article-illustration --style-profile auto` 按文章气质选择画风。
 - 早期灵感脑暴使用 project skill：`article-ideation`。
 - 文章打磨使用 project skill：`polish-article`。
