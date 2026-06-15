@@ -1,0 +1,57 @@
+{
+  "article": {
+    "title": "Skill System 原理学习报告：深度解析技能加载、渐进式披露与运行时调用",
+    "date": "2026-06-13",
+    "slug": "skill-system-principle",
+    "path": "content/origin/2026-06-13-skill-system-principle/index.md"
+  },
+  "assets": [
+    {
+      "type": "image",
+      "path": "content/origin/2026-06-13-skill-system-principle/assets/architecture-diagram.png",
+      "metadata_path": "content/origin/2026-06-13-skill-system-principle/assets/architecture-diagram.json",
+      "purpose": "article-illustration",
+      "style": "flat-tech-infographic"
+    }
+  ],
+  "diagrams": [
+    "启动时扫描流程 (sequenceDiagram)",
+    "目录扫描规则 (flowchart)",
+    "三层披露模型 (flowchart)",
+    "披露时机决策树 (flowchart)",
+    "完整调用链路 (sequenceDiagram)",
+    "指令遵循模式 (flowchart)",
+    "脚本调用模式 (flowchart)",
+    "gpt-image-2 脚本执行架构 (flowchart)",
+    "技能组合模式：顺序流水线 (flowchart)",
+    "技能组合模式：主技能+辅助技能 (flowchart)",
+    "技能间引用机制 (sequenceDiagram)",
+    "触发词匹配策略 (flowchart)",
+    "目录搜索顺序 (flowchart)",
+    "错误分类与处理 (flowchart)",
+    "技能腐化检测 (flowchart)",
+    "多层缓存架构 (flowchart)",
+    "完整的技能生命周期图 (stateDiagram-v2)"
+  ],
+  "sections": [
+    "概述",
+    "目录结构",
+    "一、Skill 加载流程",
+    "二、渐进式披露机制（Progressive Disclosure）",
+    "三、运行时调用流程",
+    "四、技能组合与依赖管理",
+    "五、元数据驱动的触发系统",
+    "六、配置与外部技能目录",
+    "七、错误处理与降级策略",
+    "八、性能优化与缓存策略",
+    "九、最佳实践总结",
+    "附录：完整的技能生命周期图",
+    "参考资料"
+  ],
+  "skills_used": [
+    "article-ideation (reference)",
+    "article-illustration (used)",
+    "gpt-image-2 (dependency)",
+    "writing-task-closeout (reference)"
+  ]
+}

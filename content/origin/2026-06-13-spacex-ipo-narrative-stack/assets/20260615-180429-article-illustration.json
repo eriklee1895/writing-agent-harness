@@ -1,0 +1,22 @@
+{
+  "title": "叙事堆栈",
+  "brief": "A conceptual technical diagram showing three stacked layers labeled from bottom to top: '现实层（可验证层）' with rocket, satellite, financial data charts; '愿景层（可能性层）' with Starship, Mars base sketch; '意义层（存在主义层）' with a human figure looking at distant Mars. Style: soft-tech-diagram, bilingual labels, clean modules. Landscape.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "soft-tech-diagram",
+  "resolved_style_profile": "soft-tech-diagram",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled '叙事堆栈'. Diagram type: article illustration. Use a soft technical diagram, subtle dashed containers, layered modules, light academic visual language. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\nA conceptual technical diagram showing three stacked layers labeled from bottom to top: '现实层（可验证层）' with rocket, satellite, financial data charts; '愿景层（可能性层）' with Starship, Mars base sketch; '意义层（存在主义层）' with a human figure looking at distant Mars. Style: soft-tech-diagram, bilingual labels, clean modules. Landscape.",
+  "created_at": "2026-06-15T18:05:53",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-13-spacex-ipo-narrative-stack/assets/20260615-180429-article-illustration.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

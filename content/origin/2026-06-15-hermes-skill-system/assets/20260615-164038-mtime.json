@@ -1,0 +1,22 @@
+{
+  "title": "外部目录 mtime 缓存设计",
+  "brief": "技术插图，展示 Hermes Skill System 的 mtime_ns 缓存机制：配置文件 stat 检查 vs 完整 YAML 解析的性能对比，缓存键结构（绝对路径 + mtime_ns），缓存命中/未命中流程。清晰的时序流程图，中英双语标签。",
+  "content_type": "body inset illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "soft-tech-diagram",
+  "resolved_style_profile": "soft-tech-diagram",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled '外部目录 mtime 缓存设计'. Diagram type: body inset illustration. Use a soft technical diagram, subtle dashed containers, layered modules, light academic visual language. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\n技术插图，展示 Hermes Skill System 的 mtime_ns 缓存机制：配置文件 stat 检查 vs 完整 YAML 解析的性能对比，缓存键结构（绝对路径 + mtime_ns），缓存命中/未命中流程。清晰的时序流程图，中英双语标签。",
+  "created_at": "2026-06-15T16:41:34",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-15-hermes-skill-system/assets/20260615-164038-mtime.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
