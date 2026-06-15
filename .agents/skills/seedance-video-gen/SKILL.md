@@ -30,17 +30,19 @@ description: |
 
 ## 快速用法
 
+> **duration 生成视频时长**：取值范围4-15s，根据内容复杂度选择，简单镜头 4–5s，有剧情/对白/多镜头建议 8–15s。
+
 ```bash
 # 文生视频
 uv run .agents/skills/seedance-video-gen/scripts/generate_seedance_video.py \
   --prompt "一只橘猫在阳光下缓慢眨眼，微风吹动毛发，镜头轻微推进" \
   --duration 5 --ratio 1:1 --resolution 720p
 
-# 首帧图生视频
+# 首帧图生视频（带对白和音效的场景，适当加长）
 uv run .agents/skills/seedance-video-gen/scripts/generate_seedance_video.py \
-  --prompt "让人物自然转身看向镜头，保持电影级光影" \
+  --prompt "让人物自然转身看向镜头，保持电影级光影，{你好，好久不见}" \
   --first-frame assets/start-frame.png \
-  --duration 5 --ratio 9:16
+  --duration 8 --ratio 9:16
 
 # 首尾帧
 uv run .agents/skills/seedance-video-gen/scripts/generate_seedance_video.py \
@@ -49,10 +51,10 @@ uv run .agents/skills/seedance-video-gen/scripts/generate_seedance_video.py \
   --last-frame assets/end.png \
   --duration 4
 
-# 只创建任务，拿到 task_id
+# 只创建任务，拿到 task_id（多分镜叙事用长时长）
 uv run .agents/skills/seedance-video-gen/scripts/generate_seedance_video.py create \
-  --prompt "霓虹雨夜街道，摩托车飞驰而过" \
-  --duration 5
+  --prompt "霓虹雨夜街道，摩托车飞驰而过，镜头跟拍穿过雨幕，<引擎轰鸣声>" \
+  --duration 10
 
 # 查询已有任务
 uv run .agents/skills/seedance-video-gen/scripts/generate_seedance_video.py poll \
