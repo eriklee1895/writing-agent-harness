@@ -15,6 +15,8 @@ tags: [claude-code, skill-creator, agent-evaluation, benchmark, skill-developmen
 
 ## 一、引子：一个新的软件原语
 
+![一个看似朴素的 Markdown 文件成为开源现象，不到一周涨到 16500 星](assets/20260615-175744-markdown.png)
+
 2026年2月，一个叫 `andrej-karpathy-skills` 的 GitHub 仓库在不到一周内涨到16,500星。里面没有一行代码——只有一个 Markdown 文件，记录着 Andrej Karpathy 对 LLM 编码失败模式的观察：
 
 > *"不要写尾部总结。"*
@@ -34,6 +36,8 @@ tags: [claude-code, skill-creator, agent-evaluation, benchmark, skill-developmen
 ## 二、skill-creator 的四模式生命周期
 
 skill-creator 不是一次性生成工具——它把软件开发的生命周期搬到了 agent skill 世界：
+
+![skill-creator 四模式生命周期：Create → Eval → Improve → Benchmark 循环迭代](assets/20260615-175034-skill-creator.png)
 
 ```
 [Create] → [Eval] → [Improve] → [Benchmark] → (重复)
@@ -73,6 +77,8 @@ skill-creator/
 ### 3.1 原理：同一个任务，两个 agent
 
 **这是评测 agent skill 最有效的方式。**
+
+![功能评测 Benchmark 数据流：evals.json 分叉成 16 个并行 agent，经 Grader 机械评分汇聚到 benchmark.json](assets/20260615-175207-benchmark.png)
 
 ```
 用户任务 prompt
@@ -171,6 +177,8 @@ Delta:       +4pp pass rate, +70s time, +16308 tokens
 ### 4.1 原理：description 是技能的入口
 
 一个技能再完美，如果 agent 从不触发它，那就毫无价值。skill-creator 对此进行了两层处理：
+
+![触发评测 Trigger Eval 优化循环：20 条查询经 train/test 分割，run_loop.py 迭代优化，按 test 分数选出 best_description](assets/20260615-175323-trigger-eval.png)
 
 1. **description 字段**是 YAML frontmatter 中的触发信号
 2. Claude 根据这个 signal 决定是否读取 skill
@@ -310,6 +318,8 @@ without-skill agent 每次都生成视频——但文件名、目录结构、字
 ---
 
 ## 八、未来方向——从技能到规范
+
+![从手艺到工程：左侧手工打磨的 SKILL.md 指令，右侧工程化、规范化的蓝图结构](assets/20260615-175814-article-illustration.png)
 
 Anthropic 的博客暗示了一个长期愿景：
 

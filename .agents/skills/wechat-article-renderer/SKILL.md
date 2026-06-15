@@ -60,6 +60,8 @@ Current style presets:
 - `literary-essay`: 个人散文/随笔。
 - `cultural-essay`: 文化现象、城市、音乐、文旅观察类随笔。
 - `tech-blog`: 通用技术博客。
+- `agent-flow`: 纯白底、无卡片、流式排版，技术评论/观点文优先（微信夜间模式最稳）。
+- `warm-editorial`: 暖色纸张、编辑随笔质感，技术深度长文的设计感升级选项。见 `references/styles/warm-editorial.md`。
 
 Style extension convention:
 
@@ -70,6 +72,8 @@ Style extension convention:
 
 Shared renderer rules:
 
+- **微信编辑器 sanitizer 有多个坑，改完 renderer 必须在真实草稿箱验证，localhost 预览不算数。** 已知坑点（`<table>` 触发虚线编辑框、`overflow-x:auto` wrapper 触发占位框、`white-space:pre` 被 strip、`<colgroup>` 被 strip、外部 `href` 被拒）全部记录在 `references/wechat-editor-pitfalls.md`，遇到表格/代码块/链接问题先读它。
+- 表格一律用 `display:flex` 的 `<div>` 行渲染，**不要用 `<table>` 标签**（微信会套虚线表格编辑框）。
 - Keep all layout styling inline; avoid external CSS and JavaScript.
 - Do not output external link `href` attributes in WeChat HTML. Render links and references as readable text because the WeChat editor rejects non-`mp.weixin.qq.com` links when saving drafts.
 - Do not inline image binaries as base64. WeChat preview HTML should stay lightweight and reviewable.

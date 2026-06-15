@@ -92,6 +92,40 @@ const STYLE_TOKENS = {
     closingPanel: true,
     lineHeight: "1.9",
   },
+  "warm-editorial": {
+    // 复刻 index.html 的温暖纸质感风格：暖灰底、H2 焦糖色、深色表头、圆角表格
+    accent: "#d97757",
+    blue: "#d97757",
+    text: "#141413",
+    muted: "#b0aea5",
+    panelBorder: "#e8e6dc",
+    shadow: "0 1px 3px rgba(0,0,0,.06)",
+    fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Serif SC',Arial,sans-serif",
+    headingFontFamily: undefined,
+    bodyBg: "#faf9f5",
+    cardBg: "#ffffff",
+    quoteBg: "#f3f1ea",
+    quoteBorder: "#d97757",
+    useCards: false,
+    showOutline: false,
+    showSummary: false,
+    heroStyle: "warm",
+    headingPrefix: "",
+    closingPanel: false,
+    lineHeight: "1.9",
+    codeBg: "#f3f1ea",
+    codeBorder: "rgba(0,0,0,.08)",
+    tableHeaderBg: "#141413",
+    tableHeaderColor: "#faf9f5",
+    darkBg: "#1a1a18",
+    darkCardBg: "#2a2a28",
+    darkText: "#e8e6dc",
+    darkMuted: "#8b8a84",
+    darkAccent: "#e8966f",
+    darkQuoteBg: "#2a2a25",
+    darkCodeBg: "#2a2a28",
+    darkHeadingColor: "#e8966f",
+  },
   "agent-flow": {
     accent: "#ff6b35",
     blue: "#2d8cff",
@@ -163,6 +197,15 @@ const STYLE_LABELS = {
     closingCTA: "下一篇在路上 →",
   },
   "agent-flow": {
+    heroLabel: undefined,
+    authorNoteLabel: undefined,
+    outlineLabel: undefined,
+    questionLabel: undefined,
+    thesisLabel: undefined,
+    galleryLabel: "配图",
+    closingCTA: undefined,
+  },
+  "warm-editorial": {
     heroLabel: undefined,
     authorNoteLabel: undefined,
     outlineLabel: undefined,
@@ -616,41 +659,49 @@ function imageGroupHtml(block) {
 }
 
 function tableHtml(block) {
-	  const tokens = getTokens();
-	  const columnCount = Math.max(block.header.length, ...block.rows.map((row) => row.length));
-	  let columnWidths = [];
-	  if (columnCount === 2) {
-	    columnWidths = ["34%", "66%"];
-	  } else if (columnCount === 3) {
-	    columnWidths = ["24%", "32%", "44%"];
-	  } else {
-	    columnWidths = Array.from({ length: columnCount }, () => `${Math.floor(100 / columnCount)}%`);
-	  }
-	  const colgroup = `<colgroup>${columnWidths.map((width) => `<col style="width:${width};padding-right:8px;">`).join("")}</colgroup>`;
-	  const headerBg = tokens.tableHeaderBg || "#f8fafc";
-	  const headers = block.header.map((cell) => (
-	    `<th style="${SAFE_WRAP} padding:10px 8px; background:${headerBg}; color:#6b7d8e; font-size:12px; line-height:1.4; font-weight:500; text-align:left; text-transform:uppercase; letter-spacing:.04em; border-top:1.5px solid rgba(0,0,0,.08); border-bottom:1.5px solid rgba(0,0,0,.08);">${inline(cell)}</th>`
-	  )).join("");
-	  const rows = block.rows.map((row, index) => {
-	    const last = index === block.rows.length - 1;
-	    return `<tr>${row.map((cell, cellIndex) => {
-	      const bb = last ? "border-bottom:1.5px solid rgba(0,0,0,.08);" : "";
-	      return `<td style="${SAFE_WRAP} padding:10px 8px; font-size:14px; line-height:1.7; color:${cellIndex === 0 ? tokens.blue : tokens.text}; font-weight:${cellIndex === 0 ? "600" : "400"}; ${bb} border-left:none; border-right:none;">${inline(cell)}</td>`;
-	    }).join("")}</tr>`;
-	  }).join("");
-	  return `<div style="${SAFE_WRAP} overflow-x:auto; margin:4px 0 20px;">
-	  <table style="${SAFE_WRAP} border-collapse:collapse; width:100%; table-layout:fixed; border:none;">
-	    ${colgroup}
-	    <thead><tr>${headers}</tr></thead>
-	    <tbody>${rows}</tbody>
-	  </table>
-	</div>`;
-	}
+  const tokens = getTokens();
+  const columnCount = Math.max(block.header.length, ...block.rows.map((row) => row.length));
+  let columnWidths = [];
+  if (columnCount === 2) {
+    columnWidths = ["22%", "78%"];
+  } else if (columnCount === 3) {
+    columnWidths = ["30%", "35%", "35%"];
+  } else {
+    columnWidths = Array.from({ length: columnCount }, () => `${(100 / columnCount).toFixed(4)}%`);
+  }
+  // IMPORTANT: do NOT use a real <table>/<th>/<td>. WeChat's editor recognises
+  // table tags and automatically wraps them in a dashed "table editing" box
+  // (with a blank toolbar strip above). That box can't be removed via inline
+  // styles. We instead draw the table with flex rows of <div>s, which WeChat
+  // leaves alone — no dashed box, and column widths are fully respected.
+  const headerBg = tokens.tableHeaderBg || "#f8fafc";
+  const headerColor = tokens.tableHeaderColor || "#6b7d8e";
+
+  const headerCells = block.header.map((cell, i) => {
+    const w = columnWidths[i] || "auto";
+    return `<div style="${SAFE_WRAP} box-sizing:border-box; width:${w}; flex:0 0 ${w}; padding:10px 10px; color:${headerColor}; font-size:12px; line-height:1.4; font-weight:600; text-align:left; letter-spacing:.02em;">${inline(cell)}</div>`;
+  }).join("");
+  const headerRow = `<div style="${SAFE_WRAP} display:flex; width:100%; background:${headerBg}; border-radius:6px 6px 0 0;">${headerCells}</div>`;
+
+  const bodyRows = block.rows.map((row, index) => {
+    const last = index === block.rows.length - 1;
+    const bb = last ? "border-bottom:1.5px solid rgba(0,0,0,.10);" : "border-bottom:1px solid rgba(0,0,0,.07);";
+    const cells = row.map((cell, cellIndex) => {
+      const w = columnWidths[cellIndex] || "auto";
+      const isFirst = cellIndex === 0;
+      return `<div style="${SAFE_WRAP} box-sizing:border-box; width:${w}; flex:0 0 ${w}; padding:10px 10px; font-size:14px; line-height:1.7; color:${isFirst ? tokens.blue : tokens.text}; font-weight:${isFirst ? "600" : "400"};">${inline(cell)}</div>`;
+    }).join("");
+    return `<div style="${SAFE_WRAP} display:flex; width:100%; ${bb}">${cells}</div>`;
+  }).join("");
+
+  return `<section style="${SAFE_WRAP} width:100%; margin:4px 0 20px; border-top:1.5px solid rgba(0,0,0,.10);">${headerRow}${bodyRows}</section>`;
+}
 
 // Syntax highlight palette (inline styles — WeChat strips classes & <style> blocks).
 const CODE_COLORS = {
   base: "#e6edf3",
   comment: "#8b949e",
+  muted: "#8b949e",
   string: "#a5d6ff",
   number: "#79c0ff",
   keyword: "#ff7b72",
@@ -714,15 +765,24 @@ function highlightCodeLine(line, leaders) {
 }
 
 function codeHtml(block) {
-  // WeChat collapses \n and leading whitespace inside <pre>; emit <br> + &nbsp; so
-  // line breaks and indentation survive the paste, with inline-styled highlighting.
+  // WeChat collapses \n and leading whitespace, and strips `white-space:pre`.
+  // Robust horizontal-scroll recipe that survives WeChat's sanitizer:
+  //   • <br> for line breaks, &nbsp; for indentation (literal whitespace is lost)
+  //   • OUTER element: overflow-x:auto  → the scroll viewport
+  //   • INNER element: white-space:nowrap + display:inline-block → lines never wrap,
+  //     the block grows to the widest line, the viewport scrolls horizontally.
+  // `nowrap` is preserved by WeChat far more reliably than `pre`.
   const leaders = codeCommentLeaders(block.lang);
   const body = block.text.split("\n").map((line) => {
     const lead = (line.match(/^[ \t]*/) || [""])[0];
     const indent = "&nbsp;".repeat(lead.replace(/\t/g, "    ").length);
     return indent + highlightCodeLine(line.slice(lead.length), leaders);
   }).join("<br>");
-  return `<section class="dark-code" style="${SAFE_WRAP} overflow-x:auto; background:#1f252c; color:${CODE_COLORS.base}; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.7; font-family:'SF Mono',SFMono-Regular,ui-monospace,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace; margin:0 0 18px;">${body}</section>`;
+  const langLabel = block.lang
+    ? `<div style="box-sizing:border-box; font-size:11px; color:${CODE_COLORS.muted}; margin:0 0 10px; letter-spacing:.06em; font-weight:600; text-transform:uppercase; font-family:'SF Mono',SFMono-Regular,ui-monospace,Menlo,Monaco,Consolas,monospace;">${escapeHtml(block.lang)}</div>`
+    : "";
+  const inner = `<div style="display:inline-block; min-width:100%; white-space:nowrap; font-size:14px; line-height:1.7; font-family:'SF Mono',SFMono-Regular,ui-monospace,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;">${body}</div>`;
+  return `<section class="dark-code" style="box-sizing:border-box; max-width:100%; overflow-x:auto; background:#1f252c; color:${CODE_COLORS.base}; border-radius:10px; padding:14px 16px; margin:0 0 18px;">${langLabel}${inner}</section>`;
 }
 
 function blockHtml(block) {
@@ -832,6 +892,12 @@ function renderDocument({ title, deck, summary, blocks }) {
         ${labels.heroLabel ? `<div style="display:inline-block; color:${tokens.accent}; font-size:13px; line-height:1; padding:6px 10px; border:1px solid ${tokens.accent}; border-radius:4px; margin-bottom:18px; opacity:0.8;">${escapeHtml(labels.heroLabel)}</div>` : ""}
         <h1 style="${SAFE_WRAP} font-size:26px; line-height:1.4; color:#1f252c; margin:0 auto; font-weight:700; letter-spacing:0; font-family:${ff}; max-width:90%;">${escapeHtml(title)}</h1>
         ${deck ? `<p style="${SAFE_WRAP} font-size:15px; line-height:1.8; color:${tokens.muted}; margin:14px auto 0; max-width:86%;">${escapeHtml(deck)}</p>` : ""}
+      </section>`;
+  } else if (tokens.heroStyle === "warm") {
+    // warm-editorial: minimal centered hero matching index.html vibe
+    heroHtml = `<section style="${SAFE_WRAP} width:100%; background:transparent; padding:0 2px 18px; margin-bottom:28px;">
+        <h1 style="${SAFE_WRAP} font-size:24px; line-height:1.45; color:${tokens.text}; margin:0 0 12px; font-weight:600; letter-spacing:0; font-family:${ff};">${escapeHtml(title)}</h1>
+        ${deck ? `<p style="${SAFE_WRAP} font-size:14px; line-height:1.8; color:${tokens.muted}; margin:0;">${escapeHtml(deck)}</p>` : ""}
       </section>`;
   } else {
     // border-left hero (default for impact-rational and tech-blog)
