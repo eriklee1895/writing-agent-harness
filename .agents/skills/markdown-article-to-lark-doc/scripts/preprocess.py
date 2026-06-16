@@ -1,4 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#   "pyyaml>=6.0",
+# ]
+# ///
 """preprocess.py — Markdown → Feishu-ready Markdown with placeholders.
 
 This script does the *minimum* preprocessing needed before sending a markdown
@@ -26,7 +32,7 @@ The script runs in two modes:
     Reads <workdir>/manifest.json (now with "file_token" filled in for each image)
     and produces <workdir>/final.md with placeholders replaced by real tokens.
 
-Dependencies: only stdlib + PyYAML (most envs have it; uv handles install).
+Dependencies: stdlib + PyYAML (declared in PEP 723 inline metadata).
 """
 
 from __future__ import annotations
@@ -44,8 +50,7 @@ try:
 except ImportError:
     print(
         "ERROR: PyYAML not installed.\n"
-        "  uv add pyyaml      # if working inside the writing-agent-harness repo\n"
-        "  pip install pyyaml # otherwise",
+        "  uv run scripts/preprocess.py ...   # PEP 723 inline deps handle this",
         file=sys.stderr,
     )
     sys.exit(2)

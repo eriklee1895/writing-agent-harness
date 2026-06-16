@@ -139,7 +139,7 @@ wechat-article-publisher    # Playwright
 用法：
 
 ```bash
-uv run python .agents/skills/wechat-article-publisher/scripts/publish.py \
+uv run .agents/skills/wechat-article-publisher/scripts/publish.py \
   --article /absolute/path/to/source/article.md \
   --html    /absolute/path/to/article.wechat-preview.html --save-draft
 ```

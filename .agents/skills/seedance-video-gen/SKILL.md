@@ -24,7 +24,7 @@ description: |
 
 ## 前置条件
 
-- `uv` 可用，项目依赖已同步 (`uv sync`)。
+- `uv` 可用；依赖由脚本 PEP 723 inline metadata 自声明，`uv run` 自动安装。
 - 环境变量 `ARK_API_KEY` 已设置；或当前工作目录有 `.env` 文件包含 `ARK_API_KEY=`。
 - 可选：`ARK_BASE_URL` 用于自定义网关（默认火山方舟 `https://ark.cn-beijing.volces.com/api/v3`）。
 

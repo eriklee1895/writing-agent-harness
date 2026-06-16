@@ -72,7 +72,7 @@ bash scripts/precheck.sh
 
 ```bash
 mkdir -p .skill-work/
-uv run python scripts/preprocess.py \
+uv run scripts/preprocess.py \
   --input <article.md> \
   --workdir .skill-work/
 # 产物:
@@ -106,7 +106,7 @@ lark-cli docs +media-insert --doc <doc_id> --file <local_path>
 
 ### 6. 占位替换
 
-`uv run python scripts/preprocess.py --finalize --workdir .skill-work/`
+`uv run scripts/preprocess.py --finalize --workdir .skill-work/`
 
 把 `processed.md` 里的 `__PLACEHOLDER_N__` 替换成对应 `file_token`,产出 `final.md`。
 
@@ -127,7 +127,7 @@ lark-cli docs +update --api-version v2 --doc <doc_id> --command overwrite \
 
 ## 关键决策与边界
 
-- **混合写入策略**: 主体 `--doc-format markdown`(借飞书服务端 renderer 处理标题/列表/代码块/表格/引用),只有图片和画板用 inline XML 标签覆盖。理由:不重写 GFM parser,工作量小,bug 少。
+- **混合写入策略**: 主体 `--doc-format markdown`(借飞书服务端 renderer 处理标题/列表/代码块/表格/引用),只有图片和画板用 inline XML 标签覆盖。理由:不重写 GFM(GitHub Flavored Markdown)parser,工作量小,bug 少。
 - **不写 MD→XML 全量转换器**:依赖飞书 markdown renderer 处理 90% GFM 语义。
 - **Mermaid 直传**: `<whiteboard type="mermaid">{code}</whiteboard>` 在 markdown 模式下作为 inline XML 标签被飞书识别,服务端自动渲染成画板;**不调** `lark-whiteboard +update`。
 - **图片 file_token 是 tenant 级资源**: 上传后写到 XML 的 `<img src="FILE_TOKEN"/>` 里;overwrite 后图片仍可用。
