@@ -1,0 +1,23 @@
+{
+  "skill_name": "volcengine-doc-fetcher",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我看一下火山引擎豆包语音的模型列表文档：https://www.volcengine.com/docs/6561/2499930?lang=zh 有哪些模型？把文档内容抓下来给我。",
+      "expected_output": "Clean Markdown doc content with model list, tables preserved, no base64 image noise",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I need to check the Seedance video generation API reference. Here are a few URLs from volcengine docs I need: https://www.volcengine.com/docs/6561/163032 and https://www.volcengine.com/docs/6561/1257544 - can you fetch both of these and give me clean markdown?",
+      "expected_output": "Two clean Markdown docs fetched concurrently, both with correct titles and content",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "我在写代码接入火山方舟的联网搜索API，需要查一下这个接口文档确认参数：https://www.volcengine.com/docs/87772/2272953 帮我把这个页面的API文档抓成markdown，特别是表格和代码示例要保持格式。",
+      "expected_output": "Clean Markdown with API reference content, tables and code blocks preserved",
+      "files": []
+    }
+  ]
+}
