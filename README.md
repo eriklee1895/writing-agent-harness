@@ -231,7 +231,7 @@ With thanks to the authors and maintainers of these amazing skills and skill eco
 - [docs/workflows/writing-overview.md](docs/workflows/writing-overview.md): 通用写作流程。
 - [docs/workflows/wechat-writing-publishing.md](docs/workflows/wechat-writing-publishing.md): 微信公众号写作、排版、草稿箱同步与发布流程。
 - [docs/reference/writing-agent-harness-profile.md](docs/reference/writing-agent-harness-profile.md): `writing-agent-harness` 的身份、职责、能力边界。
-- [docs/reference/skills.md](docs/reference/skills.md): 项目 skills 边界。
+- [docs/skills/skills-list.md](docs/skills/skills-list.md): 项目 skills 边界。
 - [docs/reference/visuals.md](docs/reference/visuals.md): 图片、视频素材和文章视频剪辑规则。
 
 ## 🗂️ Suggested Layout

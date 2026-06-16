@@ -138,7 +138,7 @@ Implementation should update:
 
 - `.agents/skills/video-material-ingest/SKILL.md`
 - `.agents/skills/video-material-ingest/scripts/ingest-video-material.mjs`
-- `docs/reference/skills.md`
+- `docs/skills/skills-list.md`
 - `docs/reference/visuals.md` or a new `docs/reference/media-assets.md`
 - `docs/project/automation-roadmap.md`
 - `docs/project/prepare-environment.md`

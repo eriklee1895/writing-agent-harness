@@ -18,7 +18,7 @@
   - Node CLI and exported helper functions for tests.
 - Create `.agents/skills/video-material-ingest/scripts/ingest-video-material.test.mjs`
   - Unit tests for slugging, path planning, manifest creation, command construction, and missing tool errors.
-- Modify `docs/reference/skills.md`
+- Modify `docs/skills/skills-list.md`
   - Register `video-material-ingest` as a current project skill.
 - Modify `docs/reference/visuals.md`
   - Point video-derived screenshots and covers back to `video-material-ingest`.
@@ -752,12 +752,12 @@ git commit -m "docs: add video material ingest skill"
 ### Task 5: Documentation Integration
 
 **Files:**
-- Modify: `docs/reference/skills.md`
+- Modify: `docs/skills/skills-list.md`
 - Modify: `docs/reference/visuals.md`
 - Modify: `docs/project/automation-roadmap.md`
 - Modify: `docs/project/prepare-environment.md`
 
-- [ ] **Step 1: Update `docs/reference/skills.md`**
+- [ ] **Step 1: Update `docs/skills/skills-list.md`**
 
 Add this bullet under `## Current Core`:
 
@@ -821,7 +821,7 @@ Expected: matches in the new skill, spec, plan, and updated docs. No cookie valu
 - [ ] **Step 6: Commit docs integration**
 
 ```bash
-git add docs/reference/skills.md docs/reference/visuals.md docs/project/automation-roadmap.md docs/project/prepare-environment.md
+git add docs/skills/skills-list.md docs/reference/visuals.md docs/project/automation-roadmap.md docs/project/prepare-environment.md
 git commit -m "docs: register video material ingest workflow"
 ```
 

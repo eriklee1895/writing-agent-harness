@@ -1,0 +1,43 @@
+{
+  "skill_name": "volcengine-web-search",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我搜一下最近一周关于AI Agent的新闻，中文的，要5条就行，总结一下主要趋势",
+      "expected_output": "Agent uses volcengine-web-search with --json --count 5 --time-range week --need-summary, searches for AI Agent related query in Chinese, and provides a summary of trends from the results.",
+      "files": [],
+      "assertions": [
+        "uses_volcengine_cli",
+        "correct_flags",
+        "search_in_chinese",
+        "synthesizes_trends",
+        "structured_output"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "找几张故宫雪景的照片，我要用来做壁纸",
+      "expected_output": "Agent uses volcengine-web-search with --type image --json, searches for 故宫雪景, and presents image URLs with dimensions and clarity info.",
+      "files": [],
+      "assertions": [
+        "uses_image_type",
+        "image_urls_present",
+        "dimensions_info",
+        "clarity_info"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "我想了解最新的新能源汽车政策，要权威来源的信息",
+      "expected_output": "Agent uses volcengine-web-search with --json --authoritative-only --need-summary, searches for 新能源汽车政策, and synthesizes findings from authoritative sources.",
+      "files": [],
+      "assertions": [
+        "uses_authoritative_flag",
+        "uses_summary_flag",
+        "authoritative_sources",
+        "policy_focused",
+        "structured_synthesis"
+      ]
+    }
+  ]
+}
