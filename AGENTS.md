@@ -18,7 +18,7 @@
 - 临时想法、未确认价值的 todo、本机上下文先放 `.local-memory/`；验证为可复用后再迁移到项目 docs、`AGENTS.md` 或 `.agents/skills/`。
 - 当某项能力已经值得 project-level skill 化时，主动建议并沉淀为 `.agents/skills/*`。
 - Python 工具链统一使用 uv（`uv add` / `uv sync` / `uv run` / `uv lock`），禁止 pip / pipx / poetry / 裸 python 直接操作依赖。
-- 项目 skill 的 Python 脚本遵守 [docs/skills/skills-guide.md](docs/skills/skills-guide.md) 中的 PEP 723 规范、路径引用约定和脚本接口设计。
+- 新建或修改 project skill 时遵守 [docs/skills/skills-guide.md](docs/skills/skills-guide.md) 的规范：PEP 723、路径引用、脚本接口设计、SKILL.md 写作原则。
 
 ## Operating Principle
 
