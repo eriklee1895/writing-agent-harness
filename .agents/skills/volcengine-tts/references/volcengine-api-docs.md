@@ -6,17 +6,17 @@ Official documentation links and error code reference for the Doubao Speech Synt
 
 | Document | URL |
 |----------|-----|
-| HTTP 单向流式语音合成 (API reference) | https://www.volcengine.com/docs/6561/2528925?lang=zh |
-| WebSocket 双向流式语音合成 | https://www.volcengine.com/docs/6561/2532486?lang=zh |
-| WebSocket 单向流式-V3 | https://www.volcengine.com/docs/6561/1719100?lang=zh |
-| 异步长文本接口文档 | https://www.volcengine.com/docs/6561/1829010?lang=zh |
-| 模型列表 | https://www.volcengine.com/docs/6561/2499930?lang=zh |
-| 音色列表 (seed-tts-2.0) | https://www.volcengine.com/docs/6561/1257544?lang=zh |
-| SSML 标记语言 | https://www.volcengine.com/docs/6561/1330194?lang=zh |
-| 错误码查询 | https://www.volcengine.com/docs/6561/2534853?lang=zh |
-| 语音指令与标签 | https://www.volcengine.com/docs/6561/1871062?lang=zh |
-| API Key 使用 | https://www.volcengine.com/docs/6561/1816214?lang=zh |
-| 产品简介 | https://www.volcengine.com/docs/6561/163032?lang=zh |
+| HTTP 单向流式语音合成 (API reference) | https://www.volcengine.com/docs/6561/2528925 |
+| WebSocket 双向流式语音合成 | https://www.volcengine.com/docs/6561/2532486 |
+| WebSocket 单向流式-V3 | https://www.volcengine.com/docs/6561/1719100 |
+| 异步长文本接口文档 | https://www.volcengine.com/docs/6561/1829010 |
+| 模型列表 | https://www.volcengine.com/docs/6561/2499930 |
+| 音色列表 (seed-tts-2.0) | https://www.volcengine.com/docs/6561/1257544 |
+| SSML 标记语言 | https://www.volcengine.com/docs/6561/1330194 |
+| 错误码查询 | https://www.volcengine.com/docs/6561/2534853 |
+| 语音指令与标签 | https://www.volcengine.com/docs/6561/1871062 |
+| API Key 使用 | https://www.volcengine.com/docs/6561/1816214 |
+| 产品简介 | https://www.volcengine.com/docs/6561/163032 |
 
 ## TTS V3 HTTP Unidirectional Error Codes
 

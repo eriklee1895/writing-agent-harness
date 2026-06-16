@@ -146,7 +146,7 @@ Seedance 2.0 不支持直接上传含真人人脸的参考图。平台提供两�
 
 ## 来源
 
-- [火山方舟视频生成 API 参考](https://www.volcengine.com/docs/82379/1520758?lang=zh)
-- [Doubao Seedance 2.0 系列教程](https://www.volcengine.com/docs/82379/2291680?lang=zh)
-- [Doubao Seedance 2.0 系列提示词指南](https://www.volcengine.com/docs/82379/2222480?lang=zh)
-- [视频生成教程](https://www.volcengine.com/docs/82379/2298881?lang=zh)
+- [火山方舟视频生成 API 参考](https://www.volcengine.com/docs/82379/1520758)
+- [Doubao Seedance 2.0 系列教程](https://www.volcengine.com/docs/82379/2291680)
+- [Doubao Seedance 2.0 系列提示词指南](https://www.volcengine.com/docs/82379/2222480)
+- [视频生成教程](https://www.volcengine.com/docs/82379/2298881)
