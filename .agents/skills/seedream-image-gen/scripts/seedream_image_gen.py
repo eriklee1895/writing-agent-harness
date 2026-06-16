@@ -16,7 +16,7 @@ Subcommands:
 Defaults to doubao-seedream-5-0-260128. Sibling *.json metadata is written
 next to each output image.
 
-API docs: https://www.volcengine.com/docs/82379/1824121?lang=zh
+API docs: https://www.volcengine.com/docs/82379/1824121
 """
 
 from __future__ import annotations
@@ -839,7 +839,7 @@ def main() -> int:
 
     parser = argparse.ArgumentParser(
         description="Generate images with Seedream 5.0 via Volcengine Ark API.\n"
-                    "API docs: https://www.volcengine.com/docs/82379/1824121?lang=zh",
+                    "API docs: https://www.volcengine.com/docs/82379/1824121",
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands.")
     _add_generate_parser(subparsers)

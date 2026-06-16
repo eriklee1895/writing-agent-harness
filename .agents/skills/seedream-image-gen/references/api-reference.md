@@ -4,13 +4,11 @@
 
 | 文档 | 链接 |
 |------|------|
-| Seedream 4.0-5.0 教程 | https://www.volcengine.com/docs/82379/1824121?lang=zh |
-| 模型列表 | https://www.volcengine.com/docs/82379/1330310?lang=zh |
-| 模型价格 | https://www.volcengine.com/docs/82379/1544106?lang=zh |
-| 提示词指南 | https://www.volcengine.com/docs/82379/1829186?lang=zh |
-| 官方风格参考列表 | https://mathmind.feishu.cn/wiki/RDvjwA9zDiVmI4katfFcRo3bnbb |
-| API Key 管理 | https://console.volcengine.com/ark/region:ark+cn-beijing/apikey |
-| ARK_BASE_URL 参考 | https://github.com/bytedance/agentkit-samples/tree/main/skills/byted-seedream-image-generate |
+| Seedream 4.0-5.0 教程 | https://www.volcengine.com/docs/82379/1824121 |
+| 图片生成 API 参考 | https://www.volcengine.com/docs/82379/1541523 |
+| 模型列表 | https://www.volcengine.com/docs/82379/1330310 |
+| 模型价格 | https://www.volcengine.com/docs/82379/1544106 |
+| 提示词指南 | https://www.volcengine.com/docs/82379/1829186 |
 
 ## API Endpoint
 
@@ -30,11 +28,14 @@ Authorization: Bearer <ARK_API_KEY>
 
 ## 可用模型
 
-| Version | Model ID |
-|---------|----------|
-| 5.0 (默认) | `doubao-seedream-5-0-260128` |
-| 4.5 | `doubao-seedream-4-5-251128` |
-| 4.0 | `doubao-seedream-4-0-250828` |
+| Version | Model ID | 字符串分辨率 |
+|---------|----------|--------------|
+| 5.0（默认） | `doubao-seedream-5-0-260128` | `2K` / `3K` / `4K` |
+| 5.0 lite | `doubao-seedream-5-0-lite-260128` | `1K` / `2K` / `4K` |
+| 4.5 | `doubao-seedream-4-5-251128` | `2K` / `3K` / `4K` |
+| 4.0 | `doubao-seedream-4-0-250828` | `2K` / `4K`（无 3K） |
+
+> 字符串分辨率的可用值因模型而异：`1K` 仅 5.0 lite 支持；`3K` 仅 5.0（非 lite）和 4.5 支持，5.0 lite 和 4.0 都不支持。脚本不会按模型校验，传了不支持的字符串会被 API 返回 400。
 
 ## Request Body
 
@@ -49,7 +50,7 @@ Authorization: Bearer <ARK_API_KEY>
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `size` | string | `2048x2048` | `2K`/`3K`/`4K` 或 `WIDTHxHEIGHT`。range: [2560×1440=3686400, 4096×4096=16777216]，aspect ratio [1/16, 16] |
+| `size` | string | `2048x2048` | `2K`/`3K`/`4K`（5.0 lite 多一个 `1K`，4.0 无 3K；详见上方「可用模型」表）或 `WIDTHxHEIGHT`。range: [2560×1440=3686400, 4096×4096=16777216]，aspect ratio [1/16, 16] |
 | `output_format` | string | — | `png` 或 `jpeg`（**5.0 only**） |
 | `response_format` | string | — | `url` 或 `b64_json` |
 | `watermark` | boolean | `true` | 是否包含水印 |
@@ -72,8 +73,9 @@ Authorization: Bearer <ARK_API_KEY>
 ### Size 参数说明
 
 **方式一：字符串分辨率**
-- `2K`、`3K`、`4K` — 模型自动决定具体尺寸
+- `1K` / `2K` / `3K` / `4K` — 模型按 aspect ratio 自动决定具体尺寸；可选值因模型而异（见「可用模型」表）
 - 在 prompt 中描述 aspect ratio、形状或用途
+- 3K 实际像素映射（仅 5.0 / 4.5 适用）：1:1 → `3072x3072`，16:9 → `4096x2304`，9:16 → `2304x4096`。注：3K 16:9 的长边 4096 比 2K 16:9 的 2560 大约 60%，横向图非常推荐用 3K 桶
 
 **方式二：精确像素**
 - `WIDTHxHEIGHT` 格式

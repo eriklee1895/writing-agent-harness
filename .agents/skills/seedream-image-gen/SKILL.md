@@ -24,13 +24,6 @@ Generate images with ByteDance Seedream 5.0 via the Volcengine Ark API.
 - Sequential group generation for storyboards, comics, or thematic series.
 - Web search-enhanced generation for timely or knowledge-intensive topics.
 
-## When NOT to use
-
-- High-fidelity photorealism where gpt-image-2's specialized handling is preferred.
-- Transparent backgrounds (not supported by Seedream API).
-- Pixel-perfect text placement (use local text overlay for precise typography).
-- Video generation (use `seedance-video` skill instead).
-
 ## Script
 
 Use `uv run`:
@@ -108,6 +101,8 @@ Seedream supports two size specification methods:
 Client-side validation:
 - Total pixels must be in [3,686,400, 16,777,216] (2560×1440 to 4096×4096).
 - Aspect ratio must be ≤ 16:1.
+
+> 可用字符串分辨率因模型而异：默认 5.0 支持 `2K` / `3K` / `4K`；5.0 lite 多一个 `1K`；4.0 不支持 `3K`。完整矩阵见 `references/api-reference.md` 的「可用模型」表。脚本不会按模型校验，传了不支持的字符串会被 API 返回 400。
 
 For WeChat covers, use `article-illustration` which handles the crop. This skill does not auto-crop.
 

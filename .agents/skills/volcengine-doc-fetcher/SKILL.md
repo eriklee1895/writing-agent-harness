@@ -18,7 +18,7 @@ uv run scripts/fetch.py "https://www.volcengine.com/docs/6561/163032"
 uv run scripts/fetch.py "https://www.volcengine.com/docs/6561/163032" "https://www.volcengine.com/docs/6561/1257544"
 
 # Save to directory
-uv run scripts/fetch.py --output-dir ./volcengine-docs/ "https://www.volcengine.com/docs/6561/2499930?lang=zh"
+uv run scripts/fetch.py --output-dir ./volcengine-docs/ "https://www.volcengine.com/docs/6561/2499930"
 ```
 
 ## Script

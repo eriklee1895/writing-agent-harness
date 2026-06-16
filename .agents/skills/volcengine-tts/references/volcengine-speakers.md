@@ -3,7 +3,7 @@
 Full voice list for the 豆包语音合成模型2.0, sourced from the official documentation and `--list-speakers` API.
 
 Last updated: 2026-06-16.
-Source: https://www.volcengine.com/docs/6561/1257544?lang=zh
+Source: https://www.volcengine.com/docs/6561/1257544
 
 ## Table of Contents
 
