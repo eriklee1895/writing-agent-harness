@@ -61,6 +61,9 @@ RETRY_BACKOFF_BASE = 1.0  # seconds, exponential: base * 2^attempt
 RETRYABLE_VOLCANO_CODES = {"55000000"}  # service internal errors
 RETRYABLE_HTTP_STATUS = {429, 500, 502, 503, 504}
 
+# API success codes (volcano v3 uses 20000000 for success, 0 is also valid)
+API_SUCCESS_CODES = {0, 20000000}
+
 
 # ── Environment ────────────────────────────────────────────────────────────
 
@@ -142,6 +145,9 @@ def synthesize(
     ssml: bool = False,
     context_texts: Optional[list[str]] = None,
     language: Optional[str] = None,
+    dialect: Optional[str] = None,
+    enable_latex: bool = False,
+    latex_parser: Optional[str] = None,
     silence_duration: int = 0,
     watermark: bool = False,
     disable_markdown_filter: bool = False,
@@ -157,6 +163,7 @@ def synthesize(
         "X-Api-Key": api_key,
         "X-Api-Resource-Id": RESOURCE_ID,
         "X-Api-Request-Id": request_id,
+        "X-Control-Require-Usage-Tokens-Return": "*",
         "Content-Type": "application/json",
         "Connection": "keep-alive",
     }
@@ -186,6 +193,13 @@ def synthesize(
         body["req_params"]["context_texts"] = context_texts
     if language:
         body["req_params"]["explicit_language"] = language
+    if dialect:
+        body["req_params"]["explicit_dialect"] = dialect
+    if enable_latex:
+        body["req_params"]["enable_latex_tn"] = True
+    if latex_parser:
+        body["req_params"]["latex_parser"] = latex_parser
+        body["req_params"]["disable_markdown_filter"] = True  # required by API
     if silence_duration > 0:
         body["req_params"]["additions"] = json.dumps({"silence_duration": silence_duration})
     if watermark:
@@ -243,7 +257,7 @@ def synthesize(
                     continue
 
                 code = chunk.get("code", -1)
-                if code != 0:
+                if code not in API_SUCCESS_CODES:
                     volcano_code = str(code)
                     msg = chunk.get("message", "unknown error")
                     last_error = f"{volcano_code}: {msg}"
@@ -573,8 +587,10 @@ def main() -> None:
     parser.add_argument("--language", help="Explicit language: zh-cn, en, ja, es-mx, id, pt-br, ko")
     parser.add_argument("--silence-duration", type=int, default=0, help="Trailing silence ms [0, 30000]")
     parser.add_argument("--watermark", action="store_true", help="Add AIGC audio watermark")
-    parser.add_argument("--no-markdown-filter", action="store_true", help="Keep markdown syntax")
-    parser.add_argument("--no-emoji-filter", action="store_true", help="Keep emoji characters")
+    parser.add_argument("--strip-markdown", action="store_true", help="Remove markdown syntax before TTS")
+    parser.add_argument("--strip-emoji", action="store_true", help="Remove emoji characters before TTS")
+    parser.add_argument("--latex", action="store_true", help="Enable LaTeX formula reading (enable_latex_tn)")
+    parser.add_argument("--latex-parser", choices=["v2"], help="Stronger LaTeX parser (v2), auto-enables --strip-markdown")
 
     # Batch
     parser.add_argument("--concurrency", "-c", type=int, default=DEFAULT_CONCURRENCY, help=f"Max parallel requests (default: {DEFAULT_CONCURRENCY})")
@@ -620,8 +636,10 @@ def main() -> None:
         "language": args.language,
         "silence_duration": args.silence_duration,
         "watermark": args.watermark,
-        "disable_markdown_filter": args.no_markdown_filter,
-        "disable_emoji_filter": args.no_emoji_filter,
+        "disable_markdown_filter": args.strip_markdown,
+        "disable_emoji_filter": args.strip_emoji,
+        "enable_latex": args.latex,
+        "latex_parser": args.latex_parser,
     }
 
     if args.batch:

@@ -112,3 +112,5 @@ output/
 tmp/
 .backups/
 .agents/skills/seedance-video-workspace/
+volcengine-web-search-workspace/
+tts-output/
