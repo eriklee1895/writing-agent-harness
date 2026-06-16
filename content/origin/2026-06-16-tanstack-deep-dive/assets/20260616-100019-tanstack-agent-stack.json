@@ -1,0 +1,22 @@
+{
+  "title": "TanStack Agent Stack",
+  "brief": "# Brief 3: TanStack + Agent Architecture\n\nA flat-tech infographic diagram showing how a modern AI agent application is built on top of TanStack libraries. English labels only.\n\nLayout: top-to-bottom data flow.\n\nTop zone: \"AI / LLM\" - represented as a glowing brain icon in a rounded panel, with sub-labels \"OpenAI\", \"Anthropic\", \"Ollama\" as small chips.\n\nLayer 2: \"TanStack AI\" - single rounded module, with sub-modules \"AG-UI Protocol\", \"Tool Adapters\", \"Streaming Primitives\". Arrow from LLM down to TanStack AI.\n\nLayer 3: \"Server Logic\" - module labeled \"TanStack Start createServerFn\", \"RPC endpoints\", \"Middleware\". Arrow down.\n\nLayer 4: \"Data Layer\" - two side-by-side modules: \"TanStack Query (cache + lifecycle)\" and \"TanStack DB (local-first sync)\". Arrow down.\n\nLayer 5: \"Client Routing\" - module \"TanStack Router\" with sub-callouts \"typed routes\", \"loader\", \"search params\", \"code splitting\". Arrow down.\n\nLayer 6 (bottom): \"UI Runtime\" - three small icons representing \"React\", \"Vue\", \"Solid\" as interchangeable panels.\n\nA horizontal \"TanStack Devtools\" bar at the very bottom spanning the whole stack.\n\nRight margin: a vertical dashed line connecting every layer labeled \"observable boundary\".\n\nColor: tanstack mint #32E6E2 accent, soft slate gray neutrals, white background, subtle shadows, clean sans-serif feel through icon design.\n\nStyle: flat-tech-infographic, document-friendly, generous whitespace, no Chinese text in the image.",
+  "content_type": "architecture diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'TanStack Agent Stack'. Diagram type: architecture diagram. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: en. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\n# Brief 3: TanStack + Agent Architecture\n\nA flat-tech infographic diagram showing how a modern AI agent application is built on top of TanStack libraries. English labels only.\n\nLayout: top-to-bottom data flow.\n\nTop zone: \"AI / LLM\" - represented as a glowing brain icon in a rounded panel, with sub-labels \"OpenAI\", \"Anthropic\", \"Ollama\" as small chips.\n\nLayer 2: \"TanStack AI\" - single rounded module, with sub-modules \"AG-UI Protocol\", \"Tool Adapters\", \"Streaming Primitives\". Arrow from LLM down to TanStack AI.\n\nLayer 3: \"Server Logic\" - module labeled \"TanStack Start createServerFn\", \"RPC endpoints\", \"Middleware\". Arrow down.\n\nLayer 4: \"Data Layer\" - two side-by-side modules: \"TanStack Query (cache + lifecycle)\" and \"TanStack DB (local-first sync)\". Arrow down.\n\nLayer 5: \"Client Routing\" - module \"TanStack Router\" with sub-callouts \"typed routes\", \"loader\", \"search params\", \"code splitting\". Arrow down.\n\nLayer 6 (bottom): \"UI Runtime\" - three small icons representing \"React\", \"Vue\", \"Solid\" as interchangeable panels.\n\nA horizontal \"TanStack Devtools\" bar at the very bottom spanning the whole stack.\n\nRight margin: a vertical dashed line connecting every layer labeled \"observable boundary\".\n\nColor: tanstack mint #32E6E2 accent, soft slate gray neutrals, white background, subtle shadows, clean sans-serif feel through icon design.\n\nStyle: flat-tech-infographic, document-friendly, generous whitespace, no Chinese text in the image.",
+  "created_at": "2026-06-16T10:01:16",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-16-tanstack-deep-dive/assets/20260616-100019-tanstack-agent-stack.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
