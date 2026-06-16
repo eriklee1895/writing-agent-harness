@@ -1,6 +1,6 @@
-#!/usr/bin/env -S /Users/eriklee/.local/bin/uv run --script
+#!/usr/bin/env -S uv run
 # /// script
-# requires-python = ">=3.11"
+# requires-python = ">=3.12"
 # dependencies = [
 #   "openai>=1.76.0",
 #   "pillow>=10.0.0",
@@ -136,7 +136,7 @@ def _warn(message: str) -> None:
 def _dependency_hint(package: str) -> str:
     return (
         "Install it in this skill's environment with: "
-        "`uv pip install " + package + "`, or run via `uv run` which auto-installs."
+        "`uv run` auto-installs PEP 723 dependencies."
     )
 
 

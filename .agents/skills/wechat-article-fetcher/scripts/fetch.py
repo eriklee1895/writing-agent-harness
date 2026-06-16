@@ -1,12 +1,22 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#   "beautifulsoup4>=4.15",
+#   "lxml>=6.1",
+#   "markdownify>=1.1",
+#   "playwright>=1.60",
+#   "requests>=2.34",
+# ]
+# ///
 """
 WeChat Article Fetcher
 
 Extract WeChat public account articles to structured Markdown + assets.
 Usage:
-    uv run python .agents/skills/wechat-article-fetcher/scripts/fetch.py <url>
-    uv run python .agents/skills/wechat-article-fetcher/scripts/fetch.py <url> --output-dir ./content/inbox/articles/
-    uv run python .agents/skills/wechat-article-fetcher/scripts/fetch.py <url> --no-images
+    uv run .agents/skills/wechat-article-fetcher/scripts/fetch.py <url>
+    uv run .agents/skills/wechat-article-fetcher/scripts/fetch.py <url> --output-dir ./content/inbox/articles/
+    uv run .agents/skills/wechat-article-fetcher/scripts/fetch.py <url> --no-images
 """
 
 from __future__ import annotations
@@ -29,13 +39,13 @@ import requests
 try:
     import playwright
 except ImportError:
-    print("ERROR: playwright not installed. Run: uv sync", file=sys.stderr)
+    print("ERROR: playwright not installed. Run: uv run script.py (PEP 723 handles deps)", file=sys.stderr)
     sys.exit(1)
 
 try:
     import markdownify
 except ImportError:
-    print("ERROR: markdownify not installed. Run: uv sync", file=sys.stderr)
+    print("ERROR: markdownify not installed. Run: uv run script.py (PEP 723 handles deps)", file=sys.stderr)
     sys.exit(1)
 
 from playwright.sync_api import sync_playwright

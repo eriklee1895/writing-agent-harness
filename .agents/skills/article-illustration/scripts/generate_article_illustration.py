@@ -1,6 +1,6 @@
-#!/usr/bin/env -S /Users/eriklee/.local/bin/uv run
+#!/usr/bin/env -S uv run
 # /// script
-# requires-python = ">=3.11"
+# requires-python = ">=3.12"
 # dependencies = [
 #   "openai>=1.76.0",
 #   "pillow>=10.0.0",
@@ -410,7 +410,7 @@ def crop_cover_image(image_path: Path, size_label: str) -> Path | None:
     try:
         from PIL import Image
     except ImportError:
-        print("Warning: Pillow not available. Install with: uv pip install pillow")
+        print("Warning: Pillow not available. Run via `uv run` which auto-installs PEP 723 deps.")
         print("Cover image NOT cropped — use at 1792x1024 or crop manually.")
         return None
 

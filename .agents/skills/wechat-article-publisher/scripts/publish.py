@@ -1,4 +1,11 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#   "beautifulsoup4>=4.15",
+#   "playwright>=1.60",
+# ]
+# ///
 """
 Publish a WeChat Official Account article (文章) draft via Playwright.
 
@@ -26,7 +33,7 @@ Resolution:
 Publish boundary: saves a DRAFT only. Never clicks 发布/群发.
 
 Usage:
-    uv run python .agents/skills/wechat-article-publisher/scripts/publish.py \
+    uv run .agents/skills/wechat-article-publisher/scripts/publish.py \
         --article content/origin/YYYY-MM-DD-<slug>/index.md \
         --html    content/wechat/YYYY-MM-DD-<slug>/index.wechat-preview.html \
         --save-draft
@@ -47,13 +54,13 @@ from pathlib import Path
 try:
     import playwright  # noqa: F401
 except ImportError:
-    print("ERROR: playwright not installed. Run: uv sync", file=sys.stderr)
+    print("ERROR: playwright not installed. Run: uv run script.py (PEP 723 handles deps)", file=sys.stderr)
     sys.exit(1)
 
 try:
     from bs4 import BeautifulSoup
 except ImportError:
-    print("ERROR: beautifulsoup4 not installed. Run: uv sync", file=sys.stderr)
+    print("ERROR: beautifulsoup4 not installed. Run: uv run script.py (PEP 723 handles deps)", file=sys.stderr)
     sys.exit(1)
 
 from playwright.sync_api import TimeoutError as PWTimeoutError

@@ -16,7 +16,7 @@ description: 用 Playwright 把微信公众号文章（文章流程）同步到�
 ## 前置
 
 - 本机安装 Google Chrome（或设 `CHROME_EXECUTABLE`）。
-- Python 依赖已在项目 `pyproject.toml`：`playwright`、`beautifulsoup4`。`uv sync` 即可。
+- Python 依赖由脚本 PEP 723 inline metadata 自声明，`uv run` 自动安装。
 - 首次运行需扫码登录一次；登录态存独立 profile `~/.config/wechat-article-publisher/profile/`，之后免扫码（`login_wait≈0`）。可用 `--profile` 或 `WECHAT_PUBLISH_PROFILE_DIR` 覆盖。
 
 ## 元数据权威源
@@ -45,13 +45,13 @@ article.md（frontmatter）→ wechat-article-renderer → *.wechat-preview.html
 
 ```bash
 # 推荐：frontmatter 来自 source .md，正文用 renderer 产出的 HTML
-uv run python .agents/skills/wechat-article-publisher/scripts/publish.py \
+uv run .agents/skills/wechat-article-publisher/scripts/publish.py \
   --article content/origin/YYYY-MM-DD-<slug>/index.md \
   --html    content/wechat/YYYY-MM-DD-<slug>/index.wechat-preview.html \
   --save-draft
 
 # 备用：只给 .md（极简排版，无 renderer 样式）
-uv run python .agents/skills/wechat-article-publisher/scripts/publish.py \
+uv run .agents/skills/wechat-article-publisher/scripts/publish.py \
   --article content/origin/YYYY-MM-DD-<slug>/index.md --save-draft
 ```
 

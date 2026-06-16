@@ -31,7 +31,7 @@ Generate and edit images with OpenAI's gpt-image-2 model via the Image API.
 
 ## Script
 
-Use `uv run`. This skill is designed for a `uv`-managed Python environment. Do **not** use bare `python` + `pip`; use `uv run` to execute the bundled script and `uv add` to install dependencies. The required packages (`openai>=1.76.0`, `pillow>=10.0.0`) are declared in the repo's `pyproject.toml` and are resolved by `uv`.
+Use `uv run`. Dependencies are self-declared in the script's PEP 723 inline metadata — `uv run` auto-installs them in an isolated environment.
 
 ```bash
 # Single generation
