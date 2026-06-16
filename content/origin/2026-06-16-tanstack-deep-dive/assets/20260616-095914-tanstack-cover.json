@@ -1,0 +1,22 @@
+{
+  "title": "TanStack cover",
+  "brief": "# Brief 1: TanStack 头图\n\nA cinematic editorial cover image for a deep technical article about TanStack, a TypeScript web development ecosystem.\n\nVisual concept: A vast modular workshop of interconnected precision tools laid out on a clean concrete surface under warm late-afternoon light. Each tool represents a different TanStack library: a sleek notebook (Query) with a glowing cache indicator, a finely-machined route compass (Router), a small but complete starter engine (Start), a typewriter (Form), a magnifying glass (Table), an AI assistant lens. The tools share visual language: brushed steel handles with a distinctive mint-green accent (the TanStack brand color #32E6E2). A single thin mint-green line weaves through the tools, connecting them like a network cable - suggesting composition, not monolith. Background: soft bokeh of an open editor with TypeScript code on the screen. Lighting: warm, grounded, slightly contemplative. No human figures. No text labels or logos in the image.\n\nStyle: cinematic-editorial, photorealistic, 35mm film still feel, shallow depth of field, restrained palette, warm afternoon light.\n\nNo text, no watermark, no captions in the image itself.",
+  "content_type": "WeChat article cover",
+  "content_category": "cover",
+  "mode": "text-only",
+  "style_profile": "cinematic-editorial",
+  "resolved_style_profile": "cinematic-editorial",
+  "size": "wechat-cover-hd",
+  "resolved_size": "1792x1024",
+  "quality": "auto",
+  "language": "en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'TanStack cover'. Style: cinematic editorial still, dramatic but natural lighting, grounded scene details, documentary-like framing with an illustrative finish, no text labels, no diagrams. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a WeChat Official Account headline cover image (公众号头条封面). Compose for a 2.35:1 ultra-wide crop (1080x460). Keep key subjects centered or in the bottom third — top area will be cropped. Design for readability as a small thumbnail in WeChat's subscription feed. Title text will be overlaid by the editor, so leave ample negative space. Language/region: en. Target aspect ratio: wechat-cover-hd. Mode: text-only. Brief:\n# Brief 1: TanStack 头图\n\nA cinematic editorial cover image for a deep technical article about TanStack, a TypeScript web development ecosystem.\n\nVisual concept: A vast modular workshop of interconnected precision tools laid out on a clean concrete surface under warm late-afternoon light. Each tool represents a different TanStack library: a sleek notebook (Query) with a glowing cache indicator, a finely-machined route compass (Router), a small but complete starter engine (Start), a typewriter (Form), a magnifying glass (Table), an AI assistant lens. The tools share visual language: brushed steel handles with a distinctive mint-green accent (the TanStack brand color #32E6E2). A single thin mint-green line weaves through the tools, connecting them like a network cable - suggesting composition, not monolith. Background: soft bokeh of an open editor with TypeScript code on the screen. Lighting: warm, grounded, slightly contemplative. No human figures. No text labels or logos in the image.\n\nStyle: cinematic-editorial, photorealistic, 35mm film still feel, shallow depth of field, restrained palette, warm afternoon light.\n\nNo text, no watermark, no captions in the image itself.",
+  "created_at": "2026-06-16T10:00:09",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-16-tanstack-deep-dive/assets/20260616-095914-tanstack-cover-cropped.png"
+  ],
+  "crop_hint": "1080x460 (2.35:1)",
+  "dry_run": false
+}
