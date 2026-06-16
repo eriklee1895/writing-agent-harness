@@ -18,7 +18,7 @@
 - 临时想法、未确认价值的 todo、本机上下文先放 `.local-memory/`；验证为可复用后再迁移到项目 docs、`AGENTS.md` 或 `.agents/skills/`。
 - 当某项能力已经值得 project-level skill 化时，主动建议并沉淀为 `.agents/skills/*`。
 - Python 工具链统一使用 uv（`uv add` / `uv sync` / `uv run` / `uv lock`），禁止 pip / pipx / poetry / 裸 python 直接操作依赖。
-- 项目 skill 中的 Python 脚本必须使用 PEP 723 inline metadata 自声明依赖，shebang 统一为 `#!/usr/bin/env -S uv run`（不含绝对路径、不含 `--script`），`requires-python = ">=3.12"`；调用方式统一用 `uv run path/to/script.py`（不加中间 `python`）。新建脚本从 [`template/script.py`](template/script.py) 复制模板。测试文件（`test_*.py`）不走 PEP 723，继续用项目 `pyproject.toml` dev dependency。Playwright 脚本加 PEP 723 声明 `playwright`，但 SKILL.md 需注明 `playwright install` 系统依赖。
+- 项目 skill 的 Python 脚本遵守 [docs/skills/skills-guide.md](docs/skills/skills-guide.md) 中的 PEP 723 规范、路径引用约定和脚本接口设计。
 
 ## Operating Principle
 
@@ -66,8 +66,8 @@
 | 开始写文章初稿（draft）前 | [docs/reference/format-standards.md](docs/reference/format-standards.md) 然后 [SOUL.md](SOUL.md) |
 | 早期灵感脑暴、确定 writing brief / outline | [docs/workflows/writing-overview.md](docs/workflows/writing-overview.md#ideation-first) |
 | 微信公众号排版、草稿箱、发布 | [docs/workflows/wechat-writing-publishing.md](docs/workflows/wechat-writing-publishing.md) |
-| 新建或修改 project skill 的 Python 脚本 | [`template/script.py`](template/script.py) 然后本文件 "Always" 中的 Python 规范 |
-| 查看项目 skills 边界 | [docs/reference/skills.md](docs/reference/skills.md) |
+| 新建或修改 project skill | [docs/skills/skills-guide.md](docs/skills/skills-guide.md) 然后本文件 "Always" 中的 Python 规范 |
+| 查看项目 skills 边界 | [docs/skills/skills-list.md](docs/skills/skills-list.md) |
 | 沉淀 memory、复盘、skill 自我进化 | [docs/reference/self-evolution.md](docs/reference/self-evolution.md) |
 | 使用本机 scratch memory | [docs/reference/local-memory.md](docs/reference/local-memory.md) |
 | 图片、封面、正文插图、视频素材/剪辑 | [docs/reference/visuals.md](docs/reference/visuals.md) |

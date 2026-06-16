@@ -558,7 +558,7 @@ uv run scripts/main.py --help
 
 #### 6. 更新文档
 
-- 如果是核心 skill，更新 `docs/reference/skills.md`
+- 如果是核心 skill，更新 `docs/skills/skills-list.md`
 - 添加使用示例到相关 workflow 文档
 
 ### Skill 演进规则
@@ -640,7 +640,7 @@ uv run scripts/main.py --help
 #### 5. 文档维护
 
 - 每个 skill 自己的 `SKILL.md` 是权威文档
-- 项目级 skill 列表在 `docs/reference/skills.md` 维护
+- 项目级 skill 列表在 `docs/skills/skills-list.md` 维护
 - Workflow 文档说明 skill 之间的配合
 
 #### 6. 渐进式演进

@@ -30,13 +30,18 @@
 - [workflows/wechat-writing-publishing.md](workflows/wechat-writing-publishing.md)
   - 微信公众号写作、排版、HTML preview、草稿箱同步和发布前验证。
 
+## Skills
+
+- [skills/skills-guide.md](skills/skills-guide.md)
+  - Skill 开发指南：Python 脚本规范、路径引用约定、脚本接口设计。
+
+- [skills/skills-list.md](skills/skills-list.md)
+  - 当前项目 skills 列表、用途边界、命名和保留原因。
+
 ## Reference
 
 - [reference/writing-agent-harness-profile.md](reference/writing-agent-harness-profile.md)
   - `writing-agent-harness` 的身份、职责、运行模式、边界和协作方式。
-
-- [reference/skills.md](reference/skills.md)
-  - 当前项目 skills、用途边界、命名和保留原因。
 
 - [reference/self-evolution.md](reference/self-evolution.md)
   - 遇到新坑点、新技巧、workflow 改进和 skill 缺陷时，如何沉淀到项目 docs、`AGENTS.md` 或 `.agents/skills/`。
