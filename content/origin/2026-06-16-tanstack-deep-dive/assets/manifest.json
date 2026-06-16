@@ -1,0 +1,146 @@
+{
+  "article_slug": "tanstack-deep-dive",
+  "article_date": "2026-06-16",
+  "article_path": "content/origin/2026-06-16-tanstack-deep-dive/index.md",
+  "archive_path": ".local-archive/2026-06-16-tanstack-deep-dive/",
+  "publish_status": "handoff-only",
+  "images": [
+    {
+      "filename": "20260616-095914-tanstack-cover.png",
+      "alt": "TanStack 头图：精密工具 + 薄荷绿点缀 + 背景编辑器",
+      "role": "header",
+      "style_profile": "cinematic-editorial",
+      "size": "wechat-cover-hd (1792x1024)",
+      "model": "gpt-image-2",
+      "generated_at": "2026-06-16T10:00:14+08:00",
+      "prompt_brief": "assets/prompts/brief-01-cover.md",
+      "metadata_json": "prompts/metadata/20260616-095914-tanstack-cover.json",
+      "article_sections": [
+        "一、开场"
+      ],
+      "archive_path": ".local-archive/2026-06-16-tanstack-deep-dive/images/20260616-095914-tanstack-cover.png"
+    },
+    {
+      "filename": "20260616-095914-tanstack-cover-cropped.png",
+      "alt": "微信公众号 2.35:1 头条封面（自动裁剪版）",
+      "role": "wechat_cover",
+      "derived_from": "20260616-095914-tanstack-cover.png",
+      "crop": "2.35:1, 1080x460",
+      "article_sections": [
+        "frontmatter.cover"
+      ],
+      "archive_path": ".local-archive/2026-06-16-tanstack-deep-dive/images/20260616-095914-tanstack-cover-cropped.png"
+    },
+    {
+      "filename": "20260616-184442-tanstack-ecosystem-dependencies.png",
+      "alt": "TanStack 生态依赖图：5 个 swimlane + 13+ 库 + 依赖箭头 + 11.3B 下载量统计",
+      "role": "section_diagram",
+      "style_profile": "flat-tech-infographic",
+      "size": "doc-2k (2048x1152)",
+      "model": "gpt-image-2",
+      "generated_at": "2026-06-16T18:44:42+08:00",
+      "prompt_brief": "assets/prompts/brief-08-ecosystem-deps.md",
+      "metadata_json": "prompts/metadata/20260616-184442-tanstack-ecosystem-dependencies.json",
+      "article_sections": [
+        "二、13+ 个库，按 5 个层排"
+      ],
+      "archive_path": ".local-archive/2026-06-16-tanstack-deep-dive/images/20260616-184442-tanstack-ecosystem-dependencies.png",
+      "replaces": "20260616-100018-tanstack-ecosystem-map.png (removed, supersedeed by this dependency graph)"
+    },
+    {
+      "filename": "20260616-184113-tanstack-layered-relationship.png",
+      "alt": "TanStack 与 Next.js 的分层关系：应用层 → 框架层 → 基础能力层，TanStack 库在底层被任何框架按需选用",
+      "role": "section_diagram",
+      "style_profile": "flat-tech-infographic",
+      "size": "doc-hd (1536x1024)",
+      "model": "gpt-image-2",
+      "language": "zh-en",
+      "generated_at": "2026-06-16T18:41:13+08:00",
+      "prompt_brief": "assets/prompts/brief-07-layered-relationship.md",
+      "metadata_json": "prompts/metadata/20260616-184113-tanstack-layered-relationship.json",
+      "article_sections": [
+        "六、跟 Next.js 到底什么关系"
+      ],
+      "archive_path": ".local-archive/2026-06-16-tanstack-deep-dive/images/20260616-184113-tanstack-layered-relationship.png",
+      "replaces": "原 section 6 中的 Mermaid block"
+    },
+    {
+      "filename": "20260616-100019-tanstack-agent-stack.png",
+      "alt": "TanStack Agent Stack 架构图：LLM → TanStack AI → Server Logic → Data Layer → Router → UI Runtime",
+      "role": "section_diagram",
+      "style_profile": "flat-tech-infographic",
+      "size": "doc-hd (1536x1024)",
+      "model": "gpt-image-2",
+      "generated_at": "2026-06-16T10:00:19+08:00",
+      "prompt_brief": "assets/prompts/brief-03-agent-stack.md",
+      "metadata_json": "prompts/metadata/20260616-100019-tanstack-agent-stack.json",
+      "article_sections": [
+        "三、它在 Agent 开发中处于什么位置"
+      ],
+      "archive_path": ".local-archive/2026-06-16-tanstack-deep-dive/images/20260616-100019-tanstack-agent-stack.png"
+    },
+    {
+      "filename": "20260616-100020-tanstack-query-lifecycle.png",
+      "alt": "TanStack Query 4 步生命周期：Fetch / Share / Revalidate / Collect",
+      "role": "section_diagram",
+      "style_profile": "flat-tech-infographic",
+      "size": "doc-hd (1536x1024)",
+      "model": "gpt-image-2",
+      "generated_at": "2026-06-16T10:00:20+08:00",
+      "prompt_brief": "assets/prompts/brief-04-query-lifecycle.md",
+      "metadata_json": "prompts/metadata/20260616-100020-tanstack-query-lifecycle.json",
+      "article_sections": [
+        "4.1 TanStack Query"
+      ],
+      "archive_path": ".local-archive/2026-06-16-tanstack-deep-dive/images/20260616-100020-tanstack-query-lifecycle.png"
+    },
+    {
+      "filename": "20260616-100022-router-vs-next-js.png",
+      "alt": "Router vs Next.js vs React Router 对比矩阵",
+      "role": "section_diagram",
+      "style_profile": "flat-tech-infographic",
+      "size": "doc-hd (1536x1024)",
+      "model": "gpt-image-2",
+      "generated_at": "2026-06-16T10:00:22+08:00",
+      "prompt_brief": "assets/prompts/brief-05-router-vs-nextjs.md",
+      "metadata_json": "prompts/metadata/20260616-100022-router-vs-next-js.json",
+      "article_sections": [
+        "5.2 Routing 层：Router 的对手"
+      ],
+      "archive_path": ".local-archive/2026-06-16-tanstack-deep-dive/images/20260616-100022-router-vs-next-js.png"
+    },
+    {
+      "filename": "20260616-100251-why-tanstack-wins.png",
+      "alt": "Why TanStack Wins：4 个核心原则 + 11.3B 下载 / 391M 周下载 / 124K stars 数字",
+      "role": "section_diagram",
+      "style_profile": "flat-tech-infographic",
+      "size": "doc-hd (1536x1024)",
+      "model": "gpt-image-2",
+      "generated_at": "2026-06-16T10:02:51+08:00",
+      "prompt_brief": "assets/prompts/brief-06-headless-philosophy.md",
+      "metadata_json": "prompts/metadata/20260616-100251-why-tanstack-wins.json",
+      "article_sections": [
+        "七、为什么火：4 个核心原则"
+      ],
+      "archive_path": ".local-archive/2026-06-16-tanstack-deep-dive/images/20260616-100251-why-tanstack-wins.png"
+    },
+    {
+      "filename": "tanstack-builder-screenshot.png",
+      "alt": "TanStack Builder 实际 UI：左边 prompt 输入 + 库/集成选择，右边自动生成 agent prompt",
+      "role": "real_product_screenshot",
+      "source": "https://tanstack.com/builder",
+      "scraped_via": "firecrawl scrape --screenshot",
+      "scraped_at": "2026-06-16T10:07:36+08:00",
+      "scrape_id": "019ece2f-3a63-737a-b1e8-9c7cf81df70b",
+      "metadata_json": "prompts/metadata/tanstack-builder-screenshot.json",
+      "article_sections": [
+        "3.2 显式证据 #2：TanStack Builder（Alpha）"
+      ],
+      "archive_path": ".local-archive/2026-06-16-tanstack-deep-dive/images/tanstack-builder-screenshot.png",
+      "notes": "signed-URL with expiry; download required to preserve"
+    }
+  ],
+  "mermaid_blocks_in_article": 0,
+  "mermaid_blocks_replaced_by_ai_images": 3,
+  "fact_verification_date": "2026-06-16"
+}
