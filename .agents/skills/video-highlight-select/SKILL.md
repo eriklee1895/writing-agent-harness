@@ -34,7 +34,7 @@ Bare `.mp4` files in `content/inbox/` should be wrapped into a material package 
 ## Default Command
 
 ```bash
-node .agents/skills/video-highlight-select/scripts/select-video-highlights.mjs \
+node scripts/select-video-highlights.mjs \
   --material /absolute/path/to/article/assets/media/source-slug \
   --intent "放在文章开头抓人，展示这段舞为什么有传播性"
 ```
@@ -42,7 +42,7 @@ node .agents/skills/video-highlight-select/scripts/select-video-highlights.mjs \
 With an already-known candidate:
 
 ```bash
-node .agents/skills/video-highlight-select/scripts/select-video-highlights.mjs \
+node scripts/select-video-highlights.mjs \
   --material /absolute/path/to/article/assets/media/source-slug \
   --intent "放在文章开头抓人" \
   --candidate "00:03-00:11|邯郸学步：曲裾入场|素材再包装|wechat-landscape|开头视觉钩子"
@@ -51,7 +51,7 @@ node .agents/skills/video-highlight-select/scripts/select-video-highlights.mjs \
 Use `--dry-run` when checking paths and planned commands:
 
 ```bash
-node .agents/skills/video-highlight-select/scripts/select-video-highlights.mjs \
+node scripts/select-video-highlights.mjs \
   --material /absolute/path/to/article/assets/media/source-slug \
   --intent "文章段落意图" \
   --dry-run
@@ -100,7 +100,7 @@ Supported presets should match `article-video-clip`, currently:
 After the human chooses a row, run `article-video-clip` with the selected candidate:
 
 ```bash
-node .agents/skills/article-video-clip/scripts/create-article-video-clip.mjs \
+node ../article-video-clip/scripts/create-article-video-clip.mjs \
   --material /absolute/path/to/article/assets/media/source-slug \
   --start 00:03 \
   --end 00:11 \

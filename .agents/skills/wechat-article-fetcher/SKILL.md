@@ -34,13 +34,13 @@ Do not use this skill for / 禁止场景：
 
 ```bash
 # 默认输出到 ./wechat-articles/YYYY-MM-DD-<slug>/
-uv run .agents/skills/wechat-article-fetcher/scripts/fetch.py <url>
+uv run scripts/fetch.py <url>
 
 # 指定输出目录（项目级用法）
-uv run .agents/skills/wechat-article-fetcher/scripts/fetch.py <url> --output-dir content/inbox/articles/
+uv run scripts/fetch.py <url> --output-dir content/inbox/articles/
 
 # 快速提取，不下载图片
-uv run .agents/skills/wechat-article-fetcher/scripts/fetch.py <url> --no-images
+uv run scripts/fetch.py <url> --no-images
 ```
 
 ## Output

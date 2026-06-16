@@ -22,7 +22,7 @@ Never export, print, store, or commit cookies. Browser login state stays local.
 For an article folder:
 
 ```bash
-node .agents/skills/video-material-ingest/scripts/ingest-video-material.mjs \
+node scripts/ingest-video-material.mjs \
   "<video-url>" \
   --target /absolute/path/to/content/drafts/YYYY-MM-DD-topic
 ```

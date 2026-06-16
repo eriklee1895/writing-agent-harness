@@ -27,7 +27,7 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
 2. 从 canonical Markdown 生成 WeChat preview：
 
    ```bash
-   node .agents/skills/wechat-article-renderer/scripts/render-wechat-article.mjs /absolute/path/to/article.md
+   node ../wechat-article-renderer/scripts/render-wechat-article.mjs /absolute/path/to/article.md
    ```
 
 3. Verify generated HTML：
@@ -43,7 +43,7 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
 6. 用 `wechat-article-publisher` 把 preview HTML 填入微信公众号编辑器并创建草稿。默认偏向创建草稿，不直接发布。
 
    ```bash
-   uv run .agents/skills/wechat-article-publisher/scripts/publish.py \
+   uv run ../wechat-article-publisher/scripts/publish.py \
      --article /absolute/path/to/origin/article.md \
      --html    /absolute/path/to/article.wechat-preview.html --save-draft
    ```

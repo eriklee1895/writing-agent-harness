@@ -37,40 +37,40 @@ Use `uv run`:
 
 ```bash
 # Single generation (text-to-image)
-uv run .agents/skills/seedream-image-gen/scripts/seedream_image_gen.py generate \
+uv run scripts/seedream_image_gen.py generate \
   --prompt "一只橘猫坐在窗台上，阳光洒在毛发上，窗外是秋天的枫叶" --size 2K
 
 # With Chinese cultural style
-uv run .agents/skills/seedream-image-gen/scripts/seedream_image_gen.py generate \
+uv run scripts/seedream_image_gen.py generate \
   --prompt "江南水乡诗意画卷，白墙黑瓦古建筑，石桥横跨清澈河面，乌篷船缓缓划过" \
   --size 4K --no-web-search
 
 # Technical infographic
-uv run .agents/skills/seedream-image-gen/scripts/seedream_image_gen.py generate \
+uv run scripts/seedream_image_gen.py generate \
   --prompt "生成一张信息图，解释啤酒酿造过程，5个步骤每步配插图，温暖色调" \
   --size 2K
 
 # Image-to-image (style following, multi-reference fusion)
-uv run .agents/skills/seedream-image-gen/scripts/seedream_image_gen.py generate \
+uv run scripts/seedream_image_gen.py generate \
   --prompt "参考图片的风格，生成一张秋天的公园场景" \
   --reference-image style-ref.jpg
 
 # Sequential group generation (storyboard / comic)
-uv run .agents/skills/seedream-image-gen/scripts/seedream_image_gen.py generate \
+uv run scripts/seedream_image_gen.py generate \
   --prompt "生成一组共4张连贯分镜：场景1宇航员维修飞船，场景2陨石袭击，场景3紧急躲避，场景4惊险逃回" \
   --size 2K --sequential --max-images 4
 
 # Edit (alias for generate with reference image)
-uv run .agents/skills/seedream-image-gen/scripts/seedream_image_gen.py edit \
+uv run scripts/seedream_image_gen.py edit \
   --prompt "把这只猫变成蓝色" \
   --reference-image cat.jpg
 
 # Batch from a JSONL file
-uv run .agents/skills/seedream-image-gen/scripts/seedream_image_gen.py generate-batch \
+uv run scripts/seedream_image_gen.py generate-batch \
   --input prompts.jsonl --size 2K --out-dir output/seedream-image-gen/batch
 
 # Dry-run: print the resolved request payload, never call the API
-uv run .agents/skills/seedream-image-gen/scripts/seedream_image_gen.py generate \
+uv run scripts/seedream_image_gen.py generate \
   --prompt "..." --dry-run
 ```
 

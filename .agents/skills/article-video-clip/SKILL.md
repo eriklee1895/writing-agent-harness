@@ -34,7 +34,7 @@ Default focus is `center`. If converting landscape footage to portrait and the s
 ## Default Command
 
 ```bash
-node .agents/skills/article-video-clip/scripts/create-article-video-clip.mjs \
+node scripts/create-article-video-clip.mjs \
   --material /absolute/path/to/article/assets/media/source-slug \
   --start 00:12 \
   --end 00:38 \
