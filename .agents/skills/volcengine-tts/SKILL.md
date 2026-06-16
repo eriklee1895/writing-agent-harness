@@ -79,7 +79,7 @@ Output: JSON array of results, each with the same fields as single mode. Failed 
 | `--speech-rate` | `0` | Speed [-50, 100], 100=2x, -50=0.5x |
 | `--volume` | `0` | Volume [-50, 100], 100=2x |
 | `--pitch` | `0` | Pitch [-12, 12] semitones |
-| `--model` | `standard` | Sub-model: `standard` (low latency) or `expressive` (supports context_texts) |
+| `--model` | `seed-tts-2.0-standard` | `seed-tts-2.0-standard` (fast/stable) or `seed-tts-2.0-expressive` (emotional range, supports `--context`) |
 | `--context` | — | Natural language prompt for HOW to speak — tone, emotion, pacing, persona. E.g. "用痛心的语气说话", "像深夜电台主持人一样温柔地读", "用激动兴奋的语气". Only works with `--model expressive`. |
 | `--ssml` | — | Parse input text as SSML |
 | `--language` | — | Explicit language: zh-cn, en, ja, es-mx, id, pt-br, ko |
