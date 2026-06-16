@@ -1,0 +1,124 @@
+{
+  "article_slug": "2026-06-16-copilotkit",
+  "date": "2026-06-16",
+  "assets": [
+    {
+      "filename": "cover.png",
+      "alt": "CopilotKit + AG-UI 协议封面图：前端 React 层 + 后端 Agent Runtime 层 + 中间 AG-UI event-stream 协议",
+      "role": "cover",
+      "size_px": "1080x460",
+      "source": "ai-generated",
+      "generator": "gpt-image-2 via article-illustration flat-tech-infographic",
+      "prompt_brief": "polished technical cover... two-layer composition React frontend + agent runtime + flowing AG-UI event-stream wire",
+      "archive_path": ".local-archive/2026-06-16-copilotkit/images/cover.png",
+      "archive_status": "archived",
+      "git_tracked": false
+    },
+    {
+      "filename": "ag-ui-events.png",
+      "alt": "AG-UI 协议的 16 个 event type 分 5 类的参考图",
+      "role": "body",
+      "placement_section": "3. AG-UI 协议",
+      "size_px": "1536x1024",
+      "source": "ai-generated",
+      "generator": "gpt-image-2 via article-illustration flat-tech-infographic",
+      "prompt_brief": "5 grouped swim-lane cards: 生命周期 / 文本消息 / 工具调用 / 状态管理 / 推理与特殊; code-style event name chips; typical event flow example",
+      "archive_path": ".local-archive/2026-06-16-copilotkit/images/ag-ui-events.png",
+      "archive_status": "archived",
+      "git_tracked": false
+    },
+    {
+      "filename": "three-layer-architecture.png",
+      "alt": "CopilotKit 三件套架构：Frontend / Runtime / Agent 三层通过 AG-UI 协议连接",
+      "role": "body",
+      "placement_section": "4. CopilotKit 的三件套架构",
+      "size_px": "1536x1024",
+      "source": "ai-generated",
+      "generator": "gpt-image-2 via article-illustration flat-tech-infographic",
+      "prompt_brief": "Three vertical layers stacked: Frontend (hooks + prebuilt components) / Runtime (CopilotRuntime + server frameworks) / Agent (BuiltInAgent / LangGraph / Mastra / CrewAI / Agno / Pydantic AI), connected by glowing AG-UI wire with 16 event types / SSE/WS/binary transport",
+      "archive_path": ".local-archive/2026-06-16-copilotkit/images/three-layer-architecture.png",
+      "archive_status": "archived",
+      "git_tracked": false
+    },
+    {
+      "filename": "hitl-two-patterns.png",
+      "alt": "CopilotKit HITL 两种模式对比：useHumanInTheLoop（LLM 决定暂停）vs useInterrupt（graph 决定暂停）",
+      "role": "body",
+      "placement_section": "5.4 / 5.5 HITL 两种模式",
+      "size_px": "1536x1024",
+      "source": "ai-generated",
+      "generator": "gpt-image-2 via article-illustration flat-tech-infographic",
+      "prompt_brief": "side-by-side: useHumanInTheLoop 4-step flow + useInterrupt 4-step flow + when-to-use callouts",
+      "archive_path": ".local-archive/2026-06-16-copilotkit/images/hitl-two-patterns.png",
+      "archive_status": "archived",
+      "git_tracked": false
+    },
+    {
+      "filename": "genui-three-specs.png",
+      "alt": "CopilotKit 1.5+ 支持的三种 Generative UI 规范：AG-UI Static / A2UI / MCP Apps",
+      "role": "body",
+      "placement_section": "6. Generative UI 的三种 spec",
+      "size_px": "1536x1024",
+      "source": "ai-generated",
+      "generator": "gpt-image-2 via article-illustration flat-tech-infographic",
+      "prompt_brief": "3 vertical cards: AG-UI Static (CopilotKit) / A2UI (Google) / MCP Apps (Anthropic ecosystem) with flow diagrams",
+      "archive_path": ".local-archive/2026-06-16-copilotkit/images/genui-three-specs.png",
+      "archive_status": "archived",
+      "git_tracked": false
+    },
+    {
+      "filename": "official-coagents-overview.png",
+      "alt": "CopilotKit + LangGraph 集成架构图（CoAgents 官方）",
+      "role": "body",
+      "placement_section": "10. Demo B",
+      "size_px": "1550x995",
+      "source": "web-searched",
+      "original_url": "https://cdn.copilotkit.ai/docs/copilotkit/images/coagents/coagents-highlevel-overview.png",
+      "license_note": "CopilotKit 官方文档图，MIT 项目内使用",
+      "archive_path": ".local-archive/2026-06-16-copilotkit/images/official-coagents-overview.png",
+      "archive_status": "archived",
+      "git_tracked": false
+    },
+    {
+      "filename": "runtime-zoom-in.png",
+      "alt": "CopilotKit Runtime 详解：你的服务器上的 AG-UI 协议网关，4 大职责（Request Handler / Auth & Context / AG-UI Transport / Tool & State Broker）+ 6 种可挂载环境",
+      "role": "body",
+      "placement_section": "4.2 Runtime",
+      "size_px": "1536x1024",
+      "source": "ai-generated",
+      "generator": "gpt-image-2 via article-illustration flat-tech-infographic",
+      "prompt_brief": "Center CopilotRuntime box with 4 numbered responsibility cards (Request Handler / Auth & Context Mediator / AG-UI Transport / Tool & State Broker); left: React with POST /api/copilotkit; right: AG-UI stream to 4 agent chips; bottom: 6 mount-target chips (Next.js / Express / Hono / Bun / Deno / Cloudflare Workers)",
+      "archive_path": ".local-archive/2026-06-16-copilotkit/images/runtime-zoom-in.png",
+      "archive_status": "archived",
+      "git_tracked": false
+    },
+    {
+      "filename": "protocol-landscape.png",
+      "alt": "AI Agent 协议三件套：MCP (Anthropic) 管 model↔tools / A2A (Google) 管 agent↔agent / AG-UI (CopilotKit) 管 agent↔user — 三段正交，各管一段",
+      "role": "body",
+      "placement_section": "3.2 AG-UI 在协议版图里的位置",
+      "size_px": "1536x1024",
+      "source": "ai-generated",
+      "generator": "gpt-image-2 via article-illustration flat-tech-infographic",
+      "prompt_brief": "3 vertical swim-lanes MCP/A2A/AG-UI, each showing endpoints (LLM↔ExternalTools / AgentA↔AgentB / AgentBackend↔ReactFrontend) with the wire format in the middle, AG-UI lane highlighted, bottom caption 'Each protocol owns a different boundary'",
+      "archive_path": ".local-archive/2026-06-16-copilotkit/images/protocol-landscape.png",
+      "archive_status": "archived",
+      "git_tracked": false
+    }
+  ],
+  "mermaid_diagrams": [
+    "section-1 agent 开发栈 5 层 flowchart",
+    "section-3 一次 user input 走过的事件流 sequence diagram"
+  ],
+  "image_strategy": "ai-generated 7 张 (cover + 6 body infographics) + 官方图 1 张 (coagents) + 2 张 Mermaid 图表",
+  "style_consistency": "clay-orange + slate-gray dev-tool 美学；bilingual zh-en 标签",
+  "archive": {
+    "local_archive_dir": ".local-archive/2026-06-16-copilotkit",
+    "snapshot_index_md": ".local-archive/2026-06-16-copilotkit/index.md",
+    "images_moved_to": ".local-archive/2026-06-16-copilotkit/images/",
+    "research_moved_to": ".local-archive/2026-06-16-copilotkit/research/",
+    "publish_status": "handoff-only (user decided to delay WeChat publish)",
+    "git_tracked_binaries": false,
+    "reason": "Image binaries exceed gitignore size/format policy; provenance kept in manifest.json"
+  }
+}
