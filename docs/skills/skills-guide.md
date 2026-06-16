@@ -109,6 +109,40 @@ Error: --format must be one of: json, csv, table.
 
 不要写 `Error: invalid input` 这种无信息量的提示。
 
+## SKILL.md 写作原则
+
+### 给默认值，不给菜单
+
+多个工具或方案可选时，选一个默认，备选简单提一句，不要罗列成等价的菜单：
+
+```markdown
+<!-- ❌ 选项太多，agent 需要额外决策 -->
+你可以用 pypdf、pdfplumber、PyMuPDF、pdf2image 来提取 PDF 文本...
+
+<!-- ✅ 明确默认，备选只在必要时提及 -->
+使用 pdfplumber 提取文本。扫描件用 pdf2image + pytesseract。
+```
+
+### Gotchas：记录反直觉的坑
+
+当 agent 踩坑后，把纠正加入 SKILL.md 的 Gotchas 段。这是 skill 中价值最高的内容——不是通用建议，而是对 agent 会犯的错误的提前纠正：
+
+```markdown
+## Gotchas
+
+- `users` 表使用软删除，查询必须加 `WHERE deleted_at IS NULL`。
+- 用户 ID 在数据库是 `user_id`，在认证服务是 `uid`，在计费 API 是 `accountId`——三者是同一个值。
+- `/health` 返回 200 只代表 web server 在跑，不代表数据库通。用 `/ready` 检查全链路。
+```
+
+### 只写 agent 不知道的
+
+agent 已经知道什么是 PDF、什么是 HTTP。skill 要写的是项目约定、非显而易见的边界条件、特定工具和 API 的选择——那些没有 skill 就会被忽略或搞错的东西。
+
+### 保持 500 行以内
+
+SKILL.md 超过 500 行时，把详细参考移到 `references/`，告诉 agent **什么时候**去读（如"API 返回非 200 时读 `references/api-errors.md`"），而不是堆在正文里。
+
 ## 现有 Skills 列表
 
 项目级 skills 完整列表见 [skills-list.md](skills-list.md)。
@@ -117,3 +151,6 @@ Error: --format must be one of: json, csv, table.
 
 - [Agent Skills Specification](https://agentskills.io/specification)
 - [Using scripts in skills](https://agentskills.io/skill-creation/using-scripts)
+- [Best practices for skill creators](https://agentskills.io/skill-creation/best-practices)
+- [Evaluating skill output quality](https://agentskills.io/skill-creation/evaluating-skills)
+- [Optimizing skill descriptions](https://agentskills.io/skill-creation/optimizing-descriptions)
