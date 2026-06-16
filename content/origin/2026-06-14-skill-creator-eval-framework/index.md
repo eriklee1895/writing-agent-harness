@@ -236,7 +236,8 @@ Eval 查询被分成训练集和测试集。优化循环在训练集上进行，
 without-skill agent 的 eval prompt 包含了 API 端点、认证方式、模型 ID：
 
 ```
-Environment: ARK_API_KEY is available. API: POST https://ark.cn-beijing.volces.com/api/v3/...
+Environment: ARK_API_KEY
+API: POST https://ark.cn-beijing.volces.com/api/v3/...
 ```
 
 这是为了做公平对比的必要妥协——否则 without-skill agent 永远不可能完成任务。但在真实场景中：
