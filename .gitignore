@@ -91,6 +91,9 @@ content/drafts/**
 # Superpowers / visual companion generated scratch files
 .superpowers/
 
+# Skill execution intermediate working files
+.skill-work/
+
 # Local skill install/export scratch
 .baoyu-skills/
 .agents/skills/*.zip
@@ -113,4 +116,5 @@ tmp/
 .backups/
 .agents/skills/seedance-video-workspace/
 volcengine-web-search-workspace/
+volcengine-doc-fetcher-workspace/
 tts-output/
