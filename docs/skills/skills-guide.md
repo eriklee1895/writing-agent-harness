@@ -50,6 +50,8 @@ See [the reference guide](references/setup.md) for details.
 - ❌ `/absolute/path/to/scripts/search.py`（不可移植）
 - ❌ `${CLAUDE_SKILL_DIR}/scripts/search.py`（绑定特定 runtime）
 
+**注意**：`references/` 子目录下的文档引用脚本时，路径基准同样是 **skill root**（SKILL.md 所在目录），不是 references 目录自身。例如 `references/sample-prompts.md` 中应写 `scripts/xxx.py`，而非 `../scripts/xxx.py`。
+
 ### 依据
 
 [Agent Skills 开放标准](https://agentskills.io/specification)明确规定：
