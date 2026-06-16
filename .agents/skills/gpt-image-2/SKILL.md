@@ -35,19 +35,19 @@ Use `uv run`. Dependencies are self-declared in the script's PEP 723 inline meta
 
 ```bash
 # Single generation
-uv run .agents/skills/gpt-image-2/scripts/gpt_image_2.py generate \
+uv run scripts/gpt_image_2.py generate \
   --prompt "A cozy alpine cabin at dawn, mist over the lake" \
   --size landscape \
   --out output/gpt-image-2/cabin.png
 
 # Edit: replace background while keeping the product
-uv run .agents/skills/gpt-image-2/scripts/gpt_image_2.py edit \
+uv run scripts/gpt_image_2.py edit \
   --image input.png \
   --prompt "Replace only the background with a warm sunset gradient. Keep the product and its edges unchanged." \
   --out output/gpt-image-2/sunset-edit.png
 
 # Edit with multiple reference images (up to 16) + mask
-uv run .agents/skills/gpt-image-2/scripts/gpt_image_2.py edit \
+uv run scripts/gpt_image_2.py edit \
   --image product.png \
   --image style-ref.png \
   --mask inpaint-mask.png \
@@ -55,13 +55,13 @@ uv run .agents/skills/gpt-image-2/scripts/gpt_image_2.py edit \
   --out output/gpt-image-2/merged.png
 
 # Batch from a JSONL file
-uv run .agents/skills/gpt-image-2/scripts/gpt_image_2.py generate-batch \
+uv run scripts/gpt_image_2.py generate-batch \
   --input prompts.jsonl \
   --out-dir output/gpt-image-2/batch \
   --concurrency 5
 
 # Dry-run: print the resolved request payload, never call the API
-uv run .agents/skills/gpt-image-2/scripts/gpt_image_2.py generate \
+uv run scripts/gpt_image_2.py generate \
   --prompt "..." --dry-run
 ```
 

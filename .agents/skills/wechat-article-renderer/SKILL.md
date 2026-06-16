@@ -18,13 +18,13 @@ Current default style preset: `warm-editorial`（中文名：暖色纸张，编�
 Run the bundled renderer:
 
 ```bash
-node {baseDir}/scripts/render-wechat-article.mjs /absolute/path/to/article.md
+node scripts/render-wechat-article.mjs /absolute/path/to/article.md
 ```
 
 指定 style preset：
 
 ```bash
-node {baseDir}/scripts/render-wechat-article.mjs /absolute/path/to/article.md --style impact-rational
+node scripts/render-wechat-article.mjs /absolute/path/to/article.md --style impact-rational
 ```
 
 The output defaults to:
@@ -36,10 +36,9 @@ The output defaults to:
 To choose an explicit output path:
 
 ```bash
-node {baseDir}/scripts/render-wechat-article.mjs /absolute/path/to/article.md /absolute/path/to/output.html
+node scripts/render-wechat-article.mjs /absolute/path/to/article.md /absolute/path/to/output.html
 ```
 
-`{baseDir}` is the directory containing this `SKILL.md`.
 
 ## Workflow
 

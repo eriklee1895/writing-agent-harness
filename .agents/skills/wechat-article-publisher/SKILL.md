@@ -45,13 +45,13 @@ article.md（frontmatter）→ wechat-article-renderer → *.wechat-preview.html
 
 ```bash
 # 推荐：frontmatter 来自 source .md，正文用 renderer 产出的 HTML
-uv run .agents/skills/wechat-article-publisher/scripts/publish.py \
+uv run scripts/publish.py \
   --article content/origin/YYYY-MM-DD-<slug>/index.md \
   --html    content/wechat/YYYY-MM-DD-<slug>/index.wechat-preview.html \
   --save-draft
 
 # 备用：只给 .md（极简排版，无 renderer 样式）
-uv run .agents/skills/wechat-article-publisher/scripts/publish.py \
+uv run scripts/publish.py \
   --article content/origin/YYYY-MM-DD-<slug>/index.md --save-draft
 ```
 

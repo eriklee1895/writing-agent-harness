@@ -42,13 +42,13 @@ Use `uv run` for Python scripts:
 
 ```bash
 # Literary essay illustration, auto style selection
-uv run .agents/skills/article-illustration/scripts/generate_article_illustration.py \
+uv run scripts/generate_article_illustration.py \
   --title "Snowy Window Scene" \
   --brief "A body inset illustration of snow falling outside a warm-lit classroom window..." \
   --size wechat-cover-hd
 
 # Technical diagram
-uv run .agents/skills/article-illustration/scripts/generate_article_illustration.py \
+uv run scripts/generate_article_illustration.py \
   --title "RAG Pipeline Overview" \
   --brief "A technical infographic showing ingestion, chunking, embedding, retrieval..." \
   --style-profile flat-tech-infographic \
