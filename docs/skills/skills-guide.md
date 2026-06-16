@@ -135,13 +135,6 @@ Error: --format must be one of: json, csv, table.
 - `/health` 返回 200 只代表 web server 在跑，不代表数据库通。用 `/ready` 检查全链路。
 ```
 
-### 只写 agent 不知道的
-
-agent 已经知道什么是 PDF、什么是 HTTP。skill 要写的是项目约定、非显而易见的边界条件、特定工具和 API 的选择——那些没有 skill 就会被忽略或搞错的东西。
-
-### 保持 500 行以内
-
-SKILL.md 超过 500 行时，把详细参考移到 `references/`，告诉 agent **什么时候**去读（如"API 返回非 200 时读 `references/api-errors.md`"），而不是堆在正文里。
 
 ## 现有 Skills 列表
 
