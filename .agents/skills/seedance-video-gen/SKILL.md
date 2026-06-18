@@ -1,7 +1,7 @@
 ---
 name: seedance-video-gen
 description: |
-  用火山引擎 Seedance 2.0 生成视频。触发：用户说“生成视频”“把这张图/脚本/文章做成短视频”“做几个视频镜头”“帮我优化 Seedance 提示词”等。支持文生视频、图生视频（首帧/首尾帧）、多模态参考、批量镜头、提示词优化和首帧图生成。
+  用火山引擎 Seedance 2.0 生成视频。触发：用户说“生成视频”“把这张图/脚本/文章做成短视频”“做几个视频镜头”“帮我优化 Seedance 提示词”等。支持文生视频、图生视频（首帧/首尾帧）、多模态参考、批量镜头、提示词优化、首帧图生成、查询任务列表、取消/删除任务。
 ---
 
 # Seedance Video
@@ -63,6 +63,34 @@ uv run scripts/generate_seedance_video.py poll \
 # 下载已有视频 URL
 uv run scripts/generate_seedance_video.py download \
   --video-url https://example.com/video.mp4
+
+# 列出最近 7 天的任务（按状态筛选）
+uv run scripts/generate_seedance_video.py list-tasks \
+  --status succeeded --page-size 20
+
+# 按模型 + 多个 task_id 精确搜索
+uv run scripts/generate_seedance_video.py list-tasks \
+  --model doubao-seedance-2-0-260128 \
+  --task-ids cgt-20260606xxxx-xxxx cgt-20260606yyyy-yyyy
+
+# 取消一个还在排队的任务
+uv run scripts/generate_seedance_video.py cancel-task --task-id cgt-20260606xxxx-xxxx
+
+# 删除一个已完成/失败的任务记录
+uv run scripts/generate_seedance_video.py cancel-task --task-id cgt-20260606xxxx-xxxx
+
+# 离线推理（更便宜，排队更慢）
+uv run scripts/generate_seedance_video.py create \
+  --prompt "..." --service-tier flex --duration 8
+
+# 草稿/样片（验证创意用，便宜）
+uv run scripts/generate_seedance_video.py create --draft \
+  --prompt "..." --duration 4
+
+# 联网搜索（仅纯文本输入，引用当前事件/最新数据）
+uv run scripts/generate_seedance_video.py create --enable-web-search \
+  --prompt "搜索 2026 年 AI 视频生成最新进展，做 8s 总结短视频" \
+  --duration 8 --ratio 9:16
 ```
 
 ## 工作流程
@@ -91,6 +119,8 @@ uv run scripts/generate_seedance_video.py download \
 5. **执行脚本**
    - 默认使用 `doubao-seedance-2-0-260128`（标准版，支持 1080p 和首尾帧）。
    - 快速预览可用 `doubao-seedance-2-0-fast-260128`（更快、更便宜，但不支持 1080p）。
+   - `doubao-seedance-2-0-mini-260615` 在 2026-06-15 ~ 2026-06-22 仅控制台体验中心可调试，**预计 2026-06-22 起支持 API**。
+   - 想要更便宜可以加 `--service-tier flex`（离线推理），要试创意可以加 `--draft`（样片）。
 
 6. **报告结果**
    - 输出目录路径、视频文件路径、`manifest.json` 路径、`task_id`。
@@ -110,11 +140,12 @@ content/inbox/videos/YYYY-MM-DD-<slug>/
 ## 重要约束
 
 - `duration` 范围 `4–15` 秒，或 `-1` 让模型自适应。
-- `resolution`：`480p` / `720p` / `1080p`；Fast 版不支持 `1080p`。
+- `resolution`：`480p` / `720p` / `1080p`；**Fast 版和 Mini 版不支持 `1080p`**（脚本会在 client 侧直接拦截）。
 - `ratio`：`16:9`、`4:3`、`1:1`、`3:4`、`9:16`、`21:9`、`adaptive`。
 - 多模态参考上限：图片 ≤ 9，视频 ≤ 3，音频 ≤ 3，总计 ≤ 12。
 - 音频不能单独使用，必须与至少一张图片或一段视频一起传入。
 - 首尾帧模式和多模态参考模式**互斥**。
+- **联网搜索（`--enable-web-search`）仅纯文本输入**，与 image_url/video_url/audio_url 互斥（脚本会拦截）。
 - 本地图片会自动转成 base64 data URL 上传；本地视频/音频由于体积大，目前需要用户先提供可公开访问的 URL。
 
 ## 参数速查
@@ -135,12 +166,19 @@ content/inbox/videos/YYYY-MM-DD-<slug>/
 | `--generate-audio` / `--no-generate-audio` | 是否生成音频 |
 | `--watermark` / `--no-watermark` | 是否加水印 |
 | `--return-last-frame` | 返回尾帧图 |
-| `--seed` | 随机种子 |
+| `--seed` | 随机种子（Seedance 2.0 暂不支持） |
+| `--frames` | 帧数 `[29, 289]`，格式 `25+4n`；覆盖 `--duration`（Seedance 2.0 暂不支持） |
+| `--service-tier` | `default`（在线）/ `flex`（离线，便宜） |
+| `--priority` | 任务优先级，数值越大越靠前 |
+| `--draft` | 样片/草稿任务，便宜；返回 `id` 带 Draft 标记 |
+| `--enable-web-search` | 联网搜索工具；**仅纯文本输入**，与多模态互斥 |
 | `--output-dir` | 输出根目录，默认 `content/inbox/videos/` |
 | `--poll-interval` | 轮询间隔，默认 20 秒 |
 | `--max-wait` | 最大等待秒数，默认 1800 秒（30 分钟） |
 | `--dry-run` | 只构建并打印请求，不调用 API |
 | `--verbose` | 打印更多调试信息 |
+
+> 完整 4 端点 + 完整请求/响应字段 + 完整分辨率像素表见 [references/api-reference.md](references/api-reference.md)。
 
 ## 参考文件
 
@@ -148,11 +186,11 @@ Agent 按需读取，不必全部加载：
 
 | 文件 | 用途 | 何时读 |
 |---|---|---|
-| `references/key-constraints.md` | 30s 速查：能力边界、限制、翻车清单 | **每次任务前先读** |
+| `references/key-constraints.md` | 30s 速查：能力边界、限制、翻车清单、**实测并发上限** | **每次任务前先读** |
 | `references/multimodal-reference.md` | 多模态输入：图片/视频/音频参考详解、编辑/延长、asset:// 协议 | 需要准备参考素材时 |
 | `references/prompt-guide.md` | 提示词技巧：公式、分镜写法、运镜/光影词表、情绪外化、音频提示词 | 写 Seedance 提示词时 |
 | `references/scene-cookbook.md` | 完整场景示例：教育动画、短剧、产品、竖屏、首帧、编辑、延长 | 需要模板参照时 |
-| `references/api-reference.md` | API 端点、参数、状态机、错误码、计费 | 调试 API 调用时 |
+| `references/api-reference.md` | API 端点、参数、状态机、错误码、计费、最低 token 用量、48h 超时、retry 行为 | 调试 API 调用时 |
 
 ## 故障排查
 
@@ -165,6 +203,10 @@ Agent 按需读取，不必全部加载：
 | `429` | 限流或余额不足 |
 | 任务 `failed` | 查看 `manifest.json` 中的 `error` 字段 |
 | 视频 URL 下载失败 | URL 24 小时过期，尽快下载 |
+| `GET /tasks/{id}` 返回 404 | 任务 ID 已过 7 天保留期；用 `list-tasks` 找最近 7 天的任务 |
+| 脚本拒绝 `--resolution 1080p` | Fast / Mini 不支持 1080p，脚本会硬阻断；改用 720p 或 480p |
+| 想批量找历史任务 | `list-tasks --status succeeded --model doubao-seedance-2-0-260128` |
+| `--enable-web-search` + 多模态被脚本拒绝 | web_search 仅纯文本输入；如需引用搜索结果，先用纯文本跑一次再以视频为参考续写 |
 
 ## 与项目其他 skill 的关系
 
