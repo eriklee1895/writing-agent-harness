@@ -183,7 +183,7 @@ description: |
 | `article-ideation` | "我想写一篇"、"有个想法"、"帮我理一下"、"脑暴"、"选题"、"文章思路"、"outline" |
 | `polish-article` | "润色"、"打磨"、"改改"、"提升文笔" |
 | `wechat-article-renderer` | "排版"、"美化"、"生成预览"、"微信公众号" |
-| `markdown-article-to-lark-doc` | "发到飞书"、"转写到飞书"、"这篇要发飞书" |
+| `markdown-article-to-feishu-doc` | "发到飞书"、"转写到飞书"、"这篇要发飞书" |
 
 ---
 

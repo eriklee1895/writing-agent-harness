@@ -371,11 +371,11 @@ Use this skill before drafting when:
 - ...
 ```
 
-#### 真实示例：`markdown-article-to-lark-doc`（带 metadata）
+#### 真实示例：`markdown-article-to-feishu-doc`（带 metadata）
 
 ```markdown
 ---
-name: markdown-article-to-lark-doc
+name: markdown-article-to-feishu-doc
 description: |
   把一篇本地 markdown 文档转写成飞书云文档(docx),排版精美、block 结构完整。
   触发:用户说"把 markdown 发到飞书"/"转写到飞书"/"这篇要发飞书";或给了本地 .md 路径。
@@ -385,7 +385,7 @@ metadata:
     skills: ["lark-doc", "lark-whiteboard", "lark-shared"]
 ---
 
-# markdown-article-to-lark-doc
+# markdown-article-to-feishu-doc
 
 把本地 markdown 文章转写成飞书云文档(docx)，保留 frontmatter 元信息、本地图片、Mermaid 图。
 
@@ -668,7 +668,7 @@ uv run scripts/main.py --help
 | `wechat-article-fetcher` | 提取微信公众号文章到结构化 Markdown |
 | `wechat-article-publisher` | Playwright 微信公众号发布器 |
 | `article-illustration` | 生成文章封面、正文插图 |
-| `markdown-article-to-lark-doc` | 把 Markdown 转写成飞书云文档 |
+| `markdown-article-to-feishu-doc` | 把 Markdown 转写成飞书云文档 |
 
 ### B. 目录速查表
 
