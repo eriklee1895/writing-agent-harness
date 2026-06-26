@@ -1,8 +1,12 @@
 # Sample prompts for gpt-image-2
 
-Copy-paste recipes organized by visual style. These are starting points — tune the augmentation fields to your brief.
+Quick copy-paste recipes organized by visual style. These are starting points — tune the augmentation fields to your brief.
 
-> **How to add a new preset style:** Duplicate one of the sections below, give it a clear name, keep the same flag pattern (`--use-case`, `--style`, `--composition`, `--palette`, `--text`, `--size`, `--quality`), and add a short "Tips for this style" block. The skill does not hard-code these as CLI flags; they live here as reusable recipes.
+For detailed style presets, see the [styles/](styles/) directory:
+
+- [Editorial pencil-sketch workflow](styles/editorial-pencil-sketch.md) — hand-drawn line work + watercolor washes, ideal for AI workflows and creative processes.
+
+> **How to add a new preset style:** Add a standalone file under [styles/](styles/) and link it here. Keep existing sections below as quick recipes; move detailed formulas to their own style file.
 
 ---
 

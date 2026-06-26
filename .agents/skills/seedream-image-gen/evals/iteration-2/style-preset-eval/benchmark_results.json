@@ -1,0 +1,152 @@
+{
+  "eval_name": "style-preset-consistency",
+  "skill_name": "gpt-image-2 & seedream-image-gen",
+  "iteration": 2,
+  "eval_date": "2026-06-26",
+  "judge": "LLM-as-judge (Claude Opus 4.8)",
+  "methodology": "A/B comparison of style-preset-augmented prompts (with_skill) vs free-form prompts from general SKILL.md guidance (without_skill). Each model x style pair was judged on style match, composition/task fit, and text legibility (where applicable).",
+  "results": [
+    {
+      "model": "gpt-image-2",
+      "style_id": "editorial-pencil-sketch",
+      "winner": "with_skill",
+      "style_match_with": 9,
+      "style_match_without": 7,
+      "composition_with": 9,
+      "composition_without": 8,
+      "text_legibility_with": 8,
+      "text_legibility_without": 7,
+      "rationale": "The with_skill image nails the pencil-sketch aesthetic with genuine graphite line work, watercolor washes, and a clean white background. It also includes a creative 5-step process flow at the bottom that adds editorial value. The without_skill version is also hand-drawn but leans more toward a colored illustration with heavier pigment; the robot is more detailed/mechanical and the overall feel is less sketchbook-like. Both have readable text, but with_skill's text is more integrated into the sketch aesthetic."
+    },
+    {
+      "model": "gpt-image-2",
+      "style_id": "editorial-essay",
+      "winner": "with_skill",
+      "style_match_with": 9,
+      "style_match_without": 8,
+      "composition_with": 9,
+      "composition_without": 8,
+      "text_legibility_with": null,
+      "text_legibility_without": null,
+      "rationale": "Both images are excellent editorial illustrations with the paper boat/book ocean metaphor. The with_skill version has stronger layered composition with a human figure sitting on the boat, creating narrative depth and emotional resonance. The without_skill version is beautiful but slightly more static and abstract — the boat is empty and the lighthouse is smaller. The with_skill palette (muted teal, warm amber) is more distinctive and magazine-like."
+    },
+    {
+      "model": "gpt-image-2",
+      "style_id": "technical-diagram",
+      "winner": "without_skill",
+      "style_match_with": 6,
+      "style_match_without": 8,
+      "composition_with": 6,
+      "composition_without": 9,
+      "text_legibility_with": 9,
+      "text_legibility_without": 9,
+      "rationale": "This is the biggest surprise: the without_skill image is a far superior technical diagram. It shows a complete 5-step RAG pipeline with numbered steps, labeled components (User Query, Retrieve, Augment, Generate, Generated Answer), a Knowledge Base section with file icons, and a bottom legend row. The with_skill version is simplified to 4 generic icons with arrows, missing the actual architecture depth. Both render 'How RAG Works' perfectly, but the without_skill composition satisfies the brief far better."
+    },
+    {
+      "model": "gpt-image-2",
+      "style_id": "education-science",
+      "winner": "with_skill",
+      "style_match_with": 9,
+      "style_match_without": 7,
+      "composition_with": 9,
+      "composition_without": 7,
+      "text_legibility_with": 9,
+      "text_legibility_without": 8,
+      "rationale": "The with_skill image is a textbook knowledge poster: navy background, clean white cards, large numbered circles, simple icons, and perfectly readable myth labels. The without_skill version uses a slightly different blue (not true navy), has more cluttered card layouts with extra body text paragraphs, and the icons are more detailed/photographic rather than simple line icons. The with_skill version is cleaner, more mobile-friendly, and better matches the intended poster style."
+    },
+    {
+      "model": "gpt-image-2",
+      "style_id": "visual-narrative",
+      "winner": "with_skill",
+      "style_match_with": 9,
+      "style_match_without": 8,
+      "composition_with": 9,
+      "composition_without": 7,
+      "text_legibility_with": null,
+      "text_legibility_without": null,
+      "rationale": "The with_skill storyboard uses true cinematic horizontal panels with clear camera progression (medium shot -> wide shot -> dynamic close-up -> over-the-shoulder). The without_skill version uses vertical panel dividers which disrupt the cinematic flow, and the meteor shower panel (panel 2) shows the astronaut already fleeing rather than the shower appearing in the distance. The with_skill version maintains better character consistency and follows the brief's shot descriptions more precisely."
+    },
+    {
+      "model": "seedream-image-gen",
+      "style_id": "editorial-pencil-sketch",
+      "winner": "tie",
+      "style_match_with": 8,
+      "style_match_without": 8,
+      "composition_with": 7,
+      "composition_without": 7,
+      "text_legibility_with": 6,
+      "text_legibility_without": 5,
+      "rationale": "Both Seedream pencil-sketch images are quite similar in quality. The with_skill version has slightly more saturated color washes (mint green, peach) and a more complete scene with timeline and storyboard panels. The without_skill version is more muted and monochrome, with Chinese text on the timeline that is somewhat garbled. Both capture the hand-drawn aesthetic well, but neither fully achieves the graphite-line-dominant sketchbook look. The with_skill has marginally better prop coverage."
+    },
+    {
+      "model": "seedream-image-gen",
+      "style_id": "editorial-essay",
+      "winner": "with_skill",
+      "style_match_with": 9,
+      "style_match_without": 7,
+      "composition_with": 9,
+      "composition_without": 7,
+      "text_legibility_with": null,
+      "text_legibility_without": null,
+      "rationale": "The with_skill image is a stunning editorial illustration with soft watercolor-like washes, warm golden light, and a dreamy atmosphere. The book pages have visible text, the paper boat is crisp and white, and the lighthouse glows warmly. The without_skill version is flatter, more vector-like, with less texture and depth. The color palette is cooler and less inviting. The with_skill version clearly benefits from the 'contemporary editorial illustration' style anchor and the specific palette guidance."
+    },
+    {
+      "model": "seedream-image-gen",
+      "style_id": "technical-diagram",
+      "winner": "without_skill",
+      "style_match_with": 5,
+      "style_match_without": 6,
+      "composition_with": 5,
+      "composition_without": 7,
+      "text_legibility_with": 7,
+      "text_legibility_without": 8,
+      "rationale": "Both Seedream technical diagrams are underwhelming compared to their gpt-image-2 counterparts, but the without_skill version is slightly better. The with_skill version uses a 3-layer vertical stack that doesn't match the requested isometric style at all — it's a basic flowchart, not an architecture diagram. The without_skill version at least shows a horizontal left-to-right flow with three distinct columns and a robot character, which is more engaging. Both have readable Chinese text, but the without_skill version has more natural label placement."
+    },
+    {
+      "model": "seedream-image-gen",
+      "style_id": "education-science",
+      "winner": "without_skill",
+      "style_match_with": 6,
+      "style_match_without": 7,
+      "composition_with": 6,
+      "composition_without": 8,
+      "text_legibility_with": 7,
+      "text_legibility_without": 8,
+      "rationale": "The without_skill version is a stronger knowledge poster. It uses a true navy background, has clear red X icons for each myth, includes explanatory subtext for each point, and the layout is more balanced. The with_skill version uses a lighter blue background (not navy), the card shapes are inconsistent, and the content deviates from the brief (different myths: '睡前刷手机' instead of the expected sleep myth labels). The without_skill version is more informative and better structured."
+    },
+    {
+      "model": "seedream-image-gen",
+      "style_id": "visual-narrative",
+      "winner": "with_skill",
+      "style_match_with": 9,
+      "style_match_without": 7,
+      "composition_with": 9,
+      "composition_without": 6,
+      "text_legibility_with": null,
+      "text_legibility_without": null,
+      "rationale": "The with_skill version is a proper 2x2 grid with clear panel separation, excellent character consistency (same white suit with blue patches), and dramatic cinematic lighting. Each panel tells a distinct part of the story with varied camera angles. The without_skill version has inconsistent panel sizing, the astronaut's suit changes between panels (white vs. darker), and panel 2 shows only the meteor shower without the astronaut — breaking the narrative continuity. The with_skill detailed per-panel prompt with shot descriptions is clearly superior."
+    }
+  ],
+  "summary": {
+    "overall_winner": "with_skill",
+    "wins_with_skill": 6,
+    "wins_without_skill": 3,
+    "ties": 1,
+    "aggregate_score_with": 241,
+    "aggregate_score_without": 230,
+    "observations": [
+      "Style presets provide the biggest advantage for narrative and editorial styles: visual-narrative and editorial-essay both showed clear wins for with_skill across both models, suggesting that structured per-panel or metaphor-driven prompts benefit enormously from preset guidance.",
+      "Technical diagrams are the weakest category for presets: both gpt-image-2 and seedream without_skill outperformed their with_skill counterparts. The preset's emphasis on 'clean isometric' and 'SaaS aesthetic' may oversimplify complex architecture diagrams, while free-form prompting allows the model to build richer, more informative diagrams.",
+      "Seedream struggles with isometric technical styles: both Seedream technical-diagram outputs were basic flowcharts rather than true isometric architecture diagrams. The Chinese style preset's '扁平等距插图' formula doesn't translate well to actual isometric rendering in Seedream 5.0.",
+      "Text legibility is strong across the board for both models, but gpt-image-2 consistently outperforms Seedream in English text rendering. Seedream excels at Chinese text, which aligns with its training bias.",
+      "The education-science style showed mixed results: gpt-image-2 with_skill won decisively, but Seedream with_skill lost. This suggests the knowledge poster formula in the English preset transfers better to gpt-image-2's training, while the Chinese preset's '知识卡片' formula may need refinement for strict content adherence."
+    ],
+    "recommendations": [
+      "Keep and refine the editorial-pencil-sketch, editorial-essay, and visual-narrative presets — they consistently deliver superior results across both models.",
+      "Revise the technical-diagram preset: reduce emphasis on 'isometric' and 'SaaS aesthetic' which can oversimplify. Add guidance for multi-layer diagrams with numbered steps, labeled components, and legend rows. Consider splitting into 'simple diagram' and 'detailed architecture' variants.",
+      "For Seedream specifically, the technical-diagram and education-science presets need rework. The Chinese '扁平等距' formula doesn't produce true isometric output. Consider adding more explicit 3D/isometric keywords or switching to a flat infographic approach for Seedream technical content.",
+      "Add a 'text-heavy information design' sub-style to education-science that explicitly allows body text and explanatory subtext, since the without_skill versions that included more text were sometimes judged better.",
+      "Consider adding a 'data visualization' or 'chart/graph' style preset, as neither current set of presets covers this common need well."
+    ]
+  }
+}

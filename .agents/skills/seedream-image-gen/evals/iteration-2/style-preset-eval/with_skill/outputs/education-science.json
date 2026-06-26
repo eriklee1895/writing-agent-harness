@@ -1,0 +1,22 @@
+{
+  "prompt": "知识卡片风格，主题\"5个睡眠误区\"，5个信息卡片竖排布局，每个卡片配简洁图标和大号数字序号，配短标签和图标。深蓝底白色文字，适合手机阅读，竖版。",
+  "model": "doubao-seedream-5-0-260128",
+  "size": "2K",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": true,
+  "optimize_prompt": null,
+  "reference_images": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/.agents/skills/seedream-image-gen/evals/iteration-2/style-preset-eval/with_skill/outputs/education-science.png",
+  "created_at": "2026-06-26T11:37:34",
+  "dry_run": false,
+  "usage": {
+    "generated_images": 1,
+    "output_tokens": 17800,
+    "total_tokens": 17800,
+    "tool_usage": {
+      "web_search": 0
+    }
+  }
+}

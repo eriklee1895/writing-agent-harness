@@ -239,4 +239,9 @@ Per-job keys override the CLI defaults for that job. All augmentation fields, `n
 - `references/image-api.md` — endpoint and parameter quick reference.
 - `references/prompting.md` — cookbook-aligned prompting rules and the augmentation schema.
 - `references/sample-prompts.md` — copy/paste prompt recipes by use case.
+- `references/styles/editorial-pencil-sketch.md` — hand-drawn pencil + watercolor, ideal for AI workflows and editorial illustrations.
+- `references/styles/editorial-essay.md` — essays, literary nonfiction, cultural commentary.
+- `references/styles/technical-diagram.md` — system architecture, SaaS explainers, developer docs.
+- `references/styles/education-science.md` — explainers, how-to guides, textbook-style content.
+- `references/styles/visual-narrative.md` — storyboards, comics, film concepts, narrative series.
 - `references/openai-official-links.md` — canonical OpenAI docs and cookbook links.
