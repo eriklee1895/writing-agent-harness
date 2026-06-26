@@ -2,19 +2,26 @@
 
 For system architecture posts, SaaS explainers, developer docs, workflow tutorials, and methodology articles. The goal is clarity, hierarchy, and clean structure.
 
-## 1. Isometric system diagram
+We split this category into two altitude levels so you don't accidentally ask for a simple icon overview when you actually need a labeled architecture diagram.
 
-A clean isometric view of layered modules with clear data flow. Ideal for architecture overviews and product demos.
+- **Simple / overview:** [`technical-diagram-simple`](#1-technical-diagram-simple) — clean isometric, product demos, module overviews.
+- **Detailed / architecture:** [`technical-diagram-architecture`](#2-technical-diagram-architecture) — layered diagrams with numbered steps, component labels, data flows, and legends.
+
+---
+
+## 1. Technical diagram — simple
+
+A clean, high-level overview. Use this when you want a readable thumbnail or hero image that communicates structure without dense labels.
 
 **Core formula:**
 ```
-Clean isometric illustration, [system name] architecture diagram, [N] layered modules, color-coded blocks, arrows showing data flow, modern tech palette, white background, no text
+Clean isometric illustration, [system name] overview diagram, [N] layered modules, color-coded blocks, arrows showing data flow, modern tech palette, white background, minimal or no text
 ```
 
 **Example:**
 ```bash
 uv run scripts/gpt_image_2.py generate \
-  --prompt "Clean isometric illustration of a microservices architecture diagram, 4 layers (client apps, API gateway, service layer, data layer), color-coded blocks in blue and teal, arrows showing request flow, modern tech palette, crisp white background, no text" \
+  --prompt "Clean isometric illustration of a microservices architecture overview, 4 layers (client apps, API gateway, service layer, data layer), color-coded blocks in blue and teal, arrows showing request flow, modern tech palette, crisp white background, no text" \
   --use-case infographic-diagram \
   --style "clean isometric illustration, technical diagram, modern SaaS aesthetic" \
   --composition "layered from front-left to back-right, arrows flowing left-to-right" \
@@ -27,11 +34,40 @@ uv run scripts/gpt_image_2.py generate \
   --out output/gpt-image-2/isometric-microservices.png
 ```
 
-**Best for:** system architecture, product overviews, module relationship diagrams
+**Best for:** product overviews, module relationship diagrams, landing-page hero diagrams
 
 ---
 
-## 2. Clean process infographic
+## 2. Technical diagram — architecture
+
+A detailed architecture diagram with explicit steps, component labels, and data-flow annotations. Use this when the article needs to explain *how* something works, not just what it looks like.
+
+**Core formula:**
+```
+Detailed technical architecture diagram, [system name], [N] numbered steps or layers, labeled components, arrows showing data flow, legend row, modern flat or isometric style, white background
+```
+
+**Example:**
+```bash
+uv run scripts/gpt_image_2.py generate \
+  --prompt "Detailed technical architecture diagram explaining Retrieval-Augmented Generation (RAG). 5 numbered steps left-to-right: 1 User Query, 2 Retrieve from Knowledge Base, 3 Augment Prompt, 4 LLM Generate, 5 Generated Answer. Each step shows a labeled component box with a simple icon. Arrows connect the steps. A bottom legend row explains each component. Clean modern flat style, crisp white background, blue and teal palette" \
+  --use-case infographic-diagram \
+  --style "detailed technical architecture diagram, labeled components, modern flat illustration" \
+  --composition "horizontal pipeline, 5 numbered steps top row, legend row below" \
+  --palette "white background, blue, teal, soft gray, dark navy text" \
+  --text "User Query, Retrieve, Augment, Generate, Generated Answer" \
+  --constraints "numbered steps, labeled components, legend row, no paragraphs of body text" \
+  --negative "oversimplified icon row, missing labels, dark background" \
+  --size wide \
+  --quality high \
+  --out output/gpt-image-2/rag-architecture-diagram.png
+```
+
+**Best for:** architecture deep-dives, methodology explainers, workflow tutorials, developer docs
+
+---
+
+## 3. Clean process infographic
 
 A step-by-step timeline or flow diagram with icons and concise labels. gpt-image-2 handles small text well, so this is a good style to include verbatim labels.
 
@@ -59,7 +95,7 @@ uv run scripts/gpt_image_2.py generate \
 
 ---
 
-## 3. Blueprint / line-art schematic
+## 4. Blueprint / line-art schematic
 
 A technical drawing with cyan or dark lines on a white background. Perfect for developer docs, API design, CI/CD diagrams, and engineering blogs.
 
@@ -87,38 +123,12 @@ uv run scripts/gpt_image_2.py generate \
 
 ---
 
-## 4. Technical poster / one-pager
-
-A single-page visual summary with a hero diagram, a few icons, and a bold headline. Good for landing-page-style articles or launch posts.
-
-**Core formula:**
-```
-Modern technical poster, [topic] explained visually, hero diagram, 3-4 supporting icons, bold headline, clean white background, SaaS aesthetic
-```
-
-**Example:**
-```bash
-uv run scripts/gpt_image_2.py generate \
-  --prompt "Modern technical poster explaining 'How Retrieval-Augmented Generation Works'. Central hero diagram showing a user query, a knowledge base, and a combined answer flow. 3 supporting icons below. Bold headline reading EXACT VERBATIM 'How RAG Works'. Clean white background, SaaS aesthetic, blue and teal palette" \
-  --use-case infographic-diagram \
-  --style "modern technical poster, SaaS information design, clean flat illustration" \
-  --composition "headline top center, hero diagram middle, icon row bottom" \
-  --palette "white background, blue, teal, soft gray" \
-  --text "How RAG Works" \
-  --constraints "headline exact, no body text paragraphs" \
-  --size 2k-landscape \
-  --quality high \
-  --out output/gpt-image-2/rag-technical-poster.png
-```
-
-**Best for:** launch posts, feature explainers, one-page technical summaries
-
----
-
 ## General tips
 
-1. **Prefer `wide` or `2k-landscape` sizes.** Technical diagrams are usually read on desktop.
-2. **Use `--quality high` when labels matter.** gpt-image-2 renders small text better than most models, but it still benefits from high quality.
-3. **Keep labels short.** One or two words per label. Long sentences become unreadable at small sizes.
-4. **Explicitly ask for `white background` and `no dark vignette`.** gpt-image-2 sometimes defaults to dark gradient backdrops for tech imagery.
-5. **Avoid mixing 3D render and flat diagram in the same prompt.** Pick one visual language and stay consistent.
+1. **Match altitude to intent.** Use `technical-diagram-simple` for overviews and `technical-diagram-architecture` when the reader needs to follow a pipeline.
+2. **Prefer `wide` or `2k-landscape` sizes.** Technical diagrams are usually read on desktop.
+3. **Use `--quality high` when labels matter.** gpt-image-2 renders small text better than most models, but it still benefits from high quality.
+4. **Keep labels short.** One or two words per label. Long sentences become unreadable at small sizes.
+5. **Explicitly ask for `white background` and `no dark vignette`.** gpt-image-2 sometimes defaults to dark gradient backdrops for tech imagery.
+6. **Avoid mixing 3D render and flat diagram in the same prompt.** Pick one visual language and stay consistent.
+7. **For architecture diagrams, explicitly request numbered steps, a legend row, and labeled components.** Without these constraints the model tends to collapse the diagram into a few generic icons.

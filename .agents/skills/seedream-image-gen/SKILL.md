@@ -220,7 +220,7 @@ Per-job overrides: `prompt` (required), `model`, `size`, `output_format`, `water
 - `references/api-reference.md` — API endpoint, parameters, error codes, official doc links.
 - `references/prompt-engineering.md` — Prompt formula, best practices, Chinese/English tips.
 - `references/styles/editorial-essay.md` — 散文/随笔/文艺评论风格 prompts.
-- `references/styles/technical-diagram.md` — 技术架构/图表风格 prompts.
+- `references/styles/technical-diagram.md` — 技术架构/图表风格 prompts。含“简洁”与“架构”两个子模板。
 - `references/styles/education-science.md` — 教育/科普风格 prompts.
 - `references/styles/visual-narrative.md` — 视频/叙事/分镜风格 prompts.
 - `references/styles/editorial-pencil-sketch.md` — 编辑式铅笔淡彩手绘风格，适合工作流与人机协作场景。
