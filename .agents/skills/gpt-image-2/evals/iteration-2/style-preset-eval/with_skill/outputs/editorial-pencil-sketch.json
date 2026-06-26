@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Use case: illustration-story\nPrimary request: A warm editorial illustration in hand-drawn pencil sketch style with light watercolor washes on a clean white background. A human writer and a small friendly robot collaborating at a desk, with notes, timeline, and storyboard panels. Isometric-ish layout, left-to-right creative workflow. Muted pastel accents: soft blue, sage green, terracotta orange, lavender. Graphite line work. Thoughtful, airy, human-AI collaboration mood.\nStyle/medium: hand-drawn pencil sketch, ink line art, light watercolor washes, sketchbook aesthetic\nComposition/framing: isometric-ish layout, left-to-right workflow, desk as central stage\nLighting/mood: soft even daylight, no harsh shadows\nColor palette: white paper, graphite gray lines, soft blue, sage green, terracotta orange, lavender\nConstraints: clean white background, no photorealism, no 3D render look\nAvoid: dark background, neon colors, heavy shadows, photorealism, 3D render",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1792x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": ".agents/skills/gpt-image-2/evals/iteration-2/style-preset-eval/with_skill/outputs/editorial-pencil-sketch.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-06-26T12:05:29",
+  "dry_run": false
+}

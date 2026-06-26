@@ -223,4 +223,5 @@ Per-job overrides: `prompt` (required), `model`, `size`, `output_format`, `water
 - `references/styles/technical-diagram.md` — 技术架构/图表风格 prompts.
 - `references/styles/education-science.md` — 教育/科普风格 prompts.
 - `references/styles/visual-narrative.md` — 视频/叙事/分镜风格 prompts.
+- `references/styles/editorial-pencil-sketch.md` — 编辑式铅笔淡彩手绘风格，适合工作流与人机协作场景。
 - `references/styles/text-effects.md` — 16种文字特效 + 中文文本渲染技巧.

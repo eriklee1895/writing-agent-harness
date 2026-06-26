@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Use case: infographic-diagram\nPrimary request: Clean knowledge poster with headline EXACT VERBATIM '5 Sleep Myths Debunked'. 5 numbered cards arranged vertically, each with a simple icon and a short myth label. Navy blue background with white text, mobile-friendly vertical layout, modern information design\nStyle/medium: clean knowledge poster, modern information design, bold typography\nComposition/framing: headline top, 5 cards stacked below, each with number + icon + label\nColor palette: navy blue background, white text, soft yellow accents\nText (verbatim): \"5 Sleep Myths Debunked\"\nConstraints: headline exact, labels short, vertical mobile layout",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1024x1792",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": ".agents/skills/gpt-image-2/evals/iteration-2/style-preset-eval/with_skill/outputs/education-science.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-06-26T12:11:04",
+  "dry_run": false
+}

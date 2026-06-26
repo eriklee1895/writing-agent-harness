@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Use case: infographic-diagram\nPrimary request: Clean isometric illustration of a Retrieval-Augmented Generation (RAG) architecture diagram. Show user query, knowledge base, and generated answer flow. Central hero diagram with 3 supporting icons below. Bold headline reading EXACT VERBATIM 'How RAG Works'. Clean white background, SaaS aesthetic, blue and teal palette, modern flat style, professional information design\nStyle/medium: clean isometric illustration, technical diagram, modern SaaS aesthetic, modern flat style\nComposition/framing: headline top center, hero diagram middle showing query-to-knowledge-base-to-answer flow, icon row bottom\nLighting/mood: soft even lighting, minimal shadows\nColor palette: white background, blue, teal, light gray, dark navy accents\nText (verbatim): \"How RAG Works\"\nConstraints: headline exact, no body text paragraphs, white background\nAvoid: photorealism, 3D render look, dark background",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1792x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": ".agents/skills/gpt-image-2/evals/iteration-2/style-preset-eval/with_skill/outputs/technical-diagram.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-06-26T12:09:24",
+  "dry_run": false
+}

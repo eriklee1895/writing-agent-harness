@@ -1,0 +1,22 @@
+{
+  "prompt": "生成一组电影级科幻写实风格的分镜，共4张。场景1：宇航员在太空维修飞船，空间站外部精密机械结构，深邃星空背景，侧逆光勾勒轮廓，冷色调。场景2：突然遇到陨石雨出现，广角史诗镜头，陨石高速袭来带燃烧尾焰，动态模糊，紧张灾难氛围。场景3：宇航员紧急躲避碎片，近景动态抓拍，失重状态下极速侧身躲避，背景陨石飞掠而过。场景4：宇航员惊险返回气闸，中近景，宇航员踉跄冲向开启的舱门，舱内暖光与太空冷光对比。保持角色一致性，多景别切换，无文字。",
+  "model": "doubao-seedream-5-0-260128",
+  "size": "2K",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": true,
+  "optimize_prompt": null,
+  "reference_images": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/.agents/skills/seedream-image-gen/evals/iteration-2/style-preset-eval/with_skill/outputs/visual-narrative.png",
+  "created_at": "2026-06-26T11:37:44",
+  "dry_run": false,
+  "usage": {
+    "generated_images": 1,
+    "output_tokens": 16384,
+    "total_tokens": 16384,
+    "tool_usage": {
+      "web_search": 0
+    }
+  }
+}

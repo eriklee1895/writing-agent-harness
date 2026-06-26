@@ -1,0 +1,22 @@
+{
+  "prompt": "电影感分镜风格，角色一致，无文字。4格分镜画面：场景1宇航员在太空中维修飞船，场景2陨石雨突然出现，场景3宇航员紧急躲避碎片，场景4宇航员安全返回气闸舱。画面有电影镜头感，光影对比强烈。",
+  "model": "doubao-seedream-5-0-260128",
+  "size": "2K",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": true,
+  "optimize_prompt": null,
+  "reference_images": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/.agents/skills/seedream-image-gen/evals/iteration-2/style-preset-eval/without_skill/outputs/visual-narrative.png",
+  "created_at": "2026-06-26T11:37:24",
+  "dry_run": false,
+  "usage": {
+    "generated_images": 1,
+    "output_tokens": 16384,
+    "total_tokens": 16384,
+    "tool_usage": {
+      "web_search": 0
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "prompt": "手绘铅笔线稿叠加淡彩晕染风格，纯白背景，低饱和淡彩。一位作家和一个圆润可爱的机器人并肩坐在木质工作台前，桌上有便利贴、时间轴草图和分镜面板。画面温馨，人机协作氛围。",
+  "model": "doubao-seedream-5-0-260128",
+  "size": "2K",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": true,
+  "optimize_prompt": null,
+  "reference_images": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/.agents/skills/seedream-image-gen/evals/iteration-2/style-preset-eval/without_skill/outputs/editorial-pencil-sketch.png",
+  "created_at": "2026-06-26T11:37:09",
+  "dry_run": false,
+  "usage": {
+    "generated_images": 1,
+    "output_tokens": 16384,
+    "total_tokens": 16384,
+    "tool_usage": {
+      "web_search": 0
+    }
+  }
+}
