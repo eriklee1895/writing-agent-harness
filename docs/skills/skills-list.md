@@ -86,7 +86,7 @@
   - 输入 origin `.md`（`content/origin/&lt;slug&gt;/`，frontmatter 元数据权威源）+ renderer HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 `appmsgid`。
   - 仅创建草稿，不点发布/群发。不负责排版风格（由 `wechat-article-renderer` 负责）。
 
-- `markdown-article-to-lark-doc`
+- `markdown-article-to-feishu-doc`
   - 把本地 Markdown 文章转写为飞书云文档（docx）。
   - 解析 frontmatter，保留标题层级、列表、代码块、表格、引用块；本地图片按原始尺寸上传，` ```mermaid ` 代码块自动渲染为飞书画板，`==高亮文本==` 转换为黄色 callout。
   - 会清洗 `<video>` / `<source>` / HTML 注释等飞书 markdown 模式不支持的标签；缺失的本地图片降级为 `[图片缺失]` 提示，不阻塞整篇转换。
