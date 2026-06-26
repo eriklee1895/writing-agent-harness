@@ -1,0 +1,54 @@
+{
+  "brief": "Generate an architecture diagram for a blog post explaining 'Retrieval-Augmented Generation (RAG)'. Show user query, knowledge base, and generated answer flow. Style: clean isometric technical diagram, modern SaaS palette, white background. Include a bold headline 'How RAG Works'.",
+  "variants": {
+    "with_skill": {
+      "path": ".agents/skills/gpt-image-2/evals/iteration-2/style-preset-eval/with_skill/outputs/technical-diagram.png",
+      "style_match": 3,
+      "composition": 6,
+      "text_legibility": 8,
+      "notes": {
+        "numbered_steps": false,
+        "component_labels": true,
+        "legend_row": false,
+        "headline_correct": true,
+        "observations": "Hand-drawn whiteboard/notebook aesthetic instead of clean isometric SaaS. Style mismatch with brief. Shows the RAG flow with user query, knowledge base, and generated answer, plus some pseudo-code. The 'How RAG Works' headline is rendered correctly. Composition covers the pipeline but lacks numbered steps and legend. Original preset over-rotates to a sketch/notebook look that does not satisfy the 'clean isometric technical diagram, modern SaaS palette' requirement."
+      }
+    },
+    "without_skill": {
+      "path": ".agents/skills/gpt-image-2/evals/iteration-2/style-preset-eval/without_skill/outputs/technical-diagram.png",
+      "style_match": 9,
+      "composition": 9,
+      "text_legibility": 9,
+      "notes": {
+        "numbered_steps": true,
+        "component_labels": true,
+        "legend_row": false,
+        "headline_correct": true,
+        "observations": "Clean isometric/3D architecture diagram on white background with modern SaaS palette (blue, purple, teal accents). Includes numbered steps (1-4), clear labeled boxes for User Query, Knowledge Base, Retrieval, and Generated Answer with arrows showing the pipeline flow. Headline 'How RAG Works' rendered prominently and correctly. Hits the brief almost perfectly without any preset guidance."
+      }
+    },
+    "with_skill_v2": {
+      "path": ".agents/skills/gpt-image-2/evals/iteration-2/style-preset-eval/with_skill_v2/outputs/technical-diagram.png",
+      "style_match": 9,
+      "composition": 9,
+      "text_legibility": 9,
+      "notes": {
+        "numbered_steps": true,
+        "component_labels": true,
+        "legend_row": true,
+        "headline_correct": true,
+        "observations": "Clean architecture diagram with light isometric/blueprint feel on white background. Numbered nodes (1-4+) walk through the RAG pipeline: user query -> retrieval -> knowledge base -> generated answer. Component labels are legible, headline 'How RAG Works' rendered correctly. Includes a legend row at the bottom that the original preset lacked, which adds polish and aligns with the new technical-diagram-architecture sub-style spec. SaaS palette respected."
+      }
+    }
+  },
+  "scores_summary": {
+    "with_skill": { "style_match": 3, "composition": 6, "text_legibility": 8, "total": 17 },
+    "without_skill": { "style_match": 9, "composition": 9, "text_legibility": 9, "total": 27 },
+    "with_skill_v2": { "style_match": 9, "composition": 9, "text_legibility": 9, "total": 27 }
+  },
+  "winner_v2": "tie",
+  "winner_v2_detail": "with_skill_v2 ties without_skill. Both hit style, composition, and text legibility at the same high level. with_skill_v2 adds a legend row that the free-form output lacks, while without_skill has slightly crisper isometric depth. Either is acceptable; with_skill_v2 is preferred when a legend / extra labeling is desired.",
+  "reverses_original_verdict": true,
+  "original_verdict_note": "In iteration-2 v1, without_skill clearly beat the original with_skill (technical-diagram preset produced a hand-drawn sketch, not an isometric SaaS architecture diagram). With the new technical-diagram-architecture sub-style (v2), the skill now matches free-form quality, reversing the original A/B verdict from 'without_skill wins' to 'tie' (skill no longer hurts; it adds legend support on top of parity).",
+  "recommendation": "Keep the new technical-diagram-architecture sub-style. The split into simple vs architecture sub-styles (commit 6f674d9) successfully closed the gap between preset-guided and free-form generation for architecture diagrams. The legend row is a useful bonus when the brief implies multi-component pipelines."
+}
