@@ -118,3 +118,6 @@ tmp/
 volcengine-web-search-workspace/
 volcengine-doc-fetcher-workspace/
 tts-output/
+
+# Skill eval iteration outputs are local-only (large, regenerable)
+.agents/skills/*/evals/iteration-*/
