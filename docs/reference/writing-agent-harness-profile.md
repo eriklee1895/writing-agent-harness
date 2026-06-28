@@ -93,7 +93,7 @@ flowchart TD
 - [../../AGENTS.md](../../AGENTS.md): high-frequency rules and docs router。
 - [../workflows/writing-overview.md](../workflows/writing-overview.md): 通用写作流程。
 - [../project/automation-roadmap.md](../project/automation-roadmap.md): 自动化路线图。
-- [skills.md](skills.md): project skills 边界。
+- [../skills/skills-list.md](../skills/skills-list.md): project skills 边界。
 - [self-evolution.md](self-evolution.md): memory / project docs / skills 自我进化规则。
 - [visuals.md](visuals.md): 图片和视觉规则。
 - [../workflows/wechat-writing-publishing.md](../workflows/wechat-writing-publishing.md): 微信公众号流程。

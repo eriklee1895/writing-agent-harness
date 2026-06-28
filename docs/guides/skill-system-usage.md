@@ -668,6 +668,10 @@ uv run scripts/main.py --help
 | `wechat-article-fetcher` | 提取微信公众号文章到结构化 Markdown |
 | `wechat-article-publisher` | Playwright 微信公众号发布器 |
 | `article-illustration` | 生成文章封面、正文插图 |
+| `gpt-image-2` / `seedream-image-gen` | 通用位图生成（gpt-image-2 文字渲染 SOTA；seedream 中文/东亚场景） |
+| `seedance-video-gen` | 火山引擎 Seedance 2.0 视频生成 |
+| `article-to-notion` | 网页文章（微信/博客/arXiv）抓取、清洗并剪藏到 Notion page/database |
+| `notion-cli` | 封装官方 ntn CLI 的 Notion 读写基础 skill（create/read/upload/set-properties 等） |
 | `markdown-article-to-feishu-doc` | 把 Markdown 转写成飞书云文档 |
 
 ### B. 目录速查表
@@ -682,8 +686,9 @@ uv run scripts/main.py --help
 │       │   └── references/
 │       └── skill-b/
 ├── docs/
-│   ├── reference/
-│   │   └── skills.md        ← 项目 skills 列表
+│   ├── skills/
+│   │   ├── skills-list.md    ← 项目 skills 列表（canonical）
+│   │   └── skills-guide.md   ← Skill 开发规范
 │   └── guides/
 │       └── skill-system-usage.md  ← 本文档
 ├── .local-memory/           ← 本机临时记忆（不提交）
@@ -700,7 +705,7 @@ uv run scripts/main.py --help
 ### C. 相关文档
 
 - [AGENTS.md](../../AGENTS.md) - 项目高频规则和文档路由
-- [skills.md](../reference/skills.md) - 项目级 skills 列表
+- [skills-list.md](../skills/skills-list.md) - 项目级 skills 列表
 - [self-evolution.md](../reference/self-evolution.md) - Skill 演进规则
 - [prepare-environment.md](../project/prepare-environment.md) - 新环境准备指南
 - [directory-layout.md](../project/directory-layout.md) - 项目目录布局规范

@@ -22,7 +22,7 @@
 - 高频规则：更新 [../../AGENTS.md](../../AGENTS.md)，但保持简短。
 - 工作流步骤：更新 `docs/workflows/*.md`。
 - 项目愿景、目录结构、自动化路线：更新 `docs/project/*.md`。
-- skill 边界、命名、保留/移除理由：更新 [skills.md](skills.md)。
+- skill 边界、命名、保留/移除理由：更新 [../skills/skills-list.md](../skills/skills-list.md)。
 - 图片、封面、正文插图规则：更新 [visuals.md](visuals.md)。
 - 真实任务复盘、坑点、错误信息、可验证信号：更新 `docs/retrospectives/*.md`。
 - 可执行能力变化：更新对应 `.agents/skills/<name>/SKILL.md`、`references/` 或 `scripts/`。

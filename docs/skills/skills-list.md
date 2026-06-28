@@ -93,6 +93,18 @@
   - 默认新建飞书文档；若用户提供已有 docx URL，会先 fetch 探测并确认后再 overwrite。
   - 底层依赖 `lark-cli` 和 `lark-doc` / `lark-whiteboard` / `lark-shared` skills，本 skill 只负责预处理和编排。
 
+- `article-to-notion`
+  - 将任意网页文章（微信公众号、技术博客、论文页面等）抓取、清洗并转写到用户指定的 Notion page 或 database row。
+  - 微信公众号走 Playwright（复用 `wechat-article-fetcher`，含 data-src 懒加载正文图），通用站点走 firecrawl/tavily fallback；本地图片 single_part 上传到 Notion 解决防盗链问题。
+  - 正文前自动加 single-quote 文章卡片（`<br>` 连接多行，规避 ntn CLI 多行 `>` 拆成独立 quote block 的坑）；上传前自动 merge quote、剥开头重复 H1、尾部公众号引流段落（"推荐阅读"/专辑链接/"本公众号..."等）。
+  - 依赖底层 `notion-cli` skill；认证走 `ntn login` OAuth，无需 integration token 或 share connection。
+
+- `notion-cli`
+  - 封装官方 `ntn` CLI（`curl -fsSL https://ntn.dev | bash`）的项目级基础 skill，所有需要读写 Notion 的 skill 应通过本 skill 的 `scripts/ntn_cli.py` helper 完成，不手写 `ntn api` 或 REST 调用。
+  - 提供统一子命令：`probe`、`upload-file`、`create-page`/`get-page`、`create-page-with-images`⭐、`overwrite-page-with-images`、`append-markdown`、`set-cover`/`set-icon`/`set-properties`、`list-blocks`、`append-blocks`/`clear-children`/`trash-page`。
+  - 集中规避 ntn 0.17.x 全部已知坑（空括号/带 emoji 内联语法 hang、stdin 必须 DEVNULL、YAML frontmatter 只输出不输入、block type 不可 PATCH、PATCH children 需清 null 字段、PATCH children 无 after 参数、HTML 注释被 parse、cover 必须 `type=file_upload`、database parent 用 `data-source:<id>` 等）。
+  - 认证走 `ntn login` OAuth 一次（凭证存系统 keychain）；可选 `NOTION_API_TOKEN` 环境变量用于 CI 场景。
+
 ## Language
 
 面向中文产品/中文工作流的 project skills 可以中文为主；流程、技术约束、工具名和 checklist 中更清楚的地方使用 English。

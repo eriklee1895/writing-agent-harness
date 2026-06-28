@@ -72,6 +72,9 @@
 | 使用本机 scratch memory | [docs/reference/local-memory.md](docs/reference/local-memory.md) |
 | 图片、封面、正文插图、视频素材/剪辑 | [docs/reference/visuals.md](docs/reference/visuals.md) |
 | 微信发布复盘与坑点 | [docs/retrospectives/2026-06-05-wechat-publish.md](docs/retrospectives/2026-06-05-wechat-publish.md) |
+| 剪藏网页文章（微信/博客/论文）到 Notion | [`.agents/skills/article-to-notion/SKILL.md`](.agents/skills/article-to-notion/SKILL.md) |
+| 直接读写 Notion 页面、上传图片/文件、设 cover/properties | [`.agents/skills/notion-cli/SKILL.md`](.agents/skills/notion-cli/SKILL.md) |
+| ntn CLI 踩坑总结（文章剪藏 / Notion 写入前必读） | [docs/retrospectives/2026-06-28-article-to-notion-ntn-cli-refactor.md](docs/retrospectives/2026-06-28-article-to-notion-ntn-cli-refactor.md) |
 | 选 HTML 解析 / 内容抽取栈（bs4 / selectolax / trafilatura / markdownify） | [docs/benchmark/html-parser-stack-bench.md](docs/benchmark/html-parser-stack-bench.md) |
 | Superpowers specs / plans 约定 | [docs/README.md](docs/README.md#superpowers) |
 
@@ -89,6 +92,8 @@
 - 微信公众号文章提取使用 project skill：`wechat-article-fetcher`；输入 URL 提取正文、元数据和图片到结构化素材包，支持 `--output-dir content/inbox/articles/` 直接入库。
 - 微信公众号发布流程使用 project skill：`wechat-publish-workflow`；底层上传器默认用 `wechat-article-publisher`（Playwright，已验证文章流程 + 标题/作者/摘要 + 串行正文图片上传 + 草稿保存；封面通常在草稿箱 final review 时手动设置）。迁移背景见 [docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。
 - 本地 Markdown 转写飞书云文档使用 project skill：`markdown-article-to-feishu-doc`；解析 frontmatter、保留完整 block 结构、本地图片按原始尺寸上传、` ```mermaid ` 自动渲染为画板、`==高亮文本==` 转 callout。
+- 剪藏网页文章（微信公众号、技术博客、arXiv 等）到 Notion 使用 project skill：`article-to-notion`；微信公众号走 Playwright 抓取含懒加载图，通用站点走 firecrawl/tavily，图片本地上传到 Notion 解决防盗链；底层依赖 `notion-cli` skill 封装的官方 `ntn` CLI，认证走 `ntn login` OAuth（无需 integration token 或 share connection）。
+- 直接读写 Notion 页面、上传文件、设 cover/properties/icon 一律通过 `notion-cli` skill 的 `scripts/ntn_cli.py` helper 调用，不要手写 `ntn api` 或 REST 调用（已知坑点全部集中规避）。
 - 发布或交付后的写作任务收尾使用 project skill：`writing-task-closeout`。
 - 不使用 paid `md2wechat` API。
 - `docs/superpowers/specs/` 和 `docs/superpowers/plans/` 是 Superpowers 长期文档目录；`.superpowers/` 是 generated scratch，通常忽略。
