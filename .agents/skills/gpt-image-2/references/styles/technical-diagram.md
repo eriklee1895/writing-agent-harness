@@ -2,10 +2,30 @@
 
 For system architecture posts, SaaS explainers, developer docs, workflow tutorials, and methodology articles. The goal is clarity, hierarchy, and clean structure.
 
+This preset provides **scaffolding, not a mold**: it defaults to clean white backgrounds and modern tech palettes, but the model should keep only the structural guardrails when the user's brief already carries a strong visual concept.
+
 We split this category into two altitude levels so you don't accidentally ask for a simple icon overview when you actually need a labeled architecture diagram.
 
 - **Simple / overview:** [`technical-diagram-simple`](#1-technical-diagram-simple) — clean isometric, product demos, module overviews.
 - **Detailed / architecture:** [`technical-diagram-architecture`](#2-technical-diagram-architecture) — layered diagrams with numbered steps, component labels, data flows, and legends.
+
+## Structural template (use unless the brief overrides)
+
+| Guardrail | Default prompt vocabulary |
+|---|---|
+| Medium | `clean isometric illustration`, `modern flat illustration`, `technical diagram`, `information design` |
+| Background | `crisp white background`, `minimal or no texture`, `no dark vignette` |
+| Composition | `layered modules`, `left-to-right data flow`, `numbered steps`, `labeled components`, `legend row` |
+| Hard avoids | `photorealism`, `3D render look`, `dark background`, `ornamental decoration`, `paragraphs of body text` |
+
+## Inspirational defaults (override when the brief supplies style/mood/color)
+
+| Dimension | Default direction |
+|---|---|
+| Color | `modern tech palette`, `blue and teal`, `soft gray`, `dark navy accents` |
+| Style | `modern SaaS aesthetic`, `clean information design` |
+
+> **Override rule:** If the user describes a different palette, rendering style, or atmosphere, drop the inspirational defaults and keep only the structural template (white background, layered/flow composition, hard avoids).
 
 ---
 
@@ -18,7 +38,7 @@ A clean, high-level overview. Use this when you want a readable thumbnail or her
 Clean isometric illustration, [system name] overview diagram, [N] layered modules, color-coded blocks, arrows showing data flow, modern tech palette, white background, minimal or no text
 ```
 
-**Example:**
+**Example (full preset):**
 ```bash
 uv run scripts/gpt_image_2.py generate \
   --prompt "Clean isometric illustration of a microservices architecture overview, 4 layers (client apps, API gateway, service layer, data layer), color-coded blocks in blue and teal, arrows showing request flow, modern tech palette, crisp white background, no text" \
@@ -47,7 +67,7 @@ A detailed architecture diagram with explicit steps, component labels, and data-
 Detailed technical architecture diagram, [system name], [N] numbered steps or layers, labeled components, arrows showing data flow, legend row, modern flat or isometric style, white background
 ```
 
-**Example:**
+**Example (full preset):**
 ```bash
 uv run scripts/gpt_image_2.py generate \
   --prompt "Detailed technical architecture diagram explaining Retrieval-Augmented Generation (RAG). 5 numbered steps left-to-right: 1 User Query, 2 Retrieve from Knowledge Base, 3 Augment Prompt, 4 LLM Generate, 5 Generated Answer. Each step shows a labeled component box with a simple icon. Arrows connect the steps. A bottom legend row explains each component. Clean modern flat style, crisp white background, blue and teal palette" \
@@ -76,7 +96,7 @@ A step-by-step timeline or flow diagram with icons and concise labels. gpt-image
 Clean process infographic, [process name], [N] steps left-to-right, each step with a simple icon and short label, modern flat style, white background
 ```
 
-**Example:**
+**Example (full preset):**
 ```bash
 uv run scripts/gpt_image_2.py generate \
   --prompt "Clean process infographic explaining the beer brewing process, 5 steps left-to-right (Mashing, Boiling, Fermentation, Conditioning, Bottling), each step with a simple icon and a short English label. Warm brown and amber palette, modern flat style, crisp white background, professional information design" \
@@ -104,7 +124,7 @@ A technical drawing with cyan or dark lines on a white background. Perfect for d
 Blueprint style technical schematic, [system/tool] diagram, line-art layout, [cyan/dark] lines on white, clean engineering feel, minimal labels
 ```
 
-**Example:**
+**Example (full preset):**
 ```bash
 uv run scripts/gpt_image_2.py generate \
   --prompt "Blueprint style technical schematic of a Kubernetes cluster, line-art layout showing Master nodes and Worker nodes with connecting lines, cyan lines on white background, clean engineering feel, minimal icons, no paragraphs of text" \
@@ -132,3 +152,4 @@ uv run scripts/gpt_image_2.py generate \
 5. **Explicitly ask for `white background` and `no dark vignette`.** gpt-image-2 sometimes defaults to dark gradient backdrops for tech imagery.
 6. **Avoid mixing 3D render and flat diagram in the same prompt.** Pick one visual language and stay consistent.
 7. **For architecture diagrams, explicitly request numbered steps, a legend row, and labeled components.** Without these constraints the model tends to collapse the diagram into a few generic icons.
+8. **When the user's brief already specifies a palette or rendering style, drop the inspirational defaults and keep only the structural guardrails.**

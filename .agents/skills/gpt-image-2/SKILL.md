@@ -234,6 +234,15 @@ Per-job keys override the CLI defaults for that job. All augmentation fields, `n
 - `--downscale-max-dim` writes an additional downscaled copy (e.g. `cover-web.png` next to `cover.png`). The default suffix is `-web`; override with `--downscale-suffix`.
 - Reruns fail on existing files unless `--force`.
 
+## Style presets: scaffolding, not molds
+
+Style presets in `references/styles/` are deliberately split into **structural guardrails** and **inspirational defaults**:
+
+- **Structural guardrails** (keep unless the brief overrides): composition/layout patterns, white-background defaults, hard negative constraints, and use-case-appropriate formats (e.g. numbered steps for architecture diagrams, panels for storyboards).
+- **Inspirational defaults** (yield when the brief supplies its own style): palette, mood, medium, and props.
+
+When a user brief is topic-only, the preset provides the full scaffold. When the brief already describes a strong visual concept, drop the inspirational layer and keep only the structural guardrails. See the "Override rule" callout in each style file for the exact boundary.
+
 ## References
 
 - `references/image-api.md` — endpoint and parameter quick reference.

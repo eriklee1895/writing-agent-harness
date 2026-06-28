@@ -135,6 +135,22 @@ Error: --format must be one of: json, csv, table.
 - `/health` 返回 200 只代表 web server 在跑，不代表数据库通。用 `/ready` 检查全链路。
 ```
 
+### Style presets: scaffolding, not molds
+
+When a skill includes reusable style presets (e.g. for image generation), split each preset into two layers so the model can preserve creative freedom:
+
+- **Structural guardrails** — composition/layout patterns, background defaults, hard negative constraints, and format constraints that the use case genuinely needs. Keep these unless the user's brief explicitly overrides the structure.
+- **Inspirational defaults** — palette, mood, medium, props, and culturally specific keywords. Yield these whenever the brief already supplies a strong visual direction.
+
+Merge priority when combining a preset with a user brief:
+
+1. **Topic only** → apply the full preset (structure + inspiration).
+2. **Style given, no structure** → keep structure, replace inspiration with the user's style.
+3. **Structure given, no style** → keep inspiration, replace structure with the user's layout.
+4. **Both style and structure given** → keep only hard format/media constraints (size, no-text, white-background, etc.); the user's creative direction dominates.
+
+Document this boundary with an explicit "Override rule" callout in each style file, and explain the split in the skill's main SKILL.md.
+
 
 ## 现有 Skills 列表
 
