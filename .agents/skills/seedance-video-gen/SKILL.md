@@ -2,6 +2,8 @@
 name: seedance-video-gen
 description: |
   用火山引擎 Seedance 2.0 生成视频。触发：用户说“生成视频”“把这张图/脚本/文章做成短视频”“做几个视频镜头”“帮我优化 Seedance 提示词”等。支持文生视频、图生视频（首帧/首尾帧）、多模态参考、批量镜头、提示词优化、首帧图生成、查询任务列表、取消/删除任务。
+
+  **Skill 边界**：专注于单次 4-15s 原子视频片段生成；长视频分镜编排（storyboard、shot 串联、首尾帧链式续写）应使用专门的 longform orchestration skill，不在本 skill 范围。Skill 内不引用项目路径；默认输出 `output/`，可通过 `--output-dir` 或 `SEEDANCE_OUTPUT_DIR` env var 覆盖。
 ---
 
 # Seedance Video
@@ -73,19 +75,42 @@ uv run scripts/generate_seedance_video.py list-tasks \
   --model doubao-seedance-2-0-260128 \
   --task-ids cgt-20260606xxxx-xxxx cgt-20260606yyyy-yyyy
 
-# 取消一个还在排队的任务
+# 取消/删除任务（按当前状态不同行为不同，见 references/api-reference.md）
 uv run scripts/generate_seedance_video.py cancel-task --task-id cgt-20260606xxxx-xxxx
+```
 
-# 删除一个已完成/失败的任务记录
-uv run scripts/generate_seedance_video.py cancel-task --task-id cgt-20260606xxxx-xxxx
+### 批量提交（并行原子 shots）
 
-# 离线推理（更便宜，排队更慢）
-uv run scripts/generate_seedance_video.py create \
-  --prompt "..." --service-tier flex --duration 8
+适合一次性并行提交多个独立 4-15s 视频片段，每个 task 独立生成、独立 task_id。**不是**长视频分镜编排（那是单独的 longform skill 干的事）。
 
-# 草稿/样片（验证创意用，便宜）
-uv run scripts/generate_seedance_video.py create --draft \
-  --prompt "..." --duration 4
+典型场景：
+- A/B 测试同一 prompt 的多个变体，挑最好的
+- 产品多角度展示（5 个角度一次提交）
+- 文章多段落配图（每段独立视频，无剧情关联）
+- 批量生成素材备选库
+
+读 JSON 文件，每个 shot 一个 object，可独立覆盖任意参数。
+
+```bash
+# 准备 shots.json
+cat > /tmp/shots.json << 'EOF'
+[
+  {"prompt": "产品正面 45 度角特写", "duration": 4, "ratio": "1:1"},
+  {"prompt": "产品侧面轮廓", "duration": 4, "ratio": "1:1"},
+  {"prompt": "产品俯视角度", "duration": 4, "ratio": "1:1"}
+]
+EOF
+
+# 一次性并行提交（3 个独立 task）
+uv run scripts/generate_seedance_video.py batch-submit \
+  --shots-file /tmp/shots.json \
+  --model doubao-seedance-2-0-fast-260128 \
+  --resolution 480p
+
+# 加 --wait：等所有完成 + 自动下载到指定目录（可选）
+uv run scripts/generate_seedance_video.py batch-submit \
+  --shots-file /tmp/shots.json --wait --output-dir output/product-shots
+```
 
 # 联网搜索（仅纯文本输入，引用当前事件/最新数据）
 uv run scripts/generate_seedance_video.py create --enable-web-search \
@@ -111,18 +136,12 @@ uv run scripts/generate_seedance_video.py create --enable-web-search \
    - 需要尾帧时，同样方式生成。
    - 生成的图片放在输出目录 `assets/` 下，再传给本脚本。
 
-4. **确认费用（涉及真实 API 调用时）**
-   - 报告估算：`model × duration × resolution`，以及当前默认计费大约 1 元/秒。
-   - 如果用户未明确授权，先 `--dry-run` 预览请求。
-   - 如果用户已说“不计成本”“直接跑”，可以跳过单独确认。
-
-5. **执行脚本**
+4. **执行脚本**
    - 默认使用 `doubao-seedance-2-0-260128`（标准版，支持 1080p 和首尾帧）。
    - 快速预览可用 `doubao-seedance-2-0-fast-260128`（更快、更便宜，但不支持 1080p）。
    - `doubao-seedance-2-0-mini-260615` 在 2026-06-15 ~ 2026-06-22 仅控制台体验中心可调试，**预计 2026-06-22 起支持 API**。
-   - 想要更便宜可以加 `--service-tier flex`（离线推理），要试创意可以加 `--draft`（样片）。
 
-6. **报告结果**
+5. **报告结果**
    - 输出目录路径、视频文件路径、`manifest.json` 路径、`task_id`。
    - 如返回 `usage.completion_tokens`，给出大致成本。
    - 提示用户检查生成结果；失败时给出 `manifest.json` 里的错误信息。
@@ -130,7 +149,7 @@ uv run scripts/generate_seedance_video.py create --enable-web-search \
 ## 输出目录
 
 ```text
-content/inbox/videos/YYYY-MM-DD-<slug>/
+output/YYYY-MM-DD-<slug>/
 ├── video.mp4
 ├── manifest.json           # task_id, model, params, video_url, usage, output paths
 ├── prompt.md               # 最终提示词
@@ -147,6 +166,8 @@ content/inbox/videos/YYYY-MM-DD-<slug>/
 - 首尾帧模式和多模态参考模式**互斥**。
 - **联网搜索（`--enable-web-search`）仅纯文本输入**，与 image_url/video_url/audio_url 互斥（脚本会拦截）。
 - 本地图片会自动转成 base64 data URL 上传；本地视频/音频由于体积大，目前需要用户先提供可公开访问的 URL。
+
+> 完整参数表、计费、状态机、错误码见 [references/api-reference.md](references/api-reference.md)。
 
 ## 参数速查
 
@@ -166,13 +187,9 @@ content/inbox/videos/YYYY-MM-DD-<slug>/
 | `--generate-audio` / `--no-generate-audio` | 是否生成音频 |
 | `--watermark` / `--no-watermark` | 是否加水印 |
 | `--return-last-frame` | 返回尾帧图 |
-| `--seed` | 随机种子（Seedance 2.0 暂不支持） |
-| `--frames` | 帧数 `[29, 289]`，格式 `25+4n`；覆盖 `--duration`（Seedance 2.0 暂不支持） |
-| `--service-tier` | `default`（在线）/ `flex`（离线，便宜） |
-| `--priority` | 任务优先级，数值越大越靠前 |
-| `--draft` | 样片/草稿任务，便宜；返回 `id` 带 Draft 标记 |
+| `--priority` | 任务优先级（`0-9`），数值越大越靠前（仅同 Endpoint 内 FIFO 排序） |
 | `--enable-web-search` | 联网搜索工具；**仅纯文本输入**，与多模态互斥 |
-| `--output-dir` | 输出根目录，默认 `content/inbox/videos/` |
+| `--output-dir` | 输出根目录，默认 `output/`（可被 `SEEDANCE_OUTPUT_DIR` env var 或 `--output-dir` 覆盖） |
 | `--poll-interval` | 轮询间隔，默认 20 秒 |
 | `--max-wait` | 最大等待秒数，默认 1800 秒（30 分钟） |
 | `--dry-run` | 只构建并打印请求，不调用 API |

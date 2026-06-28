@@ -9,9 +9,11 @@ Seedance 2.0 的核心优势是多模态输入——同时传入文本、图片�
 | 文本 | `text` | — | 1 个（必须有） | — | — |
 | 图片 | `image_url` | `first_frame` / `last_frame` / `reference_image` | 0–9 张 | PNG/JPG/WebP | < 30 MB |
 | 视频 | `video_url` | `reference_video` | 0–3 段 | MP4/MOV | < 50 MB |
-| 音频 | `audio_url` | `reference_audio` | 0–3 段 | MP3/WAV | — |
+| 音频 | `audio_url` | `reference_audio` | 0–3 段 | MP3/WAV | < 15 MB，单段 [2, 15]s |
 
 **总计不超过 12 个素材**。图片、视频、音频每种都要通过可公开访问的 URL 传入（本地图片脚本会自动转 base64 data URL）。
+
+> **注意**：上面是**输入参考素材**的体积限制，**不是输出 video 的体积限制**。整个请求体 base64 编码后 ≤ 64 MB，脚本 client 侧 hard-fail 在 60 MB（留 4MB 余量）。详细见 [key-constraints.md](key-constraints.md) 的「输入参考素材 size 限制」一节。
 
 ## API 中如何传入
 
