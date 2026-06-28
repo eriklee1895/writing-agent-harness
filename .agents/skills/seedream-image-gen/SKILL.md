@@ -215,6 +215,15 @@ Per-job overrides: `prompt` (required), `model`, `size`, `output_format`, `water
 - Sibling `*.json` metadata next to each image (prompt, model, size, watermark, web_search, reference_images, usage, timestamp).
 - Reruns fail on existing files unless `--force`.
 
+## Style presets: scaffolding, not molds
+
+Style presets in `references/styles/` are deliberately split into **structural guardrails** and **inspirational defaults**:
+
+- **Structural guardrails** (keep unless the brief overrides): composition/layout patterns, white-background defaults, hard negative constraints, and use-case-appropriate formats (e.g. numbered steps for architecture diagrams, panels for storyboards/comics).
+- **Inspirational defaults** (yield when the brief supplies its own style): palette, mood, medium, and culturally specific keywords.
+
+When a user brief is topic-only, the preset provides the full scaffold. When the brief already describes a strong visual concept, drop the inspirational layer and keep only the structural guardrails. See the "覆盖规则" callout in each style file for the exact boundary.
+
 ## References
 
 - `references/api-reference.md` — API endpoint, parameters, error codes, official doc links.

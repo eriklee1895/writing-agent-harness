@@ -2,37 +2,46 @@
 
 A warm, hand-drawn illustration style: graphite/ink line work on white paper, lightly tinted with muted watercolor washes. It feels like a designer's sketchbook — rational but human, airy but structured. Great for visualizing AI workflows, creative processes, editorial explainers, and human-machine collaboration.
 
-## Style signature
+This preset provides **scaffolding, not a mold**: it defaults to a left-to-right workflow layout and a light sketchbook palette, but the model should keep only the structural guardrails when the user's brief already carries a strong visual concept.
 
-| Dimension | Prompt vocabulary |
+## Structural template (use unless the brief overrides)
+
+| Guardrail | Default prompt vocabulary |
 |---|---|
 | Medium | `hand-drawn pencil sketch`, `ink line art`, `light watercolor washes`, `sketchbook aesthetic`, `illustration on white paper` |
-| Color | `muted pastel palette`, `soft blue`, `sage green`, `terracotta orange`, `lavender accents`, `graphite gray line work` |
 | Background | `clean white background`, `generous negative space`, `no dark vignette` |
-| Composition | `isometric-ish layout`, `left-to-right process flow`, `storyboard panels`, `thumbnail grid`, `concept map` |
+| Composition | `left-to-right process flow`, `isometric-ish layout`, `storyboard panels`, `thumbnail grid`, `concept map` |
 | Subject | `human and friendly robot collaborating`, `designer at desk`, `small rounded robot assistant`, `creative workspace` |
-| Props | `magnifying glass`, `scissors`, `sticky notes`, `timeline`, `storyboard panels`, `mood board`, `clapperboard` |
+| Hard avoids | `photorealism`, `dark background`, `neon colors`, `heavy shadows`, `3D render look`, `vector flat illustration` |
+
+## Inspirational defaults (override when the brief supplies style/mood/color)
+
+| Dimension | Default direction |
+|---|---|
+| Color | `muted pastel palette`, `soft blue`, `sage green`, `terracotta orange`, `lavender accents`, `graphite gray line work` |
 | Mood | `warm editorial illustration`, `intellectual but cozy`, `maker-space mood`, `creative process visualization` |
-| Avoid | `photorealism`, `dark background`, `neon colors`, `heavy shadows`, `3D render look`, `vector flat illustration` |
+| Props | `magnifying glass`, `scissors`, `sticky notes`, `timeline`, `storyboard panels`, `mood board`, `clapperboard` |
+
+> **Override rule:** If the user describes a different palette, medium, or atmosphere, drop the inspirational defaults and keep only the structural template (white background, workflow composition, hard avoids).
 
 ## Reusable prompt template
 
 ```text
-A warm editorial illustration in hand-drawn pencil sketch style with light watercolor washes on a clean white background.
+A hand-drawn editorial illustration in pencil sketch style with light watercolor washes on a clean white background.
 
 Scene: [what is happening — e.g. an AI-human writing workflow, a video editing pipeline, a research process].
-Composition: [how the scene is laid out — e.g. isometric storyboard, left-to-right flow, central workspace surrounded by thumbnails].
+Composition: [how the scene is laid out — e.g. left-to-right flow, isometric storyboard, central workspace surrounded by thumbnails].
 Details: [list key props and actors — e.g. writer, small friendly robot, sticky notes, timeline, storyboard panels, magnifying glass].
-Colors: muted pastel accents only — soft blue, sage green, terracotta orange, lavender; line work remains graphite gray.
-Mood: thoughtful, creative, human-AI teamwork, airy and uncluttered.
+Colors (default; override if brief specifies): muted pastel accents — soft blue, sage green, terracotta orange, lavender; line work remains graphite gray.
+Mood (default; override if brief specifies): thoughtful, creative, human-AI teamwork, airy and uncluttered.
 Avoid: photorealism, dark background, neon colors, heavy shadows, 3D render look.
 ```
 
-## Example: AI writing workflow
+## Example: AI writing workflow (full preset)
 
 ```bash
 uv run scripts/gpt_image_2.py generate \
-  --prompt "A warm editorial illustration in hand-drawn pencil sketch style with light watercolor washes on a clean white background. A writer and a small friendly robot sit side by side at a wooden desk covered with sticky notes, a timeline, and storyboard panels. Isometric-ish layout, left-to-right creative workflow. Muted pastel accents: soft blue, sage green, terracotta orange, lavender. Graphite line work. Thoughtful, airy, human-AI collaboration mood." \
+  --prompt "A hand-drawn editorial illustration in pencil sketch style with light watercolor washes on a clean white background. A writer and a small friendly robot sit side by side at a wooden desk covered with sticky notes, a timeline, and storyboard panels. Left-to-right creative workflow. Muted pastel accents: soft blue, sage green, terracotta orange, lavender. Graphite line work. Thoughtful, airy, human-AI collaboration mood." \
   --use-case illustration-story \
   --style "hand-drawn pencil sketch, ink line art, light watercolor washes, sketchbook aesthetic" \
   --composition "isometric-ish layout, left-to-right workflow, desk as central stage" \
@@ -45,20 +54,18 @@ uv run scripts/gpt_image_2.py generate \
   --out output/gpt-image-2/sketch-workflow.png
 ```
 
-## Example: video editing pipeline
+## Example: user already gave a strong style (structure only)
 
 ```bash
 uv run scripts/gpt_image_2.py generate \
-  --prompt "Hand-drawn pencil sketch editorial illustration, light watercolor washes, clean white background. A video editor and a small rounded robot review a timeline on a large monitor. Surrounding the monitor: storyboard thumbnails, a clapperboard, a magnifying glass over a clip, and curved arrows showing the editing flow. Muted pastel accents on a graphite line drawing." \
+  --prompt "An AI writing workflow shown as a dark charcoal sketch on cream kraft paper, bold ink strokes, single warm amber highlight. Left-to-right process flow, writer and robot at a desk, sticky notes and timeline. No photorealism, no 3D render, no neon colors." \
   --use-case illustration-story \
-  --style "hand-drawn pencil sketch, light watercolor washes, sketchbook aesthetic" \
-  --composition "central monitor with orbiting thumbnails and arrows" \
-  --palette "white paper, graphite gray, soft blue, sage green, terracotta orange" \
-  --lighting "soft diffused light" \
-  --negative "photorealism, 3D render, dark background, neon" \
+  --composition "left-to-right workflow, desk as central stage" \
+  --constraints "clean background, no photorealism, no 3D render look" \
+  --negative "photorealism, 3D render, neon colors" \
   --size wide \
   --quality high \
-  --out output/gpt-image-2/sketch-video-pipeline.png
+  --out output/gpt-image-2/sketch-workflow-override.png
 ```
 
 ## Variations
@@ -74,3 +81,4 @@ uv run scripts/gpt_image_2.py generate \
 2. Explicitly request `clean white background` and `no dark vignette`; gpt-image-2 sometimes defaults to textured gray backdrops for sketches.
 3. Use `--quality high` when the image includes small labels, icons, or dense process details.
 4. For text labels inside the illustration, wrap them in quotes and use `--text` plus `--quality high`. See [prompting.md](../prompting.md#verbatim-text-rendering) for the verbatim-text rules.
+5. When the user's brief already contains a strong palette or atmosphere, drop the inspirational defaults; keep only the structural guardrails.
