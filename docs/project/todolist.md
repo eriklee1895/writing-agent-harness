@@ -2,7 +2,7 @@
 
 记录 Erik 对 `writing-agent-harness` 的当前建设想法和待办。本文是活文档：先保存方向，再逐步拆成 specs、plans、skills 和可运行脚本。
 
-更新日期：2026-06-08
+更新日期：2026-06-28
 
 ## North Star
 
@@ -26,7 +26,7 @@ Feishu / Notion / etc.
 - 笔记沉淀主力：Notion。
 - repo 内长期 canonical article：`content/origin/` 中的 Markdown / MDX。
 - 飞书文档 `<->` Markdown：当前已通过 `lark-cli` 跑得比较顺手，优先继续固化。
-- Notion `<->` Markdown：尚未完全打通，待调研 Notion MCP、Notion API 和 `notion-to-md` 方案。
+- Notion `<->` Markdown：**写入方向（Markdown / 网页 → Notion）已落地**——`article-to-notion` 支持把任意网页（微信/博客/arXiv）抓取清洗后写入 Notion page 或 database row，底层由 `notion-cli` skill 封装官方 `ntn` CLI（OAuth 登录，坑点集中规避）；见 [retrospectives/2026-06-28-article-to-notion-ntn-cli-refactor.md](../retrospectives/2026-06-28-article-to-notion-ntn-cli-refactor.md)。**读取方向（Notion → Markdown / MDX）尚未打通**，这是 North Star 里"飞书/Notion 作为写作入口"的另一半，仍待调研。
 
 ## Source Sync Todos
 
@@ -35,11 +35,12 @@ Feishu / Notion / etc.
   - [ ] 明确飞书文档 metadata 如何映射到 frontmatter。
   - [ ] 验证图片、表格、代码块、标题层级、引用块和链接的转换质量。
   - [ ] 判断是否值得项目级 skill 化为 `feishu-to-markdown` 或合并进 writing workflow。
-- [ ] 调研 Notion 到 Markdown / MDX 的路线：
-  - [ ] Notion MCP：确认是否适合 agent 直接读取 page / database / block。
-  - [ ] Notion API：确认认证、database 查询、page 拉取、block 遍历、rate limit 和图片下载策略。
-  - [ ] `notion-to-md`：做一个小样本 page 转换实验，检查 frontmatter、嵌套 block、callout、toggle、database relation、media 的保真度。
-  - [ ] 决定 Notion sync 的首个最小可用范围：单 page 导出、database 批量导出，还是指定 collection 增量同步。
+- [x] **Notion 写入方向已完成**（2026-06-28）：文章剪藏/网页收藏 → Notion 已通过 `article-to-notion` + `notion-cli` 两个 skills 落地，支持 OAuth、图片本地上传、database property 自动填充、normalize 防御层。
+- [ ] 调研 Notion → Markdown / MDX 的读取路线：
+  - [ ] Notion MCP：确认是否适合 agent 直接读取 page / database / block（现有 MCP 主要用于交互式探索，headless 批处理还需评估）。
+  - [ ] `ntn pages get`（输出 markdown + YAML frontmatter）：小样本测试其保真度，覆盖 callout / toggle / database relation / 同步块 / 嵌套页面。
+  - [ ] `notion-to-md`（社区 JS 库）：做对照实验，检查 frontmatter、嵌套 block、callout、toggle、database relation、media 的保真度。
+  - [ ] 决定 Notion 读取的首个最小可用范围：单 page 导出、database 批量导出，还是指定 collection 增量同步。
 - [ ] 定义统一 origin package：
   - [x] 使用 `content/origin/YYYY-MM-DD-topic/` 作为可追踪 canonical Markdown / MDX 目录。
   - [x] 回填第一批现有文章到 `content/origin/`，形成 origin package 样例。
@@ -92,7 +93,7 @@ Feishu / Notion / etc.
 ## Near-Term Build Order
 
 1. 把飞书文档 `<->` Markdown 的现有成功经验写成 runbook。
-2. 用一个真实 Notion page 做 `Notion -> Markdown / MDX` 小实验。
+2. 用一个真实 Notion page 做 `Notion -> Markdown / MDX` 读取方向小实验（写入方向 article-to-notion 已完成）。
 3. 定义统一 frontmatter 和 article folder contract。
 4. 让一篇文章从 `content/drafts/` promote 到 `content/origin/`，再派生到微信公众号 preview。
 5. 建立 Astro 博客最小工程，让同一篇文章能被博客消费。
@@ -101,7 +102,7 @@ Feishu / Notion / etc.
 
 ## Open Questions
 
-- Notion 是只作为输入源，还是也需要 Markdown 回写到 Notion？
+- Notion 写入方向（网页/Markdown → Notion 剪藏）已落地（`article-to-notion` + `notion-cli`）；读取方向（Notion → Markdown / MDX 回 repo）尚未实现。
 - Notion database 的哪些字段应该成为博客 / 微信共同 metadata？
 - Blog production publish 是否需要人工确认，还是只要 GitHub PR review 即可？
 - 掘金等其他渠道是否需要登录态浏览器自动化，还是先手动复制粘贴更稳？

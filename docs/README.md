@@ -72,6 +72,21 @@
 - [retrospectives/2026-06-08-video-material-clip.md](retrospectives/2026-06-08-video-material-clip.md)
   - 视频素材摄取、裸 mp4 包装、HyperFrames 模板 contract 和文章视频剪辑复盘。
 
+- [retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)
+  - 微信公众号发布从 baoyu 浏览器/CDP 到 Playwright 持久 profile 的迁移分析与决策。
+
+- [retrospectives/2026-06-15-skill-creator-wechat-table-flex.md](retrospectives/2026-06-15-skill-creator-wechat-table-flex.md)
+  - 微信公众号表格从 `<table>` 标签切换到 flex `<div>` 渲染的复盘（避免微信编辑器套虚线编辑框）。
+
+- [retrospectives/2026-06-18-seedance-concurrency-benchmark.md](retrospectives/2026-06-18-seedance-concurrency-benchmark.md)
+  - Seedance 视频生成并发能力 benchmark（串行 vs 4 并发）与提交/轮询策略选型。
+
+- [retrospectives/2026-06-21-volcengine-bigmusic-end-to-end.md](retrospectives/2026-06-21-volcengine-bigmusic-end-to-end.md)
+  - 火山引擎 BigMusic BGM 生成端到端集成与坑点记录。
+
+- [retrospectives/2026-06-28-article-to-notion-ntn-cli-refactor.md](retrospectives/2026-06-28-article-to-notion-ntn-cli-refactor.md)
+  - article-to-notion 从手写 REST + md-to-blocks 重构到官方 ntn CLI 的全流程、`notion-cli` 基础 skill 沉淀、ntn CLI 14 个坑点汇总、sentinel-marker 图片交错与 normalize 防御层设计。
+
 ## Superpowers
 
 - [superpowers/specs/](superpowers/specs/)
