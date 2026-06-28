@@ -121,3 +121,6 @@ tts-output/
 
 # Skill eval iteration outputs are local-only (large, regenerable)
 .agents/skills/*/evals/iteration-*/
+
+# Article-to-notion skill: Python cache
+.agents/skills/article-to-notion/scripts/__pycache__/
