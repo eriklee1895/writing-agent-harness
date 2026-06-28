@@ -37,7 +37,18 @@ DEFAULT_MAX_RETRIES = 3
 DEFAULT_RETRY_BACKOFF_S = 1.0
 RETRY_BACKOFF_MULTIPLIER = 2.0
 RETRY_MAX_BACKOFF_S = 30.0
-RETRY_STATUS_CODES = {429, 500, 502, 503, 504}
+RETRY_STATUS_CODES = {408, 429, 500, 502, 503, 504}
+
+# Input reference media size limits (per 官方 1520757).
+# These are INPUT limits, not output video size limits.
+# Output videos have no API size cap; only 24h URL validity matters.
+MAX_IMAGE_BYTES = 30 * 1024 * 1024       # 30 MB
+MAX_VIDEO_BYTES = 50 * 1024 * 1024       # 50 MB
+MAX_AUDIO_BYTES = 15 * 1024 * 1024       # 15 MB
+# Total request body is 64 MB per the official spec. Base64 inflates ~33%,
+# so a 48 MB raw video already becomes ~64 MB after encoding. We hard-fail
+# at 60 MB estimated body to leave headroom for JSON wrapper + text prompt.
+MAX_BODY_BYTES = 60 * 1024 * 1024        # 60 MB safety margin
 
 # Seedance 2.0 series (the only line this script currently supports).
 # - Standard (260128): 1080p OK, all ratios, audio.
@@ -59,6 +70,104 @@ VALID_RESOLUTIONS = {"480p", "720p", "1080p"}
 SUPPORTED_IMAGE_ROLES = {"first_frame", "last_frame", "reference_image"}
 SUPPORTED_VIDEO_ROLES = {"reference_video"}
 SUPPORTED_AUDIO_ROLES = {"reference_audio"}
+
+# --- Validation helpers (shared between build_payload and build_payload_from_shot) ---
+
+def validate_model(model: str) -> None:
+    if model not in VALID_MODELS:
+        raise SystemExit(f"Error: unsupported model '{model}'. Valid: {sorted(VALID_MODELS)}")
+
+def validate_duration(duration: int) -> None:
+    if duration != -1 and not (4 <= duration <= 15):
+        raise SystemExit("Error: duration must be between 4 and 15, or -1 for adaptive.")
+
+def validate_ratio(ratio: str) -> None:
+    if ratio not in VALID_RATIOS:
+        raise SystemExit(f"Error: unsupported ratio '{ratio}'. Valid: {sorted(VALID_RATIOS)}")
+
+def validate_resolution(model: str, resolution: str) -> None:
+    if resolution not in VALID_RESOLUTIONS:
+        raise SystemExit(f"Error: unsupported resolution '{resolution}'. Valid: {sorted(VALID_RESOLUTIONS)}")
+    if resolution == "1080p" and model in NO_1080P_MODELS:
+        raise SystemExit(
+            f"Error: model '{model}' does not support 1080p (capped at 720p). Use --resolution 720p or 480p."
+        )
+
+def validate_web_search_mode(content: list[dict[str, Any]], enable_web_search: bool) -> None:
+    if enable_web_search:
+        non_text = [c for c in content if c.get("type") != "text"]
+        if non_text:
+            raise SystemExit(
+                "Error: --enable-web-search requires pure text content. "
+                f"Found {len(non_text)} non-text item(s); remove --first-frame/--last-frame/--reference-*."
+            )
+
+
+# --- Media handling (shared) ---
+
+class MediaTracker:
+    """Track total raw bytes of locally-loaded media for body-size estimation."""
+    def __init__(self) -> None:
+        self.raw_bytes: int = 0
+
+IMAGE_EXTS = {"png", "jpg", "jpeg", "webp", "gif", "bmp"}
+VIDEO_EXTS = {"mp4", "mov", "avi", "mkv", "webm"}
+AUDIO_EXTS = {"mp3", "wav", "aac", "flac", "m4a", "ogg"}
+
+# Per-type size limits for INPUT reference media (not output video).
+_SIZE_LIMITS: dict[str, int] = {
+    "image_url": MAX_IMAGE_BYTES,
+    "video_url": MAX_VIDEO_BYTES,
+    "audio_url": MAX_AUDIO_BYTES,
+}
+
+
+def add_media_to_content(
+    content: list[dict[str, Any]],
+    tracker: MediaTracker,
+    path_or_url: str,
+    item_type: str,
+    role: str,
+    allowed_exts: set[str],
+) -> None:
+    """Append a media reference to content. Validates local file size; tracks total raw bytes."""
+    if is_url(path_or_url):
+        # URL size is server-side; we don't pre-validate. API will 400 if too big.
+        content.append(build_content_item(item_type, path_or_url, role))
+        return
+    local_path = validate_local_media(path_or_url, allowed_exts)
+    size = local_path.stat().st_size
+    limit = _SIZE_LIMITS.get(item_type)
+    if limit and size > limit:
+        mb = size / 1024 / 1024
+        limit_mb = limit // (1024 * 1024)
+        raise SystemExit(
+            f"Error: {item_type.split('_')[0]} {local_path.name} is {mb:.1f} MB; "
+            f"max {limit_mb} MB per the official input limit."
+        )
+    ext = local_path.suffix.lower().lstrip(".")
+    mime_type = _media_mime(ext, item_type)
+    file_bytes = local_path.read_bytes()
+    b64 = base64.b64encode(file_bytes).decode("ascii")
+    data_url = f"data:{mime_type};base64,{b64}"
+    content.append(build_content_item(item_type, data_url, role))
+    tracker.raw_bytes += size
+
+
+def check_total_body_size(content: list[dict[str, Any]], raw_bytes: int) -> None:
+    """Hard-fail if estimated request body exceeds the 60 MB safety margin (official 64 MB)."""
+    if raw_bytes <= 0:
+        return
+    # base64 inflates ~33%; +50 bytes per data URL prefix.
+    estimated_body = raw_bytes * 4 // 3 + 50 * sum(1 for c in content if c.get("type") != "text")
+    if estimated_body > MAX_BODY_BYTES:
+        mb = estimated_body / 1024 / 1024
+        raise SystemExit(
+            f"Error: estimated request body is {mb:.1f} MB; "
+            f"max {MAX_BODY_BYTES // (1024 * 1024)} MB (official 64 MB minus safety margin). "
+            f"Reduce number of media files or pre-upload to a public URL."
+        )
+
 
 
 def _load_dotenv() -> None:
@@ -199,18 +308,10 @@ def _media_mime(ext: str, item_type: str) -> str:
 
 
 def build_payload(args: argparse.Namespace) -> dict[str, Any]:
-    if args.model not in VALID_MODELS:
-        raise SystemExit(f"Error: unsupported model '{args.model}'. Valid: {VALID_MODELS}")
-    if args.ratio not in VALID_RATIOS:
-        raise SystemExit(f"Error: unsupported ratio '{args.ratio}'. Valid: {VALID_RATIOS}")
-    if args.resolution not in VALID_RESOLUTIONS:
-        raise SystemExit(f"Error: unsupported resolution '{args.resolution}'. Valid: {VALID_RESOLUTIONS}")
-    if args.resolution == "1080p" and args.model in NO_1080P_MODELS:
-        raise SystemExit(
-            f"Error: model '{args.model}' does not support 1080p (capped at 720p). Use --resolution 720p or 480p."
-        )
-    if args.duration != -1 and not (4 <= args.duration <= 15):
-        raise SystemExit("Error: duration must be between 4 and 15, or -1 for adaptive.")
+    validate_model(args.model)
+    validate_ratio(args.ratio)
+    validate_resolution(args.model, args.resolution)
+    validate_duration(args.duration)
 
     prompt = args.prompt
     if args.prompt_file:
@@ -219,38 +320,22 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         raise SystemExit("Error: provide --prompt or --prompt-file.")
 
     content: list[dict[str, Any]] = [build_content_item("text", prompt)]
-
-    def _add_media(path_or_url: str, item_type: str, role: str, allowed_exts: set[str]) -> None:
-        if is_url(path_or_url):
-            content.append(build_content_item(item_type, path_or_url, role))
-        else:
-            local_path = validate_local_media(path_or_url, allowed_exts)
-            ext = local_path.suffix.lower().lstrip(".")
-            mime_type = _media_mime(ext, item_type)
-            file_bytes = local_path.read_bytes()
-            b64 = base64.b64encode(file_bytes).decode("ascii")
-            data_url = f"data:{mime_type};base64,{b64}"
-            content.append(build_content_item(item_type, data_url, role))
+    tracker = MediaTracker()
 
     if args.first_frame:
-        _add_media(args.first_frame, "image_url", "first_frame", {"png", "jpg", "jpeg", "webp", "gif", "bmp"})
+        add_media_to_content(content, tracker, args.first_frame, "image_url", "first_frame", IMAGE_EXTS)
     if args.last_frame:
-        _add_media(args.last_frame, "image_url", "last_frame", {"png", "jpg", "jpeg", "webp", "gif", "bmp"})
-    for img in args.reference_image or []:
-        _add_media(img, "image_url", "reference_image", {"png", "jpg", "jpeg", "webp", "gif", "bmp"})
-    for vid in args.reference_video or []:
-        _add_media(vid, "video_url", "reference_video", {"mp4", "mov", "avi", "mkv", "webm"})
-    for aud in args.reference_audio or []:
-        _add_media(aud, "audio_url", "reference_audio", {"mp3", "wav", "aac", "flac", "m4a", "ogg"})
+        add_media_to_content(content, tracker, args.last_frame, "image_url", "last_frame", IMAGE_EXTS)
+    for v in args.reference_image or []:
+        add_media_to_content(content, tracker, v, "image_url", "reference_image", IMAGE_EXTS)
+    for v in args.reference_video or []:
+        add_media_to_content(content, tracker, v, "video_url", "reference_video", VIDEO_EXTS)
+    for v in args.reference_audio or []:
+        add_media_to_content(content, tracker, v, "audio_url", "reference_audio", AUDIO_EXTS)
 
+    check_total_body_size(content, tracker.raw_bytes)
     validate_mode_constraints(content)
-    if args.enable_web_search:
-        non_text = [c for c in content if c.get("type") != "text"]
-        if non_text:
-            raise SystemExit(
-                "Error: --enable-web-search requires pure text content. "
-                f"Found {len(non_text)} non-text item(s); remove --first-frame/--last-frame/--reference-*."
-            )
+    validate_web_search_mode(content, args.enable_web_search)
 
     payload: dict[str, Any] = {
         "model": args.model,
@@ -261,24 +346,13 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         "generate_audio": args.generate_audio,
         "watermark": args.watermark,
     }
-    if args.seed is not None:
-        payload["seed"] = args.seed
     if args.return_last_frame:
         payload["return_last_frame"] = True
-    if args.frames is not None:
-        # Frames take precedence over duration per the official spec.
-        payload["frames"] = args.frames
-        payload.pop("duration", None)
-    if args.service_tier:
-        payload["service_tier"] = args.service_tier
     if args.priority is not None:
         payload["priority"] = args.priority
-    if args.draft:
-        payload["draft"] = True
     if args.enable_web_search:
         payload["tools"] = [{"type": "web_search"}]
     return payload
-
 
 async def _request_with_retry(
     client: httpx.AsyncClient,
@@ -327,8 +401,8 @@ def build_payload_from_shot(shot: dict[str, Any], defaults: dict[str, Any]) -> d
     """Build a Seedance payload from one shot config + shared defaults.
 
     Shot keys (all optional except prompt):
-      prompt, duration, ratio, resolution, generate_audio, watermark,
-      seed, return_last_frame,
+      prompt, model, duration, ratio, resolution, generate_audio, watermark,
+      return_last_frame,
       first_frame, last_frame, reference_image, reference_video, reference_audio.
     Values for *_frame and reference_* can be a single path/URL string or a list.
     Missing shot keys fall back to the defaults dict.
@@ -338,60 +412,47 @@ def build_payload_from_shot(shot: dict[str, Any], defaults: dict[str, Any]) -> d
         raise SystemExit(f"Error: shot missing 'prompt': {shot}")
 
     content: list[dict[str, Any]] = [{"type": "text", "text": prompt}]
+    tracker = MediaTracker()
 
-    image_exts = {"png", "jpg", "jpeg", "webp", "gif", "bmp"}
-    video_exts = {"mp4", "mov", "avi", "mkv", "webm"}
-    audio_exts = {"mp3", "wav", "aac", "flac", "m4a", "ogg"}
-
-    def _add_media(opt_key: str, item_type: str, role: str, exts: set[str]) -> None:
+    def _add_shot_media(opt_key: str, item_type: str, role: str, exts: set[str]) -> None:
         v = shot.get(opt_key)
         if not v:
             return
         items = v if isinstance(v, list) else [v]
         for path_or_url in items:
-            if is_url(path_or_url):
-                content.append(build_content_item(item_type, path_or_url, role))
-            else:
-                local_path = validate_local_media(path_or_url, exts)
-                ext = local_path.suffix.lower().lstrip(".")
-                mime_type = _media_mime(ext, item_type)
-                b64 = base64.b64encode(local_path.read_bytes()).decode("ascii")
-                data_url = f"data:{mime_type};base64,{b64}"
-                content.append(build_content_item(item_type, data_url, role))
+            add_media_to_content(content, tracker, path_or_url, item_type, role, exts)
 
-    _add_media("first_frame", "image_url", "first_frame", image_exts)
-    _add_media("last_frame", "image_url", "last_frame", image_exts)
-    _add_media("reference_image", "image_url", "reference_image", image_exts)
-    _add_media("reference_video", "video_url", "reference_video", video_exts)
-    _add_media("reference_audio", "audio_url", "reference_audio", audio_exts)
+    _add_shot_media("first_frame", "image_url", "first_frame", IMAGE_EXTS)
+    _add_shot_media("last_frame", "image_url", "last_frame", IMAGE_EXTS)
+    _add_shot_media("reference_image", "image_url", "reference_image", IMAGE_EXTS)
+    _add_shot_media("reference_video", "video_url", "reference_video", VIDEO_EXTS)
+    _add_shot_media("reference_audio", "audio_url", "reference_audio", AUDIO_EXTS)
 
+    check_total_body_size(content, tracker.raw_bytes)
     validate_mode_constraints(content)
 
-    if shot.get("duration") is not None and not (shot["duration"] == -1 or 4 <= shot["duration"] <= 15):
-        raise SystemExit(f"Error: shot duration must be 4-15 or -1, got {shot['duration']}")
+    # Validate every per-shot param that defaults would otherwise silently override.
+    model = shot.get("model", defaults.get("model", "doubao-seedance-2-0-260128"))
     ratio = shot.get("ratio", defaults.get("ratio", "16:9"))
-    if ratio not in VALID_RATIOS:
-        raise SystemExit(f"Error: shot ratio '{ratio}' not in {VALID_RATIOS}")
     resolution = shot.get("resolution", defaults.get("resolution", "720p"))
-    if resolution not in VALID_RESOLUTIONS:
-        raise SystemExit(f"Error: shot resolution '{resolution}' not in {VALID_RESOLUTIONS}")
+    duration = shot.get("duration", defaults.get("duration", 5))
+    validate_model(model)
+    validate_ratio(ratio)
+    validate_resolution(model, resolution)
+    validate_duration(duration)
 
     payload: dict[str, Any] = {
-        "model": shot.get("model", defaults.get("model", "doubao-seedance-2-0-260128")),
+        "model": model,
         "content": content,
-        "duration": shot.get("duration", defaults.get("duration", 5)),
+        "duration": duration,
         "ratio": ratio,
         "resolution": resolution,
         "generate_audio": shot.get("generate_audio", defaults.get("generate_audio", True)),
         "watermark": shot.get("watermark", defaults.get("watermark", False)),
     }
-    seed = shot.get("seed", defaults.get("seed"))
-    if seed is not None:
-        payload["seed"] = seed
     if shot.get("return_last_frame") or defaults.get("return_last_frame"):
         payload["return_last_frame"] = True
     return payload
-
 
 async def _create_task_async(
     client: httpx.AsyncClient, api_key: str, base_url: str, payload: dict[str, Any]
@@ -407,7 +468,7 @@ async def _create_task_async(
     resp = await _request_with_retry(
         client, "POST", url, headers=headers, json=payload, timeout=60,
     )
-    if resp.status_code != 200:
+    if resp.status_code >= 400:
         raise SystemExit(f"Error creating task: HTTP {resp.status_code} {resp.text}")
     return resp.json()
 
@@ -421,7 +482,7 @@ async def _poll_task_async(
     start = time.time()
     while True:
         resp = await _request_with_retry(client, "GET", url, headers=headers, timeout=60)
-        if resp.status_code != 200:
+        if resp.status_code >= 400:
             raise SystemExit(f"Error polling task: HTTP {resp.status_code} {resp.text}")
         data = resp.json()
         status = data.get("status", "unknown")
@@ -435,12 +496,39 @@ async def _poll_task_async(
 
 
 async def _download_video_async(client: httpx.AsyncClient, video_url: str, output_path: Path) -> None:
-    resp = await client.get(video_url, timeout=120)
-    resp.raise_for_status()
-    with output_path.open("wb") as f:
-        async for chunk in resp.aiter_bytes(chunk_size=8192):
-            if chunk:
-                f.write(chunk)
+    """Download a video URL to a local file.
+
+    Retries on 408/429/5xx (transient errors). Once headers are received and we
+    start streaming the body, we do NOT retry — partial downloads would be wasted.
+    """
+    backoff = DEFAULT_RETRY_BACKOFF_S
+    last_err: Exception | None = None
+    for attempt in range(DEFAULT_MAX_RETRIES + 1):
+        try:
+            resp = await client.get(video_url, timeout=120)
+            if resp.status_code in RETRY_STATUS_CODES and attempt < DEFAULT_MAX_RETRIES:
+                last_err = httpx.HTTPStatusError(
+                    f"HTTP {resp.status_code}", request=resp.request, response=resp
+                )
+                await asyncio.sleep(backoff)
+                backoff = min(backoff * RETRY_BACKOFF_MULTIPLIER, RETRY_MAX_BACKOFF_S)
+                continue
+            resp.raise_for_status()
+            with output_path.open("wb") as f:
+                async for chunk in resp.aiter_bytes(chunk_size=64 * 1024):
+                    if chunk:
+                        f.write(chunk)
+            return
+        except httpx.RequestError as e:
+            last_err = e
+            if attempt < DEFAULT_MAX_RETRIES:
+                await asyncio.sleep(backoff)
+                backoff = min(backoff * RETRY_BACKOFF_MULTIPLIER, RETRY_MAX_BACKOFF_S)
+                continue
+            raise
+    raise SystemExit(
+        f"Error: failed to download {video_url} after {DEFAULT_MAX_RETRIES + 1} attempts: {last_err}"
+    )
 
 
 def write_manifest(
@@ -487,7 +575,6 @@ def write_prompt(output_dir: Path, prompt: str) -> Path:
 
 
 async def cmd_generate_async(args: argparse.Namespace) -> int:
-    _load_dotenv()
     api_key, base_url = get_auth()
     payload = build_payload(args)
 
@@ -496,15 +583,22 @@ async def cmd_generate_async(args: argparse.Namespace) -> int:
     write_prompt(output_dir, prompt)
 
     if args.dry_run:
-        dry_path = output_dir / "manifest.json"
-        dry_path.write_text(json.dumps({
-            "dry_run": True,
-            "request_payload": payload,
-            "created_at": dt.datetime.now().isoformat(timespec="seconds"),
-        }, ensure_ascii=False, indent=2), encoding="utf-8")
-        print("Dry-run mode: request payload saved.")
+        synthesized = {
+            "id": "DRY-RUN",
+            "status": "dry_run",
+            "model": payload["model"],
+            "ratio": payload["ratio"],
+            "duration": payload["duration"],
+            "resolution": payload["resolution"],
+            "content": {},
+            "usage": None,
+            "error": None,
+        }
+        manifest_path = write_manifest(output_dir, payload, synthesized, None, None)
+        print("Dry-run mode: no API call made.")
         print(json.dumps(payload, ensure_ascii=False, indent=2))
         print(f"\nOutput dir: {output_dir}")
+        print(f"Manifest: {manifest_path}")
         return 0
 
     async with httpx.AsyncClient() as client:
@@ -547,7 +641,6 @@ def cmd_generate(args: argparse.Namespace) -> int:
 
 
 def cmd_create(args: argparse.Namespace) -> int:
-    _load_dotenv()
     api_key, base_url = get_auth()
     payload = build_payload(args)
     if args.dry_run:
@@ -562,7 +655,6 @@ def cmd_create(args: argparse.Namespace) -> int:
 
 
 def cmd_poll(args: argparse.Namespace) -> int:
-    _load_dotenv()
     api_key, base_url = get_auth()
     if not args.task_id:
         raise SystemExit("Error: --task-id required for poll.")
@@ -592,7 +684,6 @@ def cmd_download(args: argparse.Namespace) -> int:
 
 
 async def cmd_list_tasks_async(args: argparse.Namespace) -> int:
-    _load_dotenv()
     api_key, base_url = get_auth()
     base_params: dict[str, Any] = {
         "page_num": args.page_num,
@@ -618,7 +709,7 @@ async def cmd_list_tasks_async(args: argparse.Namespace) -> int:
             headers={"Authorization": f"Bearer {api_key}", "Accept": "application/json"},
             timeout=30,
         )
-    if resp.status_code != 200:
+    if resp.status_code >= 400:
         raise SystemExit(f"Error listing tasks: HTTP {resp.status_code} {resp.text}")
     body = resp.json()
     if args.json_only:
@@ -641,18 +732,41 @@ def cmd_list_tasks(args: argparse.Namespace) -> int:
 
 
 async def cmd_cancel_task_async(args: argparse.Namespace) -> int:
-    _load_dotenv()
     api_key, base_url = get_auth()
     url = f"{base_url}/contents/generations/tasks/{args.task_id}"
+    headers = {"Authorization": f"Bearer {api_key}", "Accept": "application/json"}
     async with httpx.AsyncClient() as client:
-        resp = await _request_with_retry(
-            client, "DELETE", url,
-            headers={"Authorization": f"Bearer {api_key}", "Accept": "application/json"},
-            timeout=30,
+        # 1. Look up the task to report its current state.
+        prev_state = "?"
+        try:
+            get_resp = await _request_with_retry(
+                client, "GET", url, headers=headers, timeout=30,
+            )
+            if get_resp.status_code < 400:
+                prev_state = get_resp.json().get("status", "?")
+        except SystemExit:
+            pass  # If GET fails, proceed anyway; the DELETE will reveal the truth.
+
+        # 2. Issue DELETE.
+        del_resp = await _request_with_retry(
+            client, "DELETE", url, headers=headers, timeout=30,
         )
-    if resp.status_code != 200:
-        raise SystemExit(f"Error cancelling task: HTTP {resp.status_code} {resp.text}")
-    print(f"Cancelled/deleted: {args.task_id}")
+    if del_resp.status_code >= 400:
+        raise SystemExit(
+            f"Error cancelling task: HTTP {del_resp.status_code} {del_resp.text}\n"
+            f"  (Note: per official API, DELETE on a running task is rejected.)"
+        )
+
+    # 3. Tell the user what actually happened based on the previous state.
+    transitions = {
+        "queued": "was queued -> now cancelled (no longer runs)",
+        "succeeded": "had succeeded -> record deleted (history gone)",
+        "failed": "had failed -> record deleted (history gone)",
+        "expired": "had expired -> record deleted (history gone)",
+        "cancelled": "was already cancelled -> no-op",
+    }
+    msg = transitions.get(prev_state, f"was in state {prev_state} -> DELETE returned 200")
+    print(f"Task {args.task_id}: {msg}.")
     return 0
 
 
@@ -661,7 +775,6 @@ def cmd_cancel_task(args: argparse.Namespace) -> int:
 
 
 async def cmd_batch_submit_async(args: argparse.Namespace) -> int:
-    _load_dotenv()
     api_key, base_url = get_auth()
 
     shots_path = Path(args.shots_file).expanduser().resolve()
@@ -683,7 +796,6 @@ async def cmd_batch_submit_async(args: argparse.Namespace) -> int:
         "resolution": args.resolution,
         "generate_audio": args.generate_audio,
         "watermark": args.watermark,
-        "seed": args.seed,
         "return_last_frame": args.return_last_frame,
     }
 
@@ -796,9 +908,10 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate videos with Seedance 2.0.")
     subparsers = parser.add_subparsers(dest="command", help="Command")
 
-    # Default subcommand: generate. Insert it when the first argument is not a known subcommand.
+    # Default subcommand: generate. Insert it when the first argument is not a known
+    # subcommand AND not a flag (so `--help` / `--version` reach argparse's top-level help).
     known_commands = {"generate", "create", "poll", "download", "list-tasks", "cancel-task", "batch-submit"}
-    if sys.argv[1:] and sys.argv[1] not in known_commands:
+    if sys.argv[1:] and sys.argv[1] not in known_commands and not sys.argv[1].startswith("-"):
         sys.argv.insert(1, "generate")
 
     def _add_common(p: argparse.ArgumentParser) -> None:
@@ -816,11 +929,7 @@ def parse_args() -> argparse.Namespace:
         p.add_argument("--generate-audio", action=argparse.BooleanOptionalAction, default=True)
         p.add_argument("--watermark", action=argparse.BooleanOptionalAction, default=False)
         p.add_argument("--return-last-frame", action="store_true")
-        p.add_argument("--seed", type=int)
-        p.add_argument("--frames", type=int, help="Frame count (overrides --duration). Use 25+4n format in [29, 289].")
-        p.add_argument("--service-tier", choices=["default", "flex"], help="default=online, flex=offline (cheaper).")
         p.add_argument("--priority", type=int, help="Queue priority (higher runs sooner).")
-        p.add_argument("--draft", action="store_true", help="Generate a low-cost draft/样片 task.")
         p.add_argument(
             "--enable-web-search",
             action="store_true",
@@ -867,7 +976,6 @@ def parse_args() -> argparse.Namespace:
     batch.add_argument("--generate-audio", action=argparse.BooleanOptionalAction, default=True)
     batch.add_argument("--watermark", action=argparse.BooleanOptionalAction, default=False)
     batch.add_argument("--return-last-frame", action="store_true")
-    batch.add_argument("--seed", type=int)
     batch.add_argument("--wait", action="store_true", help="After submitting, wait for all tasks to complete and download videos")
     batch.add_argument("--poll-interval", type=int, default=DEFAULT_POLL_INTERVAL)
     batch.add_argument("--max-wait", type=int, default=DEFAULT_MAX_WAIT)
@@ -879,6 +987,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
+    _load_dotenv()
     args = parse_args()
     command = args.command or "generate"
     if command == "generate":

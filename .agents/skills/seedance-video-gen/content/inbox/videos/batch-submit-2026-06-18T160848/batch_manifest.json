@@ -1,0 +1,27 @@
+{
+  "submitted_at": "2026-06-18T16:08:48",
+  "shots_file": "/private/tmp/bad-image.json",
+  "shots_count": 1,
+  "submitted_ok": 0,
+  "errors": 1,
+  "results": [
+    {
+      "shot_index": 0,
+      "prompt": "test",
+      "task_id": null,
+      "status": "error",
+      "status_code": 0,
+      "latency_ms": 0.1,
+      "error": "Error: image big-image.png is 31.0 MB; max 30 MB per the official input limit."
+    }
+  ],
+  "defaults": {
+    "model": "doubao-seedance-2-0-260128",
+    "duration": 5,
+    "ratio": "16:9",
+    "resolution": "720p",
+    "generate_audio": true,
+    "watermark": false,
+    "return_last_frame": false
+  }
+}

@@ -28,8 +28,10 @@
 | 模型 ID | 状态 | 1080p | 时长 | 能力 |
 |---|---|---|---|---|
 | `doubao-seedance-2-0-260128` | ✅ 标准 | ✅ | [4, 15] s / -1 | 文生 / 首帧 / 首尾帧 / 多模态参考 / 有声 / 编辑 / 延长 / 联网搜索 |
-| `doubao-seedance-2-0-fast-260128` | ✅ 快速 | ❌ 720p 封顶 | [4, 15] s / -1 | 同上，更快更便宜 |
+| `doubao-seedance-2-0-fast-260128` | ✅ 快速 | ❌ 720p 封顶 | [4, 15] s / -1 | 同上，更快更便宜；实测 token 用量 ~40% |
 | `doubao-seedance-2-0-mini-260615` | 🟡 体验期 | ❌ 720p 封顶 | [4, 15] s / -1 | 2026-06-15 ~ 2026-06-22 仅控制台可调试；2026-06-22 起支持 API |
+
+> 三个 2.0 模型**都不支持** `frames` / `seed` / `draft` / `service_tier:flex` / `camera_fixed`。详细理由见「请求参数」表后的注。
 
 > ⚠️ **Mini 模型上线节奏**：2026-06-15 ~ 2026-06-22 仅 [控制台体验中心](https://console.volcengine.com/ark/region:ark+cn-beijing/experience/vision?modelId=doubao-seedance-2-0-mini-260615&tab=GenVideo) 可调试（并发 1），预计 **2026-06-22 起支持 API 调用**。本文档生成时（2026-06-18）尚未开放 API。
 
@@ -43,19 +45,17 @@
 |---|---|---|---|
 | `model` | string | ✅ | 模型 ID 或 Endpoint ID |
 | `content` | object[] | ✅ | 多模态输入数组（见下表） |
-| `duration` | int | ❌ | 时长秒数，默认 `5` |
-| `frames` | int | ❌ | 帧数，`[29, 289]`，格式 `25+4n`；与 `duration` 二选一，优先级更高 |
+| `duration` | int | ❌ | 时长秒数，默认 `5`；或 `-1` 让模型自适应（整数秒） |
 | `ratio` | string | ❌ | `21:9`/`16:9`/`4:3`/`1:1`/`3:4`/`9:16`/`adaptive` |
 | `resolution` | string | ❌ | `480p`/`720p`/`1080p`（1080p 仅标准版） |
-| `generate_audio` | bool | ❌ | 是否生成音频，默认 `true` |
+| `generate_audio` | bool | ❌ | 是否生成音频，默认 `true`；输出音频为**单声道 mono** |
+| **input size** | — | — | **输入参考素材**体积上限：图片 ≤ 30 MB、视频 ≤ 50 MB、音频 ≤ 15 MB；请求体 base64 后 ≤ 64 MB（脚本 hard-fail 在 60 MB）。**这是输入限制，不是输出 video 体积限制** |
 | `watermark` | bool | ❌ | 是否加水印，默认 `false` |
-| `return_last_frame` | bool | ❌ | 返回尾帧图 URL，用于链式续写 |
-| `seed` | int | ❌ | 随机种子，Seedance 2.0 **暂不支持**；`[-1, 2^32-1]` |
+| `return_last_frame` | bool | ❌ | 返回尾帧图 URL，用于链式续写；尾帧格式 png，无水印，宽高同视频 |
+| `priority` | int | ❌ | 任务优先级（`0-9`），数值越大越靠前（仅同 Endpoint 内 FIFO 排序） |
 | `tools` | object[] | ❌ | 工具调用，目前仅支持 `[{"type": "web_search"}]`（联网搜索）；**仅纯文本输入可用** |
-| `camera_fixed` | bool | ❌ | 固定摄像头，Seedance 2.0 **暂不支持** |
-| `service_tier` | string | ❌ | `default`（在线）/ `flex`（离线推理，更便宜） |
-| `priority` | int | ❌ | 任务优先级，数值越大越靠前 |
-| `draft` | bool | ❌ | 是否为样片/草稿任务；返回的 `id` 会带 Draft 标记 |
+
+> **Seedance 2.0 系列暂不支持**：`frames`、`seed`、`camera_fixed`、`service_tier="flex"`、`draft`。这些字段存在 API 文档里但 2.0 系列不接受，传了会被拒。
 
 ### `content[]` 项类型
 
@@ -67,7 +67,6 @@
 | `image_url` | `image_url.url` | `first_frame` / `last_frame` / `reference_image` | 图生视频或多模态参考 |
 | `video_url` | `video_url.url` | `reference_video` | 视频参考 |
 | `audio_url` | `audio_url.url` | `reference_audio` | 音频参考 |
-| 样片任务 ID | — | — | 引用之前 `draft:true` 生成的样片，生成正式视频 |
 
 ### 生成模式组合
 
@@ -77,7 +76,6 @@
 | 首帧图生视频 | `text`（可选）+ 1 个 `image_url`（`first_frame`） |
 | 首尾帧 | `text`（可选）+ 2 个 `image_url`（`first_frame` + `last_frame`） |
 | 多模态参考 | `text` + 0–9 图 + 0–3 视频 + 0–3 音频（至少 1 图或 1 视频） |
-| 样片续写 | 1 个样片任务 ID + 可选 `text` |
 
 > ⚠️ 首尾帧/首帧模式与多模态参考模式**互斥**，不能在一次请求中混用 `first_frame`/`last_frame` 与 `reference_*`。
 
@@ -123,7 +121,7 @@
 }
 ```
 
-如果 `draft:true`，返回的 `id` 会带 Draft 后缀，标识这是样片任务。
+
 
 ---
 
@@ -144,15 +142,12 @@
 | `error` | object/null | 失败时的 `{code, message}` |
 | `created_at` | int | 任务创建时间（Unix 秒） |
 | `updated_at` | int | 状态更新时间（Unix 秒） |
-| `seed` | int | 实际使用的 seed（2.0 暂不支持） |
 | `resolution` | string | 实际分辨率 |
 | `ratio` | string | 实际比例 |
 | `duration` | int | 实际时长秒 |
 | `framespersecond` | int | 帧率（24） |
-| `service_tier` | string | `default` / `flex` |
-| `execution_expires_after` | int | 任务执行超时秒数 |
+| `execution_expires_after` | int | 任务执行超时秒数（默认 48h，可配范围 1h-72h） |
 | `generate_audio` | bool | 是否生成音频 |
-| `draft` | bool | 是否样片 |
 | `priority` | int | 优先级 |
 
 ```json
@@ -167,15 +162,12 @@
   "usage": { "completion_tokens": 108900, "total_tokens": 108900 },
   "created_at": 1779348818,
   "updated_at": 1779348874,
-  "seed": 78674,
   "resolution": "720p",
   "ratio": "16:9",
   "duration": 5,
   "framespersecond": 24,
-  "service_tier": "default",
   "execution_expires_after": 172800,
   "generate_audio": true,
-  "draft": false,
   "priority": 0
 }
 ```
@@ -193,7 +185,6 @@
 | `filter.status` | string | ❌ | `queued`/`running`/`cancelled`/`succeeded`/`failed` |
 | `filter.task_ids` | string[] | ❌ | 多个任务 ID 精确搜索，重复参数名 |
 | `filter.model` | string | ❌ | 模型精确搜索 |
-| `filter.service_tier` | string | ❌ | `default` / `flex` |
 
 ### 限制
 
@@ -237,7 +228,7 @@
 
 | HTTP 状态 | 含义 | 处理 |
 |---|---|---|
-| `400` | 参数错误 | 检查模型/分辨率/时长/比例组合、`frames` 格式 `25+4n`、是否同时混用 `first_frame` 与 `reference_*` |
+| `400` | 参数错误 | 检查模型/分辨率/时长/比例组合、是否同时混用 `first_frame` 与 `reference_*`、是否传了 2.0 不支持的字段（`frames`/`seed`/`draft`） |
 | `401` | API Key 无效 | 检查 `ARK_API_KEY` 是否正确 |
 | `403` | 内容审核拦截 | 检查是否含真实人脸、违规内容 |
 | `404` | 任务 ID 不存在或已过 7 天 | 用 `list-tasks` 找最近 7 天的任务 |
@@ -249,12 +240,52 @@
 ## 计费
 
 - 按 token 计费：`费用 = token 单价 × usage.completion_tokens`
-- 约 1 元/秒（1080p），具体以控制台账单为准
+- 约 **1 元/秒（1080p）**，具体以控制台账单为准
 - 提交时预扣，完成后多退少补；参数错误被拒不计费
-- `service_tier:"flex"` 离线推理更便宜，但任务进入排队时间更长
-- 视频 URL 24 小时有效，生成后必须立即下载；推荐配置 TOS 数据订阅自动转存
+- **Seedance 2.0 系列存在最低 token 用量限制**：若实际 token 用量低于最低值，按最低值计费
+- 视频 URL **24 小时有效**，生成后必须立即下载；推荐配置 TOS 数据订阅自动转存
+- 实测 token 用量（同一参数下稳定）：
+  - Fast 4s 480p：**40,594 tokens**
+  - Standard 5s 720p：**108,900 tokens**
 
 ---
+
+## 实现说明
+
+### REST 直调 vs volcengine-python-sdk
+
+本 skill 走 **httpx 直调 4 端点**，没用官方 `volcengine-python-sdk[ark]`。决策和权衡：
+
+| 维度 | httpx 直调（本 skill）| volcengine-python-sdk |
+|---|---|---|
+| 依赖体积 | 极小（只 `httpx>=0.28.0`）| 较重（含 OpenAI 兼容层、Tool Use、流式等无关能力）|
+| 4 端点维护 | 30 行直白代码 | 0 行（SDK 维护）|
+| 重试 / 退避 | 自己写（指数退避 + Retry-After 解析），透明可调 | SDK 内部，行为不直观 |
+| 参数/响应字段 | 100% 透传 API | SDK 包装一层，新字段要等 SDK 升级 |
+| 流式 / Tool Use 等 | 不需要（视频生成是异步，无流式） | 过度设计 |
+
+**结论**：视频生成 API 是 4 个稳定的 REST 端点 + 异步轮询，没有流式、没有 Tool Use，**SDK 的额外能力 0 价值、依赖成本 100%**。如果哪天官方推流式生成再切换。
+
+### manifest.json 字段约定
+
+每次任务成功后写 `manifest.json`，便于事后追溯和自动化处理：
+
+| 字段 | 来源 | 用途 |
+|---|---|---|
+| `task_id` | API 响应 | 后续 poll / cancel / 下载 唯一 ID |
+| `status` | API 响应 | `succeeded` / `failed` / `cancelled` / `expired` |
+| `model` / `ratio` / `duration` / `resolution` | API 响应（echo）| 记录实际生效参数（与请求可能不同）|
+| `usage.completion_tokens` | API 响应 | 计费 token 数（用于成本估算）|
+| `video_url` | API 响应 | 24h 有效，本脚本已自动下载到 `video.mp4` |
+| `last_frame_url` | API 响应 | 仅当 `return_last_frame:true` |
+| `revised_prompt` | API 响应 | **模型实际看到的 prompt 改写版**，对调试「为什么生成结果和我想的不一样」很关键 |
+| `framespersecond` | API 响应 | 通常 24 |
+| `error` | API 响应 | 任务失败时的 `{code, message}` |
+| `request_payload` | 本地构造 | 用户实际请求的 payload，方便重放 |
+| `created_at` | 本地 | manifest 写入时间（ISO 8601）|
+| `output_files` | 本地 | 实际下载的 video / last_frame 路径 |
+
+> `revised_prompt` 是 debug 利器：用户写的 prompt 经常会被模型「善意改写」（加主体定义、加风格约束），写出来的视频可能跟用户预期对不上。**写完视频后想优化效果，先对比 `revised_prompt` 和你的原始 prompt**。
 
 ## 来源
 
