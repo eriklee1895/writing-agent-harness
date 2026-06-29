@@ -32,6 +32,7 @@ description: |
 
 > **duration 生成视频时长**：取值范围4-15s，根据内容复杂度选择，简单镜头 4–5s，有剧情/对白/多镜头建议 8–15s。
 > **预览 vs 出片**：探索/调参阶段用 fast + 480p/720p 快速迭代，终稿再切 standard + 目标分辨率。
+> **默认模型**：省略 `--model` 即走 `doubao-seedance-2-0-260128`（standard 标准版，唯一支持 4k，质量最高）。下方第一个示例显式带 `--model fast` 是「快速预览」用法；第二个「终稿」示例省略 `--model` 即默认 standard。fast/mini 都需主动 opt-in。
 
 ```bash
 # 文生视频（快速预览，~40% 成本）
