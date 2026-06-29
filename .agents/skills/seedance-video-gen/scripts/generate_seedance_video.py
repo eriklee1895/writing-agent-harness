@@ -911,19 +911,53 @@ async def cmd_batch_submit_async(args: argparse.Namespace) -> int:
                 _poll_task_async(client, api_key, base_url, r["task_id"], args.poll_interval, args.max_wait, False)
                 for r in ok_results
             ])
+        n_succeeded = 0
+        n_failed_after_wait = 0
         for r, p in zip(ok_results, polled):
             status = p.get("status")
+            # Update manifest entry with final state
+            r["status"] = status
+            r["finished_at"] = dt.datetime.now().isoformat(timespec="seconds")
+            usage = p.get("usage") or {}
+            if usage:
+                r["usage"] = usage
+            error = p.get("error")
+            if error:
+                r["error"] = str(error)
+            content = p.get("content") or {}
+            video_url = content.get("video_url")
+            last_frame_url = content.get("last_frame_url")
+            video_file = None
+            last_frame_file = None
             if status in {"succeeded", "completed"}:
-                video_url = p.get("content", {}).get("video_url")
                 if video_url:
                     video_path = out_dir / f"shot-{r['shot_index']:03d}-{r['task_id']}.mp4"
                     print(f"  Downloading shot {r['shot_index']} to {video_path}...", flush=True)
                     async with httpx.AsyncClient() as client:
                         await _download_video_async(client, video_url, video_path)
+                    video_file = str(video_path)
+                    n_succeeded += 1
                 else:
                     print(f"  Shot {r['shot_index']}: succeeded but no video_url")
+                    n_failed_after_wait += 1
+                if last_frame_url and args.return_last_frame:
+                    lf_path = out_dir / f"shot-{r['shot_index']:03d}-{r['task_id']}-last-frame.jpg"
+                    async with httpx.AsyncClient() as client:
+                        await _download_video_async(client, last_frame_url, lf_path)
+                    last_frame_file = str(lf_path)
             else:
                 print(f"  Shot {r['shot_index']} ({r['task_id']}) status={status}: {p.get('error')}")
+                n_failed_after_wait += 1
+            if video_file:
+                r["video_file"] = video_file
+            if last_frame_file:
+                r["last_frame_file"] = last_frame_file
+        # Re-write manifest with final per-task status / usage / file paths
+        manifest["wait_completed_at"] = dt.datetime.now().isoformat(timespec="seconds")
+        manifest["succeeded"] = n_succeeded
+        manifest["failed_after_wait"] = n_failed_after_wait
+        (out_dir / "batch_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"\nWait complete: {n_succeeded} succeeded, {n_failed_after_wait} failed/abnormal. Manifest updated.")
     elif n_ok:
         print(f"\nAll {n_ok} tasks submitted. To track progress:")
         print(f"  uv run scripts/generate_seedance_video.py list-tasks --task-ids {' '.join(r['task_id'] for r in results if r['task_id'])}")
