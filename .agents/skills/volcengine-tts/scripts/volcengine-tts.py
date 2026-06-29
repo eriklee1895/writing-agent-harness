@@ -141,7 +141,7 @@ def synthesize(
     speech_rate: int = 0,
     loudness_rate: int = 0,
     pitch: int = 0,
-    model: str = "seed-tts-2.0-standard",
+    model: Optional[str] = None,
     ssml: bool = False,
     context_texts: Optional[list[str]] = None,
     language: Optional[str] = None,
@@ -152,10 +152,13 @@ def synthesize(
     watermark: bool = False,
     disable_markdown_filter: bool = False,
     disable_emoji_filter: bool = False,
+    enable_subtitle: bool = True,
 ) -> dict[str, Any]:
     """Call the Volcengine TTS HTTP unidirectional streaming API.
 
-    Returns a dict with keys: audio_data (bytes), text_words, log_id, error.
+    Returns a dict with keys: audio_data (bytes), text_words, log_id,
+    words (list of word-level timestamps, empty unless enable_subtitle=True),
+    sentence_text (str), error.
     On success, error is None. On failure, audio_data is empty.
     """
     request_id = str(uuid.uuid4())
@@ -176,6 +179,8 @@ def synthesize(
         audio_params["speech_rate"] = speech_rate
     if loudness_rate != 0:
         audio_params["loudness_rate"] = loudness_rate
+    if enable_subtitle:
+        audio_params["enable_subtitle"] = True
 
     body: dict[str, Any] = {
         "req_params": {
@@ -201,7 +206,7 @@ def synthesize(
         body["req_params"]["latex_parser"] = latex_parser
         body["req_params"]["disable_markdown_filter"] = True  # required by API
     if silence_duration > 0:
-        body["req_params"]["additions"] = json.dumps({"silence_duration": silence_duration})
+        body["req_params"]["silence_duration"] = silence_duration
     if watermark:
         body["req_params"]["aigc_watermark"] = True
     if disable_markdown_filter:
@@ -248,6 +253,8 @@ def synthesize(
             # Read chunked response
             audio_chunks: list[bytes] = []
             text_words = 0
+            words: list[dict[str, Any]] = []
+            sentence_text: str = ""
             for line in resp.iter_lines():
                 if not line:
                     continue
@@ -269,6 +276,8 @@ def synthesize(
                     return {
                         "audio_data": b"",
                         "text_words": 0,
+                        "words": [],
+                        "sentence_text": "",
                         "log_id": log_id,
                         "error": last_error,
                     }
@@ -280,6 +289,22 @@ def synthesize(
                     except Exception:
                         pass
 
+                sentence = chunk.get("sentence")
+                if isinstance(sentence, dict):
+                    sentence_text = sentence.get("text", sentence_text) or sentence_text
+                    sw = sentence.get("words")
+                    if isinstance(sw, list) and sw:
+                        # Server may send words split across chunks; dedupe by (word, startTime, endTime)
+                        seen: set[tuple[str, float, float]] = set()
+                        merged: list[dict[str, Any]] = []
+                        for w in words + sw:
+                            key = (str(w.get("word", "")), float(w.get("startTime", 0.0)), float(w.get("endTime", 0.0)))
+                            if key in seen:
+                                continue
+                            seen.add(key)
+                            merged.append(w)
+                        words = merged
+
                 usage = chunk.get("usage", {})
                 if isinstance(usage, dict):
                     text_words = usage.get("text_words", text_words)
@@ -290,6 +315,8 @@ def synthesize(
             return {
                 "audio_data": b"".join(audio_chunks),
                 "text_words": text_words,
+                "words": words,
+                "sentence_text": sentence_text,
                 "log_id": log_id,
                 "error": last_error if last_error else None,
             }
@@ -303,6 +330,8 @@ def synthesize(
             return {
                 "audio_data": b"",
                 "text_words": 0,
+                "words": [],
+                "sentence_text": "",
                 "log_id": log_id,
                 "error": last_error,
             }
@@ -310,6 +339,8 @@ def synthesize(
     return {
         "audio_data": b"",
         "text_words": 0,
+        "words": [],
+        "sentence_text": "",
         "log_id": log_id,
         "error": last_error or "Max retries exceeded",
     }
@@ -355,6 +386,10 @@ def synthesize_one(
         "duration_ms": duration_ms,
         "error": error,
     }
+    if result.get("words"):
+        meta["words"] = result["words"]
+    if result.get("sentence_text"):
+        meta["sentence_text"] = result["sentence_text"]
 
     if not error and result["audio_data"]:
         ensure_dir(output_dir)
@@ -369,6 +404,8 @@ def synthesize_one(
         "sample_rate": kwargs.get("sample_rate", DEFAULT_SAMPLE_RATE),
         "text_words": result["text_words"],
         "log_id": result["log_id"],
+        "words": result.get("words", []),
+        "sentence_text": result.get("sentence_text", ""),
         "error": error,
     }
 
@@ -393,9 +430,34 @@ def synthesize_batch(
 
         kwargs = {**base_kwargs}
         kwargs["speaker"] = item.get("speaker", base_kwargs.get("speaker", DEFAULT_SPEAKER))
-        for k in ("speech_rate", "volume", "pitch", "model", "language", "context"):
-            if k in item:
-                kwargs[k] = item[k]
+        # Simple scalar overrides (key in item → kwarg name passed to synthesize())
+        scalar_map = {
+            "speech_rate": "speech_rate",
+            "volume": "loudness_rate",
+            "pitch": "pitch",
+            "model": "model",
+            "language": "language",
+            "format": "fmt",
+            "sample_rate": "sample_rate",
+            "ssml": "ssml",
+            "silence_duration": "silence_duration",
+            "watermark": "watermark",
+            "subtitle": "enable_subtitle",
+            "strip_markdown": "disable_markdown_filter",
+            "strip_emoji": "disable_emoji_filter",
+            "latex": "enable_latex",
+            "latex_parser": "latex_parser",
+        }
+        for item_key, kwarg_key in scalar_map.items():
+            if item_key in item:
+                kwargs[kwarg_key] = item[item_key]
+        # context can come either as a string (single instruction) or list of strings
+        if "context" in item:
+            ctx = item["context"]
+            kwargs["context_texts"] = [ctx] if isinstance(ctx, str) else list(ctx)
+        elif "context_texts" in item:
+            ctx = item["context_texts"]
+            kwargs["context_texts"] = [ctx] if isinstance(ctx, str) else list(ctx)
 
         return idx, synthesize_one(text, output_dir, api_key=api_key, **kwargs)
 
@@ -581,12 +643,21 @@ def main() -> None:
     parser.add_argument("--speech-rate", type=int, default=0, help="Speed [-50, 100], 100=2x")
     parser.add_argument("--volume", type=int, default=0, help="Volume [-50, 100], 100=2x")
     parser.add_argument("--pitch", type=int, default=0, help="Pitch [-12, 12] semitones")
-    parser.add_argument("--model", default="seed-tts-2.0-standard", choices=["seed-tts-2.0-standard", "seed-tts-2.0-expressive"])
+    parser.add_argument(
+        "--model",
+        default=None,
+        help=(
+            "Model variant to pass to the API. Omit by default (server picks). "
+            "Mainly useful for cloned (ICL) voices, e.g. 'seed-tts-2.0-standard'. "
+            "Official seed-tts-2.0 voices support --context without setting this."
+        ),
+    )
     parser.add_argument("--ssml", action="store_true", help="Parse text as SSML")
     parser.add_argument("--context", help="Voice instruction, e.g. '用温柔的语气说话'")
     parser.add_argument("--language", help="Explicit language: zh-cn, en, ja, es-mx, id, pt-br, ko")
     parser.add_argument("--silence-duration", type=int, default=0, help="Trailing silence ms [0, 30000]")
     parser.add_argument("--watermark", action="store_true", help="Add AIGC audio watermark")
+    parser.add_argument("--no-subtitle", dest="subtitle", action="store_false", help="Disable word-level timestamps (saves ~600ms tail latency for latency-sensitive / realtime use cases)")
     parser.add_argument("--strip-markdown", action="store_true", help="Remove markdown syntax before TTS")
     parser.add_argument("--strip-emoji", action="store_true", help="Remove emoji characters before TTS")
     parser.add_argument("--latex", action="store_true", help="Enable LaTeX formula reading (enable_latex_tn)")
@@ -636,6 +707,7 @@ def main() -> None:
         "language": args.language,
         "silence_duration": args.silence_duration,
         "watermark": args.watermark,
+        "enable_subtitle": args.subtitle,
         "disable_markdown_filter": args.strip_markdown,
         "disable_emoji_filter": args.strip_emoji,
         "enable_latex": args.latex,

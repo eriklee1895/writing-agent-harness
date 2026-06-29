@@ -79,26 +79,29 @@ Output: JSON array of results, each with the same fields as single mode. Failed 
 | `--speech-rate` | `0` | Speed [-50, 100], 100=2x, -50=0.5x |
 | `--volume` | `0` | Volume [-50, 100], 100=2x |
 | `--pitch` | `0` | Pitch [-12, 12] semitones |
-| `--model` | `seed-tts-2.0-standard` | `seed-tts-2.0-standard` (fast/stable) or `seed-tts-2.0-expressive` (emotional range, supports `--context`) |
-| `--context` | — | Natural language prompt for HOW to speak — tone, emotion, pacing, persona. E.g. "用痛心的语气说话", "像深夜电台主持人一样温柔地读", "用激动兴奋的语气". Only works with `--model seed-tts-2.0-expressive`. |
+| `--model` | _(unset)_ | Optional model variant; mostly relevant for cloned (ICL) voices (e.g. `seed-tts-2.0-standard`). Official seed-tts-2.0 voices work without it. |
+| `--context` | — | Natural language voice instruction — tone, emotion, pacing, persona. E.g. "用痛心的语气说话", "像深夜电台主持人一样温柔地读", "用激动兴奋的语气". Works with all official seed-tts-2.0 voices out of the box (no `--model` flag required). |
 | `--ssml` | — | Parse input text as SSML |
 | `--language` | — | Explicit language: zh-cn, en, ja, es-mx, id, pt-br, ko |
 | `--latex` | — | Enable LaTeX formula reading for math/physics content |
 | `--latex-parser v2` | — | Stronger LaTeX parsing (auto-enables `--strip-markdown`, higher latency) |
 | `--silence-duration` | `0` | Trailing silence in ms [0, 30000] |
 | `--watermark` | — | Add AIGC audio watermark |
+| `--no-subtitle` | _(subtitle on by default)_ | Turn off word-level timestamps. Saves ~600ms of tail latency for real-time / conversational use cases. Offline narration pipelines should leave subtitles **on** (the default) — downstream subtitle generation, B-roll alignment, and forced cuts all need word timestamps. |
 | `--strip-markdown` | — | Remove Markdown syntax (e.g. `**bold**` → "bold") |
 | `--strip-emoji` | — | Remove emoji characters before TTS |
 | `--list-speakers` | — | Fetch and display available voices, then exit |
 
-### Model Selection
+### Voice Instructions (`--context`)
 
-| Model | Latency | `--context` | Best for |
-|-------|---------|:---:|----------|
-| `seed-tts-2.0-standard` (default) | Low | ❌ | General voiceover, narration, dubbing — fast and stable |
-| `seed-tts-2.0-expressive` | Higher | ✅ | Emotional delivery, nuanced tone — use with `--context` |
+All official Doubao TTS 2.0 voices (speaker IDs ending in `_bigtts`) support natural-language voice instructions via `--context` / the API's `context_texts` field. You do **not** need to pass a special `--model` to use it. Examples:
 
-`--context` (API: `context_texts`) lets you give natural language voice instructions — "用痛心的语气说话", "像新闻主播一样播报". This is the key reason to choose expressive over standard.
+- `"像深夜电台主持人一样温柔低沉地读"`
+- `"用痛心疾首的语气说话，语速放慢"`
+- `"像新闻联播主播一样正式、字正腔圆地播报"`
+- `"Read like an excited startup founder giving a keynote"`
+
+The `--model` flag is primarily for cloned (ICL) voices, where you can explicitly request `seed-tts-2.0-standard` (lower latency, no voice-instruction QA) — leave it unset for the default public catalog.
 
 ## Output Format
 
@@ -112,9 +115,19 @@ Output: JSON array of results, each with the same fields as single mode. Failed 
   "format": "mp3",
   "sample_rate": 24000,
   "text_words": 4,
-  "log_id": "202606161130000FACFE6D19421815D605"
+  "log_id": "202606161130000FACFE6D19421815D605",
+  "words": [
+    {"word": "你", "startTime": 0.22, "endTime": 0.33, "confidence": 0.85},
+    {"word": "好", "startTime": 0.33, "endTime": 0.55, "confidence": 0.92},
+    {"word": "世", "startTime": 0.55, "endTime": 0.80, "confidence": 0.78},
+    {"word": "界", "startTime": 0.80, "endTime": 1.01, "confidence": 0.96}
+  ],
+  "sentence_text": "你好世界",
+  "error": null
 }
 ```
+
+**Word-level timestamps are on by default.** Pass `--no-subtitle` if you don't need them and want ~600ms less tail latency (e.g. realtime playback).
 
 ### Error (single)
 ```json
@@ -149,7 +162,25 @@ tts-output/
   tts_20260616_113000_001.meta.json
 ```
 
-Downstream tools (video compositors, subtitle generators) should read the `.meta.json` files — they survive process restarts and don't require re-reading the audio.
+The meta file includes all result fields, including `words` (word-level timestamps) **by default** (unless `--no-subtitle` was passed). Downstream tools (video compositors, subtitle generators, karaoke aligners, B-roll cut planners) should read the `.meta.json` files — they survive process restarts and don't require re-reading the audio.
+
+Enabling subtitles adds ~600ms of **tail latency** (the server runs a forced-alignment pass after audio generation) but does not affect time-to-first-byte, does not increase audio size, and does not incur extra billing. For offline narration/video pipelines (this repo's main use case), leave it on; for real-time conversational use, pass `--no-subtitle`.
+
+### Word-level timestamps (`--subtitle`)
+
+When `--subtitle` is set, each returned word has:
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `word` | string | The character / token (Chinese: 1 char per word; English: word or punctuation group) |
+| `startTime` | float | Start offset in seconds |
+| `endTime` | float | End offset in seconds |
+| `confidence` | float | Alignment confidence 0–1 |
+
+Notes from the official docs (2026-06-29):
+- Only seed-tts-2.0 voices support `enable_subtitle`; only Chinese and English are supported.
+- Timestamps are relative to the returned audio (i.e., start of the MP3).
+- Use for: subtitles, karaoke-style highlight, forced alignment with video cuts, lip-sync hinting.
 
 ## Voice Selection
 

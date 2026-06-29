@@ -234,28 +234,34 @@ Source: https://www.volcengine.com/docs/6561/1257544
 
 All seed-tts-2.0 voices support:
 
-- **情感变化 (Emotion variation)**: Voices can express different emotions through voice instructions.
-- **指令遵循 (Instruction following)**: Voices respond to natural language `context_texts` like "用特别痛心的语气说话" (only with `seed-tts-2.0-expressive` model).
+- **情感变化 (Emotion variation)**: Voices can express different emotions through natural-language voice instructions.
+- **指令遵循 (Instruction following)**: Voices respond to `context_texts` like "用特别痛心的语气说话" out of the box — no special model flag required for public (non-cloned) voices.
 - **ASMR**: Whispering and breathy styles available.
-- **方言 (Dialects)**: Vivi 2.0 supports Sichuan, Shaanxi, and Dongbei dialects.
+- **方言 (Dialects)**: Selected voices support Sichuan, Shaanxi, Dongbei and other dialects (check `--list-speakers` or the voice catalog).
 
-### Model Choice
+### The `model` Parameter
 
-| Model | Latency | context_texts | cot tags | Best for |
-|-------|---------|---------------|----------|----------|
-| `seed-tts-2.0-standard` | Low | ❌ | ❌ | General purpose, fast turnaround |
-| `seed-tts-2.0-expressive` | Higher | ✅ | ✅ (复刻音色 only) | Emotional range, nuanced delivery |
+For the public seed-tts-2.0 voice catalog (speaker IDs ending in `_bigtts`), you generally **do not need to set `model`** — the server picks the correct variant automatically and `context_texts` voice instructions work by default.
+
+The `model` field is mainly relevant when using **cloned (ICL, 声音复刻) voices**:
+
+| Model | Notes |
+|-------|-------|
+| `seed-tts-2.0-standard` | Default for cloned voices; lower latency; voice-instruction QA / CoT tags are filtered out if passed |
+
+Public voices don't need this. If you see older docs referencing `seed-tts-2.0-expressive`, that variant no longer appears in the current (2026-06) API reference — emotion/instructions are built into the default model.
 
 ---
 
 ## Using Voice Instructions (context_texts)
 
-With `seed-tts-2.0-expressive` model, pass natural language instructions:
+Pass a natural-language instruction via `--context` (no `--model` needed):
 
 ```
---model expressive --context "用特别痛心的语气说话"
---model expressive --context "用温柔的语气朗读这段文字"
---model expressive --context "像新闻播音员一样正式地播报"
+--context "用特别痛心的语气说话"
+--context "像深夜电台主持人一样温柔低沉地读"
+--context "像新闻联播主播一样字正腔圆地播报"
+--context "Read like an excited startup founder giving a keynote"
 ```
 
 The `context_texts` field is **not billed** — only the main `text` content counts toward usage.
