@@ -117,12 +117,11 @@ scripts/.poc-artifacts/
 output/
 tmp/
 .backups/
-.agents/skills/seedance-video-workspace/
-volcengine-web-search-workspace/
-volcengine-doc-fetcher-workspace/
 tts-output/
 
-# Skill eval iteration outputs are local-only (large, regenerable)
+# Skill workspaces (eval runs, benchmarks, scratch artifacts — large binaries, regenerable)
+.workspace/
+.agents/skills/*-workspace/
 .agents/skills/*/evals/iteration-*/
 
 # Article-to-notion skill: Python cache
