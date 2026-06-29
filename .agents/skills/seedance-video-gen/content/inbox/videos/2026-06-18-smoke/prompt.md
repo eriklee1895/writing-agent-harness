@@ -1,3 +1,0 @@
-# Seedance Prompt
-
-smoke
