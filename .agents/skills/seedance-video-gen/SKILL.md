@@ -201,7 +201,7 @@ Seedance skill 不负责生成或获取素材——它只消费调用方传入�
 ## 输出目录
 
 ```text
-output/YYYY-MM-DD-<slug>/
+output/seedance/YYYY-MM-DD-<slug>/
 ├── video.mp4
 ├── manifest.json           # task_id, model, params, video_url, usage, output paths
 ├── prompt.md               # 最终提示词
@@ -241,7 +241,7 @@ output/YYYY-MM-DD-<slug>/
 | `--return-last-frame` | 返回尾帧图 |
 | `--priority` | 任务优先级（`0-9`），数值越大越靠前（仅同 Endpoint 内 FIFO 排序） |
 | `--enable-web-search` | 联网搜索工具；**仅纯文本输入**，与多模态互斥 |
-| `--output-dir` | 输出根目录，默认 `output/`（可被 `SEEDANCE_OUTPUT_DIR` env var 或 `--output-dir` 覆盖） |
+| `--output-dir` | 输出根目录，默认 `output/seedance/`（可被 `SEEDANCE_OUTPUT_DIR` env var 或 `--output-dir` 覆盖） |
 | `--poll-interval` | 轮询间隔，默认 20 秒 |
 | `--max-wait` | 最大等待秒数，默认 1800 秒（30 分钟） |
 | `--dry-run` | 只构建并打印请求，不调用 API |
