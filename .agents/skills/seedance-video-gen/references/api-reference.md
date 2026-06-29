@@ -1,6 +1,6 @@
 # Seedance 2.0 API 参考
 
-> 最后核对：2026-06-18（火山方舟视频生成 API 官方文档）。本页覆盖 4 个端点、4 条模型线、完整请求/响应字段。
+> 最后核对：2026-06-29（火山方舟视频生成 API 官方文档，页面最近更新 2026-06-25）。本页覆盖 4 个端点、3 条 2.0 模型线、完整请求/响应字段。
 
 ## 基础信息
 
@@ -8,9 +8,10 @@
 |---|---|
 | Base URL | `https://ark.cn-beijing.volces.com/api/v3` |
 | 鉴权 | `Authorization: Bearer $ARK_API_KEY` |
-| 调用方式 | 异步任务：创建后通过轮询或列表查询拿结果 |
+| 调用方式 | 异步任务：创建后通过轮询或列表查询拿结果；支持配置 callback URL 接收完成回调 |
 | 任务 ID 保留 | **7 天**（从 `created_at` 起算），超时后自动清除，无法再查询 |
 | 视频 URL 保留 | **24 小时**，生成后必须立即下载到本地或转存 TOS |
+| cancelled 任务保留 | 取消后任务记录 **24 小时** 自动删除（区别于 succeeded/failed 的 7 天） |
 
 ## 4 个端点总览
 
@@ -25,15 +26,20 @@
 
 本 skill 只支持 Seedance 2.0 系列，未来加新模型也只更新下表这一行。
 
-| 模型 ID | 状态 | 1080p | 时长 | 能力 |
+| 模型 ID | 状态 | 最高分辨率 | 时长 | 能力 |
 |---|---|---|---|---|
-| `doubao-seedance-2-0-260128` | ✅ 标准 | ✅ | [4, 15] s / -1 | 文生 / 首帧 / 首尾帧 / 多模态参考 / 有声 / 编辑 / 延长 / 联网搜索 |
-| `doubao-seedance-2-0-fast-260128` | ✅ 快速 | ❌ 720p 封顶 | [4, 15] s / -1 | 同上，更快更便宜；实测 token 用量 ~40% |
-| `doubao-seedance-2-0-mini-260615` | 🟡 体验期 | ❌ 720p 封顶 | [4, 15] s / -1 | 2026-06-15 ~ 2026-06-22 仅控制台可调试；2026-06-22 起支持 API |
+| `doubao-seedance-2-0-260128` | ✅ 标准 | **4k**（10-bit H.265/HEVC） | [4, 15] s / -1 | 文生 / 首帧 / 首尾帧 / 多模态参考 / 有声 / 编辑 / 延长 / 联网搜索 |
+| `doubao-seedance-2-0-fast-260128` | ✅ 快速 | 720p | [4, 15] s / -1 | 同上，更快更便宜；实测 token 用量 ~40% |
+| `doubao-seedance-2-0-mini-260615` | ✅ 正式（2026-06-25 GA） | 720p | [4, 15] s / -1 | 同上，成本最低；适合大规模批量 |
 
-> 三个 2.0 模型**都不支持** `frames` / `seed` / `draft` / `service_tier:flex` / `camera_fixed`。详细理由见「请求参数」表后的注。
+> 三个 2.0 模型**都不支持** `frames` / `seed` / `draft` / `service_tier="flex"` / `camera_fixed`。这些字段存在 API 文档里但 2.0 系列不接受，传了会被拒。（跨模型示例代码里可能出现这些字段，但不适用于 Seedance 2.0。）
 
-> ⚠️ **Mini 模型上线节奏**：2026-06-15 ~ 2026-06-22 仅 [控制台体验中心](https://console.volcengine.com/ark/region:ark+cn-beijing/experience/vision?modelId=doubao-seedance-2-0-mini-260615&tab=GenVideo) 可调试（并发 1），预计 **2026-06-22 起支持 API 调用**。本文档生成时（2026-06-18）尚未开放 API。
+### 4k 分辨率特殊说明
+
+- 仅 `doubao-seedance-2-0-260128` 标准版支持。
+- 编码为 **10-bit H.265/HEVC**，部分老旧播放器（QuickTime、旧版微信内置、老款智能电视）无法解码；如目标平台兼容性敏感，用 1080p 更稳。
+- **并发上限 1**（普通 720p/1080p 实测并发 20），**RPM 15**。生成等待时间显著长于 1080p。
+- 像素尺寸：16:9 = 3840×2160；9:16 = 2160×3840；1:1 = 2880×2880；其他比例按等比缩放。
 
 ---
 
@@ -47,13 +53,14 @@
 | `content` | object[] | ✅ | 多模态输入数组（见下表） |
 | `duration` | int | ❌ | 时长秒数，默认 `5`；或 `-1` 让模型自适应（整数秒） |
 | `ratio` | string | ❌ | `21:9`/`16:9`/`4:3`/`1:1`/`3:4`/`9:16`/`adaptive` |
-| `resolution` | string | ❌ | `480p`/`720p`/`1080p`（1080p 仅标准版） |
+| `resolution` | string | ❌ | `480p`/`720p`/`1080p`/`4k`（1080p 起仅标准版；4k 仅标准版） |
 | `generate_audio` | bool | ❌ | 是否生成音频，默认 `true`；输出音频为**单声道 mono** |
-| **input size** | — | — | **输入参考素材**体积上限：图片 ≤ 30 MB、视频 ≤ 50 MB、音频 ≤ 15 MB；请求体 base64 后 ≤ 64 MB（脚本 hard-fail 在 60 MB）。**这是输入限制，不是输出 video 体积限制** |
+| **input size** | — | — | **输入参考素材**体积上限：图片 ≤ 30 MB、**视频 ≤ 200 MB**、音频 ≤ 15 MB；请求体 base64 后 ≤ 64 MB（脚本 hard-fail 在 60 MB）。**这是输入限制，不是输出 video 体积限制** |
 | `watermark` | bool | ❌ | 是否加水印，默认 `false` |
 | `return_last_frame` | bool | ❌ | 返回尾帧图 URL，用于链式续写；尾帧格式 png，无水印，宽高同视频 |
 | `priority` | int | ❌ | 任务优先级（`0-9`），数值越大越靠前（仅同 Endpoint 内 FIFO 排序） |
-| `tools` | object[] | ❌ | 工具调用，目前仅支持 `[{"type": "web_search"}]`（联网搜索）；**仅纯文本输入可用** |
+| `tools` | object[] | ❌ | 工具调用，目前仅支持 `[{"type": "web_search"}]`（联网搜索）；**仅纯文本输入可用**；由模型自主决定是否真的调用（可能 0 次），会增加延迟 |
+| `callback_url` | string | ❌ | 任务完成后的 HTTP 回调地址（Webhook）；脚本暂未暴露该参数 |
 
 > **Seedance 2.0 系列暂不支持**：`frames`、`seed`、`camera_fixed`、`service_tier="flex"`、`draft`。这些字段存在 API 文档里但 2.0 系列不接受，传了会被拒。
 
@@ -112,6 +119,12 @@
 | | 3:4 | 1248×1664 |
 | | 9:16 | 1080×1920 |
 | | 21:9 | 2206×946 |
+| **4k** ⚠️ 仅标准版；10-bit H.265/HEVC；并发 1、RPM 15 | 16:9 | 3840×2160 |
+| | 4:3 | 3328×2496 |
+| | 1:1 | 2880×2880 |
+| | 3:4 | 2496×3328 |
+| | 9:16 | 2160×3840 |
+| | 21:9 | 4416×1892 |
 
 ### 响应（创建）
 
@@ -192,7 +205,7 @@
 
 ### 响应 items[] 字段
 
-与单任务查询一致：`id, model, status, error, created_at, updated_at, content{video_url, last_frame_url}, seed, ...`
+与单任务查询一致：`id, model, status, error, created_at, updated_at, content{video_url, last_frame_url}, usage, ...`（不含 `seed` / `revised_prompt` 字段，这些字段 2.0 系列不返回）
 
 ---
 
@@ -258,13 +271,13 @@
 
 | 维度 | httpx 直调（本 skill）| volcengine-python-sdk |
 |---|---|---|
-| 依赖体积 | 极小（只 `httpx>=0.28.0`）| 较重（含 OpenAI 兼容层、Tool Use、流式等无关能力）|
+| 依赖体积 | 极小（只 `httpx>=0.28.0`）| 较重（含 OpenAI 兼容层、流式等无关能力）|
 | 4 端点维护 | 30 行直白代码 | 0 行（SDK 维护）|
 | 重试 / 退避 | 自己写（指数退避 + Retry-After 解析），透明可调 | SDK 内部，行为不直观 |
-| 参数/响应字段 | 100% 透传 API | SDK 包装一层，新字段要等 SDK 升级 |
-| 流式 / Tool Use 等 | 不需要（视频生成是异步，无流式） | 过度设计 |
+| 参数/响应字段 | 100% 透传 API（包括 `web_search` tool usage）| SDK 包装一层，新字段要等 SDK 升级 |
+| 流式 | 不需要（视频生成是异步，无流式） | 过度设计 |
 
-**结论**：视频生成 API 是 4 个稳定的 REST 端点 + 异步轮询，没有流式、没有 Tool Use，**SDK 的额外能力 0 价值、依赖成本 100%**。如果哪天官方推流式生成再切换。
+**结论**：视频生成 API 是 4 个稳定的 REST 端点 + 异步轮询，没有流式（Tool Use 只用于 `web_search` 且已自行处理），**SDK 的额外能力 0 价值、依赖成本 100%**。如果哪天官方推流式生成再切换。
 
 ### manifest.json 字段约定
 
@@ -273,19 +286,19 @@
 | 字段 | 来源 | 用途 |
 |---|---|---|
 | `task_id` | API 响应 | 后续 poll / cancel / 下载 唯一 ID |
-| `status` | API 响应 | `succeeded` / `failed` / `cancelled` / `expired` |
+| `status` | API 响应 | `succeeded` / `failed` / `cancelled` / `expired` / `queued` / `running` |
 | `model` / `ratio` / `duration` / `resolution` | API 响应（echo）| 记录实际生效参数（与请求可能不同）|
 | `usage.completion_tokens` | API 响应 | 计费 token 数（用于成本估算）|
+| `usage.tool_usage.web_search` | API 响应 | 联网搜索实际调用次数（开启 web_search 时）|
 | `video_url` | API 响应 | 24h 有效，本脚本已自动下载到 `video.mp4` |
 | `last_frame_url` | API 响应 | 仅当 `return_last_frame:true` |
-| `revised_prompt` | API 响应 | **模型实际看到的 prompt 改写版**，对调试「为什么生成结果和我想的不一样」很关键 |
 | `framespersecond` | API 响应 | 通常 24 |
 | `error` | API 响应 | 任务失败时的 `{code, message}` |
 | `request_payload` | 本地构造 | 用户实际请求的 payload，方便重放 |
 | `created_at` | 本地 | manifest 写入时间（ISO 8601）|
 | `output_files` | 本地 | 实际下载的 video / last_frame 路径 |
 
-> `revised_prompt` 是 debug 利器：用户写的 prompt 经常会被模型「善意改写」（加主体定义、加风格约束），写出来的视频可能跟用户预期对不上。**写完视频后想优化效果，先对比 `revised_prompt` 和你的原始 prompt**。
+> 想调试「为什么生成结果和我想的不一样」：优先对比你原始 prompt 与生成视频的实际画面，结合 `references/prompt-guide.md` 的公式排查（主体描写是否前置、运镜是否清晰、约束是否到位）。Seedance 2.0 不返回 `revised_prompt` 字段。
 
 ## 来源
 

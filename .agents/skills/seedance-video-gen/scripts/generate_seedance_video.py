@@ -39,37 +39,44 @@ RETRY_BACKOFF_MULTIPLIER = 2.0
 RETRY_MAX_BACKOFF_S = 30.0
 RETRY_STATUS_CODES = {408, 429, 500, 502, 503, 504}
 
-# Input reference media size limits (per 官方 1520757).
+# Input reference media size limits (per 官方 2298881, updated 2026-06-25).
 # These are INPUT limits, not output video size limits.
 # Output videos have no API size cap; only 24h URL validity matters.
 MAX_IMAGE_BYTES = 30 * 1024 * 1024       # 30 MB
-MAX_VIDEO_BYTES = 50 * 1024 * 1024       # 50 MB
+MAX_VIDEO_BYTES = 200 * 1024 * 1024      # 200 MB (URL/asset:// only; video does not support base64)
 MAX_AUDIO_BYTES = 15 * 1024 * 1024       # 15 MB
 # Total request body is 64 MB per the official spec. Base64 inflates ~33%,
 # so a 48 MB raw video already becomes ~64 MB after encoding. We hard-fail
 # at 60 MB estimated body to leave headroom for JSON wrapper + text prompt.
+# Note: video does NOT support base64 transport per official spec, so this
+# body-size guard mainly protects image/audio base64 payloads.
 MAX_BODY_BYTES = 60 * 1024 * 1024        # 60 MB safety margin
 
 # Seedance 2.0 series (the only line this script currently supports).
-# - Standard (260128): 1080p OK, all ratios, audio.
-# - Fast (260128): 1080p NOT supported, cheaper and quicker.
-# - Mini (260615): 1080p NOT supported, trial period 2026-06-15 to 2026-06-22
-#   in console only; API access from 2026-06-22.
+# - Standard (260128): 4k/1080p/720p/480p, all ratios incl. adaptive, audio.
+# - Fast (260128): 720p/480p only (no 1080p, no 4k), cheaper and quicker.
+# - Mini (260615): 720p/480p only; API GA on/after 2026-06-25.
+# Resolution tiers that cap at 720p (no 1080p, no 4k):
 VALID_MODELS = {
     "doubao-seedance-2-0-260128",
     "doubao-seedance-2-0-fast-260128",
     "doubao-seedance-2-0-mini-260615",
 }
-# Seedance 2.0 variants that cap at 720p.
 NO_1080P_MODELS = {
     "doubao-seedance-2-0-fast-260128",
     "doubao-seedance-2-0-mini-260615",
 }
+# Standard-only premium tier (4k):
+NO_4K_MODELS = NO_1080P_MODELS  # fast + mini don't do 4k either
 VALID_RATIOS = {"16:9", "4:3", "1:1", "3:4", "9:16", "21:9", "adaptive"}
-VALID_RESOLUTIONS = {"480p", "720p", "1080p"}
+VALID_RESOLUTIONS = {"480p", "720p", "1080p", "4k"}
 SUPPORTED_IMAGE_ROLES = {"first_frame", "last_frame", "reference_image"}
 SUPPORTED_VIDEO_ROLES = {"reference_video"}
 SUPPORTED_AUDIO_ROLES = {"reference_audio"}
+# Image formats accepted by Seedance 2.0 (HEIC/HEIF added 2026 on 2.0 + 1.5 pro):
+IMAGE_EXTS = {"png", "jpg", "jpeg", "webp", "gif", "bmp", "tiff", "heic", "heif"}
+VIDEO_EXTS = {"mp4", "mov", "avi", "mkv", "webm"}
+AUDIO_EXTS = {"mp3", "wav", "aac", "flac", "m4a", "ogg"}
 
 # --- Validation helpers (shared between build_payload and build_payload_from_shot) ---
 
@@ -88,9 +95,10 @@ def validate_ratio(ratio: str) -> None:
 def validate_resolution(model: str, resolution: str) -> None:
     if resolution not in VALID_RESOLUTIONS:
         raise SystemExit(f"Error: unsupported resolution '{resolution}'. Valid: {sorted(VALID_RESOLUTIONS)}")
-    if resolution == "1080p" and model in NO_1080P_MODELS:
+    if resolution in {"1080p", "4k"} and model in NO_1080P_MODELS:
         raise SystemExit(
-            f"Error: model '{model}' does not support 1080p (capped at 720p). Use --resolution 720p or 480p."
+            f"Error: model '{model}' does not support {resolution} (capped at 720p). "
+            f"Use --resolution 720p or 480p."
         )
 
 def validate_web_search_mode(content: list[dict[str, Any]], enable_web_search: bool) -> None:
@@ -110,14 +118,16 @@ class MediaTracker:
     def __init__(self) -> None:
         self.raw_bytes: int = 0
 
-IMAGE_EXTS = {"png", "jpg", "jpeg", "webp", "gif", "bmp"}
-VIDEO_EXTS = {"mp4", "mov", "avi", "mkv", "webm"}
-AUDIO_EXTS = {"mp3", "wav", "aac", "flac", "m4a", "ogg"}
-
 # Per-type size limits for INPUT reference media (not output video).
+# Sizes come from 官方视频生成教程 (doc 2298881, updated 2026-06-25):
+#   - image: 30 MB
+#   - video: 200 MB (URL/asset ID only — video does NOT support base64 per the
+#     same doc, so large videos must be served from a public URL or asset://)
+#   - audio: 15 MB
+# Total request body ≤ 64 MB after base64; script hard-fails at 60 MB.
 _SIZE_LIMITS: dict[str, int] = {
     "image_url": MAX_IMAGE_BYTES,
-    "video_url": MAX_VIDEO_BYTES,
+    "video_url": 200 * 1024 * 1024,
     "audio_url": MAX_AUDIO_BYTES,
 }
 
@@ -135,6 +145,16 @@ def add_media_to_content(
         # URL size is server-side; we don't pre-validate. API will 400 if too big.
         content.append(build_content_item(item_type, path_or_url, role))
         return
+    # Per 官方视频生成教程 (doc 2298881, updated 2026-06-25):
+    #   - 图片支持 URL / Base64 / 素材 ID
+    #   - 视频支持 URL / 素材 ID（**不支持 Base64**）
+    #   - 音频支持 URL / Base64 / 素材 ID
+    if item_type == "video_url":
+        raise SystemExit(
+            f"Error: local video files are not supported ({path_or_url}). "
+            "Seedance 2.0 video inputs only accept public URLs or asset:// IDs (no base64). "
+            "Upload the video to a public URL or TOS first."
+        )
     local_path = validate_local_media(path_or_url, allowed_exts)
     size = local_path.stat().st_size
     limit = _SIZE_LIMITS.get(item_type)
@@ -214,8 +234,13 @@ def make_output_dir(output_dir: str, prompt: str) -> Path:
 
 
 def is_url(path_or_url: str) -> bool:
+    """Return True for remote references: http(s):// URLs and asset:// URIs."""
     parsed = urlparse(path_or_url)
-    return parsed.scheme in {"http", "https"}
+    if parsed.scheme in {"http", "https"}:
+        return True
+    if path_or_url.startswith("asset://"):
+        return True
+    return False
 
 
 def validate_local_media(path: str, allowed_exts: set[str]) -> Path:
@@ -280,6 +305,7 @@ def _image_mime(ext: str) -> str:
     return {
         "png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg",
         "webp": "image/webp", "gif": "image/gif", "bmp": "image/bmp",
+        "tiff": "image/tiff", "heic": "image/heic", "heif": "image/heif",
     }.get(ext, f"image/{ext}")
 
 
@@ -488,7 +514,10 @@ async def _poll_task_async(
         status = data.get("status", "unknown")
         if verbose:
             print(f"[{int(time.time() - start)}s] status={status}", file=sys.stderr)
-        if status in {"succeeded", "completed", "failed", "expired"}:
+        # Official terminal states per doc 1521309 (2026-06-25):
+        # queued / running / succeeded / failed / cancelled / expired.
+        # ("completed" is NOT an official synonym; accept defensively.)
+        if status in {"succeeded", "completed", "failed", "cancelled", "expired"}:
             return data
         if time.time() - start > max_wait:
             raise SystemExit(f"Timeout after {max_wait}s. Last status: {status}")
@@ -616,6 +645,8 @@ async def cmd_generate_async(args: argparse.Namespace) -> int:
 
         video_path: Path | None = None
         last_frame_path: Path | None = None
+        # Canonical success status is "succeeded" per official API.
+        # "completed" is NOT a real status but accept it defensively for forward-compat.
         if status in {"succeeded", "completed"}:
             video_url = result.get("content", {}).get("video_url")
             if video_url:
@@ -967,6 +998,7 @@ def parse_args() -> argparse.Namespace:
     list_tasks.add_argument("--page-num", type=int, default=1)
     list_tasks.add_argument("--page-size", type=int, default=20)
     list_tasks.add_argument("--json-only", action="store_true", help="Print full JSON response instead of a table summary")
+    list_tasks.add_argument("--verbose", action="store_true")
 
     batch = subparsers.add_parser("batch-submit", help="Submit multiple shots in one call (parallel). Reads shot configs from a JSON file.")
     batch.add_argument("--shots-file", required=True, help="Path to JSON file: array of {prompt, [duration], [first_frame], [reference_image], ...}")
@@ -982,9 +1014,11 @@ def parse_args() -> argparse.Namespace:
     batch.add_argument("--wait", action="store_true", help="After submitting, wait for all tasks to complete and download videos")
     batch.add_argument("--poll-interval", type=int, default=DEFAULT_POLL_INTERVAL)
     batch.add_argument("--max-wait", type=int, default=DEFAULT_MAX_WAIT)
+    batch.add_argument("--verbose", action="store_true")
 
     cancel = subparsers.add_parser("cancel-task", help="Cancel a queued task or delete a completed/failed task record")
     cancel.add_argument("--task-id", required=True)
+    cancel.add_argument("--verbose", action="store_true")
 
     return parser.parse_args()
 
