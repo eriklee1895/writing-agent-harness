@@ -1,7 +1,7 @@
 ---
 title: Hermes Agent Skill System 原理深度解析
 subtitle: 从源码看渐进式披露、外部目录缓存、名称冲突处理等核心设计
-author: Erik
+author: 李玉恒
 date: 2026-06-15
 tags: [AI Agent, Hermes Agent, Agentic Workflow]
 cover: ./assets/20260615-163730-hermes-agent-skill-system-cropped.png

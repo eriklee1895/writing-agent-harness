@@ -26,7 +26,11 @@ description: "写作任务发布后 closeout。Use after WeChat/blog draft creat
    - images / prompts / metadata；
    - video material packages / clips；
    - publish URL、`appmsgid`、blog URL 或其他平台 ID。
-3. 按 `YYYY-MM-DD-<slug>` 创建或使用本机归档目录（`<slug>` 为裸 topic）：
+3. **渠道产物校验（关键）**：在开始归档前，核对每个交付过的渠道都有对应派生 artifact。常见缺漏：
+   - **微信公众号**：`content/wechat/YYYY-MM-DD-<slug>/index.wechat-preview.html` 必须存在（publisher 自动归档，但 closeout 仍需校验）；同级 `publish-status.md` 必须登记 `appmsgid`、`status: draft-created`（或 `published`）。若缺失，立即补建：把 origin 下最新的 `*.wechat-preview.html` 拷过去，并手写 `publish-status.md`。
+   - **Blog / 其他渠道**：按对应 workflow 的渠道目录约定校验。
+   - 如果发现归档缺失属于**流程/脚本 bug 而非本次失误**（例如脚本没做、skill 没写），先在本次 closeout 里把产物补全，再通过 Skill Staleness Check 机制登记为 staleness flag，必要时修 skill/脚本。
+4. 按 `YYYY-MM-DD-<slug>` 创建或使用本机归档目录（`<slug>` 为裸 topic）：
 
    ```text
    .local-archive/
@@ -37,10 +41,10 @@ description: "写作任务发布后 closeout。Use after WeChat/blog draft creat
        archive-manifest.md
    ```
 
-4. 移动或确认二进制素材归档；repo 只保留轻量 provenance。
-5. 写复盘、memory / skill 决策、git / task handoff。
+5. 移动或确认二进制素材归档；repo 只保留轻量 provenance。
+6. 写复盘、memory / skill 决策、git / task handoff。
    复盘时同步写入任务索引（`.local-memory/task-index.json`）。
-6. 最终回复说明 closeout 状态和剩余人工动作。
+7. 最终回复说明 closeout 状态和剩余人工动作。
 
 ### Contrastive Retrospective（自进化 1：Compare, don't just record）
 

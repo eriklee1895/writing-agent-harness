@@ -90,6 +90,11 @@
 - [retrospectives/2026-06-28-article-to-notion-ntn-cli-refactor.md](retrospectives/2026-06-28-article-to-notion-ntn-cli-refactor.md)
   - article-to-notion 从手写 REST + md-to-blocks 重构到官方 ntn CLI 的全流程、`notion-cli` 基础 skill 沉淀、ntn CLI 14 个坑点汇总、sentinel-marker 图片交错与 normalize 防御层设计。
 
+- [retrospectives/2026-06-29-wechat-publisher-headed-mode.md](retrospectives/2026-06-29-wechat-publisher-headed-mode.md)
+  - wechat-article-publisher 默认使用 headed Chrome（`headless=False`）的决策记录：扫码/反自动化检测/图片上传链路/final review/debug 五个理由，未来加 `--headless` flag 的前置条件。
+- [retrospectives/2026-06-29-wechat-publisher-metadata-and-save-fixes.md](retrospectives/2026-06-29-wechat-publisher-metadata-and-save-fixes.md)
+  - 修复 publisher 三类关键 bug：预分配 appmsgid 导致的保存 false-positive、H1 wrapper 残留导致开头空行、publish-status.md frontmatter 分隔符丢失后 upsert 静默失效；cover/original 声明自动化，保存耗时 122s→5s。
+
 ## Superpowers
 
 - [superpowers/specs/](superpowers/specs/)

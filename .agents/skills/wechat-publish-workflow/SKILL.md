@@ -23,13 +23,16 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
 
 ## 标准流程
 
-1. 发布尝试前，先 backup Markdown 和当前 generated HTML。
-2. 从 canonical Markdown 生成 WeChat preview：
+1. 发布前确认 git working tree 干净（`git status` 无未提交的文章/素材改动）——这是默认的回滚保障，不要生成 `.bak-*` 备份文件污染 canonical 目录。
+2. 从 canonical Markdown 生成 WeChat preview，输出放到**源 md 同目录**（renderer 默认行为）：
 
    ```bash
-   node ../wechat-article-renderer/scripts/render-wechat-article.mjs /absolute/path/to/article.md
+   node ../wechat-article-renderer/scripts/render-wechat-article.mjs \
+     /abs/path/to/content/origin/YYYY-MM-DD-<slug>/index.md
+   # → 产出 /abs/path/to/content/origin/YYYY-MM-DD-<slug>/index.wechat-preview.html
    ```
 
+   不要加 `--output` 指向 `content/wechat/`，renderer 没有建目录/复制逻辑，容易写出半拉子产物。
 3. Verify generated HTML：
    - renderer 成功退出，title 和 image count 正常；
    - no `<script>`, external stylesheet dependency, `TODO`, `TBD`；
@@ -40,28 +43,47 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
    - mobile preview `390-430px` 无 horizontal overflow。
 4. 如需要，打开或刷新本地 preview，常见地址是 `http://localhost:49255/`。
 5. 在触碰微信公众号编辑器前，先让用户确认 preview。
-6. 用 `wechat-article-publisher` 把 preview HTML 填入微信公众号编辑器并创建草稿。默认偏向创建草稿，不直接发布。
+6. **渠道产物约定：`content/wechat/YYYY-MM-DD-<slug>/` 是微信渠道派生 artifact 的 canonical 目录，与 `appmsgid`/发布 URL 一一对应。**
+   - **publisher 会自动兜底**：如果 `--html` 指向 `content/origin/.../`，`publish.py` 会自动拷贝（或快照后再覆盖，见下）到 `content/wechat/.../index.wechat-preview.html`，并在保存草稿成功后自动写 `publish-status.md`。所以即使忘了这一步，归档不会丢。
+   - **仍然推荐手动 cp 一次**（命令见下），因为这是你在点击发送按钮前最后一次在 repo 里确认"就是这份 HTML 要被送到微信"的机会，也让 `content/wechat/` 目录在调用 publisher 前就是完整可 review 的状态：
+
+     ```bash
+     SRC_DIR=content/origin/YYYY-MM-DD-<slug>
+     DST_DIR=content/wechat/YYYY-MM-DD-<slug>
+     mkdir -p "$DST_DIR"
+     cp "$SRC_DIR/index.wechat-preview.html" "$DST_DIR/index.wechat-preview.html"
+     # 如果有微信渠道专用 assets（非 origin 复用）才放 $DST_DIR/assets/；
+     # 共用图片保持相对路径指回 ../../origin/.../assets/，不要重复复制二进制。
+     ```
+
+   - **重发安全网**：如果检测到 `content/wechat/.../publish-status.md` 里已有非空 `appmsgid`（意味着这份 HTML 对应一个已存在的草稿），publisher 会在覆盖前把旧 HTML 快照为 `index.wechat-preview.appmsgid-<id>.html`，避免之前草稿对应的 artifact 丢失。草稿箱里旧草稿还在，traceability 不丢。
+7. 用 `wechat-article-publisher` 把归档副本 HTML 填入微信公众号编辑器并创建草稿。默认偏向创建草稿，不直接发布。
 
    ```bash
    uv run ../wechat-article-publisher/scripts/publish.py \
-     --article /absolute/path/to/origin/article.md \
-     --html    /absolute/path/to/article.wechat-preview.html --save-draft
+     --article /abs/path/to/content/origin/YYYY-MM-DD-<slug>/index.md \
+     --html    /abs/path/to/content/wechat/YYYY-MM-DD-<slug>/index.wechat-preview.html \
+     --save-draft
    ```
 
-   - 元数据（标题/作者/摘要/封面）取自 `--article` 的 frontmatter；作者缺省取 `config.toml`（已预填 李玉恒）；
+   - 元数据（标题/作者/摘要/封面）取自 `--article` 的 frontmatter；作者缺省取 repo 根下 `.config/wechat.toml`（首次缺失时询问并写回，已 .gitignore）；
    - 标题写入可见标题 ProseMirror（同步隐藏 `#title`），正文剔除 hero 大标题避免重复；
-   - 自动读取 `data-local-path` 指向的本地图片；
+   - 自动读取 `data-local-path` 指向的本地图片（renderer 产出绝对路径，和 HTML 所在目录无关，所以 origin/wechat 两份 HTML 用的是同一组图片，不用双拷贝二进制）；
    - 串行上传正文图片到微信公众号，等其变成 `mmbiz.qpic.cn` CDN URL 再传下一张/保存；
    - 不把图片 base64 内联进 HTML；
-   - 封面 best-effort，通常需在草稿箱 final review 时手动设置。
-7. 填入后检查：
+   - 传 `--try-cover` 会用 frontmatter 中的 `cover:` 路径自动上传封面（走 WebUploader 隐藏 file input，已稳定）；
+   - 传 `--declare-original` 会自动勾选原创声明（需要该账号已开通原创功能）；
+   - 保存前按 Tab blur 让 Vue 把 ProseMirror 输入 flush 到隐藏 textarea，避免 metadata 不 commit；保存后三重验证（toast / appmsgid 变更 / title 回读匹配），不再依赖 URL 中预分配的 appmsgid 槽位作为成功信号。
+   - **浏览器默认以 headed 模式启动（`headless=False` + `launch_persistent_context`）**。这是刻意的默认：首次必须扫码；已登录时仍保留 headed 是因为微信后台反自动化对头less 敏感、图片上传链路在 headless 下易隐式失败、final human review 本来就需要人眼、debug 时直接可见错误弹框。不要自作主张改成 headless；决策细节见 [docs/retrospectives/2026-06-29-wechat-publisher-headed-mode.md](../../../docs/retrospectives/2026-06-29-wechat-publisher-headed-mode.md)。未来若加 `--headless` flag，必须先在该 retrospective 中登记稳定性数据，且只能 opt-in。
+8. 填入后检查：
    - title、author、summary；
    - 封面可见，上传后指向 WeChat CDN；
    - 正文图片已上传到 WeChat CDN；
    - 如含视频，视频卡片/播放器在编辑器中可见，插入位置正确；
    - editor body 中 external links 数量为 `0`；
-   - 保存后 URL 出现 `appmsgid=...`。
-8. 向用户报告草稿状态和 `appmsgid`。除非用户明确确认 live publish，否则停在 final human review。
+   - 保存后 URL 出现 `appmsgid=...`（publisher 会自动写入 `publish-status.md` 的 frontmatter 和 Draft History，无需手动回填）。
+9. 向用户报告草稿状态和 `appmsgid`。除非用户明确确认 live publish，否则停在 final human review。
+10. 用户完成 final review 并群发/发布后，把正式发布 URL 追加到 `publish-status.md`（或把 `status` 改成 `published`），再调用 `writing-task-closeout` 做归档、复盘和素材清理。
 
 ## 微信公众号限制坑点
 
