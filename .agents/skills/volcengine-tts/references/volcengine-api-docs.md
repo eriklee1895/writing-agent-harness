@@ -31,7 +31,7 @@ These are the error codes returned by the `POST /api/v3/tts/unidirectional` endp
 | `45000000` | `single request size too large` | Payload too large | Shorten the text |
 | `45000001` | `[Invalid argument] EmptyRequest` | Missing `req_params` field | Ensure request body has `req_params` |
 | `45000001` | `[Invalid argument] speaker not found` | Invalid speaker ID | Check speaker ID spelling, use `--list-speakers` |
-| `45000001` | `[Invalid argument] InvalidModel` | Invalid model param | Use `seed-tts-2.0-standard` or `seed-tts-2.0-expressive` |
+| `45000001` | `[Invalid argument] InvalidModel` | Invalid model param | Only set `--model` when using cloned (ICL) voices (e.g. `seed-tts-2.0-standard`). For public `_bigtts` voices, omit it. |
 | `45000001` | `[Invalid argument] InvalidDialect` | Invalid dialect param | Check dialect value |
 | `45002000` | `TTS invalid speaker` | Empty speaker parameter | Provide a speaker ID |
 | `45002001` | `No readable text!` | No readable text content | Check the input text |
