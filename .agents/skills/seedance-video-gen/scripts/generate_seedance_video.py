@@ -25,7 +25,7 @@ import httpx
 
 
 DEFAULT_BASE_URL = "https://ark.cn-beijing.volces.com/api/v3"
-DEFAULT_OUTPUT_DIR = "content/inbox/videos"
+DEFAULT_OUTPUT_DIR = os.environ.get("SEEDANCE_OUTPUT_DIR", "output")
 DEFAULT_POLL_INTERVAL = 20
 DEFAULT_MAX_WAIT = 1800
 
@@ -935,7 +935,8 @@ def parse_args() -> argparse.Namespace:
             action="store_true",
             help="Enable the web_search tool. Pure text input only (no images/videos/audio).",
         )
-        p.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR)
+        p.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR,
+                       help="Output root directory (default: SEEDANCE_OUTPUT_DIR env var, or 'output')")
         p.add_argument("--dry-run", action="store_true")
         p.add_argument("--verbose", action="store_true")
 
@@ -955,7 +956,8 @@ def parse_args() -> argparse.Namespace:
 
     download = subparsers.add_parser("download", help="Download a video URL")
     download.add_argument("--video-url", required=True)
-    download.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR)
+    download.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR,
+                          help="Output root directory (default: SEEDANCE_OUTPUT_DIR env var, or 'output')")
     download.add_argument("--verbose", action="store_true")
 
     list_tasks = subparsers.add_parser("list-tasks", help="List video generation tasks (filter by status/model/task-ids)")
@@ -968,7 +970,8 @@ def parse_args() -> argparse.Namespace:
 
     batch = subparsers.add_parser("batch-submit", help="Submit multiple shots in one call (parallel). Reads shot configs from a JSON file.")
     batch.add_argument("--shots-file", required=True, help="Path to JSON file: array of {prompt, [duration], [first_frame], [reference_image], ...}")
-    batch.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR, help=f"Output root (default: {DEFAULT_OUTPUT_DIR})")
+    batch.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR,
+                       help="Output root (default: SEEDANCE_OUTPUT_DIR env var, or 'output')")
     batch.add_argument("--model", default="doubao-seedance-2-0-260128", choices=sorted(VALID_MODELS))
     batch.add_argument("--duration", type=int, default=5)
     batch.add_argument("--ratio", default="16:9", choices=sorted(VALID_RATIOS))

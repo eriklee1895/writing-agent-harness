@@ -1,0 +1,110 @@
+{
+  "skill_name": "seedream-image-gen",
+  "evals": [
+    {
+      "id": 1,
+      "name": "chinese-text-poster",
+      "prompt": "用 seedream-image-gen 生成一张中国风海报：竖版 1024x1792，主题'江南春晓'，顶部大字标题'江南春晓'（必须精确渲染，中文书法体），副标题'——杜牧诗意'，底部小字'2026年春'。整体风格：水墨淡彩，白墙黑瓦、小桥流水、杏花烟雨江南。输出到 output/seedream-image-gen/jiangnan-poster.png，不加水印，不启用 web search。",
+      "expected_output": "A 1024x1792 portrait PNG saved to output/seedream-image-gen/jiangnan-poster.png with a sibling .json metadata file. The title '江南春晓' should be legible and correctly rendered in Chinese calligraphy style. No watermark.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "image file is created",
+          "description": "An output file matching *jiangnan-poster*.png exists in output/seedream-image-gen/"
+        },
+        {
+          "name": "image is portrait orientation",
+          "description": "The output image is taller than wide (portrait 1024x1792)"
+        },
+        {
+          "name": "metadata JSON is written",
+          "description": "A .json file with the same stem exists, containing prompt, model, size, web_search=false"
+        },
+        {
+          "name": "model is doubao-seedream-5-0",
+          "description": "The metadata.json shows model starting with doubao-seedream (5.0 default)"
+        },
+        {
+          "name": "web_search is disabled",
+          "description": "The metadata.json shows web_search=false (--no-web-search was passed)"
+        },
+        {
+          "name": "watermark is off",
+          "description": "The metadata.json shows watermark=false (default)"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "reference-image-style-transfer",
+      "prompt": "我有一张参考图片 /tmp/eval-fixtures/style-ref.png（假设是一张手绘水彩猫咪）。用 seedream-image-gen 的 edit 功能（带 --reference-image），参考这张图的画风，生成一只秋天公园里的金毛犬，暖色调，落叶满地。输出到 output/seedream-image-gen/golden-autumn.png，尺寸 2K，不启用 web search。",
+      "expected_output": "A 2K-resolution PNG saved to output/seedream-image-gen/golden-autumn.png with a sibling .json metadata file. Metadata must list the reference image path in reference_images.",
+      "files": ["/tmp/eval-fixtures/style-ref.png"],
+      "assertions": [
+        {
+          "name": "image file is created",
+          "description": "An output file matching *golden-autumn*.png exists in output/seedream-image-gen/"
+        },
+        {
+          "name": "metadata references the input image",
+          "description": "The .json metadata lists reference_images including the style-ref.png path"
+        },
+        {
+          "name": "size is 2K preset",
+          "description": "The metadata.json shows size = '2K' (model auto-determines exact dimensions)"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "batch-variants-from-jsonl",
+      "prompt": "用 seedream-image-gen 的 generate-batch 从 /tmp/eval-fixtures/seedream-batch-prompts.jsonl 批量生成 3 张图：1) 一张 2048x2048 方图的赛博朋克城市夜景，中文 prompt；2) 一张 2K 竖版的敦煌飞天仙女，矿物颜料质感；3) 一张 4K 横版的江南水乡乌篷船，不启用 web search。输出到 output/seedream-image-gen/batch/，并发 2。",
+      "expected_output": "Three PNG files in output/seedream-image-gen/batch/, each with a sibling .json metadata file. Files cover three different themes and sizes.",
+      "files": ["/tmp/eval-fixtures/seedream-batch-prompts.jsonl"],
+      "assertions": [
+        {
+          "name": "three output images are created",
+          "description": "output/seedream-image-gen/batch/ contains three .png files (one per job) plus metadata .json"
+        },
+        {
+          "name": "metadata is consistent across the batch",
+          "description": "All three .json files share the same model (doubao-seedream-5-0 default)"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "sequential-group-storyboard",
+      "prompt": "用 seedream-image-gen 的 sequential 组图功能生成一组共 4 张连贯故事分镜：场景1 宇航员在太空站维修飞船，场景2 陨石群袭来警报响起，场景3 紧急机动躲避，场景4 惊险逃回空间站。尺寸 2K，最多 4 张，输出到 output/seedream-image-gen/storyboard/ 目录。不启用 web search。",
+      "expected_output": "Four PNG files in output/seedream-image-gen/storyboard/, numbered sequentially, representing a coherent 4-panel storyboard of the astronaut storyline.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "four output images are created",
+          "description": "output/seedream-image-gen/storyboard/ contains four .png files (sequential group, max_images=4)"
+        },
+        {
+          "name": "sequential flag is recorded",
+          "description": "The metadata files indicate sequential image generation was used"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "dry-run-payload",
+      "prompt": "用 seedream-image-gen 的 --dry-run 模式生成以下图片（不实际调用API）：prompt 为'一只橘猫坐在窗台上'，尺寸 2K，启用 web search。检查 stdout 输出的 request payload。",
+      "expected_output": "The command prints the request payload to stdout and exits without calling the API. No image file is created.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "no image file is created",
+          "description": "No .png file is written to output/seedream-image-gen/ when --dry-run is used"
+        },
+        {
+          "name": "payload contains correct parameters",
+          "description": "stdout includes the prompt text, model name, size 2K, and web_search=true"
+        }
+      ]
+    }
+  ]
+}
