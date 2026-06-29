@@ -58,6 +58,9 @@
 - [benchmark/html-parser-stack-bench.md](benchmark/html-parser-stack-bench.md)
   - HTML 解析与内容抽取栈选型：BeautifulSoup4 / Selectolax / Trafilatura / markdownify 的定位、benchmark、维护状态、按场景的选型矩阵和当前 `wechat-article-fetcher` 决策。
 
+- [benchmark/dynasty-poster-series-case-study.md](benchmark/dynasty-poster-series-case-study.md)
+  - 7 张中国朝代兴衰史海报的生图技术案例：情绪弧配色法、Workflow 多 agent 并行编排、gpt-image-2 密集中文排版 prompt 结构、scaffolding preset 实战验证。
+
 ## Retrospectives
 
 - [retrospectives/2026-06-05-wechat-publish.md](retrospectives/2026-06-05-wechat-publish.md)
