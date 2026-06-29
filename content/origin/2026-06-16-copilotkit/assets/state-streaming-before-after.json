@@ -1,0 +1,17 @@
+{
+  "title": "job-2",
+  "prompt": "Primary request: Flat tech infographic, clay-orange (#d97706) and slate-gray (#1f2937) palette on warm off-white background (#faf9f5), bilingual zh-en labels, Inter-style sans-serif. Title: 'State Streaming · token 级双向状态'. Side-by-side comparison in two equal panels labeled 'BEFORE · 默认行为' and 'AFTER · StateStreamingMiddleware'. LEFT (BEFORE, desaturated, slightly grayed out): Top shows a LangGraph node timeline ending with TOOL_CALL_END, then a single large chunk labeled 'STATE_SNAPSHOT (full document)'; below it a UI card with a spinner and text '等好几秒… Waiting…'; a clock icon shows '~3-5s 延迟'. An annotation in red-orange: 'tool 跑完才一次性发完整文档  Full snapshot only after tool ends'. RIGHT (AFTER, vivid, highlighted with clay-orange glow): Top shows a LangGraph timeline where a TOOL_CALL_ARGS stream of small dots feeds diagonally down into a STATE_DELTA (JSON Patch) stream, which flows token-by-token into a live UI card where text appears typewriter-style one character at a time, with a blinking caret. A parallel TEXT_MESSAGE_CONTENT stream flows to a chat bubble. Both streams are labeled '并行  parallel' with a clay-orange equals sign. Annotation in green-orange: 'tool argument 流式灌入 state → UI 实时重渲染  Argument streams into state, UI re-renders per token'. Bottom code snippet in a small dark slate code box: 'StateStreamingMiddleware(StateItem(state_key=\"document\", tool=\"write_document\", tool_argument=\"document\"))'. Clean dev-tool magazine aesthetic, no 3D, no photos, crisp readable text.",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-16-copilotkit/assets/state-streaming-before-after.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-06-29T15:14:48",
+  "dry_run": false
+}

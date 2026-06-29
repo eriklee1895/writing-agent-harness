@@ -1,6 +1,7 @@
 {
   "article_slug": "2026-06-16-copilotkit",
   "date": "2026-06-16",
+  "last_visuals_refresh": "2026-06-29",
   "assets": [
     {
       "filename": "cover.png",
@@ -11,6 +12,46 @@
       "generator": "gpt-image-2 via article-illustration flat-tech-infographic",
       "prompt_brief": "polished technical cover... two-layer composition React frontend + agent runtime + flowing AG-UI event-stream wire",
       "archive_path": ".local-archive/2026-06-16-copilotkit/images/cover.png",
+      "archive_status": "archived",
+      "git_tracked": false
+    },
+    {
+      "filename": "motivation-last-mile-gap.png",
+      "alt": "CLI 里跑通的 agent 和嵌进真实 SaaS 产品之间的最后一公里鸿沟：上下文注入、真组件渲染、HITL、双向 state 四件事没有被 agent framework 解决",
+      "role": "body",
+      "placement_section": "0. 动机",
+      "size_px": "1536x1024",
+      "source": "ai-generated",
+      "generator": "gpt-image-2 flat-tech-infographic (high quality)",
+      "prompt_brief": "Split scene: CLI LangGraph agent logs (left) vs real SaaS CRM UI (right); broken chasm bridge between with 4 sticky-note problem callouts (context injection / JSON→real components / human approval / bidirectional state); clay-orange footer 'CopilotKit + AG-UI fills this gap'",
+      "archive_status": "working-copy",
+      "git_tracked": false,
+      "added": "2026-06-29"
+    },
+    {
+      "filename": "five-layers.png",
+      "alt": "AI Agent 开发栈 5 层坐标系 + CopilotKit 跨 L2 + L5 的定位（Mermaid 渲染，WeChat 不渲染 Mermaid 时代替 inline code fence）",
+      "role": "body",
+      "placement_section": "1. 坐标系：AI Agent 开发栈的 5 层",
+      "size_px": "1200x900",
+      "source": "deterministic-render",
+      "generator": "mermaid-cli @mermaid-js/mermaid-cli (v11.15.0) with clay-orange/slate custom theme",
+      "prompt_brief": "5 stacked layer cards (L1 Model / L2 Protocol / L3 Orchestration / L4 Tool & Integration / L5 UI & Application) with dark slate CopilotKit chip spanning L2+L5 via dashed 跨越 arrows",
+      "archive_status": "working-copy",
+      "git_tracked": false,
+      "added": "2026-06-29",
+      "note": "Rendered from the inline Mermaid code fence to PNG for WeChat/readme readers; Mermaid source kept inline for Markdown renderers that support it."
+    },
+    {
+      "filename": "protocol-landscape.png",
+      "alt": "AI Agent 协议三件套：MCP (Anthropic) 管 model↔tools / A2A (Google) 管 agent↔agent / AG-UI (CopilotKit) 管 agent↔user — 三段正交，各管一段",
+      "role": "body",
+      "placement_section": "3.2 AG-UI 在协议版图里的位置",
+      "size_px": "1536x1024",
+      "source": "ai-generated",
+      "generator": "gpt-image-2 via article-illustration flat-tech-infographic",
+      "prompt_brief": "3 vertical swim-lanes MCP/A2A/AG-UI, each showing endpoints (LLM↔ExternalTools / AgentA↔AgentB / AgentBackend↔ReactFrontend) with the wire format in the middle, AG-UI lane highlighted, bottom caption 'Each protocol owns a different boundary'",
+      "archive_path": ".local-archive/2026-06-16-copilotkit/images/protocol-landscape.png",
       "archive_status": "archived",
       "git_tracked": false
     },
@@ -28,6 +69,20 @@
       "git_tracked": false
     },
     {
+      "filename": "event-sequence.png",
+      "alt": "一次 user input 走过的 AG-UI 事件流：STATE_DELTA 和 TEXT_MESSAGE_CONTENT 并行到达，UI 边出字边重渲染（Mermaid 渲染，WeChat 不渲染 Mermaid 时代替 inline code fence）",
+      "role": "body",
+      "placement_section": "3.5 一次 user input 走过的事件流",
+      "size_px": "1400x1100",
+      "source": "deterministic-render",
+      "generator": "mermaid-cli @mermaid-js/mermaid-cli (v11.15.0) with clay-orange/slate custom theme",
+      "prompt_brief": "4 participants (User / React FE / CopilotRuntime / Agent LangGraph), full RUN_STARTED→STEP_STARTED→TOOL_CALL_*→STATE_DELTA→TEXT_MESSAGE_*→RUN_FINISHED sequence with note on STATE_DELTA 与 TEXT_MESSAGE_CONTENT 并行到达",
+      "archive_status": "working-copy",
+      "git_tracked": false,
+      "added": "2026-06-29",
+      "note": "Rendered from the inline Mermaid sequenceDiagram to PNG; Mermaid source kept inline."
+    },
+    {
       "filename": "three-layer-architecture.png",
       "alt": "CopilotKit 三件套架构：Frontend / Runtime / Agent 三层通过 AG-UI 协议连接",
       "role": "body",
@@ -37,6 +92,19 @@
       "generator": "gpt-image-2 via article-illustration flat-tech-infographic",
       "prompt_brief": "Three vertical layers stacked: Frontend (hooks + prebuilt components) / Runtime (CopilotRuntime + server frameworks) / Agent (BuiltInAgent / LangGraph / Mastra / CrewAI / Agno / Pydantic AI), connected by glowing AG-UI wire with 16 event types / SSE/WS/binary transport",
       "archive_path": ".local-archive/2026-06-16-copilotkit/images/three-layer-architecture.png",
+      "archive_status": "archived",
+      "git_tracked": false
+    },
+    {
+      "filename": "runtime-zoom-in.png",
+      "alt": "CopilotKit Runtime 详解：你的服务器上的 AG-UI 协议网关，4 大职责（Request Handler / Auth & Context / AG-UI Transport / Tool & State Broker）+ 6 种可挂载环境",
+      "role": "body",
+      "placement_section": "4.2 Runtime",
+      "size_px": "1536x1024",
+      "source": "ai-generated",
+      "generator": "gpt-image-2 via article-illustration flat-tech-infographic",
+      "prompt_brief": "Center CopilotRuntime box with 4 numbered responsibility cards; left: React with POST /api/copilotkit; right: AG-UI stream to 4 agent chips; bottom: 6 mount-target chips (Next.js / Express / Hono / Bun / Deno / Cloudflare Workers)",
+      "archive_path": ".local-archive/2026-06-16-copilotkit/images/runtime-zoom-in.png",
       "archive_status": "archived",
       "git_tracked": false
     },
@@ -67,6 +135,32 @@
       "git_tracked": false
     },
     {
+      "filename": "state-streaming-before-after.png",
+      "alt": "State Streaming 前后对比：默认行为是 tool 结束后一次性 STATE_SNAPSHOT（等 3-5 秒）；加 StateStreamingMiddleware 后 tool argument 直接 token 级灌入 shared state，文档编辑器 UI 和 chat 文本并行流式更新",
+      "role": "body",
+      "placement_section": "7. State Streaming",
+      "size_px": "1536x1024",
+      "source": "ai-generated",
+      "generator": "gpt-image-2 flat-tech-infographic (high quality)",
+      "prompt_brief": "Before/After side-by-side: BEFORE grayed-out panel shows LangGraph timeline → STATE_SNAPSHOT full doc → UI spinner with ~3-5s delay, annotation 'tool 跑完才一次性发完整文档'; AFTER highlighted panel shows TOOL_CALL_ARGS dotted stream feeding STATE_DELTA JSON Patch token-by-token into a live editor card (blinking caret) in parallel with TEXT_MESSAGE_CONTENT to chat, annotation 'tool argument 流式灌入 state → UI 实时重渲染'; bottom dark code box shows StateStreamingMiddleware(StateItem(...)) snippet",
+      "archive_status": "working-copy",
+      "git_tracked": false,
+      "added": "2026-06-29"
+    },
+    {
+      "filename": "headless-vs-bundle-decision.png",
+      "alt": "Headless 派 vs Bundle 派决策图：积木派（assistant-ui + Vercel AI SDK，最轻但 HITL/GenUI 自己写）vs 整套派（CopilotKit + AG-UI，全家桶但锁协议）；下方 4 个 decision diamonds 指引选栈",
+      "role": "body",
+      "placement_section": "8. 竞品地图",
+      "size_px": "1536x1024",
+      "source": "ai-generated",
+      "generator": "gpt-image-2 flat-tech-infographic (high quality)",
+      "prompt_brief": "Two camp cards at top — Headless bricks icon with assistant-ui + Vercel AI SDK (pros/cons) vs Bundle toolbox icon with CopilotKit + AG-UI (pros/cons); below, 4 decision diamond flows: (1) agent 只是 chat?→Headless; (2) 要住在业务界面 + shared state/HITL/GenUI?→Bundle; (3) 跨 framework 切换/协议中立?→Bundle/CopilotKit; (4) 重度 LangGraph?→CoAgents most mature; clay-orange footer '看产品对 agent 的嵌入深度'",
+      "archive_status": "working-copy",
+      "git_tracked": false,
+      "added": "2026-06-29"
+    },
+    {
       "filename": "official-coagents-overview.png",
       "alt": "CopilotKit + LangGraph 集成架构图（CoAgents 官方）",
       "role": "body",
@@ -78,40 +172,47 @@
       "archive_path": ".local-archive/2026-06-16-copilotkit/images/official-coagents-overview.png",
       "archive_status": "archived",
       "git_tracked": false
-    },
-    {
-      "filename": "runtime-zoom-in.png",
-      "alt": "CopilotKit Runtime 详解：你的服务器上的 AG-UI 协议网关，4 大职责（Request Handler / Auth & Context / AG-UI Transport / Tool & State Broker）+ 6 种可挂载环境",
-      "role": "body",
-      "placement_section": "4.2 Runtime",
-      "size_px": "1536x1024",
-      "source": "ai-generated",
-      "generator": "gpt-image-2 via article-illustration flat-tech-infographic",
-      "prompt_brief": "Center CopilotRuntime box with 4 numbered responsibility cards (Request Handler / Auth & Context Mediator / AG-UI Transport / Tool & State Broker); left: React with POST /api/copilotkit; right: AG-UI stream to 4 agent chips; bottom: 6 mount-target chips (Next.js / Express / Hono / Bun / Deno / Cloudflare Workers)",
-      "archive_path": ".local-archive/2026-06-16-copilotkit/images/runtime-zoom-in.png",
-      "archive_status": "archived",
-      "git_tracked": false
-    },
-    {
-      "filename": "protocol-landscape.png",
-      "alt": "AI Agent 协议三件套：MCP (Anthropic) 管 model↔tools / A2A (Google) 管 agent↔agent / AG-UI (CopilotKit) 管 agent↔user — 三段正交，各管一段",
-      "role": "body",
-      "placement_section": "3.2 AG-UI 在协议版图里的位置",
-      "size_px": "1536x1024",
-      "source": "ai-generated",
-      "generator": "gpt-image-2 via article-illustration flat-tech-infographic",
-      "prompt_brief": "3 vertical swim-lanes MCP/A2A/AG-UI, each showing endpoints (LLM↔ExternalTools / AgentA↔AgentB / AgentBackend↔ReactFrontend) with the wire format in the middle, AG-UI lane highlighted, bottom caption 'Each protocol owns a different boundary'",
-      "archive_path": ".local-archive/2026-06-16-copilotkit/images/protocol-landscape.png",
-      "archive_status": "archived",
-      "git_tracked": false
     }
   ],
   "mermaid_diagrams": [
-    "section-1 agent 开发栈 5 层 flowchart",
-    "section-3 一次 user input 走过的事件流 sequence diagram"
+    {
+      "id": "section-1-five-layers",
+      "source": "inline code fence",
+      "rendered": "assets/five-layers.png",
+      "renderer": "mermaid-cli v11.15.0, clay-orange/slate theme",
+      "note": "Both inline Mermaid (for renderers that support it) and PNG fallback (for WeChat/readme) are kept."
+    },
+    {
+      "id": "section-3-event-sequence",
+      "source": "inline code fence",
+      "rendered": "assets/event-sequence.png",
+      "renderer": "mermaid-cli v11.15.0, clay-orange/slate theme",
+      "note": "Both inline Mermaid and PNG fallback are kept."
+    }
   ],
-  "image_strategy": "ai-generated 7 张 (cover + 6 body infographics) + 官方图 1 张 (coagents) + 2 张 Mermaid 图表",
-  "style_consistency": "clay-orange + slate-gray dev-tool 美学；bilingual zh-en 标签",
+  "image_strategy": "ai-generated 10 张 (cover + 8 body infographics + 1 state streaming + 1 motivation + 1 decision map) + 官方图 1 张 (coagents) + 2 张 Mermaid 渲染图 (PNG fallback for WeChat)",
+  "style_consistency": "clay-orange #d97706 + slate-gray #1f2937 dev-tool aesthetic on warm paper #faf9f5; bilingual zh-en labels; Inter-style sans-serif; flat tech infographic",
+  "refresh_2026-06-29": {
+    "added_images": [
+      "motivation-last-mile-gap.png (gpt-image-2)",
+      "state-streaming-before-after.png (gpt-image-2)",
+      "headless-vs-bundle-decision.png (gpt-image-2)",
+      "five-layers.png (mermaid-cli render)",
+      "event-sequence.png (mermaid-cli render)"
+    ],
+    "restored_from_archive": [
+      "cover.png",
+      "ag-ui-events.png",
+      "three-layer-architecture.png",
+      "hitl-two-patterns.png",
+      "genui-three-specs.png",
+      "official-coagents-overview.png",
+      "runtime-zoom-in.png",
+      "protocol-landscape.png"
+    ],
+    "total_body_images": 12,
+    "total_with_cover": 13
+  },
   "archive": {
     "local_archive_dir": ".local-archive/2026-06-16-copilotkit",
     "snapshot_index_md": ".local-archive/2026-06-16-copilotkit/index.md",
