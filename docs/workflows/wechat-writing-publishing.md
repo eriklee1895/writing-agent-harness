@@ -130,7 +130,7 @@ wechat-publish-workflow
 wechat-article-publisher    # Playwright
 ```
 
-发布器走 `wechat-article-publisher`（Playwright），通过持久化 profile 复用登录态，填 title/author/summary、注入正文 HTML、串行上传正文图片到微信 CDN、保存草稿。元数据取自 source `.md` frontmatter（作者缺省取 `config.toml`，已预填 李玉恒）；标题写入可见标题 ProseMirror（同步隐藏 `#title`），正文剔除 hero 大标题避免重复。已验证文章流程、标题/作者/摘要、串行正文图片上传、草稿保存。迁移背景与对比数据见 [../retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](../retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。
+发布器走 `wechat-article-publisher`（Playwright），通过持久化 profile 复用登录态，填 title/author/summary、注入正文 HTML、串行上传正文图片到微信 CDN、保存草稿。元数据取自 source `.md` frontmatter（作者缺省取 repo 根下 `.config/wechat.toml`，已 .gitignore；首次缺失时脚本询问并写回）；标题写入可见标题 ProseMirror（同步隐藏 `#title`），正文剔除 hero 大标题并清理随之变空的 wrapper 避免开头空行；`--try-cover` 自动上传封面、`--declare-original` 自动勾选原创声明；保存前按 Tab blur 触发 Vue flush、保存后三重验证（toast / appmsgid 变更 / title 回读匹配），不再依赖预分配 appmsgid 槽位。迁移背景与关键修复记录见 [../retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](../retrospectives/2026-06-11-playwright-wechat-migration-analysis.md) 和 [../retrospectives/2026-06-29-wechat-publisher-metadata-and-save-fixes.md](../retrospectives/2026-06-29-wechat-publisher-metadata-and-save-fixes.md)。
 
 官方 API / remote-api 仅作为历史/实验能力（需要 AppID/AppSecret、access_token、IP 白名单，富文本兼容成本高，不维护主线）。
 
@@ -146,7 +146,7 @@ uv run .agents/skills/wechat-article-publisher/scripts/publish.py \
 
 唯一不可避免的人工参与点是微信登录确认（首次扫码）。这是微信账号安全模型带来的边界，不是自动化缺口；登录态存独立 profile 可复用后，后续 `login_wait≈0`，从 preview 到草稿箱同步接近 100% AI 自动化。
 
-封面图当前需在草稿箱 final review 时手动设置（封面上传链路未自动化）。
+封面图通过 publisher `--try-cover` 自动上传（需要 frontmatter 的 `cover:` 指向本地图片）。封面以编辑器左侧卡片/封面预览可见为准。DOM 里的 `#js_cover_area` 有时仍会显示 placeholder text，不一定代表封面失败。
 
 如果登录页显示「微信快捷登录」按钮而不是二维码，应直接点击该按钮继续登录流程，不要等待扫码超时；如果显示二维码，再由用户扫码确认。
 
