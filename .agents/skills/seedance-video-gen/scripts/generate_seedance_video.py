@@ -75,8 +75,8 @@ SUPPORTED_VIDEO_ROLES = {"reference_video"}
 SUPPORTED_AUDIO_ROLES = {"reference_audio"}
 # Image formats accepted by Seedance 2.0 (HEIC/HEIF added 2026 on 2.0 + 1.5 pro):
 IMAGE_EXTS = {"png", "jpg", "jpeg", "webp", "gif", "bmp", "tiff", "heic", "heif"}
-VIDEO_EXTS = {"mp4", "mov", "avi", "mkv", "webm"}
-AUDIO_EXTS = {"mp3", "wav", "aac", "flac", "m4a", "ogg"}
+VIDEO_EXTS = {"mp4", "mov"}
+AUDIO_EXTS = {"mp3", "wav"}
 
 # --- Validation helpers (shared between build_payload and build_payload_from_shot) ---
 
@@ -312,14 +312,12 @@ def _image_mime(ext: str) -> str:
 def _video_mime(ext: str) -> str:
     return {
         "mp4": "video/mp4", "mov": "video/quicktime",
-        "avi": "video/x-msvideo", "mkv": "video/x-matroska", "webm": "video/webm",
     }.get(ext, f"video/{ext}")
 
 
 def _audio_mime(ext: str) -> str:
     return {
-        "mp3": "audio/mpeg", "wav": "audio/wav", "aac": "audio/aac",
-        "flac": "audio/flac", "m4a": "audio/mp4", "ogg": "audio/ogg",
+        "mp3": "audio/mpeg", "wav": "audio/wav",
     }.get(ext, f"audio/{ext}")
 
 
@@ -578,6 +576,7 @@ def write_manifest(
         "error": task_response.get("error"),
         "video_url": task_response.get("content", {}).get("video_url"),
         "last_frame_url": task_response.get("content", {}).get("last_frame_url"),
+        "seed": task_response.get("seed"),
         "service_tier": task_response.get("service_tier"),
         "priority": task_response.get("priority"),
         "draft": task_response.get("draft"),
@@ -974,9 +973,11 @@ def parse_args() -> argparse.Namespace:
     subparsers = parser.add_subparsers(dest="command", help="Command")
 
     # Default subcommand: generate. Insert it when the first argument is not a known
-    # subcommand AND not a flag (so `--help` / `--version` reach argparse's top-level help).
+    # subcommand AND not a top-level-only flag (--help/--version/-h reach argparse's
+    # top-level help). Flag-first invocations (e.g. `--prompt ...`, `--model ...`)
+    # ARE auto-prefixed with `generate`, matching the SKILL.md quick-start examples.
     known_commands = {"generate", "create", "poll", "download", "list-tasks", "cancel-task", "batch-submit"}
-    if sys.argv[1:] and sys.argv[1] not in known_commands and not sys.argv[1].startswith("-"):
+    if sys.argv[1:] and sys.argv[1] not in known_commands and sys.argv[1] not in {"-h", "--help", "--version"}:
         sys.argv.insert(1, "generate")
 
     def _add_common(p: argparse.ArgumentParser) -> None:

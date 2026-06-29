@@ -146,7 +146,7 @@ Seedance 视频生成是**强迭代**工作流，不是一次出片。下面是�
 
 不要盲目用默认值。按场景挑：
 
-- **模型**：探索/批量/预览 → fast（~60% token 成本、速度相近）；出片 → standard；超大规模备选库 → mini（GA 后）；需要 4k → 只能 standard（并发 1，耐心等）
+- **模型**：探索/批量/预览 → fast（~40% token 成本、速度相近）；出片 → standard；超大规模备选库 → mini（GA 后）；需要 4k → 只能 standard（并发 1，耐心等）
 - **分辨率**：快速预览 → 480p；社媒/微信/草稿 → 720p（默认够用）；最终发布/大屏 → 1080p；有明确 4k 需求且播放器支持 HEVC → 4k
 - **时长**：单一动作/产品展示/转场 → 4-5s；有对白/多镜头/情绪铺垫 → 8-12s；复杂叙事 → 12-15s 或拆成多个 task 拼接
 - **ratio**：微信视频号/抖音/竖屏短片 → 9:16；文章头图视频/概念片 → 16:9；产品方形展示 → 1:1；电影感宽银幕 → 21:9；首帧图尺寸特殊 → adaptive 让模型判断
@@ -177,8 +177,9 @@ Seedance skill 不负责生成或获取素材——它只消费调用方传入�
 
 ### 执行与等待
 
-- 单个 task 4-5 分钟 wall time（含排队）；一次并行提交 ≤ 20 个 task 不会触发限流
-- 4k task 严格串行（running 上限 1），耐心等
+- 单个 task 4-5 分钟 wall time（含排队）
+- **submit 任务（POST /tasks）实测不限流**（普通公司开发账号）：可以一次性 burst 提交几十个 task。并发限制的是**同时 `running` 状态的 task 数量**（普通档实测 20，fast + standard 共享 pool），超出后新任务进 `queued` FIFO 排队，不会报 429。官方文档列出企业 600 / 个人 180 RPM，个人账号未验证
+- 4k task 严格串行（running 上限 1，submit 端 RPM 15），耐心等
 - 轮询间隔默认 20s 就够，不要开得太频繁
 - 需要只拿 task_id 稍后再查：用 `create` 子命令；需要同步等结果：用默认 `generate`
 
@@ -211,13 +212,13 @@ output/seedance/YYYY-MM-DD-<slug>/
 ## 重要约束
 
 - `duration` 范围 `4–15` 秒，或 `-1` 让模型自适应。
-- `resolution`：`480p` / `720p` / `1080p` / `4k`；**Fast 版和 Mini 版最高 `720p`**（脚本会在 client 侧直接拦截）；**`4k` 仅标准版，输出 10-bit H.265/HEVC**，并发 1、RPM 15，老旧播放器可能不兼容。
-- `ratio`：`16:9`、`4:3`、`1:1`、`3:4`、`9:16`、`21:9`、`adaptive`。
-- 多模态参考上限：图片 ≤ 9，视频 ≤ 3，音频 ≤ 3，总计 ≤ 12。
+- `resolution`：`480p` / `720p` / `1080p` / `4k`；**默认 `720p`**；**Fast 版和 Mini 版最高 `720p`**（脚本会在 client 侧直接拦截）；**`4k` 仅标准版，输出 10-bit H.265/HEVC**，并发 1、RPM 15。
+- `ratio`：`16:9`、`4:3`、`1:1`、`3:4`、`9:16`、`21:9`、`adaptive`；**默认 `16:9`**（脚本 argparse 默认 16:9；实测省略 ratio 时 API 也返回 16:9，官方文档标注的 `adaptive` 与实测不符）。
+- 多模态参考单类型上限：图片 ≤ 9，视频 ≤ 3，音频 ≤ 3（官方未明文规定总数硬上限；脚本 client 侧硬限总计 ≤ 12）；实测推荐 **4-5 个素材** 的黄金配比（详见 references）。
 - 音频不能单独使用，必须与至少一张图片或一段视频一起传入。
-- 首尾帧模式（`first_frame` / `last_frame`）和参考图模式（`reference_image`）**互斥**；但 `first_frame`/`last_frame` 可与 `reference_video`/`reference_audio` 组合。
+- 首尾帧模式（`first_frame` / `last_frame`）和参考图模式（`reference_image`）**互斥**；首尾帧与 `reference_video`/`reference_audio` 共用未在官方文档明文确认（详见 multimodal-reference.md 的「模式组合规则」）。
 - **联网搜索（`--enable-web-search`）仅纯文本输入**，与 image_url/video_url/audio_url 互斥（脚本会拦截）。
-- 本地图片（png/jpg/jpeg/webp/gif/bmp/tiff/heic/heif）和本地音频（mp3/wav）会自动转成 base64 data URL 上传；**本地视频不支持 base64**，视频必须以 http(s):// URL 或 `asset://` ID 形式传入。参考视频单文件 ≤ 200 MB。
+- 本地图片（png/jpg/jpeg/webp/gif/bmp/tiff/heic/heif）和本地音频（mp3/wav）会自动转成 base64 data URL 上传；**本地视频不支持 base64**，视频必须以 http(s):// URL 或 `asset://` ID 形式传入，容器仅 MP4/MOV，单文件 ≤ 200 MB。
 
 > 完整参数表、计费、状态机、错误码见 [references/api-reference.md](references/api-reference.md)。
 
@@ -275,7 +276,6 @@ Agent 按需读取，不必全加载。简单任务（文生视频 4-5s、单镜
 | `GET /tasks/{id}` 返回 404 | 任务 ID 已过 7 天保留期；用 `list-tasks` 找最近 7 天的任务 |
 | 脚本拒绝 `--resolution 1080p`/`4k` | Fast / Mini 最高 720p，脚本会硬阻断；改用 720p 或 480p |
 | 脚本拒绝本地视频路径 | 视频不支持 base64；先上传到公网 URL / TOS，或录入 asset:// 素材库 |
-| 4k 视频播放器黑屏/花屏 | 4k 输出是 10-bit H.265/HEVC，老旧播放器（QuickTime、旧版微信）不支持；改用 1080p |
 | 想批量找历史任务 | `list-tasks --status succeeded --model doubao-seedance-2-0-260128` |
 | `--enable-web-search` + 多模态被脚本拒绝 | web_search 仅纯文本输入；如需引用搜索结果，先用纯文本跑一次再以视频为参考续写 |
 

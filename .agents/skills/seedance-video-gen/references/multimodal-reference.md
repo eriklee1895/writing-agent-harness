@@ -8,10 +8,10 @@ Seedance 2.0 的核心优势是多模态输入——同时传入文本、图片�
 |---|---|---|---|---|---|
 | 文本 | `text` | — | 1 个（必须有） | — | — |
 | 图片 | `image_url` | `first_frame` / `last_frame` / `reference_image` | 0–9 张 | PNG/JPG/JPEG/WebP/GIF/BMP/TIFF/HEIC/HEIF | < 30 MB |
-| 视频 | `video_url` | `reference_video` | 0–3 段 | MP4/MOV/AVI/MKV/WebM（H.264/H.265，24-60fps） | < **200 MB** |
-| 音频 | `audio_url` | `reference_audio` | 0–3 段 | **WAV/MP3**（官方推荐）；AAC/FLAC/M4A/OGG 兼容性请自测 | < 15 MB，单段 [2, 15]s |
+| 视频 | `video_url` | `reference_video` | 0–3 段 | **仅 MP4 / MOV**（H.264 或 H.265/HEVC + 容器内 AAC/MP3，24-60 fps） | < **200 MB** |
+| 音频 | `audio_url` | `reference_audio` | 0–3 段 | **仅 WAV / MP3**（官方明文支持，其它格式请先转码） | < 15 MB，单段 [2, 15]s |
 
-**总计不超过 12 个素材**。
+**单类型上限：图 9 / 视 3 / 音 3**。官方未明文规定总数硬上限，但**脚本 client 侧硬限总计 ≤ 12**（防呆）；**实测推荐 4-5 个素材的黄金配比**（见 [key-constraints.md](key-constraints.md)），过多素材会导致特征优先级混乱、风格冲突、主体识别模糊。
 
 > **注意**：上面是**输入参考素材**的体积限制，**不是输出 video 的体积限制**。整个请求体 base64 编码后 ≤ 64 MB，脚本 client 侧 hard-fail 在 60 MB（留 4MB 余量）。详细见 [key-constraints.md](key-constraints.md) 的「输入参考素材 size 限制」一节。
 
@@ -96,9 +96,11 @@ Seedance 2.0 的核心优势是多模态输入——同时传入文本、图片�
 | 风格/氛围参考 | 提取色调、镜头感、画面调性 | `全程使用视频1的第一视角构图和有质感的画面风格` |
 
 **视频参考技术要求**：
-- 编码：H.264 兼容性最佳；H.265/HEVC 也支持
+- 容器：**仅 MP4（.mp4, video/mp4）和 QuickTime（.mov, video/quicktime）**；AVI/MKV/WebM 等不接受
+- 视频编码：H.264/AVC 兼容性最佳；H.265/HEVC 也支持
+- 容器内音频：AAC 或 MP3
 - FPS：∈ [24, 60]
-- 分辨率：360p ~ 4k
+- 分辨率：480p ~ 4k；总像素 ∈ [409600, 8295044]；单边 ∈ [300, 6000] px；宽高比 ∈ (0.4, 2.5)
 - 文件大小：≤ 200 MB
 - 不要用经过多次剪辑/压缩/转发的视频，元数据破坏会影响特征提取
 
@@ -107,10 +109,10 @@ Seedance 2.0 的核心优势是多模态输入——同时传入文本、图片�
 | 参考类型 | 说明 | 提示词示例 |
 |---|---|---|
 | 背景音乐 | 情绪、节奏、配器风格 | `全程使用音频1作为背景音乐` |
-| 音色参考 | 旁白/角色的声线、音色特征（在提示词中补细致描述防漂移）| `使用音频1低厚温润带细碎颗粒感中年男声的音色` |
+| 音色参考 | 旁白/角色的声线、音色特征（在提示词中补细致描述防漂移）| `使用@音频1低厚温润带细碎颗粒感中年男声的音色` |
 | 环境音效 | 提取音频中的环境声氛围 | `环境音效与音频1自然融合` |
 
-> 本地 WAV/MP3 脚本会自动转 base64 上传；其他格式建议先转成 WAV/MP3 再传。
+> 本地 WAV/MP3 脚本会自动转 base64 上传；**官方仅明文支持 wav 和 mp3**，其它格式（AAC/FLAC/M4A/OGG）请先转码再传，否则可能被 400 拒绝。
 
 ## 模式组合规则
 
@@ -118,10 +120,18 @@ Seedance 2.0 的核心优势是多模态输入——同时传入文本、图片�
 
 | 模式 | 使用的 role | 是否允许组合 |
 |---|---|---|
-| 首帧/首尾帧 | `first_frame`（+ `last_frame`） | ✅ 可与 `reference_video`、`reference_audio` 组合 |
+| 首帧/首尾帧 | `first_frame`（+ `last_frame`） | 与 `reference_image` ❌ 互斥；与 `reference_video`/`reference_audio` ⚠️ 共存未在官方文档明文确认 |
 | 多模态参考 | `reference_image` + `reference_video` + `reference_audio` | ✅ 三类自由组合 |
 | 纯文生视频 | 只有 `text` | ✅ 可加 `enable_web_search` |
 | 视频编辑/延长 | `reference_video`（作被编辑对象） | ✅ 可与 `reference_image`、`reference_audio` 组合 |
+
+**首尾帧 + 视频/音频参考的推荐做法**：官方文档把首尾帧模式和多模态参考模式定位为两条独立路径，**没有明文支持** `first_frame`/`last_frame` 与 `reference_video`/`reference_audio` 共存。
+
+- 优先方案：用**多模态参考**模式，把目标图作为 `reference_image` 传入并在 prompt 中描述「以图片N为首帧/尾帧」。
+- 如果必须像素级一致地控制首尾帧：单独走首尾帧模式，先不带视频/音频参考；视频/音频特征通过 prompt 文本描述。
+- 如确实想同次混用 `first_frame` + `reference_video`/`reference_audio`：先用 `--dry-run` 看 payload，再 submit 一个最小测试 task 验证 API 是否接受。
+
+**首尾帧画面比例处理**：首帧和尾帧宽高比不一致时，**以首帧为准**，尾帧会被自动中心裁剪以适配；首尾帧图片**允许相同**（用于「回到原点」式叙事）。输出 ratio 与输入图比例不一致时，服务端按中心裁剪；建议预裁或设 `ratio=adaptive`。
 
 **注意**：多模态参考模式中，可以通过提示词指定参考图片作为首帧/尾帧，间接实现"首尾帧 + 参考"效果。但如果需要严格保障首尾帧与指定图片像素级一致，优先使用首帧/首尾帧模式。
 
@@ -153,7 +163,7 @@ Seedance 2.0 的核心优势是多模态输入——同时传入文本、图片�
 
 ## 虚拟人像与授权素材（asset:// 协议）
 
-Seedance 2.0 不支持直接上传含公共名人真人人脸的参考图。平台提供三种方案：
+Seedance 2.0 系列**不支持上传任何真人人脸的参考图/视频**（不限公众人物）。平台提供三种合规方案：
 
 | 方案 | 用法 | 收费 |
 |---|---|---|
@@ -169,8 +179,8 @@ Seedance 2.0 不支持直接上传含公共名人真人人脸的参考图。平�
 |---|---|
 | 本地图片（PNG/JPG/JPEG/WebP/GIF/BMP/TIFF/HEIC/HEIF） | ✅ 脚本自动转 base64 data URL |
 | 本地 WAV/MP3 音频 | ✅ 脚本自动转 base64 data URL |
-| 本地视频（MP4/MOV/AVI/MKV/WebM） | ❌ 需先上传到可公开访问的 URL 或 TOS，或录入 asset:// 素材库 |
-| 本地其他音频格式（AAC/FLAC/M4A/OGG） | ⚠️ 脚本会接受但建议先转 WAV/MP3 |
+| 本地视频（仅 MP4/MOV 接受；其他容器请先转码） | ❌ 需先上传到可公开访问的 URL 或 TOS，或录入 asset:// 素材库 |
+| 本地其他音频格式（AAC/FLAC/M4A/OGG 等） | ⚠️ 官方仅明文支持 WAV/MP3，建议先转码再传，否则可能被 400 拒绝 |
 
 ## 参考素材最佳实践
 
