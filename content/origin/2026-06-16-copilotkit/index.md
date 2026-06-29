@@ -24,6 +24,8 @@ cover: ./assets/cover.png
 - 高风险操作（发邮件、扣款、删除数据）必须有人类批准。**agent 怎么在 graph 中间停下来，弹一个真实的确认 UI？**
 - 用户改了一个表单字段，agent 的下一步规划需要看到。**React state 和 agent state 怎么双向同步？**
 
+![CLI 里跑通的 agent 和嵌进真实 SaaS 产品之间的"最后一公里鸿沟"：上下文注入、真组件渲染、HITL、双向 state 四件事没有被 agent framework 解决](./assets/motivation-last-mile-gap.png)
+
 这就是 CopilotKit 要解决的最后一公里。它**不**是 agent 框架（不是 LangChain 替代），**不**是底层 SDK（不是 Vercel AI SDK 替代），而是**Agent ↔ User**这一层的协议 + React 工具链。
 
 要理解为什么需要单独抽出来这一层，先把整个 AI Agent 开发栈画出来。
@@ -44,6 +46,8 @@ flowchart TB
   S -.跨.-> L2
   S -.跨.-> L5
 ```
+
+![AI Agent 开发栈 5 层坐标系 + CopilotKit 跨 L2 + L5 的定位](./assets/five-layers.png)
 
 每层都有自己的代表项目：
 
@@ -167,6 +171,8 @@ sequenceDiagram
   FE->>FE: 重渲染 outline（来自 state delta）
   FE->>U: 文本流 + outline UI 同步更新
 ```
+
+![一次 user input 走过的 AG-UI 事件流：STATE_DELTA 和 TEXT_MESSAGE_CONTENT 并行到达，UI 边出字边重渲染](./assets/event-sequence.png)
 
 注意 `STATE_DELTA`（增量）和 `TEXT_MESSAGE_CONTENT`（增量）是**并行**的——文本流式输出的同时，状态也在 patch，前端可以根据 `STATE_DELTA` 实时重渲染"被 agent 改的 outline 组件"。
 
@@ -475,6 +481,8 @@ CopilotKit 1.50 起把市面上三个 generative UI spec 都接进来了：
 
 `StateStreamingMiddleware` 把 tool 的某个**argument** 的 streaming 直接灌进 state——UI 上 token-by-token 看到 agent 写的字：
 
+![State Streaming 前后对比：默认行为是 tool 结束后一次性 STATE_SNAPSHOT，加 StateStreamingMiddleware 后 tool argument 直接 token 级灌入 shared state，UI 和 chat 并行流式更新](./assets/state-streaming-before-after.png)
+
 ```python
 from langgraph.types import Command
 from langchain_core.messages import ToolMessage
@@ -525,6 +533,8 @@ graph = create_agent(
 | **OpenAI AgentKit** | L3 + L5 | OpenAI 自家 | 与 OpenAI 模型深度集成 | 只为 OpenAI 模型设计、跨 provider 难 |
 | **Microsoft Agent Framework** | L3 | .NET / Python | enterprise integration | UI 一侧比较薄 |
 | **AG2 / AutoGen** | L3 | 学术派 multi-agent | 多 agent 协作、消息协议 | UI 一侧几乎全靠你自己 |
+
+![Headless 派 vs Bundle 派决策图：看产品对 agent 的嵌入深度选栈](./assets/headless-vs-bundle-decision.png)
 
 **Headless 派 vs Bundle 派**：
 
