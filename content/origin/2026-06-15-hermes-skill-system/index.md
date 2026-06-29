@@ -11,6 +11,8 @@ cover: ./assets/20260615-163730-hermes-agent-skill-system-cropped.png
 
 本文档分析 Hermes Agent Skill System 的实现原理，重点关注：技能加载的四层策略、渐进式披露的 token 权衡、外部目录缓存机制、以及名称冲突的显式处理。我们结合源代码分析，并提供流程图帮助理解。
 
+![Hermes Agent Skill System 架构总览](./assets/20260615-163730-hermes-agent-skill-system.png)
+
 ## 核心架构理念
 
 ### 设计原则
@@ -146,27 +148,27 @@ def skills_list():
 
 ```mermaid
 flowchart TD
-    A[调用 skill_view(name)] --> B{检查命名空间?}
-    B -->|是: plugin:skill| C[插件技能路径]
-    B -->|否| D[本地/外部搜索]
-    D --> E[构建搜索路径列表]
-    E --> F[策略1: 直接路径]
-    E --> G[策略2: 目录名递归]
-    E --> H[策略3: frontmatter name]
-    E --> I[策略4: legacy .md]
-    F --> J{找到多个?}
+    A["调用 skill_view(name)"] --> B{"检查命名空间?"}
+    B -->|"是: plugin:skill"| C["插件技能路径"]
+    B -->|"否"| D["本地/外部搜索"]
+    D --> E["构建搜索路径列表"]
+    E --> F["策略1: 直接路径"]
+    E --> G["策略2: 目录名递归"]
+    E --> H["策略3: frontmatter name"]
+    E --> I["策略4: legacy .md"]
+    F --> J{"找到多个?"}
     G --> J
     H --> J
     I --> J
-    J -->|是| K[报错: 名称冲突]
-    J -->|否| L[读取 SKILL.md]
-    L --> M[解析 frontmatter]
-    M --> N[平台检查]
-    N --> O[前置处理]
-    O --> P[模板变量替换]
-    P --> Q[内联 shell 执行]
-    Q --> R[注入配置值]
-    R --> S[返回完整内容]
+    J -->|"是"| K["报错: 名称冲突"]
+    J -->|"否"| L["读取 SKILL.md"]
+    L --> M["解析 frontmatter"]
+    M --> N["平台检查"]
+    N --> O["前置处理"]
+    O --> P["模板变量替换"]
+    P --> Q["内联 shell 执行"]
+    Q --> R["注入配置值"]
+    R --> S["返回完整内容"]
 ```
 
 **名称解析策略**（skills_tool.py）：
@@ -317,15 +319,15 @@ def extract_skill_conditions(frontmatter: Dict):
 
 ```mermaid
 flowchart LR
-    A[技能显示?] --> B{requires_toolsets?}
-    B -->|有且不可用| C[隐藏]
-    B -->|可用或无| D{requires_tools?}
-    D -->|有且不可用| C
-    D -->|可用或无| E{fallback_for_toolsets?}
-    E -->|有且可用| C
-    E -->|不可用或无| F{fallback_for_tools?}
-    F -->|有且可用| C
-    F -->|不可用或无| G[显示]
+    A["技能显示?"] --> B{"requires_toolsets?"}
+    B -->|"有且不可用"| C["隐藏"]
+    B -->|"可用或无"| D{"requires_tools?"}
+    D -->|"有且不可用"| C
+    D -->|"可用或无"| E{"fallback_for_toolsets?"}
+    E -->|"有且可用"| C
+    E -->|"不可用或无"| F{"fallback_for_tools?"}
+    F -->|"有且可用"| C
+    F -->|"不可用或无"| G["显示"]
 ```
 
 ### 用例：降级方案
@@ -512,17 +514,17 @@ def parse_qualified_name(name: str) -> Tuple[Optional[str], str]:
 
 ```mermaid
 flowchart TD
-    A[skill_view('plugin:skill')] --> B[解析命名空间]
-    B --> C[发现插件]
-    C --> D{插件存在?}
-    D -->|否| E[尝试作为分类路径: plugin/skill]
-    D -->|是| F[查找插件技能]
-    F --> G{技能存在?}
-    G -->|否| H[列出可用技能]
-    G -->|是| I[读取 SKILL.md]
-    I --> J[添加兄弟姐妹横幅]
-    J --> K[前置处理]
-    K --> L[返回内容]
+    A["skill_view(plugin:skill)"] --> B["解析命名空间"]
+    B --> C["发现插件"]
+    C --> D{"插件存在?"}
+    D -->|"否"| E["尝试作为分类路径: plugin/skill"]
+    D -->|"是"| F["查找插件技能"]
+    F --> G{"技能存在?"}
+    G -->|"否"| H["列出可用技能"]
+    G -->|"是"| I["读取 SKILL.md"]
+    I --> J["添加兄弟姐妹横幅"]
+    J --> K["前置处理"]
+    K --> L["返回内容"]
 ```
 
 ### 插件技能横幅
