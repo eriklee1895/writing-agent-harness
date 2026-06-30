@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: Flat editorial technical infographic on deep navy background with warm terracotta and gold accents and subtle paper texture, divided into two zones. Left zone 'QUALITY GOVERNANCE': three modules — 'cost_tracker' with arrows 'estimate -> reserve -> reconcile', 'slideshow_risk' detector with warning triangle, 'delivery_promise' validator with checkmark; below a slider with modes 'observe / warn / cap'. Right zone 'COMPOSITION + VOLCANO ENGINE': top row composition runtimes 'Remotion (React)', 'HyperFrames (HTML/CSS/GSAP)', 'FFmpeg'; bottom row Volcano Engine tools 'Doubao TTS', 'Seedance', 'Seedream', 'BigMusic', 'ASR' with small auth badges 'Ark Bearer', 'X-Api-Key', 'HMAC V4'. Clean vector shapes, readable labels, no extra text, no UI controls.",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "2048x1152",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-29-openmontage-agent-engineer-notes/assets/diagram-governance-composition.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-06-29T21:13:27",
+  "dry_run": false
+}

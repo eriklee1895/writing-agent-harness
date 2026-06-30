@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: Flat editorial technical infographic on deep navy background with warm terracotta and gold accents and subtle paper texture. Center: a large 'BaseTool' ID card with labeled fields: name, capability, provider, runtime, input_schema, output_schema, dependencies, best_for, fallback_tools, agent_skills, quality_score, latency_p50. Left: 'ToolRegistry' with a magnifying glass scanning a folder tree 'tools/...', auto-discovering modules. Right: 'Selector' scoring multiple providers (TTS, image, video) on a 7-axis radar chart labeled task_fit, output_quality, control, reliability, cost_efficiency, latency, continuity, with an arrow to fallback_tools. Top: stylized Agent reads the BaseTool card. Bottom: 'ToolResult' output box. Clean vector shapes, readable labels, no extra text, no UI controls.",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "2048x1152",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-29-openmontage-agent-engineer-notes/assets/diagram-tool-contract.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-06-29T21:06:35",
+  "dry_run": false
+}

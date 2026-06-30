@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: 扁平编辑信息图，深海军蓝背景，暖陶土橙和金色点缀，细微纸张纹理。横向八阶段流水线图，从左到右八个圆角矩形阶段卡片，用流畅的箭头连接。每个阶段有一个简约图标和中文标签：1.研究（放大镜图标）2.提案（文档图标）3.脚本（铅笔图标）4.场景规划（分镜板图标）5.资产生成（文件夹图标）6.编辑（剪刀图标）7.合成（层叠图标）8.发布（火箭图标）。上方有总标题「OpenMontage 八阶段生产流水线」。每个阶段下方有小字状态徽章：研究标「已完成」绿色，提案标「进行中」橙色，其余标「待执行」灰色。整体像一条工厂装配线，进度从左向右推进。所有文字均为简体中文。干净矢量风格，无照片真实感，无UI控件。",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "2048x1152",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/content/wechat/2026-06-29-openmontage-agent-engineer-notes/assets/infographic-pipeline.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-06-29T22:14:40",
+  "dry_run": false
+}

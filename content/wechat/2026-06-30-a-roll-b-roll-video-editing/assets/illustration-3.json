@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: Cartoon flat illustration, bright warm color palette, humorous and fun, social media science article style, non-photorealistic, trendy internet vibe. Scene: A cute cartoon checklist clipboard with 5 checkboxes, each checkbox next to a fun little icon: 1) Checkbox next to a tiny list + camera icon (text: '列3个以上B-Roll镜头'), 2) Checkbox next to a stack of film clips icon (text: '多拍2倍素材'), 3) Checkbox next to three camera angles icon (text: '拍三个角度'), 4) Checkbox next to a 15s timer icon (text: '10-15秒一切'), 5) Checkbox next to a tiny sound wave icon (text: '留环境音'). Big bold Chinese title at top: '新手B-Roll急救包 Checklist'. All checkboxes are empty, friendly rounded design. 16:9 aspect ratio, clean light cream background, warm green and orange accent colors, cute and playful, no realistic details.",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1792x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "jpeg",
+  "n": 1,
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-30-a-roll-b-roll-video-editing/assets/illustration-3.jpg",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-06-30T01:11:24",
+  "dry_run": false
+}

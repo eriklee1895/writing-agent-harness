@@ -1,0 +1,19 @@
+{
+  "prompt": "电影感技术博客头图，左右分屏构图。左侧是抽象的电影制作工作室：层叠的视频画框、时间线轨道、发光的 TTS/图像/视频/音乐 提供商图标汇入一个中央发光节点，代表 Agent 核心。右侧是中国水墨纪录片意象：唐代建筑剪影、卷轴、毛笔笔触。中间通过 YAML 文档、Markdown 技能文件、JSON 检查点的网络连接融合。配色：深海军蓝、暖陶土橙、金色点缀，纸张纹理。无文字，无 UI 控件。",
+  "model": "doubao-seedream-5-0-260128",
+  "size": "2560x1440",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": false,
+  "optimize_prompt": null,
+  "reference_images": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-29-openmontage-agent-engineer-notes/assets/cover.png",
+  "created_at": "2026-06-29T19:54:30",
+  "dry_run": false,
+  "usage": {
+    "generated_images": 1,
+    "output_tokens": 14400,
+    "total_tokens": 14400
+  }
+}

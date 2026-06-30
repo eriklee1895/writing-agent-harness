@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: Flat editorial technical infographic on deep navy background with warm terracotta and gold accents and subtle paper texture. Left: a YAML document icon labeled 'pipeline_defs/animated-explainer.yaml'. A horizontal flow of eight rounded stage boxes: research -> proposal -> script -> scene_plan -> assets -> edit -> compose -> publish. Each stage has a small JSON checkpoint badge labeled 'checkpoint.json' with status indicators: pending, in_progress, completed, failed, needs_review. Below the flow: a 'human approval' gate and a 'pre-compose validation' shield. Clean arrows, readable labels, no extra text, no UI controls, vector style.",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "2048x1152",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-29-openmontage-agent-engineer-notes/assets/diagram-pipeline-checkpoint.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-06-29T21:12:37",
+  "dry_run": false
+}
