@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: Flat editorial technical infographic on deep navy background with warm terracotta and gold accents and subtle paper texture. Three stacked horizontal layers. Bottom layer labeled 'LAYER 1: tools/ + pipeline_defs/' with small module icons labeled 'seedream_image.py', 'seedance_ark.py', 'animated-explainer.yaml'. Middle layer labeled 'LAYER 2: skills/' with icons labeled 'asset-director.md', 'stage-director.md'. Top layer labeled 'LAYER 3: .agents/skills/' with icons labeled 'seedream/SKILL.md', 'volcengine-tts/SKILL.md'. A stylized Agent figure on the left reads all three layers; arrows flow from layers to a central 'EXECUTE' node. Clean vector shapes, no photo realism, no UI controls, no extra text beyond labels.",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "2048x1152",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-06-29-openmontage-agent-engineer-notes/assets/diagram-three-layers.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-06-29T21:04:03",
+  "dry_run": false
+}

@@ -157,6 +157,75 @@ const STYLE_TOKENS = {
     darkCodeBg: "#374151",
     darkHeadingColor: "#fbbf24",
   },
+  "editorial-magazine": {
+    // 杂志编辑风：纯白底、深靛蓝+朱红双色、大标题大留白、杂志章节感
+    accent: "#c0392b",          // 朱红，用于强调、链接、编号
+    blue: "#1e3a5f",            // 深靛蓝，主标题色
+    text: "#1c1c1e",            // 近黑正文，阅读舒适
+    muted: "#8a8f98",           // 中灰辅助文字
+    panelBorder: "#e8e8ed",
+    shadow: "none",
+    fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Serif SC',Arial,sans-serif",
+    headingFontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',Arial,sans-serif",
+    bodyBg: "#ffffff",
+    cardBg: "#ffffff",
+    quoteBg: "#fafbfc",
+    quoteBorder: "#1e3a5f",
+    useCards: false,
+    showOutline: false,
+    showSummary: false,
+    heroStyle: "magazine",      // 新 hero 风格：大标题 + 副标题 + 分割线 + 元信息
+    headingPrefix: "",
+    closingPanel: false,
+    lineHeight: "1.95",
+    codeBg: "#f6f8fa",
+    codeBorder: "rgba(0,0,0,.06)",
+    tableHeaderBg: "#1e3a5f",
+    tableHeaderColor: "#ffffff",
+    darkBg: "#0f172a",
+    darkCardBg: "#1e293b",
+    darkText: "#e2e8f0",
+    darkMuted: "#94a3b8",
+    darkAccent: "#f87171",
+    darkQuoteBg: "#1e293b",
+    darkCodeBg: "#1e293b",
+    darkHeadingColor: "#93c5fd",
+  },
+  "neo-futurism": {
+    // 新国风编辑风：深墨黑底 + 陶土朱红accent，匹配封面唐朝国风水墨质感，高级杂志感
+    accent: "#c45a3a",           // 陶土朱红（暖调，匹配封面国风配色）
+    blue: "#1a1a1a",
+    text: "#1a1a1a",
+    muted: "#7a736c",
+    panelBorder: "#1a1a1a",
+    shadow: "0 1px 3px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.04)",
+    fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',Arial,sans-serif",
+    headingFontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',Arial,sans-serif",
+    bodyBg: "#ffffff",
+    cardBg: "#ffffff",
+    quoteBg: "transparent",
+    quoteBorder: "#c45a3a",
+    useCards: false,
+    showOutline: false,
+    showSummary: false,
+    heroStyle: "neo-title",      // 简洁标题区：仅标题+副标题，无冗余信息
+    headingPrefix: "",
+    closingPanel: false,
+    lineHeight: "1.85",
+    codeBg: "#1a1a1a",
+    codeBorder: "#c45a3a",
+    tableHeaderBg: "#1a1a1a",
+    tableHeaderColor: "#ffffff",
+    darkBg: "#000000",
+    darkCardBg: "#111111",
+    darkText: "#f5f5f5",
+    darkMuted: "#7a736c",
+    darkAccent: "#e07a5a",
+    darkQuoteBg: "#1a1a1a",
+    darkCodeBg: "#000000",
+    darkHeadingColor: "#ffffff",
+    sectionNumber: true,
+  },
 };
 
 const STYLE_LABELS = {
@@ -206,6 +275,24 @@ const STYLE_LABELS = {
     closingCTA: undefined,
   },
   "warm-editorial": {
+    heroLabel: undefined,
+    authorNoteLabel: undefined,
+    outlineLabel: undefined,
+    questionLabel: undefined,
+    thesisLabel: undefined,
+    galleryLabel: "配图",
+    closingCTA: undefined,
+  },
+  "editorial-magazine": {
+    heroLabel: undefined,
+    authorNoteLabel: undefined,
+    outlineLabel: undefined,
+    questionLabel: undefined,
+    thesisLabel: undefined,
+    galleryLabel: "配图",
+    closingCTA: undefined,
+  },
+  "neo-futurism": {
     heroLabel: undefined,
     authorNoteLabel: undefined,
     outlineLabel: undefined,
@@ -289,18 +376,45 @@ function inline(markdown) {
   const tokens = getTokens();
   let html = escapeHtml(markdown);
 
-  html = html.replace(/`([^`]+)`/g, (_match, code) => (
-    `<code class="dark-code" style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono',monospace; font-size:.92em; color:${tokens.accent}; background:#fff3ee; border:1px solid rgba(216,75,55,.16); border-radius:4px; padding:1px 5px;">${code}</code>`
-  ));
-
-  html = html.replace(/\*\*([^*]+)\*\*/g, `<strong style="color:${tokens.accent}; font-weight:700;">$1</strong>`);
-  html = html.replace(/\*([^*]+)\*/g, `<em style="font-style:normal; color:${tokens.blue};">$1</em>`);
-  html = html.replace(/==([^=]+)==/g, (_match, text) => (
-    `<span style="color:${tokens.highlightColor || tokens.text}; background:${tokens.highlightBg || "rgba(216,75,55,.10)"}; padding:1px 4px; border-radius:4px;">${text}</span>`
-  ));
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, label) => (
-    `<span style="color:${tokens.blue}; border-bottom:1px solid rgba(61,106,138,.28);">${label}</span>`
-  ));
+  if (ACTIVE_STYLE === "editorial-magazine") {
+    // 杂志风行内样式：code 用深靛蓝底白字 + bold 用朱红加粗 + link 用深靛蓝下划线
+    html = html.replace(/`([^`]+)`/g, (_match, code) => (
+      `<code class="dark-code" style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono',monospace; font-size:.88em; color:${tokens.blue}; background:${tokens.codeBg || "#f6f8fa"}; border:1px solid rgba(30,58,95,.12); border-radius:3px; padding:2px 6px;">${code}</code>`
+    ));
+    html = html.replace(/\*\*([^*]+)\*\*/g, `<strong style="color:${tokens.text}; font-weight:700;">$1</strong>`);
+    html = html.replace(/\*([^*]+)\*/g, `<em style="font-style:italic; color:${tokens.text};">$1</em>`);
+    html = html.replace(/==([^=]+)==/g, (_match, text) => (
+      `<span style="color:${tokens.text}; background:${tokens.highlightBg || "rgba(192,57,43,.12)"}; padding:2px 4px; border-radius:2px; border-bottom:2px solid ${tokens.accent};">${text}</span>`
+    ));
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, label) => (
+      `<span style="color:${tokens.accent}; border-bottom:1px solid ${tokens.accent}; font-weight:500;">${label}</span>`
+    ));
+  } else if (ACTIVE_STYLE === "neo-futurism") {
+    // 国风编辑风行内样式：code 深墨底陶土朱红字 + bold 黑色加粗 + link 陶土朱红
+    html = html.replace(/`([^`]+)`/g, (_match, code) => (
+      `<code class="dark-code" style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono',monospace; font-size:.88em; color:${tokens.accent}; background:#faf8f5; border:1px solid rgba(196,90,58,.18); border-radius:3px; padding:2px 6px;">${code}</code>`
+    ));
+    html = html.replace(/\*\*([^*]+)\*\*/g, `<strong style="color:${tokens.text}; font-weight:800;">$1</strong>`);
+    html = html.replace(/\*([^*]+)\*/g, `<em style="font-style:italic; color:${tokens.text};">$1</em>`);
+    html = html.replace(/==([^=]+)==/g, (_match, text) => (
+      `<span style="color:${tokens.text}; background:rgba(196,90,58,.10); padding:2px 4px; border-radius:2px; border-bottom:2px solid ${tokens.accent};">${text}</span>`
+    ));
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, label) => (
+      `<span style="color:${tokens.accent}; border-bottom:1px solid ${tokens.accent}; font-weight:600;">${label}</span>`
+    ));
+  } else {
+    html = html.replace(/`([^`]+)`/g, (_match, code) => (
+      `<code class="dark-code" style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono',monospace; font-size:.92em; color:${tokens.accent}; background:#fff3ee; border:1px solid rgba(216,75,55,.16); border-radius:4px; padding:1px 5px;">${code}</code>`
+    ));
+    html = html.replace(/\*\*([^*]+)\*\*/g, `<strong style="color:${tokens.accent}; font-weight:700;">$1</strong>`);
+    html = html.replace(/\*([^*]+)\*/g, `<em style="font-style:normal; color:${tokens.blue};">$1</em>`);
+    html = html.replace(/==([^=]+)==/g, (_match, text) => (
+      `<span style="color:${tokens.highlightColor || tokens.text}; background:${tokens.highlightBg || "rgba(216,75,55,.10)"}; padding:1px 4px; border-radius:4px;">${text}</span>`
+    ));
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, label) => (
+      `<span style="color:${tokens.blue}; border-bottom:1px solid rgba(61,106,138,.28);">${label}</span>`
+    ));
+  }
 
   return html;
 }
@@ -505,6 +619,7 @@ function takeOpening(blocks) {
 }
 
 // ── HTML generation ──────────────────────────────────────────────
+let _sectionNum = 0;
 function headingHtml(block) {
   const tokens = getTokens();
   const ff = tokens.headingFontFamily || tokens.fontFamily;
@@ -513,9 +628,32 @@ function headingHtml(block) {
     if (ACTIVE_STYLE === "cultural-essay") {
       return `<h2 style="${SAFE_WRAP} font-size:21px; color:${tokens.blue}; margin:4px 0 18px; padding:12px 14px 12px 13px; background:#f3f8f6; border-left:4px solid ${tokens.accent}; border-radius:0 10px 10px 0; letter-spacing:0; line-height:1.45; font-family:'Songti SC','Noto Serif SC','STSong','SimSun','PingFang SC','Hiragino Sans GB',serif; font-weight:700;">${inline(block.text)}</h2>`;
     }
+    if (ACTIVE_STYLE === "editorial-magazine") {
+      // 杂志风 H2：超大上下留白 + 左侧 accent 短线 + 粗体大字号 + 近黑色
+      return `<h2 class="dark-heading" style="${SAFE_WRAP} font-size:26px; color:${tokens.text}; margin:52px 0 22px; letter-spacing:-.01em; line-height:1.35; font-family:${ff}; font-weight:800; padding-left:16px; border-left:4px solid ${tokens.accent};">${inline(block.text)}</h2>`;
+    }
+    if (ACTIVE_STYLE === "neo-futurism") {
+      // 国风编辑风 H2：深墨色渐变背景 + 陶土朱红编号块 + 白字，低调高级不刺眼
+      const num = typeof _sectionNum !== "undefined" ? String(_sectionNum).padStart(2, "0") : "";
+      const numHtml = num
+        ? `<div style="${SAFE_WRAP} display:inline-flex; align-items:center; justify-content:center; min-width:38px; padding:0 12px; height:100%; background:linear-gradient(180deg,rgba(255,230,180,.25),rgba(212,166,78,.18)); color:#ffe6b4; font-size:13px; font-weight:800; letter-spacing:.04em; font-family:'SF Mono',ui-monospace,Menlo,monospace; margin-right:0; flex-shrink:0; border-right:1px solid rgba(255,230,180,.22); text-shadow:0 1px 4px rgba(0,0,0,.2);">${num}</div>`
+        : "";
+      return `<h2 class="dark-heading" style="${SAFE_WRAP} position:relative; display:flex; align-items:stretch; font-size:18px; color:#fff; margin:32px 0 20px; letter-spacing:.01em; line-height:1.3; font-family:${ff}; font-weight:700; background:linear-gradient(120deg,#7a1f0f 0%,#b53d1f 38%,#c45a3a 68%,#d4873e 100%); padding:0; border-radius:3px; overflow:hidden; box-shadow:0 2px 10px rgba(122,31,15,.15),inset 0 1px 0 rgba(255,255,255,.12);">
+        ${numHtml}
+        <span style="${SAFE_WRAP} position:relative; z-index:1; padding:13px 20px 13px 0;">${inline(block.text)}</span>
+      </h2>`;
+    }
     return `<h2 class="dark-heading" style="${SAFE_WRAP} font-size:21px; color:${tokens.blue}; margin:0 0 16px; padding-bottom:11px; border-bottom:1px dashed rgba(74,124,155,.34); letter-spacing:0; line-height:1.45; font-family:${ff};">${prefix}${inline(block.text)}</h2>`;
   }
   if (block.level === 3) {
+    if (ACTIVE_STYLE === "editorial-magazine") {
+      // 杂志风 H3：深靛蓝 + 半粗体 + 较大字号 + 无装饰线，干净利落
+      return `<h3 style="${SAFE_WRAP} font-size:20px; color:${tokens.blue}; margin:32px 0 14px; line-height:1.45; font-weight:700; font-family:${ff}; letter-spacing:-.005em;">${inline(block.text)}</h3>`;
+    }
+    if (ACTIVE_STYLE === "neo-futurism") {
+      // 国风编辑风 H3：陶土朱红短竖线 + 粗体黑字，紧凑有力
+      return `<h3 style="${SAFE_WRAP} font-size:18px; color:${tokens.text}; margin:32px 0 14px; line-height:1.4; font-weight:700; font-family:${ff}; letter-spacing:-.005em; border-left:4px solid ${tokens.accent}; padding-left:12px;">${inline(block.text)}</h3>`;
+    }
     return `<h3 style="${SAFE_WRAP} font-size:18px; color:${tokens.blue}; margin:22px 0 12px; line-height:1.5; border-left:4px solid ${tokens.accent}; padding-left:10px; font-family:${ff};">${inline(block.text)}</h3>`;
   }
   return `<h4 style="${SAFE_WRAP} font-size:16px; color:${tokens.muted}; margin:18px 0 10px; line-height:1.5; font-family:${ff};">${inline(block.text)}</h4>`;
@@ -523,6 +661,14 @@ function headingHtml(block) {
 
 function paragraphHtml(text) {
   const tokens = getTokens();
+  if (ACTIVE_STYLE === "editorial-magazine") {
+    // 杂志风段落：首行缩进 2em、行高更松、段间距更大
+    return `<p style="${SAFE_WRAP} font-size:16px; line-height:${tokens.lineHeight}; color:${tokens.text}; margin:0 0 20px; letter-spacing:.02em; text-indent:2em;">${inline(text)}</p>`;
+  }
+  if (ACTIVE_STYLE === "neo-futurism") {
+    // 国风编辑风段落：不缩进、行高 1.8、段间距 16px，节奏更紧凑
+    return `<p style="${SAFE_WRAP} font-size:16px; line-height:1.8; color:${tokens.text}; margin:0 0 16px; letter-spacing:.01em;">${inline(text)}</p>`;
+  }
   return `<p style="${SAFE_WRAP} font-size:16px; line-height:${tokens.lineHeight}; color:${tokens.text}; margin:0 0 16px; letter-spacing:0;">${inline(text)}</p>`;
 }
 
@@ -585,12 +731,46 @@ function quoteHtml(block) {
       return `<div>${inline(line)}</div>`;
     })
     .join("");
+  if (ACTIVE_STYLE === "editorial-magazine") {
+    // 杂志风引用：大字号衬线 + 大引号装饰 + 宽左右边距 + 无背景色
+    return `<blockquote class="dark-quote" style="${SAFE_WRAP} margin:28px 24px 28px; padding:0; background:transparent; border-left:none; color:${tokens.text}; font-size:17px; line-height:1.85; font-family:'Noto Serif SC','Songti SC','STSong','SimSun',serif; font-weight:500; font-style:italic;">
+  <div style="${SAFE_WRAP} font-size:48px; line-height:0.8; color:${tokens.accent}; margin:0 0 12px; font-family:Georgia,serif; font-style:normal;">&ldquo;</div>
+  ${content}
+  <div style="${SAFE_WRAP} font-size:48px; line-height:0.8; color:${tokens.accent}; margin:12px 0 0; text-align:right; font-family:Georgia,serif; font-style:normal;">&rdquo;</div>
+</blockquote>`;
+  }
+  if (ACTIVE_STYLE === "neo-futurism") {
+    // 国风编辑风引用：衬线大字号 + 居中 + 陶土朱红上下线 + 雅致感
+    return `<blockquote class="dark-quote" style="${SAFE_WRAP} margin:32px 0; padding:24px 16px; border-top:1px solid ${tokens.accent}; border-bottom:1px solid ${tokens.accent}; background:transparent; color:${tokens.text}; font-size:18px; line-height:1.8; font-weight:600; letter-spacing:.02em; text-align:center; font-family:'Noto Serif SC','Songti SC','STSong',serif; font-style:italic;">${content}</blockquote>`;
+  }
   return `<blockquote class="dark-quote" style="${SAFE_WRAP} margin:0 0 18px; padding:15px 16px; background:${tokens.quoteBg}; border-left:4px solid ${tokens.quoteBorder}; border-radius:0 10px 10px 0; color:${tokens.muted}; font-size:15px; line-height:${tokens.lineHeight};">${content}</blockquote>`;
 }
 
 function listHtml(block) {
   const tokens = getTokens();
   const tag = block.ordered ? "ol" : "ul";
+  if (ACTIVE_STYLE === "editorial-magazine") {
+    // 杂志风列表：更大间距 + 自定义 accent 色小圆点 + 稍大字号
+    const items = block.items
+      .map((item, idx) => {
+        const bullet = block.ordered
+          ? `<span style="display:inline-block; min-width:22px; color:${tokens.accent}; font-weight:700; font-family:Georgia,serif;">${idx + 1}.</span>`
+          : `<span style="display:inline-block; width:6px; height:6px; background:${tokens.accent}; border-radius:50%; margin-right:12px; vertical-align:middle; transform:translateY(-2px);"></span>`;
+        return `<li style="${SAFE_WRAP} margin:0 0 12px; list-style:none; padding-left:0;">${bullet}${inline(item)}</li>`;
+      })
+      .join("");
+    return `<${tag} style="${SAFE_WRAP} padding-left:0; margin:0 0 22px; color:${tokens.text}; font-size:16px; line-height:${tokens.lineHeight}; list-style:none;">${items}</${tag}>`;
+  }
+  if (ACTIVE_STYLE === "neo-futurism") {
+    // 国风编辑风列表：用原生ul/ol + list-style-type，微信100%稳定渲染（和默认分支一致的成熟方案）
+    const items = block.items
+      .map((item) => `<li style="${SAFE_WRAP} margin:0 0 10px; padding-left:4px; color:${tokens.accent};"><span style="color:${tokens.text};">${inline(item)}</span></li>`)
+      .join("");
+    const listStyle = block.ordered
+      ? `padding-left:26px; margin:0 0 22px; color:${tokens.text}; font-size:16px; line-height:${tokens.lineHeight}; list-style-type:decimal;`
+      : `padding-left:24px; margin:0 0 22px; color:${tokens.accent}; font-size:16px; line-height:${tokens.lineHeight}; list-style-type:disc;`;
+    return `<${tag} style="${SAFE_WRAP} ${listStyle}">${items}</${tag}>`;
+  }
   const items = block.items
     .map((item) => `<li style="${SAFE_WRAP} margin:0 0 8px;">${inline(item)}</li>`)
     .join("");
@@ -615,6 +795,27 @@ function referenceListHtml(block) {
 }
 
 function imageHtml(block) {
+  const tokens = getTokens();
+  if (ACTIVE_STYLE === "editorial-magazine") {
+    // 杂志风图片：更大上下间距 + 斜体图说 + 左侧短 accent 线 + 更小圆角
+    return `<figure style="${SAFE_WRAP} width:100%; margin:28px 0 32px; text-align:center;">
+  <img ${imageAttrs(block.src, block.alt)} style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:4px; display:block; margin:0 auto; box-shadow:0 4px 20px rgba(0,0,0,.08);">
+  <figcaption style="${SAFE_WRAP} font-size:13px; line-height:1.6; color:${tokens.muted}; margin:14px 0 0; padding-left:12px; border-left:2px solid ${tokens.accent}; text-align:left; font-style:italic;">${escapeHtml(block.alt)}</figcaption>
+</figure>`;
+  }
+  if (ACTIVE_STYLE === "neo-futurism") {
+    // 新未来主义图片：全出血 + 顶部 accent 细线 + 下方小字图说；封面图简化（无 accent 线、无 caption）
+    const isCover = block.alt === "封面" || block.alt === "cover" || /(^|[\/\\])cover\.(png|jpg|jpeg|webp)$/i.test(block.src);
+    if (isCover) {
+      return `<figure style="${SAFE_WRAP} width:100%; margin:0 0 32px; text-align:center;">
+  <img ${imageAttrs(block.src, block.alt)} style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:0; display:block; margin:0;">
+</figure>`;
+    }
+    return `<figure style="${SAFE_WRAP} width:100%; margin:28px 0 32px; text-align:center;">
+  <img ${imageAttrs(block.src, block.alt)} style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:4px; display:block; margin:0; box-shadow:0 2px 12px rgba(0,0,0,.06);">
+  ${block.alt && !isCover ? `<figcaption style="${SAFE_WRAP} font-size:12px; line-height:1.6; color:${tokens.muted}; margin:10px 0 0; letter-spacing:.02em;">${escapeHtml(block.alt)}</figcaption>` : ""}
+</figure>`;
+  }
   return `<figure style="${SAFE_WRAP} width:100%; margin:20px 0; text-align:center;">
   <img ${imageAttrs(block.src, block.alt)} style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:10px; display:block; margin:0 auto;">
   <figcaption style="${SAFE_WRAP} font-size:13px; line-height:1.65; color:#6a727a; margin:10px 0 0;">${escapeHtml(block.alt)}</figcaption>
@@ -782,6 +983,15 @@ function codeHtml(block) {
     ? `<div style="box-sizing:border-box; font-size:11px; color:${CODE_COLORS.muted}; margin:0 0 10px; letter-spacing:.06em; font-weight:600; text-transform:uppercase; font-family:'SF Mono',SFMono-Regular,ui-monospace,Menlo,Monaco,Consolas,monospace;">${escapeHtml(block.lang)}</div>`
     : "";
   const inner = `<div style="display:inline-block; min-width:100%; white-space:nowrap; font-size:14px; line-height:1.7; font-family:'SF Mono',SFMono-Regular,ui-monospace,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;">${body}</div>`;
+  const tokens = getTokens();
+  if (ACTIVE_STYLE === "editorial-magazine") {
+    // 杂志风代码块：更紧凑的圆角 + 更暗的深靛蓝底色 + 小字号
+    return `<section class="dark-code" style="box-sizing:border-box; max-width:100%; overflow-x:auto; background:#162032; color:${CODE_COLORS.base}; border-radius:4px; padding:12px 14px; margin:0 0 22px; border-left:3px solid ${tokens.accent};">${langLabel}${inner}</section>`;
+  }
+  if (ACTIVE_STYLE === "neo-futurism") {
+    // 新未来主义代码块：纯黑底 + 电光青左边框 + 无圆角（或极小）
+    return `<section class="dark-code" style="box-sizing:border-box; max-width:100%; overflow-x:auto; background:#000000; color:#e6edf3; border-radius:2px; padding:16px 18px; margin:0 0 24px; border-left:3px solid ${tokens.accent};">${langLabel}${inner}</section>`;
+  }
   return `<section class="dark-code" style="box-sizing:border-box; max-width:100%; overflow-x:auto; background:#1f252c; color:${CODE_COLORS.base}; border-radius:10px; padding:14px 16px; margin:0 0 18px;">${langLabel}${inner}</section>`;
 }
 
@@ -808,6 +1018,14 @@ function blockHtml(block) {
     case "code":
       return codeHtml(block);
     case "hr":
+      if (ACTIVE_STYLE === "editorial-magazine") {
+        // 杂志风分割线：居中短细线 + 上下大留白
+        return `<div style="text-align:center; margin:40px 0;"><span style="display:inline-block; width:40px; height:1px; background:${getTokens().accent};"></span></div>`;
+      }
+      if (ACTIVE_STYLE === "neo-futurism") {
+        // 国风编辑风：H2深色块已天然分隔章节，不需要额外分割线
+        return ``;
+      }
       return `<div style="height:1px; background:linear-gradient(90deg,transparent,rgba(74,124,155,.28),transparent); margin:22px 0;"></div>`;
     default:
       return "";
@@ -845,12 +1063,15 @@ function renderBody(blocks) {
   if (current.length > 0) chunks.push(current);
 
   let sectionIndex = 0;
+  _sectionNum = 0;
   return chunks.map((chunk) => {
     const standaloneImages = chunk.length === 1 && chunk[0].type === "image";
     if (standaloneImages) return imageHtml(chunk[0]);
     const firstBlock = chunk[0];
     const isReferenceSection = firstBlock?.type === "heading" && firstBlock.level === 2 && plainInline(firstBlock.text) === "参考资料";
-    const anchor = firstBlock?.type === "heading" && firstBlock.level === 2
+    const isH2Section = firstBlock?.type === "heading" && firstBlock.level === 2;
+    if (isH2Section) _sectionNum += 1;
+    const anchor = isH2Section
       ? ` id="section-${++sectionIndex}"`
       : "";
     const sectionStyle = tokens.useCards
@@ -879,7 +1100,16 @@ function renderDocument({ title, deck, summary, blocks }) {
   // ── Hero section ──
   let heroHtml;
   const ff = tokens.headingFontFamily || tokens.fontFamily;
-  if (tokens.heroStyle === "cultural") {
+  if (tokens.heroStyle === "none") {
+    // 不渲染 hero 区块
+    heroHtml = "";
+  } else if (tokens.heroStyle === "neo-title") {
+    // 简洁标题区：标题 + 一句话副标题，无冗余装饰
+    heroHtml = `<section style="${SAFE_WRAP} width:100%; background:transparent; padding:16px 0 24px; margin-bottom:8px;">
+        <h1 style="${SAFE_WRAP} font-size:26px; line-height:1.4; color:${tokens.text}; margin:0 0 14px; font-weight:800; letter-spacing:-.01em; font-family:${ff};">${escapeHtml(title)}</h1>
+        ${deck ? `<p style="${SAFE_WRAP} font-size:15px; line-height:1.75; color:${tokens.muted}; margin:0;">${escapeHtml(deck)}</p>` : ""}
+      </section>`;
+  } else if (tokens.heroStyle === "cultural") {
     heroHtml = `<section style="${SAFE_WRAP} width:100%; background:#fff; padding:18px 2px 24px; text-align:left; margin-bottom:26px; border-bottom:1px solid rgba(154,91,47,.16);">
         <div style="${SAFE_WRAP} color:${tokens.accent}; font-size:12px; line-height:1; margin:0 0 14px; letter-spacing:0; font-family:${tokens.fontFamily};">
           <span style="display:inline-block; width:28px; height:1px; background:${tokens.accent}; vertical-align:middle; margin-right:9px;"></span>${escapeHtml(labels.heroLabel)}
@@ -898,6 +1128,52 @@ function renderDocument({ title, deck, summary, blocks }) {
     heroHtml = `<section style="${SAFE_WRAP} width:100%; background:transparent; padding:0 2px 18px; margin-bottom:28px;">
         <h1 style="${SAFE_WRAP} font-size:24px; line-height:1.45; color:${tokens.text}; margin:0 0 12px; font-weight:600; letter-spacing:0; font-family:${ff};">${escapeHtml(title)}</h1>
         ${deck ? `<p style="${SAFE_WRAP} font-size:14px; line-height:1.8; color:${tokens.muted}; margin:0;">${escapeHtml(deck)}</p>` : ""}
+      </section>`;
+  } else if (tokens.heroStyle === "magazine") {
+    // editorial-magazine: 杂志封面式 hero，大标题 + 短分割线 + 副标题 + 日期标签
+    const today = new Date();
+    const dateStr = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")}`;
+    heroHtml = `<section style="${SAFE_WRAP} width:100%; background:transparent; padding:8px 2px 36px; margin-bottom:12px; border-bottom:1px solid rgba(0,0,0,.08);">
+        <div style="${SAFE_WRAP} color:${tokens.accent}; font-size:11px; line-height:1; margin:0 0 18px; letter-spacing:.18em; font-weight:600; text-transform:uppercase; font-family:${tokens.fontFamily};">
+          ${escapeHtml(labels.heroLabel || "深度特稿")}
+        </div>
+        <h1 style="${SAFE_WRAP} font-size:30px; line-height:1.35; color:${tokens.text}; margin:0 0 20px; font-weight:800; letter-spacing:-.01em; font-family:${ff};">${escapeHtml(title)}</h1>
+        <div style="width:40px; height:3px; background:${tokens.accent}; margin:0 0 20px;"></div>
+        ${deck ? `<p style="${SAFE_WRAP} font-size:16px; line-height:1.85; color:${tokens.muted}; margin:0 0 22px; font-weight:400;">${escapeHtml(deck)}</p>` : ""}
+        <div style="${SAFE_WRAP} font-size:12px; line-height:1; color:${tokens.muted}; letter-spacing:.05em;">
+          <span style="color:${tokens.blue}; font-weight:600;">OpenMontage</span>
+          <span style="margin:0 8px; opacity:.4;">·</span>
+          <span>${dateStr}</span>
+          <span style="margin:0 8px; opacity:.4;">·</span>
+          <span>约 8 分钟阅读</span>
+        </div>
+      </section>`;
+  } else if (tokens.heroStyle === "neo-hero") {
+    // neo-futurism 2.0 hero：全出血深色渐变背景 + 白字大标题 + 辉光 + 统计条 + 底部渐变过渡
+    const today = new Date();
+    const dateStr = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")}`;
+    heroHtml = `<section style="${SAFE_WRAP} width:100%; background:radial-gradient(circle at 85% 15%, rgba(0,229,199,.35) 0%, rgba(0,229,199,0) 45%), linear-gradient(135deg,#0a0a1f 0%,#1a1047 28%,#241b5c 52%,#0f4c5c 78%,${tokens.accent} 100%); padding:56px 20px 44px; margin:-40px -16px 36px; color:#fff;">
+        <div style="${SAFE_WRAP} max-width:760px; margin:0 auto;">
+          <div style="${SAFE_WRAP} display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border:1px solid rgba(255,255,255,.25); border-radius:100px; font-size:11px; letter-spacing:.22em; color:rgba(255,255,255,.85); font-family:'SF Mono',ui-monospace,Menlo,monospace; font-weight:600; margin:0 0 24px;">
+            <span style="display:inline-block; width:6px; height:6px; background:${tokens.accent}; border-radius:50%; box-shadow:0 0 8px ${tokens.accent};"></span>
+            OPEN SOURCE · AI VIDEO
+          </div>
+          <h1 style="${SAFE_WRAP} font-size:34px; line-height:1.22; color:#ffffff; margin:0 0 20px; font-weight:900; letter-spacing:-.02em; font-family:${ff}; text-shadow:0 2px 20px rgba(0,0,0,.3);">${escapeHtml(title)}</h1>
+          ${deck ? `<p style="${SAFE_WRAP} font-size:16px; line-height:1.75; color:rgba(255,255,255,.82); margin:0 0 32px; font-weight:400; letter-spacing:.01em;">${escapeHtml(deck)}</p>` : ""}
+          <div style="${SAFE_WRAP} display:flex; flex-wrap:wrap; gap:0; padding:20px 0 0; border-top:1px solid rgba(255,255,255,.18);">
+            <div style="${SAFE_WRAP} flex:1; min-width:70px; padding-right:12px; border-right:1px solid rgba(255,255,255,.12);"><div style="font-size:26px; font-weight:900; color:#fff; line-height:1.1; font-family:${ff}; letter-spacing:-.02em;">12</div><div style="font-size:10px; color:rgba(255,255,255,.6); margin-top:6px; letter-spacing:.15em; font-weight:600;">PIPELINES</div></div>
+            <div style="${SAFE_WRAP} flex:1; min-width:70px; padding:0 12px; border-right:1px solid rgba(255,255,255,.12);"><div style="font-size:26px; font-weight:900; color:#fff; line-height:1.1; font-family:${ff}; letter-spacing:-.02em;">57+</div><div style="font-size:10px; color:rgba(255,255,255,.6); margin-top:6px; letter-spacing:.15em; font-weight:600;">TOOLS</div></div>
+            <div style="${SAFE_WRAP} flex:1; min-width:70px; padding:0 12px; border-right:1px solid rgba(255,255,255,.12);"><div style="font-size:26px; font-weight:900; color:#fff; line-height:1.1; font-family:${ff}; letter-spacing:-.02em;">500+</div><div style="font-size:10px; color:rgba(255,255,255,.6); margin-top:6px; letter-spacing:.15em; font-weight:600;">SKILLS</div></div>
+            <div style="${SAFE_WRAP} flex:1; min-width:70px; padding-left:12px;"><div style="font-size:26px; font-weight:900; color:${tokens.accent}; line-height:1.1; font-family:${ff}; letter-spacing:-.02em; text-shadow:0 0 16px rgba(0,229,199,.5);">14</div><div style="font-size:10px; color:rgba(255,255,255,.6); margin-top:6px; letter-spacing:.15em; font-weight:600;">VIDEO AI</div></div>
+          </div>
+          <div style="${SAFE_WRAP} font-size:11px; color:rgba(255,255,255,.5); margin-top:18px; letter-spacing:.08em; font-weight:500;">
+            <span style="color:rgba(255,255,255,.75); font-weight:600;">OpenMontage</span>
+            <span style="margin:0 8px; opacity:.5;">·</span>
+            <span>${dateStr}</span>
+            <span style="margin:0 8px; opacity:.5;">·</span>
+            <span>约 8 分钟阅读</span>
+          </div>
+        </div>
       </section>`;
   } else {
     // border-left hero (default for impact-rational and tech-blog)
@@ -940,7 +1216,8 @@ function renderDocument({ title, deck, summary, blocks }) {
   ${tokens.darkBg ? `<style>@media(prefers-color-scheme:dark){body.dark-aware{background:${tokens.darkBg}!important}body.dark-aware .dark-card{background:${tokens.darkCardBg}!important;border-color:rgba(255,255,255,.08)!important}body.dark-aware .dark-text{color:${tokens.darkText}!important}body.dark-aware .dark-muted{color:${tokens.darkMuted}!important}body.dark-aware .dark-accent{color:${tokens.darkAccent}!important}body.dark-aware .dark-heading{color:${tokens.darkHeadingColor}!important}body.dark-aware .dark-code{background:${tokens.darkCodeBg}!important;border-color:rgba(255,255,255,.06)!important}body.dark-aware .dark-quote{background:${tokens.darkQuoteBg}!important}body.dark-aware .dark-hero{background:${tokens.darkCardBg}!important}body.dark-aware img{opacity:.9}}</style>`:''}
 </head>
 <body class="dark-aware" style="box-sizing:border-box; max-width:100%; margin:0; padding:0; background:${tokens.bodyBg}; overflow-x:hidden;">
-  <div class="dark-card" style="${SAFE_WRAP} width:100%; background:${tokens.bodyBg}; padding:24px 12px;">
+  <div class="dark-card" style="${SAFE_WRAP} width:100%; background:${tokens.bodyBg}; padding:${ACTIVE_STYLE === "neo-futurism" ? "0 16px 48px" : "24px 12px"};">
+
     <article class="dark-text" style="${SAFE_WRAP} width:100%; max-width:760px; margin:0 auto; font-family:${tokens.fontFamily}; color:${tokens.text};">
       ${heroHtml}
 

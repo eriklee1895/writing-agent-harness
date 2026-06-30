@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: 扁平编辑信息图，深海军蓝背景，暖陶土橙和金色点缀，细微纸张纹理。左右分栏对比图。左侧标题「传统方式」，下方是僵硬的DAG流程图，方框连箭头，标注「硬编码编排」「固定流程」「改流程=改代码」，整体灰色调显得呆板。右侧标题「Agent 驱动」，下方是一个发光的智能体图标位于中央，周围环绕多个工具模块（标注「TTS」「图像」「视频」「音乐」「字幕」「合成」），Agent伸出发光连线连接各个工具，标注「动态选择」「灵活编排」「加能力=加工具」，整体暖色调有活力。中间用一个大大的对比箭头「VS」分隔。所有文字均为简体中文。干净的矢量形状，无照片真实感，无UI控件，标签清晰可读。",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "2048x1152",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/content/wechat/2026-06-29-openmontage-agent-engineer-notes/assets/infographic-agent-vs-dag.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-06-29T22:02:51",
+  "dry_run": false
+}

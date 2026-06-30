@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: 扁平编辑信息图，深海军蓝背景，暖陶土橙和金色点缀，细微纸张纹理。三层叠放的质量盾牌体系图，从下到上三层，每层是一个带边框的横条模块。最底层标题「预算治理」，图标是钱袋，内容是三个步骤：估算 → 预留 → 对账，旁边有滑块标注「观察 / 警告 / 强制上限」。中间层标题「计划阶段把关」，图标是校验清单，内容包括「幻灯片风险检测」「交付承诺验证」「前置质量关卡」。最顶层标题「渲染后审查」，图标是放大镜，内容包括「音画同步」「字幕对齐」「画面稳定性」。顶部有一个大大的对勾盾牌，标注「成片质量」。整体呈金字塔结构，层层把关向上收敛。所有文字均为简体中文。干净矢量风格，无照片真实感，无UI控件。",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "2048x1152",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/content/wechat/2026-06-29-openmontage-agent-engineer-notes/assets/infographic-quality-gates.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-06-29T22:09:42",
+  "dry_run": false
+}
