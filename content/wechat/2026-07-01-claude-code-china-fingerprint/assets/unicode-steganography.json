@@ -1,0 +1,17 @@
+{
+  "title": "job-3",
+  "prompt": "Primary request: A clean technical diagram on dark background showing Claude Code's system prompt line being subtly modified. Display four apostrophe variants with their Unicode code points: U+0027, U+2019, U+02BC, U+02B9, each with a magnified glyph. Show date format change from '2026-06-30' to '2026/06/30'. Include a small stylized Claude spark/asterisk logo in the corner. Modern sans-serif infographic, precise typography, teal and orange accents, landscape.",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-07-01-claude-code-china-fingerprint/assets/unicode-steganography.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T22:56:16",
+  "dry_run": false
+}

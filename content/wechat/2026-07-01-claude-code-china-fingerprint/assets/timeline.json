@@ -1,0 +1,17 @@
+{
+  "title": "job-5",
+  "prompt": "Primary request: A horizontal timeline infographic on dark background showing five glowing nodes connected by a thin line, from April 2026 to July 2026. Each node has a tiny icon: code release, blocked sign, corporate building, magnifying glass, speech bubble. A small stylized Claude spark/asterisk logo appears near the timeline. Minimal English month labels below each node. Modern tech editorial style, clean, no dense text, landscape.",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-07-01-claude-code-china-fingerprint/assets/timeline.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T22:57:03",
+  "dry_run": false
+}

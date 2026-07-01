@@ -1,0 +1,17 @@
+{
+  "title": "job-2",
+  "prompt": "Primary request: A clean modern technical infographic on dark background showing a 3-step horizontal flow with the Claude Code terminal and its spark/asterisk logo. Step 1: a laptop with proxy/gateway settings. Step 2: a magnifying glass inspecting a timezone badge 'Asia/Shanghai' and a proxy URL hostname. Step 3: a system prompt text bubble being subtly altered with invisible ink. Teal and orange accents, flat vector style, minimal English labels, no dense text.",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-07-01-claude-code-china-fingerprint/assets/detection-flow.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T22:55:38",
+  "dry_run": false
+}
