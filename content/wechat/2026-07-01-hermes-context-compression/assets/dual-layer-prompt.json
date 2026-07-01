@@ -1,0 +1,22 @@
+{
+  "title": "Hermes Dual-Layer Context Compression",
+  "brief": "A clean technical infographic showing two protection layers: top is Gateway Session Hygiene at 85 percent threshold as safety net; bottom is Agent ContextCompressor at 50 percent threshold as primary compressor. Messages flow from inbound through gateway to agent. Use bilingual Chinese and English labels with clean modules and arrows.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Hermes Dual-Layer Context Compression'. Diagram type: article illustration. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\nA clean technical infographic showing two protection layers: top is Gateway Session Hygiene at 85 percent threshold as safety net; bottom is Agent ContextCompressor at 50 percent threshold as primary compressor. Messages flow from inbound through gateway to agent. Use bilingual Chinese and English labels with clean modules and arrows.",
+  "created_at": "2026-07-01T21:13:19",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/output/article-illustration/20260701-211220-hermes-dual-layer-context-compression.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

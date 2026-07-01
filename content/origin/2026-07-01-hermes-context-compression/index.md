@@ -68,9 +68,9 @@ Hermes 把"上下文管理"抽象成一个 ABC：`agent/context_engine.py:32` �
 
 ```mermaid
 flowchart LR
-    A["config.yaml<br/>context.engine = ?"] --> B{"plugins/context_engine/{name}/<br/>目录存在?"}
+    A["config.yaml<br/>context.engine = ?"] --> B{"plugins/context_engine/NAME/<br/>目录存在?"}
     B -- 是 --> P1["加载该目录插件引擎"]
-    B -- 否 --> C{"通用插件系统<br/>register_context_engine() 注册?"}
+    B -- 否 --> C{"通用插件系统<br/>register_context_engine 注册?"}
     C -- 是 --> P2["加载注册的插件引擎"]
     C -- 否 --> D["回退内置<br/>ContextCompressor"]
 ```
@@ -82,20 +82,20 @@ flowchart LR
 ```mermaid
 sequenceDiagram
     autonumber
-    participant MainLoop as Agent 主循环
+    participant AgentMain as Agent 主循环
     participant Eng as ContextEngine
 
-    MainLoop->>Eng: on_session_start(session_id)
+    AgentMain->>Eng: on_session_start
     loop 每个 turn
-        MainLoop->>Eng: update_from_response(usage)
-        MainLoop->>Eng: should_compress(prompt_tokens)?
+        AgentMain->>Eng: update_from_response
+        AgentMain->>Eng: should_compress 返回 True?
         alt 返回 True
-            MainLoop->>Eng: compress(messages, ...)
-            Eng-->>Loop: 压缩后的消息列表
+            AgentMain->>Eng: compress 消息列表
+            Eng-->>AgentMain: 压缩后的消息列表
         end
     end
-    Note over MainLoop,Eng: 真正的会话边界<br/>(CLI 退出 / /reset / gateway 过期)
-    MainLoop->>Eng: on_session_end(session_id, messages)
+    Note over AgentMain,Eng: 真正的会话边界：CLI 退出、/reset、gateway 过期
+    AgentMain->>Eng: on_session_end
 ```
 
 `ContextEngine` 还维护一组 `run_agent.py` 直接读取的 token 状态字段：`last_prompt_tokens`、`threshold_tokens`、`context_length`、`compression_count` 等。
@@ -524,21 +524,21 @@ flowchart TB
 ```mermaid
 sequenceDiagram
     autonumber
-    participant C as compress()
-    participant G as _generate_summary
+    participant C as compress
+    participant G as generate_summary
     participant AUX as 辅助 LLM
 
     Note over C: 第1次压缩
-    C->>G: turns_to_summarize (无 previous)
-    G->>AUX: "从头创建结构化摘要"
+    C->>G: turns_to_summarize 无 previous
+    G->>AUX: 从头创建结构化摘要
     AUX-->>G: 摘要 v1
-    G->>G: _previous_summary = v1
+    G->>G: previous_summary = v1
 
     Note over C: 第2次压缩
-    C->>G: 新 turns + _previous_summary=v1
-    G->>AUX: "更新摘要: 保留有效信息,<br/>把 In Progress→Completed,<br/>已答问题→Resolved Questions"
-    AUX-->>G: 摘要 v2 (信息累积)
-    G->>G: _previous_summary = v2
+    C->>G: 新 turns + previous_summary=v1
+    G->>AUX: 更新摘要：保留有效信息，把 In Progress 移到 Completed，已答问题移到 Resolved Questions
+    AUX-->>G: 摘要 v2 信息累积
+    G->>G: previous_summary = v2
 ```
 
 这样信息在多次压缩间累积：项目从 "In Progress" 移到 "Done"，新进展加入，过时信息移除。`compress()` 还会在当前消息里搜索已存在的 handoff 摘要（`_find_latest_context_summary`，`agent/context_compressor.py:1930`）来 rehydrate 这个迭代状态——即使是 resume 进来的会话也能接上。
@@ -603,18 +603,18 @@ sequenceDiagram
     autonumber
     participant U as 用户
     participant A as Agent
-    participant P as Provider(带缓存)
+    participant P as Provider 带缓存
 
-    Note over A,P: 正常多轮: system prompt 缓存命中, 仅尾部滚动重算
+    Note over A,P: 正常多轮：system prompt 缓存命中，仅尾部滚动重算
     U->>A: turn N
-    A->>P: 请求(system🔒命中 + 滚动3断点)
-    P-->>A: cache hit, 成本↓75%
+    A->>P: 请求 system缓存命中 + 滚动3断点
+    P-->>A: cache hit，成本降低 75%
 
-    Note over A: 压缩触发 (重写中段)
-    A->>A: compress() 重组消息
-    Note over A,P: 缓存对"被压缩区"失效,<br/>但 system prompt 缓存存活
+    Note over A: 压缩触发，重写中段
+    A->>A: compress 重组消息
+    Note over A,P: 缓存对被压缩区失效，但 system prompt 缓存存活
     U->>A: turn N+1
-    A->>P: 请求(system🔒仍命中, 中段缓存失效)
+    A->>P: 请求 system缓存仍命中，中段缓存失效
     P-->>A: 部分命中
     Note over A,P: 滚动3消息窗口在1-2轮内重建缓存
 ```
