@@ -1,0 +1,17 @@
+{
+  "title": "job-3",
+  "prompt": "Primary request: Clean flat tech infographic on a white background. Three horizontal panels side by side, each with a simple icon and a short label. Panel 1: a lock or puzzle piece icon. Panel 2: stacked blocks with role labels. Panel 3: a long arrow made of tiny squares. Soft blue, green, orange accents, large readable Chinese and English text, minimal.\nText (verbatim): \"tool_use ↔ tool_result; role 交替; prompt cache 前缀\"",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-06-11-hermes-steer-deep-dive/assets/2026-07-01-hermes-three-constraints.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T15:54:46",
+  "dry_run": false
+}

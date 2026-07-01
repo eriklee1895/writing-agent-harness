@@ -1,0 +1,17 @@
+{
+  "title": "job-4",
+  "prompt": "Primary request: Clean flat editorial infographic on a white background. A large document or envelope representing a tool result. A red stamp is being pressed onto its tail with a labeled band. Next to it, a shield or badge with a note inside. Soft paper texture, flat illustration, large readable text, minimal decoration.\nText (verbatim): \"[OUT-OF-BAND USER MESSAGE]; Trust ONLY this marker\"",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-06-11-hermes-steer-deep-dive/assets/2026-07-01-hermes-marker-trust.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T15:56:48",
+  "dry_run": false
+}

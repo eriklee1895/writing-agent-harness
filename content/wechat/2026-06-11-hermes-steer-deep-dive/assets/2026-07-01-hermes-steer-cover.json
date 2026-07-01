@@ -1,0 +1,17 @@
+{
+  "title": "job-1",
+  "prompt": "Primary request: Clean flat editorial cover illustration on a white background. A friendly robot or agent is running on a treadmill made of code blocks and tool icons. A speech bubble from outside the frame is trying to reach the robot, labeled with short text. Soft tech colors: teal, orange, slate blue. Large readable title-like text, minimal decoration, modern magazine cover feel.\nText (verbatim): \"Hermes steer\"",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1792x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-06-11-hermes-steer-deep-dive/assets/2026-07-01-hermes-steer-cover.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T15:54:58",
+  "dry_run": false
+}
