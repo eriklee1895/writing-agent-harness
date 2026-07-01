@@ -1,0 +1,22 @@
+{
+  "title": "Hermes Context Compression Cover",
+  "brief": "A blog banner hero illustration for a technical article about AI agent context compression. Visual metaphor: a long unfolding scroll of conversation history (messages, tool calls, file reads) being folded and compressed into a compact glowing handoff summary, layered depth, soft editorial atmosphere, no text labels, no diagrams, no arrows.",
+  "content_type": "blog banner",
+  "content_category": "banner",
+  "mode": "text-only",
+  "style_profile": "auto",
+  "resolved_style_profile": "editorial-atmospheric",
+  "size": "blog-banner",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'Hermes Context Compression Cover'. Style: contemporary editorial illustration, layered composition, subtle texture, restrained color palette, atmospheric but concrete, article-friendly visual metaphor, no text labels, no diagrams, no arrows. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a blog hero banner for desktop reading. Leave upper area clear for overlaid title and subtitle text. Language/region: zh. Target aspect ratio: blog-banner. Mode: text-only. Brief:\nA blog banner hero illustration for a technical article about AI agent context compression. Visual metaphor: a long unfolding scroll of conversation history (messages, tool calls, file reads) being folded and compressed into a compact glowing handoff summary, layered depth, soft editorial atmosphere, no text labels, no diagrams, no arrows.",
+  "created_at": "2026-07-01T17:00:18",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-07-01-hermes-context-compression/assets/20260701-165934-hermes-context-compression-cover.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

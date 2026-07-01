@@ -1,0 +1,22 @@
+{
+  "title": "Hermes Context Compression Pipeline",
+  "brief": "A flat technical infographic showing a 4-stage AI context compression pipeline. Stage 1: Prune old tool results (dedupe, strip screenshots, truncate JSON). Stage 2: Determine head/tail boundaries (protect system + first turns, reserve recent tail). Stage 3: Generate structured LLM summary (auxiliary model, handoff template). Stage 4: Reassemble message list (sanitize tool pairs, strip historical media). Use clear arrows, grouped modules, concise bilingual Chinese/English labels, soft professional palette.",
+  "content_type": "architecture diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Hermes Context Compression Pipeline'. Diagram type: architecture diagram. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\nA flat technical infographic showing a 4-stage AI context compression pipeline. Stage 1: Prune old tool results (dedupe, strip screenshots, truncate JSON). Stage 2: Determine head/tail boundaries (protect system + first turns, reserve recent tail). Stage 3: Generate structured LLM summary (auxiliary model, handoff template). Stage 4: Reassemble message list (sanitize tool pairs, strip historical media). Use clear arrows, grouped modules, concise bilingual Chinese/English labels, soft professional palette.",
+  "created_at": "2026-07-01T17:01:29",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-07-01-hermes-context-compression/assets/20260701-170023-hermes-context-compression-pipeline.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
