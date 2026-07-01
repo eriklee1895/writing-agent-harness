@@ -44,6 +44,7 @@ node_modules/
 .claude/settings.local.json
 .claude/launch.json
 .claude/worktrees/
+.claude/memory/
 .firecrawl/
 
 # Local scratch memory, not canonical repo knowledge
@@ -127,3 +128,6 @@ tts-output/
 
 # Article-to-notion skill: Python cache
 .agents/skills/article-to-notion/scripts/__pycache__/
+
+# Agent skills lock (local install tracking)
+skills-lock.json
