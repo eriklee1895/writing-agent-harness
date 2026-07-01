@@ -1,0 +1,17 @@
+{
+  "title": "job-4",
+  "prompt": "Primary request: Warm editorial infographic on a white background. A large document/message bubble representing a tool result envelope. A hand or stamp is pressing a red label onto the tail of the envelope. Below the envelope, a Chinese caption. Soft paper texture, flat illustration, large readable text, minimal decoration.\nText (verbatim): \"[OUT-OF-BAND USER MESSAGE]; 把 steer 盖在最后一条 tool result 上\"",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-06-11-codex-steer/assets/2026-07-01-hermes-marker.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T15:28:16",
+  "dry_run": false
+}

@@ -1,0 +1,17 @@
+{
+  "title": "job-2",
+  "prompt": "Primary request: Clean flat infographic on a white background. A horizontal road goes left to right with a small orange car labeled steer message. The road passes through three toll gates in sequence. Gate 1 has a puzzle-piece icon and text. Gate 2 has a database/cache icon and text. Gate 3 has an eye/brain icon and text. Soft tech colors, large readable Chinese text, minimal shadows, editorial illustration style.\nText (verbatim): \"steer message; 工具配对; 缓存前缀; 模型归因\"",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-06-11-codex-steer/assets/2026-07-01-steer-three-checkpoints.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T15:26:27",
+  "dry_run": false
+}

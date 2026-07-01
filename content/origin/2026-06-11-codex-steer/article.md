@@ -1,7 +1,8 @@
 ---
-title: "Steer:让 Agent 边跑边转向 —— Codex 与 Hermes 的中途注入实现拆解"
+title: "Steer:让Agent边跑边转向：Codex与Hermes中途注入拆解"
 date: 2026-06-11
 status: draft
+cover: "./assets/20260611-192628-codex-steer-cover.png"
 register: Agent/AI Technical Essay (primary) + Industry/Frontier Analysis (secondary)
 summary: 从源码层拆解 Codex(Rust)与 Hermes(Python)如何把用户的新指令安全注入正在运行的 turn,对比「协议优先 + 分离消息」与「进程内 + marker 内联」两条实现路径,并给出 2026 年中 mid-turn steering 的 landscape 与工程 checklist。
 sources:
