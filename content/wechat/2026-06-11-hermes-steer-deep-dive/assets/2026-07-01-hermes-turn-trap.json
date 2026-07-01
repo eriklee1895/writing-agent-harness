@@ -1,0 +1,17 @@
+{
+  "title": "job-2",
+  "prompt": "Primary request: Clean flat editorial infographic on a white background. A split scene. Left: a person watching a screen with a running agent inside a hamster wheel of tool icons, looking anxious. Right: two large buttons labeled with short text. Soft pastel tech palette, rounded shapes, large readable text, minimal shadows.\nText (verbatim): \"干等?; Ctrl+C?\"",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-06-11-hermes-steer-deep-dive/assets/2026-07-01-hermes-turn-trap.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T15:54:56",
+  "dry_run": false
+}

@@ -1,0 +1,17 @@
+{
+  "title": "job-5",
+  "prompt": "Primary request: Clean flat tech diagram on a white background. A circular agent loop shown as a rounded rectangle path. Two gate icons along the path, labeled with short text. A small speech bubble enters a buffer slot, then flows through the gates. Soft tech colors, large readable text, minimal, mobile-friendly.\nText (verbatim): \"pre-API drain; post-tool drain\"",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-06-11-hermes-steer-deep-dive/assets/2026-07-01-hermes-two-drains.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T15:56:40",
+  "dry_run": false
+}

@@ -1,0 +1,17 @@
+{
+  "title": "job-6",
+  "prompt": "Primary request: Clean flat editorial infographic on a white background. Two curved roads converge toward a central glowing checkpoint. Left road has a marker label, right road has another marker label. Small icons of tools, model, and lock float above. Soft gradient, flat illustration, large readable Chinese and English text.\nText (verbatim): \"Hermes: 进程内 marker; Codex: 协议 turn/steer; boundary injection\"",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-06-11-hermes-steer-deep-dive/assets/2026-07-01-hermes-vs-codex.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T15:56:43",
+  "dry_run": false
+}
