@@ -1,0 +1,17 @@
+{
+  "title": "job-5",
+  "prompt": "Primary request: Clean editorial infographic on a white background. Two roads curve from left and right and merge into a single glowing checkpoint in the center. Each road has a sign with text. At the merge point, a bright checkpoint label. Small icons of tools, model, and clock float above. Soft gradient, flat illustration, large readable Chinese and English text, mobile-friendly.\nText (verbatim): \"Codex: 协议优先 + 分离消息; Hermes: 进程内 + marker 内联; 边界注入 / boundary injection\"",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-06-11-codex-steer/assets/2026-07-01-two-roads-converge.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T15:28:25",
+  "dry_run": false
+}

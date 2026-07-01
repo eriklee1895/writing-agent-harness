@@ -1,0 +1,17 @@
+{
+  "title": "job-1",
+  "prompt": "Primary request: Clean flat editorial infographic on a white background. Three horizontal panels side by side. Left panel: a light blue car steering wheel icon with text below it. Middle panel: a green highway exit sign icon with text below it. Right panel: a red brake pedal icon with text below it. Soft pastel palette, rounded shapes, mobile-friendly large text, no extra decorations.\nText (verbatim): \"Steer / 转方向盘; Queue / 下个路口; Interrupt / 急刹车\"",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-06-11-codex-steer/assets/2026-07-01-steer-driving-primitives.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T15:26:25",
+  "dry_run": false
+}

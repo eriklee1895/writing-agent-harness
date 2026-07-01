@@ -1,0 +1,17 @@
+{
+  "title": "job-3",
+  "prompt": "Primary request: Clean flat tech architecture diagram on a white background. A vertical stack of four rounded rectangular layers from top to bottom. A downward arrow connects the top two layers with a label. Another arrow connects the next two. Inside the bottom layer, a small box with a label. Calm color palette: slate blue, teal, orange accents. Large readable English and Chinese labels, minimal, mobile-friendly.\nText (verbatim): \"TUI; App Server; Protocol; Core; turn/steer RPC; pending_input / drain\"",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-06-11-codex-steer/assets/2026-07-01-codex-layers.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T15:26:27",
+  "dry_run": false
+}
