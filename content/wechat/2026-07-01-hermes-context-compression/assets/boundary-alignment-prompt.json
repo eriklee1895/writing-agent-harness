@@ -1,0 +1,22 @@
+{
+  "title": "Context Compression Boundary Alignment",
+  "brief": "A visual infographic showing how messages are split into three zones during compression: a protected head with system prompt and first turns locked, a middle body summarized by LLM into structured handoff summary, and a preserved tail with recent messages kept intact. Clean modular layout with Chinese and English bilingual labels. Show message list transforming from full transcript to compressed version.",
+  "content_type": "architecture diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Context Compression Boundary Alignment'. Diagram type: architecture diagram. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\nA visual infographic showing how messages are split into three zones during compression: a protected head with system prompt and first turns locked, a middle body summarized by LLM into structured handoff summary, and a preserved tail with recent messages kept intact. Clean modular layout with Chinese and English bilingual labels. Show message list transforming from full transcript to compressed version.",
+  "created_at": "2026-07-01T21:14:25",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/output/article-illustration/20260701-211327-context-compression-boundary-alignment.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
