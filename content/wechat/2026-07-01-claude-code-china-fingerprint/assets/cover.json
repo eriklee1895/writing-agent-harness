@@ -1,0 +1,17 @@
+{
+  "title": "job-1",
+  "prompt": "Primary request: A cinematic editorial illustration about AI surveillance and hidden tracking. A laptop screen in the foreground displays a Claude Code terminal interface with the stylized Claude spark/asterisk logo glowing softly. Invisible ink-like digital fingerprints float from the keyboard and screen toward a distant cloud server. A small developer silhouette sits in the background. Moody dark blue and amber color palette, high contrast, subtle matrix-like code streams, magazine cover quality. No readable UI text, no real brand logos other than the stylized asterisk.",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1792x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-07-01-claude-code-china-fingerprint/assets/cover.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T22:55:32",
+  "dry_run": false
+}

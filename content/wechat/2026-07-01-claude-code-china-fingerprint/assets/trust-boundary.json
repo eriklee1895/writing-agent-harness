@@ -1,0 +1,17 @@
+{
+  "title": "job-4",
+  "prompt": "Primary request: An editorial illustration of a friendly AI coding agent with a stylized Claude spark/asterisk emblem on its chest, standing inside a developer's laptop screen. It holds a keyring with keys labeled 'files', 'shell', and 'git'. Outside the screen, a large shadowy eye observes. The mood is cautionary but not evil. Dark cyberpunk palette with purple and cyan highlights, soft glow, no readable text, no real brand logos.",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-07-01-claude-code-china-fingerprint/assets/trust-boundary.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T22:57:24",
+  "dry_run": false
+}
