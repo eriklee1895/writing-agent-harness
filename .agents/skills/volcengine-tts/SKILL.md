@@ -24,6 +24,9 @@ uv run scripts/volcengine-tts.py "Hello world" --speaker en_female_dacey_uranus_
 # Batch mode — concurrent synthesis
 uv run scripts/volcengine-tts.py --batch '[{"text":"第一句","speaker":"zh_female_vv_uranus_bigtts"},{"text":"第二句"}]'
 
+# Math/education narration — always use the LaTeX parser trio
+uv run scripts/volcengine-tts.py "根据公式 $a^2 + b^2 = c^2$ 可知..." --latex --latex-parser v2 --strip-markdown
+
 # List available speakers
 uv run scripts/volcengine-tts.py --list-speakers
 ```
@@ -83,14 +86,20 @@ Output: JSON array of results, each with the same fields as single mode. Failed 
 | `--context` | — | Natural language voice instruction — tone, emotion, pacing, persona. E.g. "用痛心的语气说话", "像深夜电台主持人一样温柔地读", "用激动兴奋的语气". Works with all official seed-tts-2.0 voices out of the box (no `--model` flag required). |
 | `--ssml` | — | Parse input text as SSML |
 | `--language` | — | Explicit language: zh-cn, en, ja, es-mx, id, pt-br, ko |
-| `--latex` | — | Enable LaTeX formula reading for math/physics content |
-| `--latex-parser v2` | — | Stronger LaTeX parsing (auto-enables `--strip-markdown`, higher latency) |
+| `--latex` | — | Enable LaTeX formula reading; auto-enables Markdown filtering because the API requires `disable_markdown_filter=true` |
+| `--latex-parser v2` | — | Stronger LaTeX parsing for math/education narration; auto-enables `--latex` and `--strip-markdown`, with higher latency |
 | `--silence-duration` | `0` | Trailing silence in ms [0, 30000] |
 | `--watermark` | — | Add AIGC audio watermark |
 | `--no-subtitle` | _(subtitle on by default)_ | Turn off word-level timestamps. Saves ~600ms of tail latency for real-time / conversational use cases. Offline narration pipelines should leave subtitles **on** (the default) — downstream subtitle generation, B-roll alignment, and forced cuts all need word timestamps. |
 | `--strip-markdown` | — | Remove Markdown syntax (e.g. `**bold**` → "bold") |
 | `--strip-emoji` | — | Remove emoji characters before TTS |
 | `--list-speakers` | — | Fetch and display available voices, then exit |
+
+### Math and Education Narration
+
+For education videos, math explainers, physics scripts, and any narration likely to contain LaTeX, **always pass `--latex --latex-parser v2 --strip-markdown`**. Do not use plain `--latex` manually for education content; the v2 parser is the intended default despite higher latency, because formula pronunciation quality matters more than speed in offline narration.
+
+The script maps those flags to the API's required LaTeX parser trio internally. Agents should call the CLI flags above, not construct Volcano TTS API payloads directly.
 
 ### Voice Instructions (`--context`)
 
