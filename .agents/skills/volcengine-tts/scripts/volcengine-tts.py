@@ -189,6 +189,7 @@ def synthesize(
             "audio_params": audio_params,
         }
     }
+    additions: dict[str, Any] = {}
 
     if model:
         body["req_params"]["model"] = model
@@ -200,21 +201,23 @@ def synthesize(
         body["req_params"]["explicit_language"] = language
     if dialect:
         body["req_params"]["explicit_dialect"] = dialect
-    if enable_latex:
-        body["req_params"]["enable_latex_tn"] = True
+    if enable_latex or latex_parser:
+        additions["enable_latex_tn"] = True
+        additions["disable_markdown_filter"] = True
     if latex_parser:
-        body["req_params"]["latex_parser"] = latex_parser
-        body["req_params"]["disable_markdown_filter"] = True  # required by API
+        additions["latex_parser"] = latex_parser
     if silence_duration > 0:
-        body["req_params"]["silence_duration"] = silence_duration
+        additions["silence_duration"] = silence_duration
     if watermark:
-        body["req_params"]["aigc_watermark"] = True
+        additions["aigc_watermark"] = True
     if disable_markdown_filter:
-        body["req_params"]["disable_markdown_filter"] = True
+        additions["disable_markdown_filter"] = True
     if disable_emoji_filter:
-        body["req_params"]["disable_emoji_filter"] = True
+        additions["disable_emoji_filter"] = True
     if pitch != 0:
-        body["req_params"]["post_process"] = {"pitch": pitch}
+        additions["post_process"] = {"pitch": pitch}
+    if additions:
+        body["req_params"]["additions"] = additions
 
     last_error: Optional[str] = None
     log_id: str = ""
@@ -660,8 +663,8 @@ def main() -> None:
     parser.add_argument("--no-subtitle", dest="subtitle", action="store_false", help="Disable word-level timestamps (saves ~600ms tail latency for latency-sensitive / realtime use cases)")
     parser.add_argument("--strip-markdown", action="store_true", help="Remove markdown syntax before TTS")
     parser.add_argument("--strip-emoji", action="store_true", help="Remove emoji characters before TTS")
-    parser.add_argument("--latex", action="store_true", help="Enable LaTeX formula reading (enable_latex_tn)")
-    parser.add_argument("--latex-parser", choices=["v2"], help="Stronger LaTeX parser (v2), auto-enables --strip-markdown")
+    parser.add_argument("--latex", action="store_true", help="Enable LaTeX formula reading; auto-enables markdown filtering")
+    parser.add_argument("--latex-parser", choices=["v2"], help="Stronger LaTeX parser for math/education narration; auto-enables --latex and --strip-markdown")
 
     # Batch
     parser.add_argument("--concurrency", "-c", type=int, default=DEFAULT_CONCURRENCY, help=f"Max parallel requests (default: {DEFAULT_CONCURRENCY})")

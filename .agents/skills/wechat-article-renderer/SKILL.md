@@ -74,7 +74,7 @@ Shared renderer rules:
 - **微信编辑器 sanitizer 有多个坑，改完 renderer 必须在真实草稿箱验证，localhost 预览不算数。** 已知坑点（`<table>` 触发虚线编辑框、`overflow-x:auto` wrapper 触发占位框、`white-space:pre` 被 strip、`<colgroup>` 被 strip、外部 `href` 被拒）全部记录在 `references/wechat-editor-pitfalls.md`，遇到表格/代码块/链接问题先读它。
 - 表格一律用 `display:flex` 的 `<div>` 行渲染，**不要用 `<table>` 标签**（微信会套虚线表格编辑框）。
 - Keep all layout styling inline; avoid external CSS and JavaScript.
-- Do not output external link `href` attributes in WeChat HTML. Render links and references as readable text because the WeChat editor rejects non-`mp.weixin.qq.com` links when saving drafts.
+- Do not output external link `href` attributes in WeChat HTML. The WeChat editor rejects clickable `<a>` tags pointing to non-`mp.weixin.qq.com` domains. Plain-text URLs in references are generally safe and useful for readers; render them as readable text without an `href` attribute.
 - Do not inline image binaries as base64. WeChat preview HTML should stay lightweight and reviewable.
 - Preserve local image references with `data-local-path`; paths may point to article `assets/`, `.local-archive/YYYY-MM-DD-<slug>/images/`, or another local archive hint.
 - CDP publishing resolves `data-local-path` at draft creation time, uploads images to WeChat, and replaces `src` with WeChat CDN URLs.

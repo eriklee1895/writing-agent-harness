@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: A cinematic, thought-provoking editorial illustration. A human silhouette sits in front of a glowing computer screen in a dark room. On the screen, faint invisible-ink text appears as ghostly glowing glyphs, with a small stylized AI spark/asterisk logo subtly visible in the corner. The mood is contemplative and slightly unsettling, about trust and hidden surveillance in AI agents. Deep blue and amber color palette, soft glow, cinematic lighting, no readable text, no real brand logos, magazine cover quality",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-07-01-claude-code-china-fingerprint/assets/conclusion.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-01T23:04:01",
+  "dry_run": false
+}
