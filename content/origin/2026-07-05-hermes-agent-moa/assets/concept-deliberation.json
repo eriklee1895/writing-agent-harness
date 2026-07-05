@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: Clean editorial information-graphic on a warm off-white paper background with subtle paper texture. Top header reading EXACTLY \"TRANSPARENCY\" in bold modern sans-serif, all caps, deep ink color, left-aligned. Below the header, a small italic subtitle reading EXACTLY \"Watch the committee deliberate, not just read the verdict.\" in smaller deep ink. Below the subtitle, a small uppercase section label reading EXACTLY \"REFERENCES\" in small caps muted ink with a thin underline rule.\n\nThe main body shows three stacked horizontal reference panels arranged vertically with generous spacing. Each reference panel contains: on the left, a small vertical color tag bar (muted blue for the first, terracotta for the second, sage green for the third) and a text label reading EXACTLY \"REFERENCE · gpt-5.5\" / \"REFERENCE · deepseek-v4-pro\" / \"REFERENCE · grok-4\" in small caps; to the right of the label, a block of fine abstract horizontal ruled lines in light gray suggesting the model's reasoning text content. The three blocks should differ slightly in line density and length to imply different reasoning styles, not identical wireframes.\n\nA thin horizontal divider rule across the composition, then a small centered uppercase label reading EXACTLY \"AGGREGATING\". Then a final bottom panel labeled reading EXACTLY \"VERDICT · claude-opus-4.8\" with a left-side deep warm charcoal color tag bar and to the right a block of slightly denser and darker abstract horizontal ruled lines representing the synthesized answer. Clean precise editorial info-graphic style. Limited warm palette (muted blue, terracotta, sage green, deep ink, warm off-white, deep warm charcoal). Crisp legible typography for all EXACT verbatim text labels, no extra characters. Generous whitespace, no decorative noise, no human figures, no robots, no logos, no hand-drawn elements.\nStyle/medium: clean editorial information-graphic, precise typography, warm off-white background, info-graphic layout, limited warm palette",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "2048x1152",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/origin/2026-07-05-hermes-agent-moa/assets/concept-deliberation.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-05T16:21:37",
+  "dry_run": false
+}

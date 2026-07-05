@@ -1,0 +1,24 @@
+{
+  "title": "Hermes Multilevel Skills",
+  "brief": "A clean editorial illustration visualizing agent skills organization as a filing system transformation. Left side shows a messy flat pile of folders with long hyphenated labels floating in disorder. Right side shows an organized nested folder tree with labeled categories: official, 3rd, project, personal, team. A subtle arrow connects the chaos to order. In the top-right corner, place the Hermes Agent logo (a small black-and-white stylized girl portrait with stars in hair and an 'N' on the collar, exactly like the reference image) as a brand mark. Do NOT include the word 'Hero' anywhere in the image. Do NOT add any other fake logo, wing icon, crest, or emblem at the top. Modern tech aesthetic, soft professional colors, minimal text, suitable as an article header/cover image.",
+  "content_type": "WeChat article cover",
+  "content_category": "cover",
+  "mode": "reference+text",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "blog-banner",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-07-05-hermes-multilevel-skills/assets/hermes-logo-reference.png"
+  ],
+  "prompt": "Create a polished article illustration titled 'Hermes Multilevel Skills'. Diagram type: WeChat article cover. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: blog-banner. Mode: reference+text. Use the provided reference image or images only for style guidance such as palette, line quality, spacing, icon treatment, and annotation tone. Do not copy their literal subject matter. Reference count: 1. Content brief:\nA clean editorial illustration visualizing agent skills organization as a filing system transformation. Left side shows a messy flat pile of folders with long hyphenated labels floating in disorder. Right side shows an organized nested folder tree with labeled categories: official, 3rd, project, personal, team. A subtle arrow connects the chaos to order. In the top-right corner, place the Hermes Agent logo (a small black-and-white stylized girl portrait with stars in hair and an 'N' on the collar, exactly like the reference image) as a brand mark. Do NOT include the word 'Hero' anywhere in the image. Do NOT add any other fake logo, wing icon, crest, or emblem at the top. Modern tech aesthetic, soft professional colors, minimal text, suitable as an article header/cover image.",
+  "created_at": "2026-07-05T11:38:30",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-07-05-hermes-multilevel-skills/assets/20260705-113735-hermes-multilevel-skills.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

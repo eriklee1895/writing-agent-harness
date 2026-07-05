@@ -1,0 +1,22 @@
+{
+  "title": "Skill Directory Evolution",
+  "brief": "An atmospheric editorial illustration for a WeChat tech essay. A simple desk or shelf scene: on the left, a messy stack of paper folders with long hyphenated labels spilling over; on the right, a clean layered filing cabinet with labeled drawers: official, 3rd, project, personal, team. Soft morning light, muted professional colors, quiet sense of order emerging from chaos. No text, no labels, no diagrams. Suitable as a section opener for mobile reading.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "editorial-atmospheric",
+  "resolved_style_profile": "editorial-atmospheric",
+  "size": "portrait-hd",
+  "resolved_size": "1024x1536",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'Skill Directory Evolution'. Style: contemporary editorial illustration, layered composition, subtle texture, restrained color palette, atmospheric but concrete, article-friendly visual metaphor, no text labels, no diagrams, no arrows. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a body illustration inside a WeChat article read on mobile phones (~390px wide). Compose for narrow-width readability. Use generous negative space. Language/region: zh. Target aspect ratio: portrait-hd. Mode: text-only. Brief:\nAn atmospheric editorial illustration for a WeChat tech essay. A simple desk or shelf scene: on the left, a messy stack of paper folders with long hyphenated labels spilling over; on the right, a clean layered filing cabinet with labeled drawers: official, 3rd, project, personal, team. Soft morning light, muted professional colors, quiet sense of order emerging from chaos. No text, no labels, no diagrams. Suitable as a section opener for mobile reading.",
+  "created_at": "2026-07-05T16:08:49",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/wechat/2026-07-05-hermes-multilevel-skills/assets/20260705-160823-skill-directory-evolution.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
