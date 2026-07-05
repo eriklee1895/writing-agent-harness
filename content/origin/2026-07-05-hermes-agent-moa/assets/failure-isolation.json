@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: A clean editorial information-graphic on a warm off-white paper background. Top header reading EXACTLY \"FAILURE ISOLATION\" in bold modern sans-serif, all caps, deep ink. Below, a small italic subtitle reading EXACTLY \"One reference fails. The committee still delivers a verdict.\" in deep ink. The main composition shows a horizontal flow. On the left, a small uppercase section label reading EXACTLY \"REFERENCES\" above three reference nodes stacked vertically. The first reference node is a clean colored circular medallion in slate blue containing the recognizable OpenAI flower/knot logo in white/light, labeled to the right reading EXACTLY \"REFERENCE 1 · gpt-5.5\"; this node is shown in a desaturated/faded state with a thin outline and a clear small badge next to it reading EXACTLY \"FAILED\" in small caps muted red, and NO outgoing stream from it. The second reference node is a clean colored circular medallion in terracotta containing the recognizable deepseek flame/whale mark logo in white/light, labeled to the right reading EXACTLY \"REFERENCE 2 · deepseek-v4-pro\". The third reference node is a clean colored circular medallion in sage green containing the recognizable xAI X mark logo in white/light, labeled to the right reading EXACTLY \"REFERENCE 3 · grok-4\". From the second and third medallions, thin clean colored streams/lines extend rightward and converge into a single larger central circle (the aggregator) in deep warm charcoal with a subtle thin outer ring, labeled reading EXACTLY \"AGGREGATOR\" with \"claude-opus-4.8\" beneath. A small label reading EXACTLY \"AGGREGATOR\" above the circle. From the aggregator, one clean line with a small arrowhead extends to a final element on the far right labeled reading EXACTLY \"VERDICT\"; a small label reading EXACTLY \"VERDICT\" above it. Clean precise editorial info-graphic style. Limited warm palette with one muted red accent for the failed badge (slate blue, terracotta, sage green, deep warm charcoal, muted red, warm off-white, deep ink). Crisp legible verbatim text throughout, EXACT title case preserved. Generous whitespace, no decorative noise, no human figures, no robots, no floating logos outside the medallions.\nStyle/medium: clean editorial information-graphic, precise typography, warm off-white paper background, horizontal pipeline layout, limited warm palette with one muted red accent",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "2048x1152",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/origin/2026-07-05-hermes-agent-moa/assets/failure-isolation.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-05T16:21:20",
+  "dry_run": false
+}

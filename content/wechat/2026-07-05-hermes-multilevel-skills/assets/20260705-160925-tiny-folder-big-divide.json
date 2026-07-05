@@ -1,0 +1,22 @@
+{
+  "title": "Tiny Folder Big Divide",
+  "brief": "A minimalist editorial illustration for a WeChat tech essay ending. Extreme close-up of a single small folder or drawer labeled with a simple path-like mark, sitting on a clean wooden desk. Soft window light, shallow depth of field, quiet contemplative mood. Suggests that a small organizational choice can be a watershed moment. No text, no logos, no people.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "editorial-atmospheric",
+  "resolved_style_profile": "editorial-atmospheric",
+  "size": "portrait-hd",
+  "resolved_size": "1024x1536",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'Tiny Folder Big Divide'. Style: contemporary editorial illustration, layered composition, subtle texture, restrained color palette, atmospheric but concrete, article-friendly visual metaphor, no text labels, no diagrams, no arrows. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a body illustration inside a WeChat article read on mobile phones (~390px wide). Compose for narrow-width readability. Use generous negative space. Language/region: zh. Target aspect ratio: portrait-hd. Mode: text-only. Brief:\nA minimalist editorial illustration for a WeChat tech essay ending. Extreme close-up of a single small folder or drawer labeled with a simple path-like mark, sitting on a clean wooden desk. Soft window light, shallow depth of field, quiet contemplative mood. Suggests that a small organizational choice can be a watershed moment. No text, no logos, no people.",
+  "created_at": "2026-07-05T16:09:45",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/wechat/2026-07-05-hermes-multilevel-skills/assets/20260705-160925-tiny-folder-big-divide.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

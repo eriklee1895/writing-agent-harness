@@ -1,0 +1,22 @@
+{
+  "title": "Flat vs Nested Skill Directories",
+  "brief": "A split comparison infographic. Left panel labeled 'Flat Layout' shows a messy vertical list of long hyphenated directory names: research-arxiv, research-polymarket, thirdparty-supabase, erik-wechat-renderer, team-prod-deploy, looking like temporary name badges. Right panel labeled 'Nested Layout' shows a clean tree: skills/ with branches official/, 3rd/, project/, personal/, team/. A curved arrow shows structure information moving from filenames back to the filesystem hierarchy. Clean flat infographic, soft colors, plenty of whitespace, bilingual Chinese-English labels.",
+  "content_type": "architecture diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Flat vs Nested Skill Directories'. Diagram type: architecture diagram. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\nA split comparison infographic. Left panel labeled 'Flat Layout' shows a messy vertical list of long hyphenated directory names: research-arxiv, research-polymarket, thirdparty-supabase, erik-wechat-renderer, team-prod-deploy, looking like temporary name badges. Right panel labeled 'Nested Layout' shows a clean tree: skills/ with branches official/, 3rd/, project/, personal/, team/. A curved arrow shows structure information moving from filenames back to the filesystem hierarchy. Clean flat infographic, soft colors, plenty of whitespace, bilingual Chinese-English labels.",
+  "created_at": "2026-07-05T11:21:47",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-07-05-hermes-multilevel-skills/assets/20260705-112058-flat-vs-nested-skill-directories.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

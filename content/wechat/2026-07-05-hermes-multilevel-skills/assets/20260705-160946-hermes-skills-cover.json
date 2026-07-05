@@ -1,0 +1,24 @@
+{
+  "title": "Hermes Skills Cover",
+  "brief": "A clean magazine-style cover for WeChat official account. Abstract composition of layered translucent folders or file cards arranged in a gentle cascade, with soft blue-green and warm sand tones. Tiny Hermes Agent logo (small stylized girl portrait with stars in hair) placed subtly in the top-right corner as a brand mark. No text, no titles, no hero words. Modern tech editorial aesthetic, 2.35:1 banner crop.",
+  "content_type": "WeChat article cover",
+  "content_category": "cover",
+  "mode": "reference+text",
+  "style_profile": "editorial-atmospheric",
+  "resolved_style_profile": "editorial-atmospheric",
+  "size": "wechat-cover-hd",
+  "resolved_size": "1792x1024",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-07-05-hermes-multilevel-skills/assets/hermes-logo-reference.png"
+  ],
+  "prompt": "Create an illustration titled 'Hermes Skills Cover'. Style: contemporary editorial illustration, layered composition, subtle texture, restrained color palette, atmospheric but concrete, article-friendly visual metaphor, no text labels, no diagrams, no arrows. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a WeChat Official Account headline cover image (公众号头条封面). Compose for a 2.35:1 ultra-wide crop (1080x460). Keep key subjects centered or in the bottom third — top area will be cropped. Design for readability as a small thumbnail in WeChat's subscription feed. Title text will be overlaid by the editor, so leave ample negative space. Language/region: zh. Target aspect ratio: wechat-cover-hd. Mode: reference+text. Use the provided reference image or images only for style guidance such as palette, line quality, spacing, icon treatment, and annotation tone. Do not copy their literal subject matter. Reference count: 1. Brief:\nA clean magazine-style cover for WeChat official account. Abstract composition of layered translucent folders or file cards arranged in a gentle cascade, with soft blue-green and warm sand tones. Tiny Hermes Agent logo (small stylized girl portrait with stars in hair) placed subtly in the top-right corner as a brand mark. No text, no titles, no hero words. Modern tech editorial aesthetic, 2.35:1 banner crop.",
+  "created_at": "2026-07-05T16:10:14",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/wechat/2026-07-05-hermes-multilevel-skills/assets/20260705-160946-hermes-skills-cover-cropped.png"
+  ],
+  "crop_hint": "1080x460 (2.35:1)",
+  "dry_run": false
+}

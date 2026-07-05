@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: A clean editorial information-graphic on a warm off-white paper background — flat, NO glow, NO luminous effects, matching a flat editorial info-graphic cover language. Top header reading EXACTLY \"COLLABORATIVENESS\" in bold modern sans-serif, all caps, deep ink. Below, a small italic subtitle reading EXACTLY \"Even weaker models help a stronger aggregator.\" in deep ink.\n\nThe main composition is split into two zones, separated by generous whitespace. LEFT ZONE (the visual): three reference model nodes of clearly varying sizes arranged in a composition — the top one largest (slate blue), the middle medium (terracotta), the bottom one clearly smallest (sage green), suggesting a weaker individual model. Each reference node is a clean filled circle with a thin outer ring, containing the recognizable brand logo in white/light: the OpenAI flower/knot for the top node, the deepseek flame/whale mark for the middle node, the xAI X mark for the bottom node. Each labeled reading EXACTLY \"gpt-5.5\", \"deepseek-v4-pro\", and \"grok-4\" inside or immediately beside its circle. Thin clean lines from each of the three circles converge into a single larger central circle (the aggregator) in deep warm charcoal with a thin outer ring, labeled reading EXACTLY \"AGGREGATOR\" with \"claude-opus-4.8\" beneath. A small annotation near the smallest sage node reading EXACTLY \"weaker, but still contributes\" with a thin dashed line pointing to it. A small uppercase section label reading EXACTLY \"VISUAL\" above this left zone.\n\nRIGHT ZONE (the data evidence): a clean small data panel with a thin precise border. Inside the panel, a small uppercase header reading EXACTLY \"EVIDENCE · ALPACAEVAL 2.0\". Below, two comparison rows: row one reading EXACTLY \"Open-source MoA\" with the value reading EXACTLY \"65.1%\" highlighted in a distinct muted accent; row two reading EXACTLY \"GPT-4o (single model)\" with the value reading EXACTLY \"57.5%\" in a neutral muted tone. Below the rows, a thin separator rule, then a single emphasized line reading EXACTLY \"+7.6 pts\" in a distinct accent color, with a small label reading EXACTLY \"LC win rate gap\" beneath it. A small uppercase section label reading EXACTLY \"DATA\" above this right zone.\n\nCrisp legible verbatim text throughout. Limited warm palette (slate blue, terracotta, sage, deep warm charcoal, deep ink, warm off-white, with one muted accent for the highlighted numbers). Clean precise editorial info-graphic style, structured and information-dense. Generous whitespace, no decorative noise, no human figures, no robots, no logos.\nStyle/medium: clean editorial information-graphic, flat, light warm off-white background, structured two-zone layout, precise typography, information-dense, no glow no luminous",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "2048x1152",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/origin/2026-07-05-hermes-agent-moa/assets/collaborativeness.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-05T16:21:18",
+  "dry_run": false
+}

@@ -1,0 +1,59 @@
+{
+  "article": "2026-07-05-hermes-multilevel-skills",
+  "title": "Hermes 多层 Skills 路径",
+  "generated_at": "2026-07-05T11:20:00+08:00",
+  "images": [
+    {
+      "filename": "20260705-113735-hermes-multilevel-skills.png",
+      "alt": "Hermes 多层 Skills 路径：从混乱的扁平技能堆到有序的分层技能体系",
+      "caption": "从混乱到有序：技能管理的分层进化",
+      "usage": "hero/cover",
+      "size": "blog-banner",
+      "style_profile": "flat-tech-infographic",
+      "prompt_summary": "Filing system transformation visualizing agent skills organization from messy flat pile to organized nested tree with categories official, 3rd, project, personal, team; includes Hermes Agent logo in top-right corner, no fake emblem, no 'Hero' text",
+      "metadata": "20260705-113735-hermes-multilevel-skills.json"
+    },
+    {
+      "filename": "20260705-112011-hermes-multilevel-skills-hero.png",
+      "alt": "废弃版本：带顶部假 logo 和 Hero 文字的旧封面",
+      "caption": "废弃版本 v1（含假 logo 和 Hero 字样）",
+      "usage": "deprecated",
+      "size": "blog-banner",
+      "style_profile": "flat-tech-infographic",
+      "prompt_summary": "Deprecated first draft with fake wing emblem at top and 'Hero' text in title",
+      "metadata": "20260705-112011-hermes-multilevel-skills-hero.json",
+      "deprecated_at": "2026-07-05T11:37:00+08:00",
+      "deprecated_reason": "包含顶部假 logo 和 'Hero' 文字，未使用 Hermes 官方 logo"
+    },
+    {
+      "filename": "20260705-112058-flat-vs-nested-skill-directories.png",
+      "alt": "扁平布局与嵌套布局对比：左侧是长名称的扁平目录，右侧是按来源分类的多层目录树",
+      "caption": "扁平 vs 嵌套：技能目录结构对比",
+      "usage": "body-diagram",
+      "size": "doc-hd",
+      "style_profile": "flat-tech-infographic",
+      "prompt_summary": "Split comparison of flat hyphenated directory names versus nested category tree (official, 3rd, project, personal, team)",
+      "metadata": "20260705-112058-flat-vs-nested-skill-directories.json"
+    },
+    {
+      "filename": "20260705-112148-hermes-skill-package-anatomy.png",
+      "alt": "Hermes Skill Package 解剖：SKILL.md 入口与 references、templates、assets、scripts 支持目录，以及渐进加载的三层结构",
+      "caption": "Hermes 技能包结构剖析",
+      "usage": "body-diagram",
+      "size": "doc-hd",
+      "style_profile": "flat-tech-infographic",
+      "prompt_summary": "Hermes skill package anatomy showing SKILL.md entry, support folders, and progressive disclosure layers (skills_list, SKILL.md, support files)",
+      "metadata": "20260705-112148-hermes-skill-package-anatomy.json"
+    },
+    {
+      "filename": "20260705-112250-skill-discovery-boundary.png",
+      "alt": "Hermes 技能发现边界：递归扫描跳过支持目录，skill_view 先按路径再按名称匹配，同名冲突返回歧义警告",
+      "caption": "Hermes 技能发现与冲突处理流程",
+      "usage": "body-diagram",
+      "size": "doc-hd",
+      "style_profile": "soft-tech-diagram",
+      "prompt_summary": "Technical flowchart of Hermes skill discovery boundary, support dir exclusion, skill_view lookup logic, and collision ambiguity handling",
+      "metadata": "20260705-112250-skill-discovery-boundary.json"
+    }
+  ]
+}

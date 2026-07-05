@@ -1,0 +1,22 @@
+{
+  "title": "Skill Governance Layers",
+  "brief": "An atmospheric editorial illustration showing agent skill governance as a quiet control room or workspace. Multiple transparent layers floating in space: source layer (labeled 1st, 3rd, vendor, project), lifecycle layer (inbox, generated, team, archive), and trust boundary layer. Subtle grid lines and soft glow. Muted professional palette, clean composition, no text labels, suitable as mobile section illustration for a WeChat tech essay.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "editorial-atmospheric",
+  "resolved_style_profile": "editorial-atmospheric",
+  "size": "portrait-hd",
+  "resolved_size": "1024x1536",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'Skill Governance Layers'. Style: contemporary editorial illustration, layered composition, subtle texture, restrained color palette, atmospheric but concrete, article-friendly visual metaphor, no text labels, no diagrams, no arrows. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a body illustration inside a WeChat article read on mobile phones (~390px wide). Compose for narrow-width readability. Use generous negative space. Language/region: zh. Target aspect ratio: portrait-hd. Mode: text-only. Brief:\nAn atmospheric editorial illustration showing agent skill governance as a quiet control room or workspace. Multiple transparent layers floating in space: source layer (labeled 1st, 3rd, vendor, project), lifecycle layer (inbox, generated, team, archive), and trust boundary layer. Subtle grid lines and soft glow. Muted professional palette, clean composition, no text labels, suitable as mobile section illustration for a WeChat tech essay.",
+  "created_at": "2026-07-05T16:09:25",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/wechat/2026-07-05-hermes-multilevel-skills/assets/20260705-160850-skill-governance-layers.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

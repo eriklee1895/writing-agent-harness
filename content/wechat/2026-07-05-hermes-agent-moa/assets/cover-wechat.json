@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: Primary request: A premium editorial cover for WeChat official account article header, with aspect ratio 2.35:1 (wide landscape, 1280x544 equivalent composition). Sophisticated dark navy near-black background with subtle depth.\n\nTop-left: a small stylized clean editorial line illustration of the Hermes Agent mascot — an anime-style young woman with short dark bob hair, wearing over-ear headphones and a white top with a small \"H\" badge on the collar — rendered in warm off-white and subtle accent line work.\n\nTo the right of the mascot, a medium-prominent typographic title reading EXACTLY \"Mixture of Agents\" in clean modern sans-serif, TITLE CASE (capital M and A only), warm off-white, confident editorial weight. Below the title, a thin precise horizontal rule, then a small Chinese subtitle reading EXACTLY \"多模型协作做成一个 model\" in clean modern Chinese sans-serif, warm off-white.\n\nMain composition: a horizontal pipeline across the lower half. On the left: three small colored circular medallions (slate blue, terracotta, sage green) each containing a recognizable brand logo in white/light (OpenAI flower/knot for gpt-5.5, deepseek flame/whale mark for deepseek-v4-pro, xAI X mark for grok-4). Thin clean lines extend rightward from each medallion and converge into a single larger deep warm charcoal filled circle (the aggregator) with a subtle thin outer ring, labeled reading EXACTLY \"AGGREGATOR\" with \"claude-opus-4.8\" beneath. From the aggregator, one clean line with a small arrowhead extends to a final element on the far right: a golden balance scale icon inside a circle, labeled reading EXACTLY \"VERDICT\" above it.\n\nCrisp legible verbatim text throughout, EXACT title case preserved. Limited sophisticated palette (deep navy, warm off-white, slate blue, terracotta, sage, deep warm charcoal, muted gold). Premium editorial composition with genuine visual weight. Generous whitespace, no decorative noise, no hand-drawn, no human figures other than the Hermes mascot brand mark, no robots.\nStyle/medium: premium dark editorial cover, 2.35:1 wide banner, WeChat article header, brand logo medallions, horizontal pipeline, confident typography",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1280x544",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/content/wechat/2026-07-05-hermes-agent-moa/assets/cover-wechat.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-05T22:04:52",
+  "dry_run": false
+}

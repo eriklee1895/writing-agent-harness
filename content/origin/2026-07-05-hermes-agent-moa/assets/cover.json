@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: A premium editorial cover on a sophisticated dark navy near-black background with subtle depth. \n\nTop area brand mark: in the upper-left, a small stylized clean editorial line illustration of the classic Hermes Agent mascot — an anime-style young woman with short dark bob hair, wearing over-ear headphones, wearing a white top with a small \"H\" badge on the collar — rendered in warm off-white and subtle accent line work, acting as the brand identity for the article. To the right of this brand mark, a medium-prominent typographic title reading EXACTLY \"Mixture of Agents\" in clean modern sans-serif, TITLE CASE (capital M and A only, lowercase elsewhere — preserve exact casing), warm off-white, confident editorial weight. Below the title, a thin precise horizontal rule, then a small subtitle reading EXACTLY \"多模型协作做成一个 model\" in clean modern Chinese sans-serif, warm off-white.\n\nMain composition: a precise VERTICAL pipeline. On the left: a small uppercase section label reading EXACTLY \"REFERENCES\". Below it, three reference model badges arranged in a vertical column, stacked top to bottom. Each reference badge is a clean colored circular medallion (slate blue, terracotta, sage) CONTAINING the recognizable brand logo of that model in white/light (the OpenAI flower/knot for gpt-5.5, the deepseek flame/whale mark for deepseek-v4-pro, the xAI X mark for grok-4), with a precise text label to the right of each badge reading EXACTLY \"REFERENCE 1 · gpt-5.5\", \"REFERENCE 2 · deepseek-v4-pro\", \"REFERENCE 3 · grok-4\". Thin precise lines extend rightward from each badge, converging into a single larger deep warm charcoal filled circle (the aggregator) with a subtle thin outer ring, labeled reading EXACTLY \"AGGREGATOR\" with \"claude-opus-4.8\" beneath. A small label reading EXACTLY \"AGGREGATOR\" above. From the aggregator, one clean line with a small arrowhead extends to a final element on the far right labeled reading EXACTLY \"VERDICT\". A small label reading EXACTLY \"VERDICT\" above it.\n\nCrisp legible verbatim text throughout, EXACT title case preserved. Limited sophisticated palette (deep navy, warm off-white, slate blue, terracotta, sage, deep warm charcoal). Premium editorial composition with genuine visual weight and depth. Generous whitespace, no decorative noise, no hand-drawn, no human figures other than the Hermes mascot brand mark, no robots, no floating logos outside the medallions.\nStyle/medium: premium dark editorial cover, sophisticated depth, Hermes mascot brand mark, brand logo medallions, vertical pipeline, confident typography",
+  "model": "gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "2048x1152",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/origin/2026-07-05-hermes-agent-moa/assets/cover.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-07-05T12:04:22",
+  "dry_run": false
+}
