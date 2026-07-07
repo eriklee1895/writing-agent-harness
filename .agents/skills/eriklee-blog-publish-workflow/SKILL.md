@@ -44,7 +44,7 @@ Default behavior:
 3. Sync one article to the blog repo:
 
    ```bash
-   uv run scripts/sync_origin_to_astropaper.py \
+   uv run scripts/sync_origin_to_blog.py \
      content/origin/YYYY-MM-DD-<slug> \
      --blog-root /Users/eriklee/code/my_project/eriklee-blog \
      --extension mdx \
@@ -54,7 +54,7 @@ Default behavior:
    For batch sync, use `--all` only when the user explicitly wants a full import/resync:
 
    ```bash
-   uv run scripts/sync_origin_to_astropaper.py \
+   uv run scripts/sync_origin_to_blog.py \
      content/origin \
      --blog-root /Users/eriklee/code/my_project/eriklee-blog \
      --extension mdx \
@@ -123,7 +123,7 @@ Do not physically categorize files into folders. Keep blog posts flat under `src
 
 ## Gotchas
 
-- The sync script is still named `sync_origin_to_astropaper.py`; this is historical. Treat it as the current `origin -> eriklee-blog` adapter until it is renamed.
+- Use `scripts/sync_origin_to_blog.py` as the current `origin -> eriklee-blog` adapter. Ignore older notes or shells that mention the historical `sync_origin_to_astropaper.py` name.
 - Do not run `git add .` in either repo. It can accidentally stage unrelated origin drafts, local assets, or generated files.
 - Do not delete user edits in `eriklee-blog` while syncing. Read diffs first.
 - Cloudflare Pages previews may build feature branches, but production uses `main`.

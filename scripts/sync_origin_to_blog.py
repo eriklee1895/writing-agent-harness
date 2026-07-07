@@ -1,8 +1,12 @@
-#!/usr/bin/env python3
-"""Sync canonical origin articles into an AstroPaper posts directory.
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.12"
+# dependencies = []
+# ///
+"""Sync canonical origin articles into Erik Lee's Astro blog posts directory.
 
 This is intentionally a one-way adapter: content/origin remains the source of
-truth, and the AstroPaper repo receives rendered publishing copies.
+truth, and eriklee-blog receives rendered publishing copies.
 """
 
 from __future__ import annotations
@@ -344,7 +348,7 @@ def infer_taxonomy(source_meta: dict[str, object], slug: str) -> tuple[str, str 
     return category, series, tags or ["others"]
 
 
-def build_astropaper_frontmatter(
+def build_blog_frontmatter(
     source_meta: dict[str, object],
     body: str,
     source_path: Path,
@@ -367,6 +371,7 @@ def build_astropaper_frontmatter(
         or date_from_slug(source_path.parent.name)
     )
     category, series, tags = infer_taxonomy(source_meta, source_path.parent.name)
+    article_type = source_meta.get("type") or "技术笔记"
     cover = (
         source_meta.get("ogImage")
         or source_meta.get("coverImage")
@@ -385,6 +390,7 @@ def build_astropaper_frontmatter(
         f"draft: {yaml_scalar(draft)}",
         f"category: {yaml_scalar(category)}",
         yaml_optional_string("series", series),
+        f"type: {yaml_scalar(article_type)}",
         f"canonicalURL: {yaml_scalar(args.canonical_url)}" if args.canonical_url else "",
         f"ogImage: {normalize_asset_path(cover, source_path.parent.name)}" if cover else "",
         *yaml_list(tags),
@@ -494,7 +500,7 @@ def sync_article(args: argparse.Namespace) -> Path:
     body = replace_missing_asset_refs(body, source_path.parent, destination_assets_dir, slug)
     if args.extension == "mdx":
         body = escape_mdx_text(body)
-    output = build_astropaper_frontmatter(meta, body, source_path, args) + body.rstrip() + "\n"
+    output = build_blog_frontmatter(meta, body, source_path, args) + body.rstrip() + "\n"
     destination.write_text(output, encoding="utf-8")
 
     return destination
@@ -526,16 +532,16 @@ def sync_all(args: argparse.Namespace) -> list[Path]:
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Sync content/origin/<slug>/index.md to an AstroPaper posts directory.",
+        description="Sync content/origin/<slug>/index.md to Erik Lee's Astro blog posts directory.",
     )
     parser.add_argument("source", help="Origin article directory or index.md path.")
-    parser.add_argument("--blog-root", help="AstroPaper repository root.")
-    parser.add_argument("--output-dir", help="AstroPaper posts directory, e.g. /blog/src/content/posts.")
+    parser.add_argument("--blog-root", help="Astro blog repository root.")
+    parser.add_argument("--output-dir", help="Astro blog posts directory, e.g. /blog/src/content/posts.")
     parser.add_argument("--slug", help="Override destination slug. Defaults to source folder name.")
     parser.add_argument("--all", action="store_true", help="Sync every origin article directory under source.")
     parser.add_argument("--extension", choices=["md", "mdx"], default="mdx", help="Destination extension.")
-    parser.add_argument("--description", help="Override AstroPaper description.")
-    parser.add_argument("--canonical-url", help="Absolute canonical URL for AstroPaper frontmatter.")
+    parser.add_argument("--description", help="Override blog post description.")
+    parser.add_argument("--canonical-url", help="Absolute canonical URL for blog frontmatter.")
     parser.add_argument("--draft", dest="draft", action="store_true", default=None, help="Force draft: true.")
     parser.add_argument("--published", dest="draft", action="store_false", help="Force draft: false.")
     parser.add_argument("--keep-title-heading", action="store_true", help="Keep leading H1 that matches title.")
