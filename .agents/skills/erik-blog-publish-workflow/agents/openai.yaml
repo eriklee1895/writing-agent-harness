@@ -1,0 +1,4 @@
+interface:
+  display_name: "Erik Blog Publish Workflow"
+  short_description: "Publish origin articles to Erik's Astro blog"
+  default_prompt: "Use $erik-blog-publish-workflow to publish a finalized content/origin article to Erik Lee's personal Astro blog with build verification."

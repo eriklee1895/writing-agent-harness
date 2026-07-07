@@ -1,9 +1,9 @@
 ---
-name: eriklee-blog-publish-workflow
+name: erik-blog-publish-workflow
 description: "Publish finalized articles from Erik Lee's writing-agent-harness content/origin directory to Erik Lee's personal Astro blog repo eriklee-blog. Use only for Erik's local blog workflow: syncing Markdown/MDX, assets, taxonomy metadata, build checks, git commits/branches, and Cloudflare Pages deployment handoff."
 ---
 
-# Erik Lee Blog Publish Workflow
+# Erik Blog Publish Workflow
 
 ## Overview
 
