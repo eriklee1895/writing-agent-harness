@@ -48,7 +48,7 @@ flowchart LR
 - **Router 层**：`AGENTS.md` 只保留高频规则和 docs 路由；低频细节通过 `docs/` progressive disclosure 加载。
 - **Origin 层**：`content/origin/YYYY-MM-DD-<slug>/` 是 repo 内长期 canonical article；`content/drafts/` 和 `content/inbox/` 是本地 scratch，不默认提交。Notion 现在主要作为历史笔记、灵感池和资料管理入口，不再是发布 source of truth。
 - **Skill 层**：`.agents/skills/*` 负责可重复执行的写作、配图、视频、排版、发布和 closeout 能力。
-- **Channel 层**：`content/wechat/`、`content/blog/` 和未来渠道都从同一个 origin slug 派生，渠道稿 frontmatter 用 `source:` 指回 canonical article。AstroPaper 只承担博客展示层/renderer，优先通过 one-way adapter 从 `content/origin/` 生成发布副本。
+- **Channel 层**：`content/wechat/`、`content/blog/` 和未来渠道都从同一个 origin slug 派生，渠道稿 frontmatter 用 `source:` 指回 canonical article。Astro 博客 repo 只承担博客展示层/renderer，优先通过 one-way adapter 从 `content/origin/` 生成发布副本。
 - **Evolution 层**：真实任务结束后用 `writing-task-closeout` 把坑点、复盘、memory、docs 和 skill 改进回填到 harness。
 
 ## 目录约定
@@ -59,25 +59,25 @@ flowchart LR
 | `content/drafts/` | 本地写作工作区，gitignored；进入可追踪状态前需要 promote |
 | `content/origin/` | 可追踪 canonical Markdown / MDX article package，跨渠道共用 |
 | `content/wechat/` | 可追踪微信公众号文章、HTML preview、notes 和 metadata |
-| `content/blog/` | 可追踪博客 Markdown / MDX 渠道副本；AstroPaper repo 中的 `src/content/posts/` 也应视为从 origin 派生的发布副本 |
+| `content/blog/` | 可追踪博客 Markdown / MDX 渠道副本；Astro blog repo 中的 `src/content/posts/` 也应视为从 origin 派生的发布副本 |
 | `content/assets/` | 跨文章复用 prompt、metadata、manifest 和 reference material；不要放单篇文章的一次性素材 |
 
 > `content/origin/YYYY-MM-DD-<slug>/assets/` 是 article-local assets。`docs/assets/` 是文档图片目录，应该进入 Git；写作任务产生的大体积二进制图片、视频素材和剪辑产物默认留在 `.local-archive/` 或外部资产库，只提交可复现的 prompt、metadata、manifest、sources 和 notes。
 
 ## Blog Renderer Boundary
 
-个人博客的推荐实现是独立 AstroPaper repo，由 Cloudflare Pages 部署。`writing-agent-harness` 仍然是写作中枢和 canonical source；AstroPaper repo 只消费发布副本，不反向成为写作源头。
+个人博客的推荐实现是独立 Astro repo，由 Cloudflare Pages 部署。`writing-agent-harness` 仍然是写作中枢和 canonical source；博客 repo 只消费发布副本，不反向成为写作源头。
 
 第一版同步策略：
 
 ```text
 content/origin/YYYY-MM-DD-<slug>/index.md
--> scripts/sync_origin_to_astropaper.py
--> <astropaper-repo>/src/content/posts/YYYY-MM-DD-<slug>.mdx
--> <astropaper-repo>/src/content/posts/assets/YYYY-MM-DD-<slug>/
+-> scripts/sync_origin_to_blog.py
+-> <astro-blog-repo>/src/content/posts/YYYY-MM-DD-<slug>.mdx
+-> <astro-blog-repo>/src/content/posts/assets/YYYY-MM-DD-<slug>/
 ```
 
-同步脚本只做确定性转换：补齐 AstroPaper frontmatter、输出博客渠道 `.mdx`、复制 article-local `assets/` 中的非 Markdown 素材、重写图片路径、移除与 frontmatter `title` 重复的正文 H1，并处理 MDX 对 `<`、HTML void tag、缺失本地图片等更严格的解析要求。AstroPaper 会把 posts 目录下的 Markdown/MDX 当作文章，因此 prompt、notes 等 `.md`/`.mdx` 资料不应复制进博客 posts 子目录。Notion 同步属于下游/旁路能力，只有在文章已经进入 `content/origin/` 后才考虑写回或派发。
+同步脚本只做确定性转换：补齐 Astro blog frontmatter、输出博客渠道 `.mdx`、复制 article-local `assets/` 中的非 Markdown 素材、重写图片路径、移除与 frontmatter `title` 重复的正文 H1，并处理 MDX 对 `<`、HTML void tag、缺失本地图片等更严格的解析要求。博客 repo 会把 posts 目录下的 Markdown/MDX 当作文章，因此 prompt、notes 等 `.md`/`.mdx` 资料不应复制进博客 posts 子目录。Notion 同步属于下游/旁路能力，只有在文章已经进入 `content/origin/` 后才考虑写回或派发。
 
 博客分类采用虚拟分层：`src/content/posts/` 保持扁平，`category` / `series` / `tags` 写入 frontmatter。`category` 用少量稳定大类，`series` 用于 Claude Code Notes、Codex Notes、Hermes Notes 等连续专题，`tags` 保持多对多自由增长。不要把主题目录写进文章 URL。
 

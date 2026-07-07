@@ -52,7 +52,7 @@ content/wechat/YYYY-MM-DD-topic/
 content/blog/YYYY-MM-DD-topic/
 ```
 
-AstroPaper 博客 repo 的 `src/content/posts/YYYY-MM-DD-topic.mdx` 也属于渠道发布副本，应该由 `content/origin/YYYY-MM-DD-topic/` 单向生成；不要把 AstroPaper repo 当成写作源头。
+Astro 博客 repo 的 `src/content/posts/YYYY-MM-DD-topic.mdx` 也属于渠道发布副本，应该由 `content/origin/YYYY-MM-DD-topic/` 单向生成；不要把博客 repo 当成写作源头。
 
 博客分类不建议用物理目录表达。`src/content/posts/` 保持扁平，分类、系列和标签放在 frontmatter：
 
