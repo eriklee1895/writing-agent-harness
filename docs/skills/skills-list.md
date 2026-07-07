@@ -41,6 +41,11 @@
   - 端到端微信公众号发布 runbook。
   - 负责编排 preview、草稿箱同步、验证和最终发布交接。
 
+- `eriklee-blog-publish-workflow`
+  - 发布正式稿到 Erik Lee 个人 Astro 博客的专用 workflow。
+  - 负责编排 `content/origin/` 到 `eriklee-blog` 的同步、assets / taxonomy 检查、`npm run build`、git 提交、Cloudflare Pages 发布交接。
+  - 仅适用于 Erik 的本地 repo 布局和个人博客；不是通用博客发布 skill。`git push main` 等价于公开发布，默认需明确确认。
+
 - `video-material-ingest`
   - 用 `yt-dlp` 把已知视频 URL 摄取到本地可追溯素材目录。
   - 第一版只负责下载、metadata、manifest 和 sources 留痕；不负责搜索视频、图片搜索、版权判断或剪辑生产。
