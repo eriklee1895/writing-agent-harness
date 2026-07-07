@@ -2,7 +2,7 @@
 
 项目还在演进中。当前不要为了整洁强行迁移历史内容，但新内容建议逐步靠近这个 layout。
 
-飞书文档是上游写作入口；内容进入 repo 后，以 Markdown / MDX 作为可追踪、可自动化处理的文本格式。
+飞书文档、Notion 笔记和网页剪藏都可以作为上游输入；内容进入 repo 后，以 `content/origin/` 里的 Markdown / MDX 作为可追踪、可自动化处理的 canonical source。
 
 ```text
 writing-agent-harness/
@@ -18,7 +18,7 @@ writing-agent-harness/
 │   ├── inbox/                   # 本地原始输入 scratch，gitignored
 │   ├── drafts/                  # 本地写作工作区，gitignored
 │   ├── origin/                  # 可追踪 canonical Markdown / MDX
-│   ├── blog/                    # 可追踪博客 Markdown / MDX，按一级主题目录归档
+│   ├── blog/                    # 可追踪博客 Markdown / MDX 渠道副本（如需本 repo 内留存）
 │   ├── wechat/                  # 可追踪微信公众号文章、preview、notes 和 metadata
 │   └── assets/                  # 跨文章复用 prompt、metadata、manifest
 ```
@@ -49,24 +49,26 @@ content/origin/YYYY-MM-DD-topic/
 
 ```text
 content/wechat/YYYY-MM-DD-topic/
-content/blog/<category>/YYYY-MM-DD-topic/
+content/blog/YYYY-MM-DD-topic/
 ```
 
-`content/blog/` 当前建议的一级主题目录：
+AstroPaper 博客 repo 的 `src/content/posts/YYYY-MM-DD-topic.mdx` 也属于渠道发布副本，应该由 `content/origin/YYYY-MM-DD-topic/` 单向生成；不要把 AstroPaper repo 当成写作源头。
 
-```text
-content/blog/
-├── ai-agents/                   # agent 框架、runtime、tool use、memory、planning
-├── ai-coding/                   # Codex、Claude Code、Cursor、OpenClaw、AI coding workflow
-├── industry/                    # 行业追踪、公司/产品事件、AI 基础设施和趋势评论
-├── essays/                      # 个人观点、长文思考、非严格技术评论
-├── life/                        # 生活随笔、个人感悟
-└── investment/                  # 投研、公司研究、市场分析
+博客分类不建议用物理目录表达。`src/content/posts/` 保持扁平，分类、系列和标签放在 frontmatter：
+
+```yaml
+category: "AI Engineering"
+series: "Claude Code Notes"
+tags:
+  - claude-code
+  - coding-agent
 ```
+
+物理目录只用于内容类型边界，例如 `posts/`、`pages/`、`projects/`；不要把 `claude-code`、`codex`、`langchain` 这类会演变的主题写进永久 URL。
 
 ## Migration Rule
 
-当前 `content/drafts/` 和 `content/inbox/` 按本地 scratch 处理，不会默认提交。后续新文章可以先进入 `content/drafts/` 写作；当文章需要 repo 追踪、review、渲染或发布交付时，再 promote 到 `content/origin/`。渠道版本从 `content/origin/` 派生到 `content/wechat/` 或 `content/blog/`，并保持同一个 folder slug。渠道稿 frontmatter 用 `source:` 指回 canonical article。
+当前 `content/drafts/` 和 `content/inbox/` 按本地 scratch 处理，不会默认提交。后续新文章可以先进入 `content/drafts/` 写作；当文章需要 repo 追踪、review、渲染或发布交付时，再 promote 到 `content/origin/`。渠道版本从 `content/origin/` 派生到 `content/wechat/`、`content/blog/` 或独立 Astro 博客 repo，并保持同一个 slug。渠道稿 frontmatter 用 `source:` 指回 canonical article。
 
 文章目录里的 `assets/` 是 article-local assets；全局 `content/assets/` 只放跨文章复用的 prompt、metadata、manifest 和 reference material。渠道目录可以有自己的 `assets/`；如果图片已在 origin assets 且体积较大，可以用相对路径指回 origin 目录，避免重复二进制文件。
 
