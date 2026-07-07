@@ -26,7 +26,7 @@ research -> outline -> draft -> polish -> visuals -> packaging -> publish -> rev
 - 管理项目级 AI writing skills。
 - 存放文章源稿、渠道派生稿、视觉资产和发布流程文档。
 
-写作的 canonical article 以 `content/origin/` 中的 Markdown / MDX 为主。原始思考和初稿可能来自飞书文档，后续会自动同步或转换为 Markdown / MDX，再分发到个人博客、微信公众号和其他平台。
+写作的 canonical article 以 `content/origin/` 中的 Markdown / MDX 为主。原始思考和初稿可能来自飞书文档或 Notion，进入 repo 后同步或转换为 Markdown / MDX，再分发到个人博客（primary home base）、微信公众号和其他平台。
 
 ## 写作场景
 
@@ -55,29 +55,42 @@ Erik 提供主题、灵感、素材、判断和文章雏形；agent 负责：
 
 ## 分发目标
 
-### 个人博客
+### 个人博客（primary home base）
 
-未来计划：
+已上线：
 
 ```text
-Astro + Cloudflare Pages + GitHub Actions
+Astro 6 + Tailwind v4 + MDX → Cloudflare Pages（main 分支自动部署）
+URL: https://eriklee-blog.pages.dev/
+本地 repo: /Users/eriklee/code/my_project/eriklee-blog
 ```
 
-博客还没创建。当前原则是先保持 Markdown / MDX 和 assets 整理清楚，方便未来迁移到 Astro content collections。
+同步路径：
+
+```text
+writing-agent-harness/content/origin/YYYY-MM-DD-<slug>/
+  → scripts/sync_origin_to_blog.py
+  → eriklee-blog/src/content/posts/
+  → GitHub push main
+  → Cloudflare Pages auto-deploy
+```
+
+当前状态：基于 AstroPaper 主题深度定制，已完成原生 taxonomy sidebar、PostExplorer 列表布局、首页改版、中文本地化、暗色模式、Pagefind 搜索、图片 lightbox、Shiki 双主题代码高亮、View Transitions、RSS、动态 OG 图。仍在持续优化 UI 一致性和阅读体验，详见 [todolist.md](todolist.md)。
+
+发布 skill：[`erik-blog-publish-workflow`](../../.agents/skills/erik-blog-publish-workflow/SKILL.md)。
+发布边界：`git push origin main` 触发公开发布，需要用户明确确认。
 
 ### 微信公众号
 
-微信公众号已经跑通过一次完整流程：
+已跑通完整流程：
 
 ```text
-Canonical Markdown → WeChat HTML preview → 草稿箱 → final human review → publish
+Canonical Markdown → WeChat HTML preview (warm-editorial style) → Playwright 草稿箱 → final human review → publish
 ```
 
-当前默认微信公众号 style preset：
-
-```text
-impact-rational
-中文名：冲击开场，理性正文
-```
-
+默认 style preset：`warm-editorial`（暖纸张底编辑随笔风，技术深度长文默认）。
 详细流程见 [../workflows/wechat-writing-publishing.md](../workflows/wechat-writing-publishing.md)。
+
+### 其他渠道
+
+掘金等其他下游渠道暂未启动；当前集中精力把博客建设好，再扩展分发。
