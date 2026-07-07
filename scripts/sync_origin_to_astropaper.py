@@ -17,6 +17,16 @@ from pathlib import Path
 
 FRONTMATTER_RE = re.compile(r"\A---\s*\n(?P<yaml>.*?)\n---\s*\n?", re.DOTALL)
 DEFAULT_ARTICLE_NAMES = ("index.md", "article.md")
+NON_ARTICLE_STEMS = {
+    "notes",
+    "note",
+    "readme",
+    "sources",
+    "source",
+    "outline",
+    "brief",
+    "draft",
+}
 MDX_VOID_TAGS = "area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr"
 
 
@@ -110,6 +120,19 @@ def coerce_pub_datetime(value: object) -> str:
     return f"{text}T00:00:00Z"
 
 
+def date_from_slug(slug: str) -> str | None:
+    match = re.match(r"(\d{4}-\d{2}-\d{2})-", slug)
+    return match.group(1) if match else None
+
+
+def first_heading_title(body: str) -> str:
+    for line in body.splitlines():
+        match = re.match(r"#\s+(.+?)\s*$", line)
+        if match:
+            return match.group(1).strip()
+    return ""
+
+
 def first_paragraph_excerpt(body: str) -> str:
     body_without_images = re.sub(r"!\[[^\]]*\]\([^)]+\)", "", body)
     for block in re.split(r"\n\s*\n", body_without_images):
@@ -166,7 +189,12 @@ def rewrite_asset_links(body: str, slug: str) -> str:
     return body
 
 
-def replace_missing_asset_refs(body: str, source_dir: Path, slug: str) -> str:
+def replace_missing_asset_refs(
+    body: str,
+    source_dir: Path,
+    destination_assets_dir: Path,
+    slug: str,
+) -> str:
     def is_external_url(url: str) -> bool:
         return bool(re.match(r"^(https?:|mailto:|data:|#)", url))
 
@@ -179,7 +207,8 @@ def replace_missing_asset_refs(body: str, source_dir: Path, slug: str) -> str:
         prefix = f"assets/{slug}/"
         if local.startswith(prefix):
             source_rel = "assets/" + local.removeprefix(prefix)
-            if not (source_dir / source_rel).exists():
+            destination_rel = local.removeprefix(prefix)
+            if not (source_dir / source_rel).exists() and not (destination_assets_dir / destination_rel).exists():
                 return f"*Image pending: {alt}*"
             return match.group(0)
         if not local.startswith("/"):
@@ -187,6 +216,69 @@ def replace_missing_asset_refs(body: str, source_dir: Path, slug: str) -> str:
         return match.group(0)
 
     return re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", replace_markdown_image, body)
+
+
+def find_local_archive_root(source_dir: Path) -> Path | None:
+    for candidate in [Path.cwd(), *source_dir.parents]:
+        archive = candidate / ".local-archive"
+        if archive.exists():
+            return archive
+    return None
+
+
+def find_local_archive_image(source_dir: Path, url: str) -> Path | None:
+    local = url.removeprefix("./")
+    resolved = (source_dir / local).resolve()
+    if resolved.exists() and resolved.is_file():
+        return resolved
+
+    archive_root = find_local_archive_root(source_dir)
+    if not archive_root:
+        return None
+
+    basename = Path(local).name
+    matches = sorted(
+        path
+        for path in archive_root.rglob(basename)
+        if path.is_file() and path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp", ".gif"}
+    )
+    return matches[0] if matches else None
+
+
+def materialize_local_image_refs(
+    body: str,
+    source_dir: Path,
+    destination_assets_dir: Path,
+    slug: str,
+) -> str:
+    """Copy referenced local archive images into the blog asset directory."""
+
+    def is_external_url(url: str) -> bool:
+        return bool(re.match(r"^(https?:|mailto:|data:|#)", url))
+
+    def rewrite_markdown_image(match: re.Match[str]) -> str:
+        alt = match.group(1)
+        url = match.group(2).strip()
+        if is_external_url(url):
+            return match.group(0)
+
+        local = url.removeprefix("./")
+        prefix = f"assets/{slug}/"
+        if local.startswith(prefix) and (source_dir / "assets" / local.removeprefix(prefix)).exists():
+            return match.group(0)
+
+        image_source = find_local_archive_image(source_dir, url)
+        if not image_source:
+            return match.group(0)
+
+        destination_assets_dir.mkdir(parents=True, exist_ok=True)
+        destination_name = image_source.name
+        destination_path = destination_assets_dir / destination_name
+        if not destination_path.exists() or image_source.stat().st_size != destination_path.stat().st_size:
+            shutil.copy2(image_source, destination_path)
+        return f"![{alt}](./assets/{slug}/{destination_name})"
+
+    return re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", rewrite_markdown_image, body)
 
 
 def escape_mdx_text(body: str) -> str:
@@ -213,6 +305,7 @@ def escape_mdx_text(body: str) -> str:
             continue
         line = re.sub(rf"<({MDX_VOID_TAGS})([^>]*)>", close_void_tag, line)
         line = re.sub(r"<(?=[0-9=%])", "&lt;", line)
+        line = line.replace("{", r"\{").replace("}", r"\}")
         escaped_blocks.append(line)
     return "".join(escaped_blocks)
 
@@ -257,7 +350,7 @@ def build_astropaper_frontmatter(
     source_path: Path,
     args: argparse.Namespace,
 ) -> str:
-    title = source_meta.get("title") or source_path.parent.name
+    title = source_meta.get("title") or first_heading_title(body) or source_path.parent.name
     description = (
         args.description
         or source_meta.get("description")
@@ -267,7 +360,12 @@ def build_astropaper_frontmatter(
     )
     status = str(source_meta.get("status", "")).lower()
     draft = args.draft if args.draft is not None else status in {"draft", "wip"}
-    date_value = source_meta.get("pubDatetime") or source_meta.get("pubDate") or source_meta.get("date")
+    date_value = (
+        source_meta.get("pubDatetime")
+        or source_meta.get("pubDate")
+        or source_meta.get("date")
+        or date_from_slug(source_path.parent.name)
+    )
     category, series, tags = infer_taxonomy(source_meta, source_path.parent.name)
     cover = (
         source_meta.get("ogImage")
@@ -317,11 +415,39 @@ def resolve_source_path(source: str) -> Path:
     source_path = Path(source).resolve()
     if source_path.is_file():
         return source_path
+    candidate = choose_article_file(source_path)
+    if candidate:
+        return candidate
+    raise SystemExit(f"Source article not found: {source_path}")
+
+
+def choose_article_file(article_dir: Path) -> Path | None:
     for filename in DEFAULT_ARTICLE_NAMES:
-        candidate = source_path / filename
+        candidate = article_dir / filename
         if candidate.exists():
             return candidate
-    raise SystemExit(f"Source article not found: {source_path}")
+
+    candidates = [
+        path
+        for path in sorted(article_dir.glob("*.md"))
+        if path.stem.lower() not in NON_ARTICLE_STEMS
+        and not path.name.startswith("notes-")
+        and not path.name.endswith(".en.md")
+    ]
+    if len(candidates) == 1:
+        return candidates[0]
+
+    article_named = [
+        path
+        for path in candidates
+        if "article" in path.stem.lower()
+        or "report" in path.stem.lower()
+        or "analysis" in path.stem.lower()
+    ]
+    if len(article_named) == 1:
+        return article_named[0]
+
+    return None
 
 
 def sync_article(args: argparse.Namespace) -> Path:
@@ -334,22 +460,15 @@ def sync_article(args: argparse.Namespace) -> Path:
 
     slug = args.slug or source_path.parent.name
     destination = resolve_destination(args, slug).resolve()
-    body = rewrite_asset_links(body, slug)
-    body = replace_missing_asset_refs(body, source_path.parent, slug)
-    if args.extension == "mdx":
-        body = escape_mdx_text(body)
-    output = build_astropaper_frontmatter(meta, body, source_path, args) + body.rstrip() + "\n"
+    destination_assets_dir = destination.parent / "assets" / slug
 
     if args.dry_run:
         print(f"Would write: {destination}")
-        print(f"Would copy assets: {source_path.parent / 'assets'} -> {destination.parent / 'assets' / slug}")
+        print(f"Would copy assets: {source_path.parent / 'assets'} -> {destination_assets_dir}")
         return destination
 
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_text(output, encoding="utf-8")
-
     assets_dir = source_path.parent / "assets"
-    destination_assets_dir = destination.parent / "assets" / slug
     if destination_assets_dir.exists():
         shutil.rmtree(destination_assets_dir)
     if assets_dir.exists():
@@ -370,17 +489,25 @@ def sync_article(args: argparse.Namespace) -> Path:
             ),
         )
 
+    body = rewrite_asset_links(body, slug)
+    body = materialize_local_image_refs(body, source_path.parent, destination_assets_dir, slug)
+    body = replace_missing_asset_refs(body, source_path.parent, destination_assets_dir, slug)
+    if args.extension == "mdx":
+        body = escape_mdx_text(body)
+    output = build_astropaper_frontmatter(meta, body, source_path, args) + body.rstrip() + "\n"
+    destination.write_text(output, encoding="utf-8")
+
     return destination
 
 
 def iter_origin_articles(origin_dir: Path) -> list[Path]:
     articles: list[Path] = []
     for article_dir in sorted(path for path in origin_dir.iterdir() if path.is_dir()):
-        for filename in DEFAULT_ARTICLE_NAMES:
-            candidate = article_dir / filename
-            if candidate.exists():
-                articles.append(candidate)
-                break
+        candidate = choose_article_file(article_dir)
+        if candidate:
+            articles.append(candidate)
+        else:
+            print(f"Skipping origin directory without a single article file: {article_dir}", file=sys.stderr)
     return articles
 
 
