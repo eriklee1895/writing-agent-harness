@@ -55,7 +55,31 @@ Feishu / Notion / notes / etc.
 
 ## ✍️ How to Start
 
-**万事起点：`article-ideation`。** 你有任何灵感、碎片、念头，直接告诉 agent，它会帮你从模糊想法一步步打磨成可执行的 writing brief 和 outline。不需要先整理，不需要先想清楚——把原材料扔给 agent，article-ideation 负责理清。
+### 我想用完整的 harness
+
+克隆仓库，在 Codex 或 Claude Code 中作为项目打开：
+
+```bash
+git clone https://github.com/eriklee1895/writing-agent-harness.git
+cd writing-agent-harness
+# 在 Codex / Claude Code 中打开这个目录
+```
+
+所有 skills、docs runbooks、写作 memory 和风格指南会自动加载。告诉 agent 你想做什么即可。
+
+> ⚠️ 建议 fork or clone repo 后将 [SOUL.md](SOUL.md) 替换为自己的写作风格（或直接删除），再按需调整`.env`账号配置。
+
+### 我只想用单个 skill
+
+```bash
+npx skills add eriklee1895/writing-agent-harness --skill article-ideation
+```
+
+可用 skills 见 [🧩 Core Skills](#-core-skills)。
+
+### 进来之后：万事起点 article-ideation
+
+你有任何灵感、碎片、念头，直接告诉 agent，`article-ideation` 会帮你从模糊想法一步步打磨成可执行的 writing brief 和 outline。不需要先整理，不需要先想清楚——把原材料扔给 agent，它负责理清。
 
 ```text
 👤  "我想写一篇关于《半生雪》的文章，给女儿找歌时偶然发现了学生版背后一个感人的故事..."
@@ -116,7 +140,6 @@ node .agents/skills/wechat-article-renderer/scripts/preview-server.mjs \
 ```
 
 详见 [docs/workflows/ai-writing-workflow.md](docs/workflows/ai-writing-workflow.md)。
-
 ## 📦 What This Repo Holds
 
 - 项目 memory 和工作流规范。
