@@ -2,6 +2,7 @@
 name: markdown-article-to-feishu-doc
 description: |
   把一篇本地 markdown 文档转写成飞书云文档(docx),排版精美、block 结构完整。
+  Mermaid 默认保留为 ```mermaid 代码块(源码可复制);--mermaid-mode whiteboard 时渲染成飞书画板。
   触发:用户说"把 markdown 发到飞书"/"转写到飞书"/"这篇要发飞书";或给了本地 .md 路径,可附带 docx URL(不提供则创建新文档)。
   不触发:微信公众号(走 wechat-publish-workflow)、Notion、Drive 原生 .md(走 lark-markdown)、docx 内部编辑(走 lark-doc)。
 metadata:
@@ -12,7 +13,7 @@ metadata:
 
 # markdown-article-to-feishu-doc
 
-把本地 markdown 文章转写成飞书云文档(docx),保留 frontmatter 元信息、本地图片、Mermaid 图。
+把本地 markdown 文章转写成飞书云文档(docx),保留 frontmatter 元信息、本地图片、Mermaid 图(默认保留为代码块,可选渲染为画板)。
 
 ## 适用 / 不适用
 
@@ -34,7 +35,8 @@ metadata:
                 preprocess.py
 markdown ─────────────────────────► 处理后 markdown + image manifest + title
    │
-   │ (本地图片 → <img src="__PLACEHOLDER_N__"/>;mermaid 块 → <whiteboard type="mermaid">..</whiteboard>)
+   │ (本地图片 → <img src="__PLACEHOLDER_N__"/>;
+   │  mermaid 块默认保留为 ```mermaid 代码块,--mermaid-mode whiteboard 时转 <whiteboard type="mermaid">..</whiteboard>)
    │
    ▼
 lark-cli docs +create  (空骨架,只写 <title> + 一个占位段落) ─────► doc_id, doc_url
@@ -67,6 +69,7 @@ bash scripts/precheck.sh
 | `--file <path>` | 是 | 本地 markdown 路径 |
 | `--doc <url-or-token>` | 否 | 已存在的 docx URL/token;**提供则走 overwrite 旁路**,缺失则新建 |
 | `--parent-position my_library` | 否 | 新建时的父位置;默认个人知识库 |
+| `--mermaid-mode <code\|whiteboard>` | 否 | Mermaid 处理方式。默认 `code`(保留为 ```mermaid 代码块,源可复制);`whiteboard` 转成飞书画板(复杂 Mermaid 可能解析失败) |
 
 ### 3. 预处理
 
@@ -74,10 +77,11 @@ bash scripts/precheck.sh
 mkdir -p .skill-work/
 uv run scripts/preprocess.py \
   --input <article.md> \
-  --workdir .skill-work/
+  --workdir .skill-work/ \
+  [--mermaid-mode whiteboard]   # 可选:把 mermaid 渲染成飞书画板;默认保留为代码块
 # 产物:
-#   .skill-work/processed.md    主体 markdown(图占位 + mermaid 已替换为 XML inline 标签)
-#   .skill-work/manifest.json   {"title": "...", "images": [{"placeholder": "__PLACEHOLDER_0__", "local_path": "..."}]}
+#   .skill-work/processed.md    主体 markdown(图占位;mermaid 按 mode 处理)
+#   .skill-work/manifest.json   {"title": "...", "mermaid_mode": "code"|"whiteboard", "images": [...]}
 ```
 
 ### 4. 创建空 docx 或确认覆盖
@@ -127,9 +131,10 @@ lark-cli docs +update --api-version v2 --doc <doc_id> --command overwrite \
 
 ## 关键决策与边界
 
-- **混合写入策略**: 主体 `--doc-format markdown`(借飞书服务端 renderer 处理标题/列表/代码块/表格/引用),只有图片和画板用 inline XML 标签覆盖。理由:不重写 GFM(GitHub Flavored Markdown)parser,工作量小,bug 少。
+- **混合写入策略**: 主体 `--doc-format markdown`(借飞书服务端 renderer 处理标题/列表/代码块/表格/引用),只有图片用 inline XML 标签覆盖;Mermaid 默认保留为代码块(`--mermaid-mode whiteboard` 时切到 inline `<whiteboard>` XML)。理由:不重写 GFM(GitHub Flavored Markdown)parser,工作量小,bug 少。
 - **不写 MD→XML 全量转换器**:依赖飞书 markdown renderer 处理 90% GFM 语义。
-- **Mermaid 直传**: `<whiteboard type="mermaid">{code}</whiteboard>` 在 markdown 模式下作为 inline XML 标签被飞书识别,服务端自动渲染成画板;**不调** `lark-whiteboard +update`。
+- **Mermaid 默认保留为代码块**:飞书 markdown 模式会把 ```mermaid 渲染成带 `mermaid` 语言标签的代码块,源码可复制/编辑;whiteboard 模式对复杂 Mermaid(subgraph、note、长 label)经常解析失败(返回 warning 2107),且画板内不可直接编辑源码。需要图形化渲染时显式传 `--mermaid-mode whiteboard`。
+- **Mermaid whiteboard 直传约束**(仅 whiteboard 模式): `<whiteboard type="mermaid">{code}</whiteboard>` 在 markdown 模式下作为 inline XML 标签被飞书识别,服务端自动渲染成画板;**不调** `lark-whiteboard +update`。注意:不要 XML-escape mermaid 内容(会导致解析失败),不要插入 `<br/>` HTML 换行(用 `\n`)。
 - **图片 file_token 是 tenant 级资源**: 上传后写到 XML 的 `<img src="FILE_TOKEN"/>` 里;overwrite 后图片仍可用。
 - **不做增量 diff**:每次都是全篇覆盖。
 - **overwrite 前必须 fetch 探测**:发现 docx 已有非本 skill 产物的内容时,中断并问用户。
@@ -147,7 +152,7 @@ lark-cli docs +update --api-version v2 --doc <doc_id> --command overwrite \
 | `lark-cli not found` | 未装 lark-cli | 跑 `references/install-lark-stack.md` 指引 |
 | `permission denied` / `missing scope` | 未授权或权限不够 | `lark-cli auth login`,见 `lark-shared` |
 | 图片在飞书显示空白 | file_token 与上传账号绑定,跨账号失效 | 重新用同一身份上传 |
-| Mermaid 渲染失败 | 复杂语法飞书不支持 | 降级:把 mermaid 块写成代码块,或手工转 SVG 插入 |
+| Mermaid 渲染失败 / 想保留源码 | `--mermaid-mode whiteboard` 下复杂语法飞书不支持 | 默认就是 code 模式(保留为 ```mermaid 代码块);已传 whiteboard 时重跑用 `--mermaid-mode code`,或手工转 SVG 插入 |
 | `+create` 报 `--parent-position` 不可用 | 用户没有个人知识库或未授权 | 改用 `--parent-token <folder_token>` |
 
 ## 委派关系
