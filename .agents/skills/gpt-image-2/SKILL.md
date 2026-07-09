@@ -81,7 +81,7 @@ Do not commit credentials. The skill never writes credentials to disk.
 
 - Default: `gpt-image-2` (snapshot `gpt-image-2-2026-04-21`, SOTA as of 2026/06 per the official cookbook).
 - When `OPENAI_BASE_URL` matches a known gateway, the model name is automatically namespaced:
-  - `https://api.ofox.ai/v1` → `openai/gpt-image-2`
+  - `https://api.ofox.io/v1` → `openai/gpt-image-2`
   - everything else → `gpt-image-2`
 - Override with `--model <name>` if your gateway expects a different identifier.
 

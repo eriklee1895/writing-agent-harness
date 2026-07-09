@@ -188,7 +188,7 @@ def resolve_model_name(base_url: Optional[str], override: Optional[str] = None) 
     if not base_url:
         return DEFAULT_MODEL
     normalized = base_url.rstrip("/").lower()
-    if normalized.startswith("https://api.ofox.ai/v1"):
+    if normalized.startswith("https://api.ofox.io/v1"):
         return "openai/gpt-image-2"
     return DEFAULT_MODEL
 

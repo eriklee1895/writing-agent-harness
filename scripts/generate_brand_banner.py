@@ -109,7 +109,7 @@ def get_config() -> tuple[str, str | None]:
 def resolve_model(base_url: str | None) -> str:
     if not base_url:
         return MODEL
-    if "api.ofox.ai" in base_url:
+    if "api.ofox.io" in base_url:
         return "openai/gpt-image-2"
     return MODEL
 

@@ -86,12 +86,13 @@ Size presets:
 ## Model selection
 
 - Use `gpt-image-2` for official OpenAI and for `https://aihubmix.com/v1`.
-- Use `openai/gpt-image-2` for `https://api.ofox.ai/v1`.
+- Use `openai/gpt-image-2` for `https://api.ofox.io/v1`.
 - Default back to `gpt-image-2` unless a provider requires a namespaced model name.
 
 ## References
 
 - Read `references/style-profiles.md` when selecting or explaining styles.
 - Read `references/prompt-patterns.md` when the requested illustration type needs prompt refinement.
+- Browse `references/styles/` for ready-to-use style presets (`editorial-pencil-sketch`, `hand-drawn-tech-editorial`, `technical-diagram`, and more). Treat them as creative references, not mandatory templates — adapt or ignore them based on the brief.
 - Read `references/openai-image-workflow.md` when debugging auth, request modes, or output behavior.
 - Read `references/openai-official-links.md` when you need the official OpenAI docs for GPT Image, Images API, or Python examples.
