@@ -771,10 +771,17 @@ function listHtml(block) {
       : `padding-left:24px; margin:0 0 22px; color:${tokens.accent}; font-size:16px; line-height:${tokens.lineHeight}; list-style-type:disc;`;
     return `<${tag} style="${SAFE_WRAP} ${listStyle}">${items}</${tag}>`;
   }
+  // 默认分支：统一使用自定义 bullet，避免微信编辑器对原生 list-style-type 的异常渲染
+  // （常见表现为数字后带冒号/空白占位）。
   const items = block.items
-    .map((item) => `<li style="${SAFE_WRAP} margin:0 0 8px;">${inline(item)}</li>`)
+    .map((item, idx) => {
+      const bullet = block.ordered
+        ? `<span style="display:inline-block; min-width:22px; color:${tokens.accent}; font-weight:700; font-family:Georgia,serif; flex-shrink:0;">${idx + 1}.</span>`
+        : `<span style="display:inline-block; width:6px; height:6px; background:${tokens.accent}; border-radius:50%; margin-right:10px; vertical-align:middle; transform:translateY(-2px); flex-shrink:0;"></span>`;
+      return `<li style="${SAFE_WRAP} margin:0 0 8px; list-style:none; padding-left:0; display:flex; align-items:flex-start; gap:4px;">${bullet}<span style="color:${tokens.text};">${inline(item)}</span></li>`;
+    })
     .join("");
-  return `<${tag} style="${SAFE_WRAP} padding-left:22px; margin:0 0 16px; color:${tokens.text}; font-size:15px; line-height:${tokens.lineHeight};">${items}</${tag}>`;
+  return `<${tag} style="${SAFE_WRAP} padding-left:0; margin:0 0 16px; font-size:15px; line-height:${tokens.lineHeight}; list-style:none;">${items}</${tag}>`;
 }
 
 function referenceListHtml(block) {

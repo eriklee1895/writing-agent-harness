@@ -1,0 +1,22 @@
+{
+  "title": "GitHub Actions 失败与 issue",
+  "brief": "A flat-illustration story card. User asks about recent failed GitHub Actions and related issues. One search recalls three tools: list workflow runs, get workflow run logs, search issues. Claude executes them in sequence. Clean, friendly, GitHub-inspired visual cues without using the GitHub logo, soft colors, minimal text.",
+  "content_type": "process diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-illustration",
+  "resolved_style_profile": "flat-illustration",
+  "size": "portrait-hd",
+  "resolved_size": "1024x1536",
+  "quality": "auto",
+  "language": "zh",
+  "model": "openai/gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'GitHub Actions 失败与 issue'. Style: flat illustration, simple geometric forms, concise annotations, soft editorial look. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity.  Language/region: zh. Target aspect ratio: portrait-hd. Mode: text-only. Brief:\nA flat-illustration story card. User asks about recent failed GitHub Actions and related issues. One search recalls three tools: list workflow runs, get workflow run logs, search issues. Claude executes them in sequence. Clean, friendly, GitHub-inspired visual cues without using the GitHub logo, soft colors, minimal text.",
+  "created_at": "2026-07-09T14:50:48",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/wechat/2026-07-08-claude-tool-search-deep-dive/assets/20260709-144952-github-actions-issue.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

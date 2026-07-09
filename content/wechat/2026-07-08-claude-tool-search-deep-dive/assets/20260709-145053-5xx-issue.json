@@ -1,0 +1,22 @@
+{
+  "title": "5xx 监控自动建 issue",
+  "brief": "A flat-illustration story card. User asks to check API 5xx errors for the last hour and create a GitHub issue if elevated. One search recalls two tools: Prometheus query and GitHub create issue. Claude checks metrics, sees 5xx rising, then creates an issue. Cross-domain: monitoring and code repository. Clean, friendly, no humans, soft colors.",
+  "content_type": "repo architecture diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-illustration",
+  "resolved_style_profile": "flat-illustration",
+  "size": "portrait-hd",
+  "resolved_size": "1024x1536",
+  "quality": "auto",
+  "language": "zh",
+  "model": "openai/gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled '5xx 监控自动建 issue'. Style: flat illustration, simple geometric forms, concise annotations, soft editorial look. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity.  Language/region: zh. Target aspect ratio: portrait-hd. Mode: text-only. Brief:\nA flat-illustration story card. User asks to check API 5xx errors for the last hour and create a GitHub issue if elevated. One search recalls two tools: Prometheus query and GitHub create issue. Claude checks metrics, sees 5xx rising, then creates an issue. Cross-domain: monitoring and code repository. Clean, friendly, no humans, soft colors.",
+  "created_at": "2026-07-09T14:51:40",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/wechat/2026-07-08-claude-tool-search-deep-dive/assets/20260709-145053-5xx-issue.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

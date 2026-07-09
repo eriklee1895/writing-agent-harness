@@ -1,0 +1,22 @@
+{
+  "title": "查天气",
+  "brief": "A flat-illustration story card. User asks 'What's the weather in San Francisco?' → Claude searches at an index counter → picks up a small slip labeled get_weather → returns the temperature. Friendly, simple, no humans, warm soft colors, minimal text.",
+  "content_type": "knowledge card",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-illustration",
+  "resolved_style_profile": "flat-illustration",
+  "size": "portrait-hd",
+  "resolved_size": "1024x1536",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled '查天气'. Style: flat illustration, simple geometric forms, concise annotations, soft editorial look. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity.  Language/region: zh. Target aspect ratio: portrait-hd. Mode: text-only. Brief:\nA flat-illustration story card. User asks 'What's the weather in San Francisco?' → Claude searches at an index counter → picks up a small slip labeled get_weather → returns the temperature. Friendly, simple, no humans, warm soft colors, minimal text.",
+  "created_at": "2026-07-09T14:46:37",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/wechat/2026-07-08-claude-tool-search-deep-dive/assets/20260709-144608-article-illustration.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
