@@ -16,8 +16,8 @@ Why hybrid Markdown (not full XML conversion)?
   rewrite the parts where Markdown semantics don't reach Feishu blocks:
     - local image references → <img> tags with placeholder tokens we replace
       after `+media-insert` returns real file_tokens
-    - ```mermaid blocks → <whiteboard type="mermaid"> inline tags
-      (Feishu's Markdown renderer recognises XML tags inline, see lark-doc-md.md)
+    - ```mermaid blocks → kept as mermaid code blocks by default; opt in via
+      --mermaid-mode whiteboard to emit <whiteboard type="mermaid"> inline tags
 
 The script runs in two modes:
 
@@ -347,25 +347,48 @@ MERMAID_RE = re.compile(
 )
 
 
-def rewrite_mermaid(body: str) -> tuple[str, int]:
-    """Replace ```mermaid blocks with <whiteboard type="mermaid">...</whiteboard>.
+MERMAID_MODES = ("whiteboard", "code")
 
-    Feishu's markdown renderer accepts inline XML tags, so we emit the whiteboard
-    tag directly. The server-side renderer creates a real whiteboard block.
 
-    IMPORTANT: do NOT XML-escape mermaid contents. Mermaid syntax uses `-->`,
-    `==>`, `&` etc. literally; if we replace `>` with `&gt;`, the Feishu mermaid
-    parser fails (returns warning code 2107: "Whiteboard content parse failed").
-    Mermaid is a pure-text DSL — passing it through verbatim is correct.
+def rewrite_mermaid(body: str, mode: str = "code") -> tuple[str, int]:
+    """Handle ```mermaid blocks according to `mode`.
+
+    Modes:
+      - "whiteboard": replace with `<whiteboard type="mermaid">...</whiteboard>`
+        inline XML. Feishu's markdown renderer creates a real whiteboard block
+        server-side. IMPORTANT: do NOT XML-escape mermaid contents — Mermaid
+        syntax uses `-->`, `==>`, `&` etc. literally; escaping `>` to `&gt;`
+        causes Feishu to return warning code 2107 ("Whiteboard content parse
+        failed"). Also do NOT insert `<br/>` HTML tags for newlines; use `\\n`
+        (Mermaid newline syntax), otherwise the whiteboard parser fails.
+      - "code" (default): leave as a fenced ```mermaid code block. Feishu
+        renders this as a syntax-highlighted code block with language label
+        "mermaid"; the diagram source is preserved verbatim and readers can
+        copy it. Use this when you want the source to stay readable/editable,
+        or when the Mermaid is complex (subgraphs, notes, long labels) and
+        whiteboard rendering is lossy.
     """
+    if mode not in MERMAID_MODES:
+        raise ValueError(
+            f"unknown mermaid mode {mode!r}; expected one of {MERMAID_MODES}"
+        )
+
     count = 0
 
-    def repl(m: re.Match[str]) -> str:
+    def repl_whiteboard(m: re.Match[str]) -> str:
         nonlocal count
         count += 1
         code = m.group("code")
         return f'<whiteboard type="mermaid">\n{code}\n</whiteboard>'
 
+    def repl_code(m: re.Match[str]) -> str:
+        nonlocal count
+        count += 1
+        # Leave the fence intact; Feishu's markdown renderer preserves it as a
+        # code block with language "mermaid". No transformation needed.
+        return m.group(0)
+
+    repl = repl_whiteboard if mode == "whiteboard" else repl_code
     return MERMAID_RE.sub(repl, body), count
 
 
@@ -436,11 +459,16 @@ def cmd_prepare(args: argparse.Namespace) -> int:
 
     body, html_warnings = sanitize_html_for_feishu(body)
     body, images = collect_and_rewrite_images(body, src)
-    body, mermaid_count = rewrite_mermaid(body)
+    body, mermaid_count = rewrite_mermaid(body, mode=args.mermaid_mode)
     body, highlight_count = rewrite_highlights(body)
     warnings = lint(body) + html_warnings
     if highlight_count:
         warnings.append(f"{highlight_count} highlight line(s) converted to Feishu callout.")
+    if args.mermaid_mode == "code" and mermaid_count:
+        warnings.append(
+            f"{mermaid_count} mermaid block(s) kept as ```mermaid code blocks "
+            "(not converted to whiteboard; use --mermaid-mode whiteboard to render as diagrams)."
+        )
 
     processed_md = workdir / "processed.md"
     processed_md.write_text(body.lstrip("\n"), encoding="utf-8")
@@ -451,6 +479,7 @@ def cmd_prepare(args: argparse.Namespace) -> int:
         "frontmatter": fm,
         "images": images,
         "mermaid_count": mermaid_count,
+        "mermaid_mode": args.mermaid_mode,
         "warnings": warnings,
     }
     manifest_path = workdir / "manifest.json"
@@ -546,6 +575,16 @@ def main() -> int:
         "--workdir",
         required=True,
         help="working directory for processed.md / manifest.json / final.md",
+    )
+    parser.add_argument(
+        "--mermaid-mode",
+        choices=MERMAID_MODES,
+        default="code",
+        help=(
+            "how to handle ```mermaid blocks: 'code' (default) keeps them as "
+            "fenced mermaid code blocks; 'whiteboard' converts them to Feishu "
+            "whiteboard inline XML (rendered as diagrams, may fail on complex syntax)."
+        ),
     )
     args = parser.parse_args()
 
