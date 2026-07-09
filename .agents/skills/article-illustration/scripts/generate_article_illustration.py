@@ -197,7 +197,7 @@ def resolve_model_name(base_url: str | None) -> str:
     if not base_url:
         return "gpt-image-2"
     normalized = base_url.rstrip("/").lower()
-    if normalized.startswith("https://api.ofox.ai/v1"):
+    if normalized.startswith("https://api.ofox.io/v1"):
         return "openai/gpt-image-2"
     return "gpt-image-2"
 

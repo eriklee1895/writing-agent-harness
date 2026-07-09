@@ -27,7 +27,7 @@
 
 - Official OpenAI base URL: use `gpt-image-2`
 - `https://aihubmix.com/v1`: use `gpt-image-2`
-- `https://api.ofox.ai/v1`: use `openai/gpt-image-2`
+- `https://api.ofox.io/v1`: use `openai/gpt-image-2`
 - Unknown providers: default to `gpt-image-2` unless the provider documents a namespaced variant
 
 ## Request modes
