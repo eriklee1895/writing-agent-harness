@@ -201,6 +201,8 @@ uv run scripts/ntn_cli.py trash-page <page-id>
 - **⚠️ file_upload ID 有效期约 1 小时**：上传后要在 1 小时内绑到 page/block/cover/icon 上，过期要重新传。
 - **⚠️ cover 请求体是 `{type:"file_upload", file_upload:{id}}`**（不是 `type:"file"`）。响应里会变成 `type:"file"` 带 S3 URL。`set-cover` 已处理。
 - **⚠️ 直接调 ntn 时，parent 参数对 database row 要用 `data-source:<id>`，不是 `database:<id>`**：一个 database 可能有多个 data source。probe 命令会自动解出默认 data source。
+- **⚠️ `has_children: true` 不等于 children 内联**：`GET /v1/blocks/{id}/children` 对容器 block（table、toggle、synced_block、嵌套 list item）只返回 flag，不内联子 blocks。收割 block 再 PATCH 的路径必须对每个 `has_children: true` 的 block 额外 GET 一次 `/v1/blocks/{block_id}/children` 拿子块，否则 PATCH 会报 `X.children should be defined`。`ntn_cli.py` 的 `_strip_block_for_new` 已处理。
+- **⚠️ `numbered_list_item.list_format` 是只读字段**：GET 返回里带 `list_format: "numbers"`（bulleted 有时也带），但 CREATE/PATCH 不接受，会报 `X.list_format should be not present`。写新 block 前要剥掉这类服务端派生字段。`_strip_block_ids` 通过 per-type `_READ_ONLY_TYPE_FIELDS` 集合在递归时过滤；后续碰到同类字段直接往里加。
 
 ## 为什么默认用 `ntn login` OAuth 而不是 integration token
 

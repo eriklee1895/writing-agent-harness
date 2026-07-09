@@ -753,15 +753,29 @@ def _append_markdown(page_id: str, markdown_text: str, timeout: int = 60) -> int
     return total
 
 
+# Per-block-type server-populated fields that must NOT be sent on PATCH/create.
+# Collected from real-world validation errors (whack-a-mole).
+_READ_ONLY_TYPE_FIELDS: dict[str, set[str]] = {
+    "numbered_list_item": {"list_format"},
+    "bulleted_list_item": {"list_format"},
+}
+
+
 def _strip_block_for_new(b: dict) -> dict:
     """Recursively strip a block JSON for reuse as a new-block input."""
     out: dict = {"object": "block"}
     t = b["type"]
     out["type"] = t
-    out[t] = _strip_block_ids(b.get(t, {}))
-    # has_children should be False for new blocks unless they contain typed children
-    if b.get("has_children") and "children" in b.get(t, {}):
-        out[t]["children"] = [_strip_block_for_new(c) for c in b[t]["children"]]
+    out[t] = _strip_block_ids(b.get(t, {}), type_name=t)
+    # Container blocks (table, lists with nested children, toggle, etc.) return
+    # has_children=True from GET but do NOT include the nested `children` inline.
+    # We must explicitly fetch them, otherwise PATCH fails with
+    # "body.children[N].<type>.children should be defined".
+    if b.get("has_children"):
+        child_blocks = _fetch_all_children(b["id"])
+        nested = [_strip_block_for_new(c) for c in child_blocks]
+        if nested:
+            out[t]["children"] = nested
     return out
 
 
@@ -778,16 +792,24 @@ def cmd_append_markdown(args: argparse.Namespace) -> None:
     print(json.dumps({"ok": True, "appended_blocks": n}, ensure_ascii=False))
 
 
-def _strip_block_ids(node: Any) -> Any:
-    """Recursively strip id/parent/created_time etc. from a block's type payload
-    so it can be re-used as new-block input. Drops null values (paragraph.icon:null
-    breaks PATCH validation) and empty children arrays."""
+def _strip_block_ids(node: Any, type_name: str | None = None) -> Any:
+    """Recursively strip id/parent/created_time etc. so a block payload can be
+    re-used as new-block input. Drops null values (paragraph.icon:null breaks
+    PATCH validation) and empty children arrays. Also strips per-type read-only
+    fields surfaced by Notion's PATCH validator (e.g. numbered_list_item.list_format).
+
+    `type_name` names the block type whose payload `node` represents (None when
+    recursing into nested dicts like rich_text spans, file_upload objects).
+    """
     if isinstance(node, dict):
         out = {}
+        read_only = _READ_ONLY_TYPE_FIELDS.get(type_name or "", set())
         for k, v in node.items():
             if k in ("id", "parent", "created_time", "last_edited_time",
                      "created_by", "last_edited_by", "in_trash", "object",
                      "has_children", "archived", "is_toggleable"):
+                continue
+            if k in read_only:
                 continue
             if v is None:
                 continue
@@ -799,10 +821,10 @@ def _strip_block_ids(node: Any) -> Any:
             # Presigned S3 URLs expire; drop them (keep file_upload ids, external urls)
             if k == "file" and isinstance(v, dict) and "url" in v and not v.get("file_upload"):
                 continue
-            out[k] = _strip_block_ids(v)
+            out[k] = _strip_block_ids(v, type_name=None)
         return out
     if isinstance(node, list):
-        return [_strip_block_ids(v) for v in node if v is not None]
+        return [_strip_block_ids(v, type_name=None) for v in node if v is not None]
     return node
 
 
