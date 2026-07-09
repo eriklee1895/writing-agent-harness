@@ -1,0 +1,22 @@
+{
+  "title": "Upfront Loading vs Deferred Loading",
+  "brief": "A flat-tech infographic side-by-side comparison for a technical blog. Left 'Upfront loading': all 100+ MCP tool schemas crammed into the context window, model overwhelmed, token budget bloated. Right 'Deferred loading with Tool Search': only a tool catalog + a few non-deferred tools + the tool_search tool live in context; the rest wait in a warehouse. Include Chinese/English labels: 全量加载, 延迟加载, context window, defer_loading, tool_search. Clean, professional, soft colors.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "openai/gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Upfront Loading vs Deferred Loading'. Diagram type: article illustration. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\nA flat-tech infographic side-by-side comparison for a technical blog. Left 'Upfront loading': all 100+ MCP tool schemas crammed into the context window, model overwhelmed, token budget bloated. Right 'Deferred loading with Tool Search': only a tool catalog + a few non-deferred tools + the tool_search tool live in context; the rest wait in a warehouse. Include Chinese/English labels: 全量加载, 延迟加载, context window, defer_loading, tool_search. Clean, professional, soft colors.",
+  "created_at": "2026-07-09T15:01:33",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-07-08-claude-tool-search-deep-dive/assets/20260709-150016-upfront-loading-vs-deferred-loading.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

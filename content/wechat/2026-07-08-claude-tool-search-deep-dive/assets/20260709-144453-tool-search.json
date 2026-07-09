@@ -1,0 +1,22 @@
+{
+  "title": "Tool Search 四步流程",
+  "brief": "A vertical four-step process infographic in flat-tech style. Step 1: 贴标签 defer_loading — packages marked '暂不入场'. Step 2: 下订单 server_tool_use — Claude fills a search request at the index counter. Step 3: 扫码取货 tool_reference — small slips with tool names like a barcode scan. Step 4: 正式出库 tool_use — package placed on conveyor belt into the model context. Use arrows, stage containers, and concise Chinese labels. Clean, mobile-readable, soft colors.",
+  "content_type": "process diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "9:16",
+  "resolved_size": "1024x1792",
+  "quality": "auto",
+  "language": "zh",
+  "model": "gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Tool Search 四步流程'. Diagram type: process diagram. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh. Target aspect ratio preset: 9:16. Mode: text-only. Content brief:\nA vertical four-step process infographic in flat-tech style. Step 1: 贴标签 defer_loading — packages marked '暂不入场'. Step 2: 下订单 server_tool_use — Claude fills a search request at the index counter. Step 3: 扫码取货 tool_reference — small slips with tool names like a barcode scan. Step 4: 正式出库 tool_use — package placed on conveyor belt into the model context. Use arrows, stage containers, and concise Chinese labels. Clean, mobile-readable, soft colors.",
+  "created_at": "2026-07-09T14:46:07",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/wechat/2026-07-08-claude-tool-search-deep-dive/assets/20260709-144453-tool-search.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
