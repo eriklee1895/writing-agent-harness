@@ -2,7 +2,7 @@
 
 温暖的手绘科技插画风格：彩色铅笔 / 蜡笔在米色或白色纸上的质感，线条 loose 有机，带轻微纸张纹理。常以书桌、工作台为场景，出现拟人化的电脑、机器人、终端窗口等科技角色，搭配咖啡杯、笔记本、盆栽、便利贴、小流程图涂鸦。整体像技术随笔里的插画：理性但不冷淡，有编辑感又带手作温度。
 
-适合 AI 工具对比、agent 工作流、技术随笔、编程伙伴、productivity 笔记等题材。Seedream 的中文文本渲染能力较强，可以在便签、笔记本、流程图标签里加入少量中文短句。
+适合 AI 工具对比、agent 工作流、技术随笔、编程伙伴、productivity 笔记等题材。Seedream 5.0 Pro 的中英文文本渲染能力强，便签、流程图标签、架构模块 callout 等短文字在 2K 下可直接出图——把要出现的标签文字逐字写进 prompt 并用中文引号 "" 包裹，指定小字号白色或黑色无衬线字体即可。
 
 > 本 preset 提供的是**脚手架而非模具**：默认给出分屏/对坐构图、暖橙-冷蓝分色、拟人设备角色，但当用户 brief 已自带强烈视觉概念时，只保留结构 guardrails（手绘纸质感、避免 corporate flat/glossy），让出配色、构图和道具自由。
 
@@ -60,6 +60,6 @@ uv run scripts/seedream_image_gen.py generate \
 
 1. 先把媒介锚定（`彩色铅笔和蜡笔纸质感`），再描述场景，模型更容易锁定风格。
 2. 明确写 `松散有机线条` 和 `轻微纸张纹理`，否则容易滑向 polished digital illustration。
-3. Seedream 中文渲染好，便签、笔记本上的短句可以直接写在 prompt 里并用中文引号 "" 包裹；参考 [text-effects.md](text-effects.md)。
+3. Seedream 5.0 Pro 在 2K 下可渲染架构模块标签、便签 callout 等短中英文：把标签文字逐字写进 prompt 并用中文引号 "" 包裹，指定"小字号白色/黑色无衬线字体"；长段正文/代码仍需后期处理。参考 [text-effects.md](text-effects.md)。
 4. 参考图传 `--reference-image` 时，说明仅用于风格参考（palette、line quality、spacing），不要复制其 literal 主体。
-5. 复杂场景用 `2K` 或 `4K`，便签和流程图细节会更清晰。
+5. 需要清晰的标签/流程图细节时优先用 `2K`（更稳）或 `4K`。

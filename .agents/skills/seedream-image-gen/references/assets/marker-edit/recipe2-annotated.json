@@ -1,0 +1,30 @@
+{
+  "prompt": "no change to the image content, just verify the marker overlay placement; red rectangle should clearly outline the sofa area\n\nThe colored rectangles/circles/scribbles in the image are edit markers I drew by hand. Apply the change described above strictly inside the marked regions, keep pixels outside the markers unchanged, and remove all colored marks once done.",
+  "model": "doubao-seedream-5-0-pro-260628",
+  "model_label": "Seedream 5.0 Pro (2026-06-28 build)",
+  "size": "2K",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": false,
+  "optimize_prompt": null,
+  "reference_images_count": 1,
+  "reference_images_are_data_urls": true,
+  "negative_prompt": "模糊, 低质量, 水印, 变形, 多余肢体",
+  "response_format": "b64_json",
+  "marker_rects": [
+    "5%,35%,55%,55%"
+  ],
+  "outpaint": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/.agents/skills/seedream-image-gen/references/assets/marker-edit/recipe2-annotated.png",
+  "created_at": "2026-07-10T14:01:32",
+  "dry_run": false,
+  "reported_size": "2816x1584",
+  "elapsed_ms": 53628,
+  "usage": {
+    "input_images": 1,
+    "generated_images": 1,
+    "output_tokens": 17424,
+    "total_tokens": 17424
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "prompt": "红框内：原黑色粗无衬线中文主标题「深秋来信」四个字删除，替换为「立夏物语」四个字，保持原有粗黑无衬线字体、字号大小、黑色、居中对齐、顶部位置不变；下方灰色衬线英文副标题「Letters from late autumn」完全保持不变（即使部分在红框内也不改）；红框外的米色亚麻纸张背景、左下右下留白、整体光线完全保持原样；红框标记擦除不要出现在结果中\n\n图中彩色方框/圆圈/涂写是我手工标出的编辑区域标记，请严格按上面的描述修改标记区域内的内容，标记区域之外的像素尽量保持不变，完成后清除所有彩色标记线条与填充。",
+  "model": "doubao-seedream-5-0-pro-260628",
+  "model_label": "Seedream 5.0 Pro (2026-06-28 build)",
+  "size": "2K",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": false,
+  "optimize_prompt": null,
+  "reference_images_count": 1,
+  "reference_images_are_data_urls": true,
+  "negative_prompt": "模糊, 低质量, 水印, 变形, 多余肢体",
+  "response_format": "b64_json",
+  "marker_rects": [
+    "10%,12%,80%,18%"
+  ],
+  "outpaint": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/.agents/skills/seedream-image-gen/references/assets/marker-edit/recipe1-result.png",
+  "created_at": "2026-07-10T13:58:08",
+  "dry_run": false,
+  "reported_size": "1776x2368",
+  "elapsed_ms": 52494,
+  "usage": {
+    "input_images": 1,
+    "generated_images": 1,
+    "output_tokens": 16428,
+    "total_tokens": 16428
+  }
+}

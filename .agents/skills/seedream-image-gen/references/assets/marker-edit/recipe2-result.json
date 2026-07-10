@@ -1,0 +1,30 @@
+{
+  "prompt": "红框内：原三人位深灰色亚麻布艺沙发整体替换为墨绿色丝绒三人位沙发，丝绒有柔和反光、绒毛清晰、深墨绿 #14532d 色调，沙发形状大小位置不变，抱枕替换为同色系深绿丝绒方枕一只、奶白色棉麻方枕一只；沙发上右侧增加一只成年橘色短毛猫，蜷缩在扶手上睡觉，猫毛柔软写实；红框外的茶几、咖啡杯、书本、地毯、窗户光、绿萝完全保持原样不变；红框标记擦除\n\n图中彩色方框/圆圈/涂写是我手工标出的编辑区域标记，请严格按上面的描述修改标记区域内的内容，标记区域之外的像素尽量保持不变，完成后清除所有彩色标记线条与填充。",
+  "model": "doubao-seedream-5-0-pro-260628",
+  "model_label": "Seedream 5.0 Pro (2026-06-28 build)",
+  "size": "2K",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": false,
+  "optimize_prompt": null,
+  "reference_images_count": 1,
+  "reference_images_are_data_urls": true,
+  "negative_prompt": "模糊, 低质量, 水印, 变形, 多余肢体",
+  "response_format": "b64_json",
+  "marker_rects": [
+    "5%,35%,55%,55%"
+  ],
+  "outpaint": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/.agents/skills/seedream-image-gen/references/assets/marker-edit/recipe2-result.png",
+  "created_at": "2026-07-10T14:00:37",
+  "dry_run": false,
+  "reported_size": "2816x1584",
+  "elapsed_ms": 51307,
+  "usage": {
+    "input_images": 1,
+    "generated_images": 1,
+    "output_tokens": 17424,
+    "total_tokens": 17424
+  }
+}
