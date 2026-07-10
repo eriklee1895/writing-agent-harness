@@ -1,0 +1,22 @@
+{
+  "title": "Claude Code Recap 封面",
+  "brief": "Editorial magazine style cover illustration for a tech blog article. Dark indigo-black terminal background. Centered composition: a stylized minimalist terminal window with soft glow, input prompt area visible. Above the prompt glows a single highlighted line reading '* recap: Goal: ...' in warm clay-orange/cream syntax-highlight color. Beside it sits a tiny coffee cup icon with 'Brewed for 1m 22s' in dim gray. Floating around the central terminal are 3-4 faint, semi-transparent miniature terminal silhouettes at different angles, symbolizing parallel CLI sessions. Large Chinese title '一行 Recap' in clean editorial sans-serif typography at top-left, with smaller subtitle 'Claude Code 上下文锚点机制拆解' beneath. 16:9 horizontal composition, suited for tech blog hero and WeChat headline cover. Restrained, magazine-quality illustration — NOT cyberpunk neon, NOT cartoon, NOT anime. Soft rim light, subtle paper grain texture for editorial feel. All Chinese and English text must be crisp, correctly spelled, and legible.",
+  "content_type": "WeChat article cover",
+  "content_category": "cover",
+  "mode": "text-only",
+  "style_profile": "editorial-atmospheric",
+  "resolved_style_profile": "editorial-atmospheric",
+  "size": "blog-banner",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "openai/gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'Claude Code Recap 封面'. Style: contemporary editorial illustration, layered composition, subtle texture, restrained color palette, atmospheric but concrete, article-friendly visual metaphor, no text labels, no diagrams, no arrows. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a WeChat Official Account headline cover image (公众号头条封面). Compose for a 2.35:1 ultra-wide crop (1080x460). Keep key subjects centered or in the bottom third — top area will be cropped. Design for readability as a small thumbnail in WeChat's subscription feed. Title text will be overlaid by the editor, so leave ample negative space. Language/region: zh-en. Target aspect ratio: blog-banner. Mode: text-only. Brief:\nEditorial magazine style cover illustration for a tech blog article. Dark indigo-black terminal background. Centered composition: a stylized minimalist terminal window with soft glow, input prompt area visible. Above the prompt glows a single highlighted line reading '* recap: Goal: ...' in warm clay-orange/cream syntax-highlight color. Beside it sits a tiny coffee cup icon with 'Brewed for 1m 22s' in dim gray. Floating around the central terminal are 3-4 faint, semi-transparent miniature terminal silhouettes at different angles, symbolizing parallel CLI sessions. Large Chinese title '一行 Recap' in clean editorial sans-serif typography at top-left, with smaller subtitle 'Claude Code 上下文锚点机制拆解' beneath. 16:9 horizontal composition, suited for tech blog hero and WeChat headline cover. Restrained, magazine-quality illustration — NOT cyberpunk neon, NOT cartoon, NOT anime. Soft rim light, subtle paper grain texture for editorial feel. All Chinese and English text must be crisp, correctly spelled, and legible.",
+  "created_at": "2026-07-09T21:38:59",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-07-09-claude-code-recap-teardown/assets/cover.png/20260709-213814-claude-code-recap.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
