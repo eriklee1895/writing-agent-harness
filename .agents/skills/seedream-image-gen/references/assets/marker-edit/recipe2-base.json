@@ -1,0 +1,28 @@
+{
+  "prompt": "米白色调客厅一角，写实摄影风格，浅灰木地板，左侧一张三人位深灰色亚麻布艺沙发居中，沙发中间放一只米色抱枕，茶几上放一杯咖啡和两本书，茶几下铺一块奶白色羊毛地毯，窗户在画面右侧透入柔和下午阳光，沙发右侧墙边有一盆小绿萝，自然写实家居摄影，暖色调",
+  "model": "doubao-seedream-5-0-pro-260628",
+  "model_label": "Seedream 5.0 Pro (2026-06-28 build)",
+  "size": "2048x1152",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": false,
+  "optimize_prompt": null,
+  "reference_images_count": 0,
+  "reference_images_are_data_urls": false,
+  "negative_prompt": null,
+  "response_format": "b64_json",
+  "marker_rects": [],
+  "outpaint": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/.agents/skills/seedream-image-gen/references/assets/marker-edit/recipe2-base.png",
+  "created_at": "2026-07-10T13:59:45",
+  "dry_run": false,
+  "reported_size": "2048x1152",
+  "elapsed_ms": 96945,
+  "usage": {
+    "input_images": 0,
+    "generated_images": 1,
+    "output_tokens": 9216,
+    "total_tokens": 9216
+  }
+}

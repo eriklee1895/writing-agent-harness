@@ -167,7 +167,3 @@ lark-cli docs +update --api-version v2 --doc <doc_id> --command overwrite \
 - `scripts/preprocess.py` — frontmatter 解析 + image / mermaid 占位
 - `references/install-lark-stack.md` — lark-cli 与相关 skill 的安装指引
 - `references/supported-syntax.md` — 支持的 markdown 语法清单与降级策略
-
-## 更名记录
-
-本 skill 原名为 `markdown-article-to-lark-doc`，现统一改为 `markdown-article-to-feishu-doc` 以匹配国内「飞书」的叫法。官方 CLI 与依赖 skill（`lark-cli`、`lark-doc`、`lark-whiteboard`、`lark-shared`）仍保留原英文名。
