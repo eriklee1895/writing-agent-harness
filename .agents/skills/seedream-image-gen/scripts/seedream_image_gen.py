@@ -78,9 +78,10 @@ MODELS: dict[str, dict[str, Any]] = {
         "aliases": MODEL_PRO_ALIASES,
         "label": "Seedream 5.0 Pro (2026-06-28 build)",
         "size_strings": {"1K", "2K"},
-        "pixel_min": 921_600,          # 960×960 = 0.9MP; doc says ~0.9MP floor; 1024² OK
-        "pixel_max": 4_194_304,        # 2048×2048 = 4MP
+        "pixel_min": 921_600,          # official method-1 floor = 1280×720 = 0.92MP; 1024² OK
+        "pixel_max": 4_624_220,        # official method-1 ceiling = 2048²×1.1025 (not 2048²=4.19MP)
         "aspect_max": 16,
+        "method1_default": "1024x1024",  # official method-1 default when --size omitted
         "default_size": "2K",
         "max_refs": 10,
         "supports_web_search": False,
@@ -96,9 +97,10 @@ MODELS: dict[str, dict[str, Any]] = {
         "aliases": MODEL_LITE_ALIASES,
         "label": "Seedream 5.0 Lite (2026-01-28 build)",
         "size_strings": {"2K", "3K", "4K"},
-        "pixel_min": 3_686_400,        # 2560×1440 ≈ 3.69MP — hard floor enforced server-side
-        "pixel_max": 16_777_216,       # 4096×4096 = 16MP
+        "pixel_min": 3_686_400,        # official method-1 floor = 2560×1440 ≈ 3.69MP
+        "pixel_max": 16_777_216,       # official method-1 ceiling = 4096×4096 = 16MP
         "aspect_max": 16,
+        "method1_default": "2048x2048",  # official method-1 default when --size omitted
         "default_size": "2K",
         "max_refs": 14,
         "supports_web_search": True,
@@ -320,7 +322,7 @@ def _validate_size(size: str, caps: dict[str, Any], model_id: str) -> tuple[int,
     if size_upper in {"3K", "4K"} and size_upper not in caps["size_strings"]:
         _die(
             f"Size '{size_upper}' is not supported by model {model_id}. "
-            f"Pro tops out at 2K (~4MP pixel cap). Allowed presets: {sorted(caps['size_strings'])}."
+            f"Pro tops out at 2K (~4.6MP method-1 pixel cap). Allowed presets: {sorted(caps['size_strings'])}."
         )
 
     m = re.fullmatch(r"(\d{3,5})x(\d{3,5})", size)

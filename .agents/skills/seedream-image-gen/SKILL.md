@@ -21,7 +21,7 @@ This skill targets only the 5.0 family; it does not support Seedream 4.x / 3.x /
 
 ## Quick Workflow
 
-### Generate a new image (default: Pro / 2K / PNG / base64-encoded response)
+### Generate a new image (default: Pro / 2K / PNG / url-based download)
 
 ```bash
 uv run scripts/seedream_image_gen.py generate \
@@ -95,12 +95,12 @@ Print the full capability matrix (max refs, optimize modes, etc.):
 | `--wide` (alias `--wechat-header`) | 1792×1024 (Pro-only) | 16:9 | Banners, headers, hero images, YouTube/B站/博客/公众号 covers |
 | `--portrait` | Pro: 1536×2048 / Lite: 2048×2732 | 3:4 | Posters, magazine covers, 小红书/Instagram stories |
 | `--landscape` | Pro: 2048×1152 / Lite: 2732×1536 | 16:9 | Wallpapers, presentation slides, cinematic frames |
-| `--size 1K/2K/3K/4K` | preset | server-picked | Explicit preset (1K/2K Pro; 2K/3K/4K Lite) |
+| `--size 1K/2K/3K/4K` | preset + prompt aspect | model-judged, per official reference table | Bare preset: describe the aspect ratio in your prompt and the model outputs the reference pixels for that ratio at the chosen tier (1K/2K Pro, 2K/3K/4K Lite; **arbitrary ratios in [1/16,16] supported**, the table only lists common ones) — see the "Size：两种指定方式" table in [api-reference.md](references/api-reference.md) |
 | `--size WxH` | custom (e.g. `2560x1440`) | your choice | Exact resolution; validated against model pixel range |
 
 Size and aspect ratio can also be described in natural language inside the prompt (e.g. "竖版 3:4 海报", "手机壁纸 9:16", "16:9 横版", "方形头像") — the model will pick a reasonable size near its default (2K). Prefer the explicit `--size` / shortcut flags when you need deterministic dimensions (platform uploads, print specs, matching an existing layout); use in-prompt sizing when you are describing a feel and the exact pixel count does not matter.
 
-Valid custom-WxH bounds: **Pro** 0.9 MP – 4 MP with aspect ratio ≤16:1; **Lite** 3.7 MP – 16 MP (see [lite-quickref.md](references/lite-quickref.md) for the full floor/ceiling table — note Lite categorically cannot do 1K/1024²/1792×1024). The client rejects out-of-range sizes before spending an API call. For common platform/destination sizes (e-commerce mains, social posts, stories, video covers, wallpapers), see the [Common Use-Case Size Reference](references/api-reference.md#common-use-case-size-reference) in the API reference.
+Valid custom-WxH bounds: **Pro** 0.9 MP – 4.6 MP (default 1024×1024) with aspect ratio ∈ [1/16, 16]; **Lite** 3.7 MP – 16 MP (default 2048×2048; see [lite-quickref.md](references/lite-quickref.md) for the full floor/ceiling table — note Lite categorically cannot do 1K/1024²/1792×1024). The bound is on total pixels (W×H), not per-side. The client rejects out-of-range sizes before spending an API call. For common platform/destination sizes (e-commerce mains, social posts, stories, video covers, wallpapers), see the [Common Use-Case Size Reference](references/api-reference.md#common-use-case-size-reference) in the API reference.
 
 ## Text rendering (Pro)
 
@@ -205,7 +205,7 @@ Every row below is empirically tested, not inferred from marketing copy. "✅ Pr
 | 多语言同屏排版 | ✅ Production | 9-9.5/10 | 3-4 scripts per-panel layout; same-line mixing risks diacritic bleed. [multilingual.md](references/multilingual.md) |
 | 文字鬼画符根治 (garbled text elimination) | ✅ Mostly solved | varies by density | Structured/repeated labels 9-10/10; per-cell-unique content collapses past 30 cells. [text-deep.md](references/text-deep.md) |
 | 结构纠错 (anatomy/architecture/mechanical perspective) | ✅ Production | 8.5-9.5/10 dedicated tests | Dynamic dance pose (5-finger accuracy, correct joint bends) 9.5/10; two-point architectural perspective (converging grid lines, no warping) 9/10; watch-gear mechanical mesh (correct tooth interlock, plausible ratios) 8.5/10. Hands under complex multi-object interaction (chopsticks, group ≥4) remain the softest sub-case. No pre-Pro baseline exists to quantify the marketed "90% error reduction," but absolute quality on these three dedicated single-image tests is high. |
-| 超高分辨率 (2.36 MP) | ✅ Production | verified | Pro max ~4MP (2048×2048); Lite goes to 16MP. See [Size Shortcuts](#size-shortcuts) and [api-reference.md](references/api-reference.md). |
+| 超高分辨率 (2.36 MP) | ✅ Production | verified | Pro max ~4.6MP (总像素 4,624,220); Lite goes to 16MP. See [Size Shortcuts](#size-shortcuts) and [api-reference.md](references/api-reference.md). |
 
 **The one confirmed gap**: 智能图层分离 (auto transparent-PNG layer separation) is a real capability shown in ByteDance's marketing/demo UI but **not present on the public Ark API this skill calls**. Every other originally-requested killer capability has a working recipe, including three (10-person groups, wheel motion blur, defeating the beauty-filter for raw skin) that earlier testing had marked as hard model ceilings — all three turned out to be prompt-engineering gaps, crackable with the same pattern: **aggressive explicit enumeration + a concrete reference analogy + stacked negations**. When a Seedream output looks like a generic/smoothed default, suspect the prompt before concluding it's a model limit.
 

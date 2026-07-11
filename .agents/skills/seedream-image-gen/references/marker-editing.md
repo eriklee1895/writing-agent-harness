@@ -1,4 +1,4 @@
-# Marker-Based Local Editing (Pro 杀手级功能 #2 深度参考)
+# Marker-Based Local Editing (Pro 深度参考)
 
 Marker 编辑是 Seedream 5.0 Pro 最具差异化的能力——不用画 mask、不用导出 bbox JSON，**在参考图上画一个彩色矩形，用自然语言说"这里改成什么"，模型识别彩色方框、在框内改图、自动擦除方框痕迹**，一张图一次 API call 完成换字、换物、换材质、加/减元素、多区域同时改等以前必须 Photoshop 才能做的事。本 skill 的 `edit` 子命令通过 Pillow 自动完成画框、发图、追加擦除指令三步。
 
@@ -6,7 +6,7 @@ Marker 编辑是 Seedream 5.0 Pro 最具差异化的能力——不用画 mask�
 
 ---
 
-## 1. 为什么它是 Pro 杀手级功能
+## 1. 为什么它是 Pro 的差异化能力
 
 | 对比项 | 传统 mask/bbox API（MJ inpaint、DALL·E edit、SD inpaint） | Seedream marker edit |
 |---|---|---|
@@ -93,29 +93,21 @@ uv run scripts/seedream_image_gen.py edit \
 
 ---
 
-## 6. 视觉化 Recipe（带 before/after 对照图）
+## 6. 详细分步 Recipe（含结果解读）
 
-下面两个 Recipe 是本次 docs 重写时**专门为文档生成**的可复用范例（不只是文字描述，对照图能直接看到 marker 改前/改后/annotated 三件套），其它 Recipe 1-8 见 SKILL.md 和后续小节。
+下面两个 Recipe 是 marker 编辑最常用的两类场景（标题换字、物体材质替换+加元素）的完整分步范例——命令、prompt、和逐条结果解读齐全。其它 Recipe 1-8 见 SKILL.md 和后续小节。
 
 ### Recipe 1：海报大标题替换（保字体保字号保颜色）
 
 **场景**：把米色海报上的中文主标题"深秋来信"换成"立夏物语"，副标题保留。
 
-**Before（输入图）**：
-
-![深秋来信海报原图](assets/marker-edit/thumbs/recipe1-base.jpg)
-
-**Annotated（红框标记）**：
+**步骤**：
 
 | 步骤 | 命令 |
 |---|---|
 | 1. 出 base 海报 | `uv run scripts/seedream_image_gen.py generate --portrait --no-negative-prompt --prompt "米色亚麻纸张背景的杂志封面海报 3:4 竖版，顶部 1/4 处有黑色粗无衬线中文主标题「深秋来信」居中，副标题灰色衬线英文「Letters from late autumn」..."` |
 | 2. 框主标题 | `--marker-rect "10%,12%,80%,18%"` |
-| 3. Marker edit | `uv run scripts/seedream_image_gen.py edit --reference-image recipe1-base.png --marker-rect "10%,12%,80%,18%" --prompt "红框内：原黑色粗无衬线中文主标题「深秋来信」四个字删除，替换为「立夏物语」四个字，保持原有粗黑无衬线字体、字号大小、黑色、居中对齐、顶部位置不变；下方灰色衬线英文副标题「Letters from late autumn」完全保持不变（即使部分在红框内也不改）；红框外的米色亚麻纸张背景、左下右下留白、整体光线完全保持原样；红框标记擦除不要出现在结果中"` |
-
-**After（输出图）**：
-
-![立夏物语海报](assets/marker-edit/thumbs/recipe1-result.jpg)
+| 3. Marker edit | `uv run scripts/seedream_image_gen.py edit --reference-image poster-base.png --marker-rect "10%,12%,80%,18%" --prompt "红框内：原黑色粗无衬线中文主标题「深秋来信」四个字删除，替换为「立夏物语」四个字，保持原有粗黑无衬线字体、字号大小、黑色、居中对齐、顶部位置不变；下方灰色衬线英文副标题「Letters from late autumn」完全保持不变（即使部分在红框内也不改）；红框外的米色亚麻纸张背景、左下右下留白、整体光线完全保持原样；红框标记擦除不要出现在结果中"` |
 
 **结果解读**：
 - ✅ 主标题"深秋来信" → "立夏物语" 替换成功，**字体粗黑、字号大小、黑色、居中对齐、顶部位置完全一致**
@@ -129,15 +121,7 @@ uv run scripts/seedream_image_gen.py edit \
 
 ### Recipe 2：物体材质/颜色替换 + 同一框内加元素
 
-**场景**：把米白色客厅里深灰亚麻布艺沙发替换为墨绿色丝绒 + 加一只睡着的橘猫。
-
-**Before（输入图）**：
-
-![深灰亚麻沙发客厅](assets/marker-edit/thumbs/recipe2-base.jpg)
-
-**Annotated（红框覆盖沙发区域）**：
-
-![红框标注](assets/marker-edit/thumbs/recipe2-annotated.jpg)
+**场景**：把米白色客厅里深灰亚麻布艺沙发替换为墨绿色丝绒 + 加一只睡着的橘猫。marker 框覆盖沙发区域 `5%,35%,55%,55%`（覆盖沙发+靠背+扶手+抱枕，留 5% padding）。
 
 **Prompt（一次 edit 同时换材质 + 加元素）**：
 
@@ -149,10 +133,6 @@ uv run scripts/seedream_image_gen.py edit \
 红框外的茶几、咖啡杯、书本、地毯、窗户光、绿萝完全保持原样不变；
 红框标记擦除。
 ```
-
-**After（输出图）**：
-
-![墨绿丝绒沙发+橘猫](assets/marker-edit/thumbs/recipe2-result.jpg)
 
 **结果解读**：
 - ✅ 沙发从深灰亚麻 → 墨绿丝绒，**反光质感、绒毛纹理、绿色调全部正确**
@@ -170,7 +150,7 @@ uv run scripts/seedream_image_gen.py edit \
 
 ## 7. 其它 Recipe 速查
 
-> Recipe 1/2 已可视化展示；其余 6 个 Recipe 见 SKILL.md Examples 6/7 或下方文字版。
+> Recipe 1/2 有完整分步解读；其余 6 个 Recipe 见 SKILL.md Examples 6/7 或下方文字版。
 
 ### Recipe 3：在空白区域加装饰元素（M5 加橙色圆点 + tagline 8.5/10）
 
@@ -358,7 +338,7 @@ facial identity, hair, and clothing from their respective reference image."
 所有[红/蓝/绿]彩色方框标记擦除，不出现在最终结果中。
 ```
 
-## 10. API 层真相:没有 marker 字段,只有"图+文字"
+## 9. API 层真相:没有 marker 字段,只有"图+文字"
 
 > ⚠️ **重要修正**(2026-07-10):Seedream API **不**接受 `marker.rectangle` 这种结构化坐标字段。这是 CLI 完全在客户端做的视觉伪装。
 
@@ -394,6 +374,8 @@ POST https://ark.cn-beijing.volces.com/api/v3/images/generations
 **为什么这种设计更巧妙**:API 只暴露普通的多模态接口(image + text),把所有"局部编辑"的复杂度压在模型视觉能力上。用户不用处理坐标系统、mask 边缘、抗锯齿;模型用眼睛读图、用语言读 prompt,组合起来做局部编辑。这是 Seedream 模型层训练出来的硬能力,不是 API 工程巧思。
 
 ---
+
+## 10. 排错法则 + Marker 尺寸速查卡
 
 90% 的 marker 失败都不是模型问题，而是**框画错了位置或大小**。每次 edit 跑完先打开 `*-annotated.png`：
 - 框是否完整包围了要改的目标物体（四周有 5-10% padding）？
