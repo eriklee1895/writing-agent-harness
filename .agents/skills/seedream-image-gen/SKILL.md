@@ -79,7 +79,7 @@ Each line of the JSONL is either a bare prompt string or a JSON object like `{"p
 
 ## Choosing Pro vs Lite
 
-Pro is the default for a reason: it renders text reliably, supports marker edits, produces the Chinese-aesthetic and product-photography looks, and latency (~95s @ 2K) is nearly identical to Lite — so there is little reason to switch unless you have a specific constraint.
+Pro is the default for a reason: it renders text reliably, supports marker edits, and produces the Chinese-aesthetic and product-photography looks Lite can't match. Lite is faster (~30-60s vs Pro ~75-124s at 2K for simple prompts) and cheaper, but the text/marker quality gap is real — switch only when a specific constraint applies.
 
 Switch to Lite with `--model lite` only when you need: fast no-text concept sketches, >4 MP resolution, `--web-search`/`--sequential` (Lite-only params), or large cheap batches of non-text visuals. Full decision detail, pixel-range table, Lite-only flags, and the "what Lite doesn't have" list (no marker edit, weaker text, unverified prompt-technique transfer) are in **[references/lite-quickref.md](references/lite-quickref.md)** — read it before reaching for `--model lite`, not after.
 
@@ -90,7 +90,7 @@ Print the full capability matrix (max refs, optimize modes, etc.):
 
 | Flag | Resolution | Aspect | Typical uses |
 |---|---|---|---|
-| (default) | 2K (model-picked, ~1536×2048) | 3:4-ish | Posters, social posts, general workhorse |
+| (default) | 2K preset (model chooses pixels by your prompt's aspect ratio; Pro reference 1776×2368 for 3:4, 2816×1584 for 16:9, 2048² for 1:1) | per prompt | General workhorse; describe the aspect in your prompt or pass an explicit shortcut below for deterministic pixels |
 | `--square` | Pro: 1024×1024 / Lite: 2048×2048 | 1:1 | Social posts, product main images, logos |
 | `--wide` (alias `--wechat-header`) | 1792×1024 (Pro-only) | 16:9 | Banners, headers, hero images, YouTube/B站/博客/公众号 covers |
 | `--portrait` | Pro: 1536×2048 / Lite: 2048×2732 | 3:4 | Posters, magazine covers, 小红书/Instagram stories |

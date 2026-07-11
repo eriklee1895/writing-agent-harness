@@ -106,11 +106,12 @@ MODELS: dict[str, dict[str, Any]] = {
         "supports_web_search": True,
         "supports_sequential": True,
         "supports_negative_prompt": False,
-        "optimize_modes": {"standard", "fast"},
+        "optimize_modes": {"standard"},
         "price_per_image": "¥0.22/张 (2K tier)",
         "notes": "Fast sketch/iteration workhorse. Text rendering weaker than Pro (avoid text-heavy "
                  "prompts). Supports web_search and sequential group generation. Pixel floor blocks "
-                 "1024² / 1792×1024 WeChat headers (use Pro for those).",
+                 "1024² / 1792×1024 WeChat headers (use Pro for those). optimize_prompt fast is NOT "
+                 "supported on Lite (5.0 Pro/Lite/4.5 all reject 'fast'; only Seedream 4.0 accepts it).",
     },
 }
 
@@ -1035,6 +1036,17 @@ def _resolve_common(args: argparse.Namespace, *, require_prompt: bool = True) ->
     if marker_specs:
         if not ref_paths:
             _die("--marker-rect requires at least one --reference-image to annotate.")
+        # Marker editing is validated/tuned on Pro. Lite accepts image+prompt with visual
+        # markers too (it's just image+text), but text rendering is weaker and we haven't
+        # validated the rectangle-protocol thresholds (8%/70% bounds, color-box recognition,
+        # cleanup reliability) on Lite. Warn once rather than blocking; the user can still try.
+        if not caps.get("label", "").lower().startswith("seedream 5.0 pro"):
+            _warn(
+                "Marker editing (--marker-rect) is validated and tuned on Pro only. "
+                "On Lite the colored-rectangle protocol is untested: text-in-box results "
+                "are likely worse, cleanup may leave artifacts, and the 8%/70% size thresholds "
+                "may not apply. Pro is recommended for marker edits."
+            )
         # Markers always annotate the first reference; additional refs are passed as-is.
         src_primary = ref_paths[0]
         if outpaint_canvas_png is not None:

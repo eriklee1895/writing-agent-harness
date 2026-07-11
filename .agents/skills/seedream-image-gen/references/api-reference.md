@@ -47,7 +47,7 @@ Content-Type: application/json
    - 宽幅 16:9 banner/cover（1792×1024≈1.84MP，例如微信公众号头图、博客 hero、YouTube 封面、视频封面、PPT cover）是 **Pro 专属**，Lite 跑不了。
    - 方形 1024×1024 图标、社交头像也是 Pro 专属。
 3. **Pro 不接受 `tools:[{type:"web_search"}]`、`sequential_image_generation`、`stream: true`**——这些参数会被 API 400 拒绝。本 skill 的 `_build_request_body` 会按模型能力自动裁剪，Lite 才发 `tools`。
-4. **Pro 上 `optimize_prompt_options.mode` 只接受 `"standard"`**（不接受 `"fast"`）。
+4. **`optimize_prompt_options.mode` 在 5.0 Pro / 5.0 Lite / 4.5 上都只接受 `"standard"`**——`"fast"` 仅 Seedream 4.0 支持；CLI 在不支持的模型上传 `--optimize-prompt fast` 会告警并忽略，不会发往 API。
 5. **`negative_prompt` 在 Pro 上实测可用**（官方暂未写入文档），本 skill 默认发一条温和的质量守护 "模糊, 低质量, 水印, 变形, 多余肢体"，可通过 `--no-negative-prompt` 关闭或 `--negative-prompt "..."` 覆盖。Lite 上不发送（API 接受但效果不显著）。
 6. 两模型共享最长 prompt 字符数：中文 ≤300 字、英文 ≤600 词，服务端截断但不报错。
 7. Pro 实测 1K→2K 延迟几乎无差（~95s 均值），所以**默认 size 是 `2K`**——2K 下文字渲染细节明显更好，价格只在 ≤2.36MP 档和 1K 差 ¥0.30。
@@ -94,7 +94,7 @@ Content-Type: application/json
 | `response_format` | string | 官方默认 `url`（本 skill 不发送这个字段，跟随官方默认） | ✅ | ✅ | 支持 `url`（24h 有效的 TOS 下载链接）或 `b64_json`（内嵌 base64 字节）。本 skill 2026-07-11 起不再暴露这个参数，统一走 url 下载，理由见文末"为什么统一走 url 下载"一节 |
 | `watermark` | boolean | false | ✅ | ✅ | 是否加 Seedream 水印 |
 | `image` | string\|string[] | — | 最多 10 | 最多 14 | 参考图，支持 URL 或 data URL |
-| `optimize_prompt_options.mode` | string | `standard` | `standard` 唯一 | `standard`/`fast` | prompt 优化模式 |
+| `optimize_prompt_options.mode` | string | `standard` | `standard` 唯一 | `standard` 唯一（fast 仅 4.0） | prompt 优化模式；CLI 传非法值会告警并忽略 |
 | `negative_prompt` | string | 无（本 skill 默认加） | ✅ beta | ⚠️ 忽略 | 反向提示词，Pro 上实测有效 |
 | `tools` | array | — | ❌ 拒绝 | `[{"type":"web_search"}]` | 联网搜索；Lite 上 `--web-search` 显式开启才发 |
 | `sequential_image_generation` | string | — | ❌ 拒绝 | `"auto"` | 连续组图/分镜模式 |
@@ -116,7 +116,7 @@ Content-Type: application/json
 | **ControlNet-style 风格强度控制**（style_strength 0-1）| 否 | **否** | 风格强度靠 prompt 措辞承诺（"inspired by" 弱 / "fully re-painted" 强）实现，没有数值滑块。 |
 | **per-layer 透明度 / 混合模式**（输出带 alpha 的多通道图）| 否 | **否** | 输出永远是 RGB 单张 PNG；无 alpha channel、无多通道、无 PSD/EXR。 |
 | **原生 LoRA / fine-tune adapter** | 是（开发者） | 限定（`--reference-image` + 隐式 adapter，但用户不可上传自定义 LoRA）| 无 `--lora <path>` 接口。 |
-| **旋转/运动模糊物理模拟**（车轮 / 风扇叶片）| 否 | **否** | 实测 R3 车轮清晰而非 rotational blur disc；prompt 写 `motion blur on wheels` 被忽略。**真需要 motion blur：Photoshop render / After Effects / Runway。** |
+| **旋转/运动模糊物理模拟**（车轮 / 风扇叶片）| 否 | **是（prompt 杠杆可达 9/10）** | ❗ 2026-07-10 推翻原结论：`motion blur on wheels` 裸写会被忽略，但用反细节措辞（"flying-saucer disc, no spokes/rim/tread visible, smooth rotational blur disc"把车轮描述成看不见辐条的模糊圆盘）实测 9/10 出自然车轮拖影。详见 photorealism.md Recipe。直写 "motion blur" 仍会失败；关键是把"要模糊到看不见辐条"具象描述。 |
 | **3D 几何先验**（同一物体多视角一致 / 3D 重建）| 否 | **否** | 同一物体不同视角会出现几何不一致。无 multi-view diffusion / NeRF / 3D Gaussian Splatting 能力。 |
 | **像素级精确 UI 截图** | 否 | **否** | UI 控件位置/字号不可控。**真需要 UI mockup：Figma + design system。** |
 

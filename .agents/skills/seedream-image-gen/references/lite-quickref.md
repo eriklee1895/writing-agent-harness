@@ -6,7 +6,7 @@ This doc exists so `SKILL.md` can stay Pro-focused (where ~95% of this skill's t
 
 ## When to actually switch to Lite
 
-Pro is the default because it renders text reliably, supports marker edits, nails the Chinese-aesthetic/product-photography look, and has nearly identical latency (~95s @ 2K) to Lite. There is **little reason to switch** unless one of these four constraints applies:
+Pro is the default because it renders text reliably, supports marker edits, and nails the Chinese-aesthetic/product-photography look that Lite can't match. Lite is faster (~30-60s vs Pro ~95s @ 2K for simple prompts) and cheaper, but the text/marker quality gap is real. Switch only when one of the four constraints below applies:
 
 1. **Fast concept sketches with no text** — Lite ~30–60s vs Pro ~95s. Use for early-stage composition/layout iteration before committing to a Pro final render (a genuinely useful two-tier workflow: Lite for cheap exploration, Pro for the finished asset).
 2. **You need >4 MP resolution** — Pro caps at 4 MP (2048×2048-class); Lite goes up to 16 MP. This is the only case where Lite produces something Pro categorically cannot.
@@ -32,12 +32,11 @@ Lite pixel range: **3.7 MP – 16 MP**, aspect ratio ≤16:1. This is a **floor*
 ```
 --web-search      Enable web-search grounding for the prompt (Lite only; Pro's API 400s on this)
 --sequential       Generate a coherent multi-image storyboard/sequence in one call (Lite only)
---optimize-prompt fast   Fast prompt-optimization mode (Pro only accepts "standard")
 ```
 
 ## What Lite does NOT have
 
-- **No marker-based local editing.** The entire marker-editing protocol (`references/marker-editing.md`) is Pro-only. `--marker-rect` on a Lite request is either ignored or produces materially worse results — don't rely on it.
+- **Marker-based local editing is untested on Lite.** Marker editing is fundamentally a client convention (Pillow draws colored rectangles, model reads them visually), not an API-gated Pro feature — Lite will accept the annotated image and attempt the edit, but text-in-box rendering is weaker, cleanup may leave color artifacts, and the 8%/70% size thresholds in marker-editing.md were measured on Pro only. The CLI warns when you pass `--marker-rect` on Lite. For any serious marker edit (title swap, material change, multi-region), use Pro.
 - **Weaker text rendering.** Pro's text-reliability table (SKILL.md → "Text rendering") does not transfer to Lite. Expect frequent character errors even on short headlines. If text matters at all, use Pro regardless of resolution needs.
 - **Untested prompt-engineering transfer.** Every commitment-language formula, per-person group-photo enumeration trick, anti-detail motion-blur phrasing, and multilingual same-screen recipe in this skill's reference docs (`style-transfer.md`, `photorealism.md`, `multilingual.md`, `text-deep.md`) was empirically validated **on Pro only** (300+ test images, 2026-07-10 sweep). These techniques are plausible-but-unverified on Lite — don't assume they carry over with the same reliability. If you need one of these capabilities and are on Lite for a resolution/cost reason, expect to re-validate empirically rather than trusting the Pro-derived scores.
 
