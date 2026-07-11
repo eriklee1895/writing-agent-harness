@@ -67,5 +67,5 @@ uv run scripts/seedream_image_gen.py generate \
 1. 先把媒介锚定（`手绘铅笔线稿叠加淡彩晕染`），再描述场景，模型更容易锁定风格。
 2. 明确写 `纯白背景`、`无暗角`；否则 Seedream 容易默认给素描配灰色纹理背景。
 3. 图中有小标签、图标或密集流程细节时，使用 `2K` 或 `4K` 尺寸。
-4. **铅笔手写批注（Seedream 5.0 Pro）**：铅笔速写风的手写标签/批注在 2K 下可稳定渲染 2-4 个词——逐字写进 prompt 并用引号包裹，显式指定"`铅笔手写批注`"或"`pencil handwritten annotation`"风格（而不是印刷体），字号小、略带斜体、与线稿同色；多行手写段落、整句手写说明仍建议后期叠加。参考 [text-effects.md](text-effects.md)。
+4. **铅笔手写批注（Seedream 5.0 Pro）**：铅笔速写风的手写标签/批注在 2K 下可稳定渲染 2-4 个词——逐字写进 prompt 并用引号包裹，显式指定"`铅笔手写批注`"或"`pencil handwritten annotation`"风格（而不是印刷体），字号小、略带斜体、与线稿同色；多行手写段落、整句手写说明仍建议后期叠加（[text-effects.md](text-effects.md)）。
 5. 当用户 brief 已自带强烈配色或氛围时，放弃灵感默认，只保留结构 guardrails。
