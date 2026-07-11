@@ -178,7 +178,7 @@ uv run scripts/seedream_image_gen.py generate \
 
 ### Recipe 9：隐形模特 ghost mannequin 无头躯干 T 恤（POD mockup，flat-lay ref 工作流）
 
-POD（print-on-demand）/ 服装平铺或 invisible mannequin 风格主图的难点是两件事：(a) 不能出现塑料假人模特的脖子/肩膀；(b) T 恤要像穿在身上而不是挂着。G3 实测：单纯说"invisible ghost mannequin"模型会渲染出看得见的白色人台脖子（7/10，可用但需 crop）。更稳的两阶段工作流：
+POD（print-on-demand）/ 服装平铺或 invisible mannequin 风格主图的难点是两件事：(a) 不能出现塑料假人模特的脖子/肩膀；(b) T 恤要像穿在身上而不是挂着。单纯写"invisible ghost mannequin"模型常会渲染出看得见的白色人台脖子（可用但常需 crop）。更稳的两阶段工作流：
 
 **阶段 1：先生成 flat-lay 参考图**
 ```bash
@@ -193,7 +193,7 @@ uv run scripts/seedream_image_gen.py generate \
   --out flat-lay-cream-tshirt.png --force
 ```
 
-**阶段 2：用 flat-lay 作 ref，生成"无头穿着版"**（G3 工作流，7/10）
+**阶段 2：用 flat-lay 作 ref，生成"无头穿着版"**（两阶段工作流）
 ```bash
 uv run scripts/seedream_image_gen.py edit \
   --reference-image flat-lay-cream-tshirt.png \
@@ -212,25 +212,25 @@ POD 服装 mockup 商业摄影，3:4 竖版"
 ```
 
 注意：
-- G3 实测这个 prompt 仍可能露出人台白脖子或下巴边缘（6-7/10），出图后需要 tight crop at collarbone 才可用。要"真正的空心领口"效果建议后期 PS，或接受"人台穿着"风格把 prompt 改成"服装人台展示"更诚实。
-- 背面 T 恤主图（G4 实测 8/10）更容易：`背影 ghost mannequin，从背后直接看 T 恤后背，短袖对称、后颈罗纹领、自然垂坠，无头无手无手臂`——背面没有人台脖子问题（因为看不到领口内侧），但注意 prompt 要加"后背中缝无拼接缝线"防止模型加 center-back seam（G4 出现了非标准中缝）。
+- 这个 prompt 仍可能露出人台白脖子或下巴边缘，出图后需要 tight crop at collarbone 才可用。要"真正的空心领口"效果建议后期 PS，或用"服装人台展示"表述。
+- 背面 T 恤主图更容易：`背影 ghost mannequin，从背后直接看 T 恤后背，短袖对称、后颈罗纹领、自然垂坠，无头无手无手臂`——背面没有人台脖子问题（因为看不到领口内侧），但 prompt 要加"后背中缝无拼接缝线"防止模型加非标准 center-back seam。
 
-### Recipe 10：服装 editorial 带手模特（ref-guided 双手工作流，G6）
+### Recipe 10：服装 editorial 带手模特（ref-guided 双手工作流）
 
-服饰/lookbook 带手模特是手畸形高发区。G 系列 sweep 实测三种策略排名如下：
+服饰/lookbook 带手模特是手畸形高发区。按稳定性排序，三种策略如下：
 
-1. **策略 1（最稳 10/10，G1）：把手藏起来**——揣兜、背在身后、被道具/衣服/构图切掉。"双手插入牛仔裤前口袋，只露出拇指搭在袋口"——G1 拿到 9/10，只有拇指可见、无 6 指畸形。
-2. **策略 3（推荐 8-9/10，G6）：ref-guided 双手**——先单独生成干净的手+道具参考，再用 `--reference-image` 带入全身肖像，G6 手 7/10（pose drift 但无畸形）。
-3. **策略 2（6-7/10，G2/G5）：让手拿着道具**（咖啡杯、书、小包、手机、盆栽）。G2（无负 prompt 拿咖啡杯）7.5/10；G5（加负 prompt 拿盆栽）8/10——比空手好但仍有轻度融合/手指略粗的问题。加负 prompt 比不加好半档（G5 vs G2）。
+1. **策略 1（最稳）：把手藏起来**——揣兜、背在身后、被道具/衣服/构图切掉。"双手插入牛仔裤前口袋，只露出拇指搭在袋口"——只有拇指可见、无 6 指畸形。
+2. **策略 3（推荐）：ref-guided 双手**——先单独生成干净的手+道具参考，再用 `--reference-image` 带入全身肖像；手姿态会有 drift 但无畸形。
+3. **策略 2：让手拿着道具**（咖啡杯、书、小包、手机、盆栽）——比空手好但仍有轻度融合/手指略粗的问题。加负 prompt 效果更好半档。
 
-**G5 验证过的手专用 negative prompt（叠加在默认 negative 上，或用 `--negative-prompt` 覆盖）：**
+**手专用 negative prompt（叠加在默认 negative 上，或用 `--negative-prompt` 覆盖）：**
 ```
 extra fingers, fused fingers, missing fingers, deformed hands, too many fingers,
 mutated hands, poorly drawn hands, malformed limbs, ugly hands, bad anatomy,
 6 fingers, webbed fingers, broken nails, plastic-looking skin
 ```
 
-**G6 ref-guided 双手工作流（两步）：**
+**Ref-guided 双手工作流（两步）：**
 
 第一步生成手+道具参考（1:1 特写）：
 ```bash
@@ -259,18 +259,18 @@ uv run scripts/seedream_image_gen.py edit \
 照片级真实，3:4 竖版"
 ```
 
-G6 实测：第二步会发生 pose drift（模型会改成"四指在杯前、拇指藏后"的不同握法），但**不会引入 6 指/融合/断指**——这是关键。比空手直接生成手显著更稳。
+第二步会发生 pose drift（模型会改成"四指在杯前、拇指藏后"的不同握法），但**不会引入 6 指/融合/断指**。比空手直接生成手显著更稳。
 
 ---
 
 ## Ghost Mannequin / 隐形模特 / 手规避（服装/服饰类必读）
 
-服装和带手产品图是 AI 图像传统翻车重灾区。按实测稳定性排序，推荐三种策略：
+服装和带手产品图是 AI 图像传统翻车重灾区。按稳定性排序，推荐三种策略：
 
-### 策略 1：藏手（最稳，10/10）
+### 策略 1：藏手（最稳）
 
-G1 实测——把双手完全藏起来是唯一零风险方案：
-- 双手插牛仔裤/外套口袋，只露拇指搭在袋口（G1：9/10，仅拇指处轻微皮肤-牛仔融合）
+把双手完全藏起来是零风险方案：
+- 双手插牛仔裤/外套口袋，只露拇指搭在袋口（仅拇指处可能有轻微皮肤-衣物融合）
 - 背手/手在身后构图外（中景/3/4 裁剪到前臂）
 - 手臂交叉抱胸，手部被手臂/衣服遮挡
 - cropped at elbows / waist-up 构图切掉
@@ -278,9 +278,9 @@ G1 实测——把双手完全藏起来是唯一零风险方案：
 
 推荐 prompt 片段：`双手插入裤子前口袋，拇指搭在袋口自然外露，其余手指藏在袋内不可见，无手指畸形，手部自然`。
 
-### 策略 2：让手"有事做"（6-7/10，保底可用）
+### 策略 2：让手"有事做"（保底可用）
 
-G2 实测——双手拿道具（咖啡杯、书、手机、包带、盆栽、太阳镜、外套翻领）比空手好，因为道具遮挡了手指之间的位置。G2 拿咖啡杯 7.5/10（握把手处有轻度融合），G5 拿盆栽 8/10（加了负 prompt 后提升半档）。
+双手拿道具（咖啡杯、书、手机、包带、盆栽、太阳镜、外套翻领）比空手好，因为道具遮挡了手指之间的位置。握把/接触处仍可能有轻度融合；加了负 prompt 后效果提升半档。
 
 必做：
 - 加手负 prompt（见 Recipe 10 的 G5 negative）
@@ -288,9 +288,9 @@ G2 实测——双手拿道具（咖啡杯、书、手机、包带、盆栽、�
 - 批量出 4-8 张挑最好的一张
 - 手部占画面比例越小越安全（中景比特写安全，远景比中景安全）
 
-### 策略 3：Ref-guided 双手（8-9/10，推荐）
+### 策略 3：Ref-guided 双手（推荐）
 
-G6 实测——分两步：(1) 单独在 1:1 特写里生成一双干净的手+道具，(2) 用 `edit --reference-image` 把这双手的姿势/解剖结构带到全身肖像里。两步总共约 ¥0.60-1.20，但手畸形率从 ~60% 降到 ~10%。
+分两步：(1) 单独在 1:1 特写里生成一双干净的手+道具，(2) 用 `edit --reference-image` 把这双手的姿势/解剖结构带到全身肖像里。两步总共约 ¥0.60-1.20，但手畸形率显著下降。
 
 - 第一步用简洁 1:1 特写（无全身干扰，专注手解剖）
 - 第二步 prompt 里显式重申"每只手 5 根手指、完美解剖结构、自然指甲"

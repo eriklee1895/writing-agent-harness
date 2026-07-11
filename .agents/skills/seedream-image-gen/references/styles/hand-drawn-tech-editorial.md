@@ -60,6 +60,6 @@ uv run scripts/seedream_image_gen.py generate \
 
 1. 先把媒介锚定（`彩色铅笔和蜡笔纸质感`），再描述场景，模型更容易锁定风格。
 2. 明确写 `松散有机线条` 和 `轻微纸张纹理`，否则容易滑向 polished digital illustration。
-3. Seedream 5.0 Pro 在 2K 下可渲染架构模块标签、便签 callout 等短中英文：把标签文字逐字写进 prompt 并用中文引号 "" 包裹，指定"小字号白色/黑色无衬线字体"；长段正文/代码仍需后期处理。参考 [text-effects.md](text-effects.md)。
+3. Seedream 5.0 Pro 在 2K 下可渲染架构模块标签、便签 callout 等短中英文：把标签文字逐字写进 prompt 并用中文引号 "" 包裹，指定"小字号白色/黑色无衬线字体"；长段正文/代码仍需后期处理（[text-effects.md](text-effects.md)）。
 4. 参考图传 `--reference-image` 时，说明仅用于风格参考（palette、line quality、spacing），不要复制其 literal 主体。
 5. 需要清晰的标签/流程图细节时优先用 `2K`（更稳）或 `4K`。

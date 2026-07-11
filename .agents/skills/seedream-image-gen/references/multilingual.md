@@ -2,7 +2,7 @@
 
 适合：跨境电商 hero banner、海外宣传海报、多语种菜单/会议海报、品牌 VI 跨国版本、海外社媒 cover、节日跨文化版本、宗教/地区性主题内容、产品本地化素材库。
 
-Seedream 5.0 Pro 在多语种排版上实测**整体 9/10 平均**（18 张图覆盖 10+ 语言），是跨境内容的高性价比选择。强项是字符精度高、脚本隔离干净；弱项是高特异风格（瘦金体、Diwani 严格版）会落到通用变体上，本地化文化场景的人脸/服装/建筑会偏通用。
+Seedream 5.0 Pro 在多语种排版上**整体 9/10 平均**，覆盖 10+ 语言，是跨境内容的高性价比选择。强项是字符精度高、脚本隔离干净；弱项是高特异风格（瘦金体、Diwani 严格版）会落到通用变体上，本地化文化场景的人脸/服装/建筑会偏通用。
 
 ## 强项
 
@@ -22,7 +22,7 @@ Seedream 5.0 Pro 在多语种排版上实测**整体 9/10 平均**（18 张图�
 - **文化细节粒度**：Bavarian Tracht 通用而非 strict Bavarian（无 Hirschhorn 鹿角扣、无 Lederhosen）；Tokyo 街头无 109、无 X-pattern scramble。**修复**：加 `Hirschhorn deer-horn buttons + Lederhosen + Trachtenhemd + Tirolerhut with Gamsbart` 这种具体文化签名词
 - **脚本风格走向中性**：Arabic 倾向于 Naskh-cursive 而非严格 Diwani；Korean 倾向于 geometric 而非手写 brush。**修复**：在 prompt 里 explicit style signature 词
 
-## Per-Language 实测评分（满分 10）
+## Per-Language 评分（满分 10）
 
 | 语言 | 脚本 | 单语海报 | 同屏混排 | 本地化文化 | 最佳用例 | 反模式 |
 |---|---|---|---|---|---|---|

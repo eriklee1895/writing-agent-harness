@@ -5,17 +5,23 @@ description: ByteDance Seedream 5.0 Pro/Lite image model. Generate and edit imag
 
 # seedream-image-gen
 
-ByteDance Seedream 5.0 image generation via Volcengine Ark API. Single-file Python CLI (PEP 723, `uv run` directly). Supports text-to-image, image-to-image / style transfer, **marker-based local editing** (the headline Pro feature — draw a colored box and describe the change in natural language, no mask/bbox/Photoshop), outpaint (extend canvas), and batch JSONL generation.
+ByteDance Seedream 5.0 image generation via Volcengine Ark API. Single-file Python CLI (PEP 723, `uv run` directly). Supports text-to-image, image-to-image / style transfer, **marker-based local editing** (draw a colored box and describe the change in natural language, no mask/bbox/Photoshop), outpaint (extend canvas), and batch JSONL generation.
 
-- **Default model**: Seedream 5.0 Pro `doubao-seedream-5-0-pro-260628` (released 2026-06-28)
-- **Fast-sketch alternative**: Seedream 5.0 Lite `doubao-seedream-5-0-260128` via `--model lite` (faster, cheaper, weaker text)
+## Models
+
+| Model | ID | `--model` alias | Use for |
+|---|---|---|---|
+| **Seedream 5.0 Pro** (default) | `doubao-seedream-5-0-pro-260628` | `pro` | Everything — text, marker edits, Chinese aesthetics, product shots. Released 2026-06-28. |
+| Seedream 5.0 Lite | `doubao-seedream-5-0-260128` | `lite` | Fast no-text sketches, >4 MP output, web-search / sequential. Weaker text, no marker edits — see [lite-quickref.md](references/lite-quickref.md). |
+
+This skill targets only the 5.0 family; it does not support Seedream 4.x / 3.x / 2.x (weaker text, no marker editing).
+
 - **Endpoint**: `POST https://ark.cn-beijing.volces.com/api/v3/images/generations` (text-to-image and editing share one endpoint; there is no separate `/edits`)
 - **Auth**: `ARK_API_KEY` environment variable or `.env` file in the working directory
-- **Ignored legacy models**: this skill deliberately does not target Seedream 4.x / 3.x / 2.x builds — Pro/Lite on the 5.0 family cover all current use cases, and older models have weaker text and no marker-edit support.
 
 ## Quick Workflow
 
-### Generate a new image (default: Pro / 2K / PNG / base64-encoded response)
+### Generate a new image (default: Pro / 2K / PNG / url-based download)
 
 ```bash
 uv run scripts/seedream_image_gen.py generate \
@@ -33,7 +39,7 @@ uv run scripts/seedream_image_gen.py edit \
 
 The CLI draws a semi-transparent colored rectangle on the reference image with Pillow, appends a "remove the markers" instruction to the prompt, and sends the annotated image — you never need to handle masks yourself.
 
-> **Killer Feature** — Marker Edit is Seedream 5.0 Pro's headline capability and what most differentiates it from gpt-image-1 / Midjourney / Flux. For the full protocol (multi-color multi-region, chain editing, threshold table, failure modes, 8 copy-paste recipes with before/after screenshots), see **[references/marker-editing.md](references/marker-editing.md)**.
+> Marker editing is Pro-only and is the main thing that differentiates Seedream from gpt-image / Midjourney / Flux. For the full protocol (multi-color multi-region, chain editing, threshold table, failure modes, 8 copy-paste recipes), see **[references/marker-editing.md](references/marker-editing.md)**.
 
 ### Batch generation (JSONL)
 
@@ -48,11 +54,13 @@ Each line of the JSONL is either a bare prompt string or a JSON object like `{"p
 
 **Core strengths of Seedream 5.0 Pro** (this is where you will get the most leverage over other image models):
 
-- **Graphics with embedded text** — Chinese/English/mixed-language posters, covers, banners, social graphics, logos, circular badges, package labels, and slogans. Pro renders large headlines, short labels, and circular/arc text reliably at 2K.
-- **Local edits to existing graphics** — title swaps, object replacement, material changes, adding or removing elements, using the marker-based colored-box workflow. This works first-try for common swaps without Photoshop-style precision work.
+- **Graphics with embedded text** — Chinese/English/mixed-language posters, covers, banners, social graphics, logos, circular badges, package labels, and slogans. Pro renders large headlines, short labels, and circular/arc text reliably at 2K. Product-surface curved/embossed text (shoe canvas, toothpaste gel, bottle labels) also works inside tight markers when quoted.
+- **Local edits to existing graphics** — title swaps, object replacement, material changes, adding or removing elements, using the marker-based colored-box workflow (supports multi-region multi-color in a single call). This works first-try for common swaps without Photoshop-style precision work.
 - **Chinese / East-Asian aesthetic imagery** — 国潮 (neo-Chinese), 24 节气 (solar terms), traditional festivals (Spring Festival, Mid-Autumn, Dragon Boat), ink-wash painting (水墨), gongbi fine brushwork, new-Chinese lifestyle editorial, Chinese architecture and food. ByteDance's Chinese-trained model maps these concepts far more accurately than English-native models.
 - **Product / e-commerce / food photography** — white-background product shots, lifestyle scenes, flat-lays, food photography, cosmetics/3C/apparel lookbooks, sale-event banners — well-mapped vocabulary from ad-training data, cheap enough to iterate.
-- **Character-consistent multi-scene series** — pass one or more reference images of a character and generate them across scenes while retaining facial features (articles, storybooks, social content, comic panels).
+- **Editorial infographics & data visualization** — hero+frosted-cards explainers, flat vector card grids, vertical numbered-step timelines, pie/bar/donut charts with accurate proportions when exact numbers are supplied, categorical roundel grids. Works for Chinese+English label text on the same chart.
+- **Character-consistent multi-scene series** — generate one clean white-background IP/character sheet, then re-use it across scenes with an opening physical-feature recap; holds identity across wardrobe/lighting/pose changes for stylized 3D/illustration characters.
+- **Parody UI screenshots (WeChat chat/朋友圈/转账/语音/红包)** — 1152×2048 txt2img with explicit bubble-by-bubble/element-by-element script and `#95EC69` hex color for green bubbles produces near-pixel-perfect iOS WeChat UI mockups. Good enough for jokes and social content — NOT for production spec work.
 - **Cost-sensitive batch work** — ~¥0.30-0.60/image on Pro, ~¥0.22 on Lite; batch concurrency of 3-5 is cheap.
 
 **Commodity capabilities** that work well but aren't unique to this model:
@@ -65,7 +73,7 @@ Each line of the JSONL is either a bare prompt string or a JSON object like `{"p
 
 - **Dense small text, long body copy, tables, sheet music, math equations, chess diagrams, long-form handwritten text** — Pro's large-text is strong but long-form/symbolic content still fails. Post-add in Figma/HTML/PS, or use a text-layout pipeline rather than image-gen.
 - **Engineering multi-view drawings, precise mechanical diagrams** — perspective isn't CAD-accurate; use actual CAD tools.
-- **Pixel-perfect UI screenshots** — render in a browser, don't generate.
+- **Pixel-perfect production UI screenshots / real-app demo recordings** — render in a browser, don't generate. (Parody WeChat/chat UI for jokes and social content DOES work well at 9:16 with a detailed element-by-element script; see [references/styles/wechat-ui.md](references/styles/wechat-ui.md) for recipe. But tiny monochrome tab-bar/comment icons can slip into pseudo-characters, and no render is pixel-accurate enough for product specs.)
 - **Accurate likeness of named celebrities / public figures** — faces blend and hallucinate; use stock or a shoot.
 - **ControlNet-style control** (depth maps, pose skeletons, line-art tracing) — the public API doesn't expose these. Use a local image-generation stack with ControlNet support if required.
 - **High-end jewelry / faceted gemstones** — diamond fire and complex refractions come out muddy; photograph or 3D-render.
@@ -73,37 +81,31 @@ Each line of the JSONL is either a bare prompt string or a JSON object like `{"p
 
 ## Choosing Pro vs Lite
 
-Pro is the default for a reason: it renders text reliably, supports marker edits, produces the Chinese-aesthetic and product-photography looks, and latency (~95s @ 2K) is nearly identical to Lite — so there is little reason to switch unless you have a specific constraint.
+Pro is the default model because it renders text reliably, supports marker edits, and produces the Chinese-aesthetic and product-photography looks Lite cannot match. Lite is faster (~30-60s vs Pro ~75-124s at 2K for simple prompts) and cheaper, but the text/marker quality gap is real — switch only when a specific constraint applies.
 
-Switch to Lite with `--model lite` only when:
-- You need **fast concept sketches** with no text (Lite ~30–60s, but text rendering is weak and marker edits are limited)
-- You need **3K/4K upscaled resolutions** or **large pixel counts above 4 MP** (Pro caps at 4 MP; Lite goes to 16 MP)
-- You need **web-search grounding** (`--web-search`, Lite-only) or **sequential storyboard generation** (`--sequential`, Lite-only)
-- You are running **large cheap batches** of non-text visuals (Lite ¥0.22 vs Pro ¥0.30–0.60) and can tolerate weaker texture/material quality
+Switch to Lite with `--model lite` only when you need: fast no-text concept sketches, >4 MP resolution, `--web-search`/`--sequential` (Lite-only params), or large cheap batches of non-text visuals. Full decision detail, pixel-range table, Lite-only flags, and the capability-gap list (no marker edit, weaker text, prompt-technique transfer unverified on Lite) are in **[references/lite-quickref.md](references/lite-quickref.md)** — read it before reaching for `--model lite`, not after.
 
-Pro pixel range: 0.9 MP – 4 MP (supports 1K/2K presets, including 1792×1024 wide and 1024² square).
-Lite pixel range: 3.7 MP – 16 MP (supports 2K/3K/4K presets; 1K, 1024², and 1792×1024 are below its floor).
-
-Print the full capability matrix (max refs, response formats, optimize modes, etc.):
+Print the full capability matrix (max refs, optimize modes, etc.):
 `uv run scripts/seedream_image_gen.py list-models`
 
 ## Size Shortcuts
 
 | Flag | Resolution | Aspect | Typical uses |
 |---|---|---|---|
-| (default) | 2K (model-picked, ~1536×2048) | 3:4-ish | Posters, social posts, general workhorse |
+| (default) | 2K preset (model chooses pixels by your prompt's aspect ratio; Pro reference 1776×2368 for 3:4, 2816×1584 for 16:9, 2048² for 1:1) | per prompt | General workhorse; describe the aspect in your prompt or pass an explicit shortcut below for deterministic pixels |
 | `--square` | Pro: 1024×1024 / Lite: 2048×2048 | 1:1 | Social posts, product main images, logos |
 | `--wide` (alias `--wechat-header`) | 1792×1024 (Pro-only) | 16:9 | Banners, headers, hero images, YouTube/B站/博客/公众号 covers |
 | `--portrait` | Pro: 1536×2048 / Lite: 2048×2732 | 3:4 | Posters, magazine covers, 小红书/Instagram stories |
-| `--landscape` | Pro: 2048×1152 / Lite: 2732×1536 | 16:9 | Wallpapers, presentation slides, cinematic frames |
-| `--size 1K/2K/3K/4K` | preset | server-picked | Explicit preset (1K/2K Pro; 2K/3K/4K Lite) |
+| `--landscape` | Pro: 2048×1152 / Lite: 2732×1536 | 16:9 | Dense infographics (6+ cards), wallpapers, presentation slides |
+| `--phone` (aliases `--stories`, `--wechat`) | Pro: 1152×2048 / Lite: 1440×2560 | 9:16 | Phone stories, WeChat UI mockups (聊天/朋友圈/转账/通话/红包), TikTok/抖音 covers |
+| `--size 1K/2K/3K/4K` | preset + prompt aspect | model-judged, per official reference table | Bare preset: describe the aspect ratio in your prompt and the model outputs the reference pixels for that ratio at the chosen tier (1K/2K Pro, 2K/3K/4K Lite; **arbitrary ratios in [1/16,16] supported**, the table only lists common ones) — see the "Size：两种指定方式" table in [api-reference.md](references/api-reference.md) |
 | `--size WxH` | custom (e.g. `2560x1440`) | your choice | Exact resolution; validated against model pixel range |
 
 Size and aspect ratio can also be described in natural language inside the prompt (e.g. "竖版 3:4 海报", "手机壁纸 9:16", "16:9 横版", "方形头像") — the model will pick a reasonable size near its default (2K). Prefer the explicit `--size` / shortcut flags when you need deterministic dimensions (platform uploads, print specs, matching an existing layout); use in-prompt sizing when you are describing a feel and the exact pixel count does not matter.
 
-Valid custom-WxH bounds: **Pro** 0.9 MP – 4 MP with aspect ratio ≤16:1; **Lite** 3.7 MP – 16 MP with aspect ratio ≤16:1. The client rejects out-of-range sizes before spending an API call. For common platform/destination sizes (e-commerce mains, social posts, stories, video covers, wallpapers), see the [Common Use-Case Size Reference](references/api-reference.md#common-use-case-size-reference) in the API reference.
+Valid custom-WxH bounds: **Pro** 0.9 MP – 4.6 MP (default 1024×1024) with aspect ratio ∈ [1/16, 16]; **Lite** 3.7 MP – 16 MP (default 2048×2048; see [lite-quickref.md](references/lite-quickref.md) for the full floor/ceiling table — note Lite categorically cannot do 1K/1024²/1792×1024). The bound is on total pixels (W×H), not per-side. The client rejects out-of-range sizes before spending an API call. For common platform/destination sizes (e-commerce mains, social posts, stories, video covers, wallpapers), see the [Common Use-Case Size Reference](references/api-reference.md#common-use-case-size-reference) in the API reference.
 
-## Killer Feature 1: Text Rendering (Pro)
+## Text rendering (Pro)
 
 Seedream 5.0 Pro renders Chinese and English text well enough for production graphics: large headlines, subheads, slogans, circular-badge logos, and short card labels all work first-try.
 
@@ -131,36 +133,24 @@ Seedream 5.0 Pro renders Chinese and English text well enough for production gra
 | Named signatures / celebrity handwriting | ❌ Hallucinated | Don't try |
 | Small body text (< 1/30 of canvas height) | ❌ Pixel limit | Use larger text or post-add |
 
-Specify font families by description, **not** by filename — the model does not know specific file names like "Source Han Serif" or "Helvetica Neue". Use:
-- Chinese: `粗黑无衬线` (bold sans) / `细无衬线` / `宋体` (Song/Ming serif) / `楷体` (Kai regular) / `手写毛笔字` (brush calligraphy) / `圆润卡通体` / `等宽代码字体`
-- English: `bold sans-serif` / `thin sans-serif` / `serif` / `script` / `monospace` / `geometric sans`
+Specify font families by description, **not** by filename — the model does not know names like "Source Han Serif" or "Helvetica Neue". Use descriptive terms (`粗黑无衬线` / `宋体` / `手写毛笔字`; `bold sans-serif` / `serif` / `script`); the full Chinese/English font-description vocabulary is in [prompt-engineering.md](references/prompt-engineering.md).
 
 Specify size as a fraction of the canvas (e.g. "字号占画面高度 1/6") and position relatively ("顶部居中", "top-left aligned"); don't write "72pt".
 
 **Always default to 2K for text work.** Text is muddy at 1K, and Lite produces frequent character errors. The `--wide` / `--wechat-header` shortcut produces 1792×1024 (≈1.84 MP) which is large enough for Pro-only headline graphics.
 
-**Prompt language** — Seedream is Chinese-native; unlike English-trained image models where English prompts are the default, here Chinese is the first-class language. Default rules:
-
-| Scene | Write prompt in | Why |
-|---|---|---|
-| Chinese subject / culture / text (节气/水墨/中式建筑/中文大字/中餐/国风) | **Chinese** | Chinese cultural concepts, dish names, and typography terms tokenize richest in Chinese |
-| Pure English typography / Western brands / Latin-script logos | **English** | English letter-spacing, Title Case, and Latin font families render more reliably when described in English |
-| 3D/photography/lighting/rendering/technical terms (bokeh, rim light, subsurface scattering, impasto, depth of field, chiaroscuro) | **English loanwords** inside a Chinese (or English) narrative | These terms have unstable Chinese translations; English art/photo jargon is the lingua franca |
-| Mixed Chinese+English visuals (e.g., Chinese poster with English tagline) | **Chinese narrative with embedded English phrases** (keep English spelling/case exact) | Best of both worlds |
-| Anime / manga / Japanese-style / Korean subjects | Chinese or English, with Japanese proper nouns as-is | Don't write Japanese prompts unless you need it; training coverage is weaker |
-| Western art history (Renaissance, Art Nouveau, Bauhaus) | English or Chinese artist/style names (e.g.,"Art Nouveau / 新艺术运动") | Both work; use the language of your reference material |
-
-The sweet spot for most Chinese users is a **Chinese narrative peppered with English technical loanwords** for lighting/camera/style/material terms — this matches how Chinese designers actually talk and Seedream responds to it best. Don't force English when describing Chinese content.
+**Prompt language** — Seedream is Chinese-native. Write **Chinese** for Chinese subjects/culture/text (节气/水墨/中式建筑/中文大字/中餐/国风), **English** for Latin-script typography and Western brands, and keep photography/lighting/render jargon (bokeh, rim light, impasto, chiaroscuro) as **English loanwords** inside either. The sweet spot is a Chinese narrative peppered with English technical terms; don't force English on Chinese content. Full decision table in [prompt-engineering.md](references/prompt-engineering.md).
 
 For extended guidance see [references/prompt-engineering.md](references/prompt-engineering.md) (formula, language choice, **anti-pattern watchlist** with concrete fix-phrases, and advanced community-validated tricks) and [references/styles/text-poster.md](references/styles/text-poster.md) (6 copy-paste-ready recipes: tech-blog cover, magazine cover, wide banner header, infographic, sale banner, circular-badge logo).
 
-**Three common traps that silently ruin output** (full list in prompt-engineering.md):
-1. When generating 9:16/phone/stories content, **always** add `no UI elements, no phone frame, no status bar, pure photo/illustration content` ("无UI界面、无手机边框、无状态栏、纯画面") — the word "手机/phone/9:16" otherwise hallucinates a fake phone chrome around the image. Lock aspect ratio via `--size WxH`, not prose.
+**Four common traps that silently ruin output** (full list in prompt-engineering.md):
+1. When generating 9:16/phone/stories content (use `--phone`), still add `no UI elements, no phone frame, no status bar, pure photo/illustration content` ("无UI界面、无手机边框、无状态栏、纯画面") if you want pure imagery — the word "手机/phone/9:16" otherwise hallucinates a fake phone chrome around the image. When generating parody UI screenshots (WeChat mockups etc), the chrome is desired — see [references/styles/wechat-ui.md](references/styles/wechat-ui.md).
 2. Vertical English magazine titles need explicit structure **and** position-locking: "one English word per horizontal line, stacked top-to-bottom, in the left 1/3 margin (not overlapping the portrait)" ("每个英文单词独占一行水平书写、从上到下排列在左侧留白区域、不覆盖到人物/产品身上"). Writing "竖排英文" alone produces overlaid/duplicated letters; break words longer than 6 letters (e.g. INTEL-LIGENCE) to avoid overflow.
-3. Products with smooth surfaces (bottles, headphones, lipstick tubes, mugs, boxes) almost always get a fake gibberish brand name — explicitly add `no branding text, no labels, no logos, clean unbranded surface` ("瓶身/表面无品牌文字、无标签、无logo、纯净无印刷") unless you want branding.
+3. Products with smooth surfaces (bottles, headphones, lipstick tubes, mugs, boxes) almost always get a fake gibberish brand name — explicitly add `no branding text, no labels, no logos, clean unbranded surface` ("瓶身/表面无品牌文字、无标签、无logo、纯净无印刷") unless you want branding. **Reverse**: if you DO want intentional fake labels (humorous product copy, custom packaging), quote the text in single quotes right after a font descriptor — curved-surface and embossed text is a strength, not a weakness, as long as you quote it.
 4. If you want **blank negative space for later text overlay** (e.g. hero banner left 60% empty), say so literally: `left 60% is pure gradient background, NO text, NO logos, NO watermarks, clean empty area for later title overlay` ("左侧留白为纯背景、无任何文字、无logo、无水印，供后期叠加标题"). Writing "留白放标题" makes the model hallucinate fake characters in the blank.
+5. Short high-frequency English words (≤4 letters) adjacent to Chinese can typo ("But" → "Bot" observed). Either spell 5+ letter words when possible, or add `错别字, 字顺序错乱, 多笔画, 缺笔画, 字符乱码, typo, misspelled letters` to the negative prompt for text-heavy bilingual work. Any decorative text smaller than ~3% of canvas height (seals, stamps, secondary labels) must be explicitly quoted, or it will be confabulated.
 
-## Killer Feature 2: Marker-Based Local Editing (Pro)
+## Marker-based local editing (Pro)
 
 Pro has no mask or bbox parameters. Local edits use a **visual marker convention**: draw a semi-transparent colored rectangle on the reference image, describe the change in natural language, and the model recognizes the marker, performs the edit, and removes the marker in the output. The CLI automates both drawing and marker cleanup — you only pass `--marker-rect`.
 
@@ -170,7 +160,7 @@ Pro has no mask or bbox parameters. Local edits use a **visual marker convention
 - 🎨 **Multi-region edits via colors** — "red box: swap title, blue box: add a cat" in a single call
 - 🗣️ **Natural language is the interface** — no mask bitmaps, no bbox JSON arrays, no image-editor knowledge required
 - 🧹 **Auto cleanup** — markers are removed by the model (the CLI appends the cleanup instruction)
-- 🔒 **Pixels outside the marked region are preserved** — tested on sofa→navy+add-cat and title-swap: window, plants, lighting, surrounding graphics all stayed intact
+- 🔒 **Pixels outside the marked region are preserved** — sofa→navy+add-cat and title-swap testing confirms window, plants, lighting, and surrounding graphics all stay intact
 
 One caveat: rectangles are supported natively; arbitrary scribbles require pre-drawing with Pillow or other tooling.
 
@@ -179,7 +169,7 @@ One caveat: rectangles are supported natively; arbitrary scribbles require pre-d
 - Percent: `10%,15%,60%,20%` (more robust across image sizes, recommended)
 
 Optional parameters:
-- `--marker-color #ff0000` marker color (use distinct colors for multiple regions, then say "红框 X，蓝框 Y" in the prompt)
+- `--marker-color #ff0000` marker color; **repeat once per `--marker-rect` for multi-color multi-region edits** (e.g. `--marker-rect ... --marker-color "#ff0000" --marker-rect ... --marker-color "#0000ff"`, then say "红框替换标题，蓝框改帽子" in prompt). Defaults to #ff0000 for all rects if omitted.
 - `--marker-alpha 80` fill transparency (0-255, default 80)
 - `--marker-stroke 3` outline stroke width (px, default 3)
 - `--no-marker-cleanup-prompt` disable the auto-appended "remove the markers" suffix (advanced)
@@ -195,28 +185,41 @@ pixels outside the box remain exactly as-is.
 
 Validated scenarios: headline swap on existing posters, sofa material change + adding an animal, metal sculpture → transparent glass, multi-region multi-color simultaneous edits. For detailed protocol, failure thresholds (rect <8% ignored / >70% full-regen), annotated-preview workflow, 8 copy-paste recipes (title swap / product recolor / add element / remove / multi-color / chain edit / outpaint+marker / vertical English), and anti-patterns, see **[references/marker-editing.md](references/marker-editing.md)**. For multi-reference identity/fusion workflows (face+outfit+palette), see Formula 6 in **[references/prompt-engineering.md](references/prompt-engineering.md)**.
 
-## Killer Feature 3: Chinese Aesthetic Fluency
+## Honest Capability Scorecard
 
-Trained on ByteDance's Chinese corpus, Seedream 5.0 Pro has deep coverage of Chinese cultural visual vocabulary — a genuine strength when creating traditional or neo-Chinese work:
+Every row below is empirically rated. "✅ Production" = reliable with the documented recipe; "⚠️ Best-effort" = works but has a known failure mode; "❌ Not available" = the public Ark API does not expose this.
 
-- **Neo-Chinese / 国潮 commercial design** (vermilion + gold, blue-green shanshui, auspicious clouds, flying eaves, seal-script chops)
-- **24 solar-term posters** (Qingming rain, Dashu cicadas, Dongzhi snow — seasonal color palettes + poetic phrasing + calligraphy)
-- **Traditional festival visuals** (Spring Festival red-gold, Mid-Autumn full moon, Dragon Boat zongzi, Lantern Festival lanterns)
-- **Ink-wash / gongbi / calligraphy** (flying-white strokes, wet-blended ink, rice-paper texture, slender-gold 瘦金体)
-- **Chinese architecture** (Huizhou white-walls-black-tiles, Jiangnan water-towns, Forbidden City red-walls-yellow-tiles, Suzhou gardens)
-- **Chinese food** (mooncakes, zongzi, tangyuan, tea, reunion dinner)
+| Capability | Verdict | Score | Notes |
+|---|---|---|---|
+| 风格迁移 (style transfer) | ✅ Production | 9.5/10 top styles | Commitment-language formula is the lever. [style-transfer.md](references/styles/style-transfer.md) |
+| 文字渲染 (text rendering) | ✅ Production | 9-10/10 structured, 2/10 per-cell-unique | 30-cell rule for tables/grids. [text-deep.md](references/text-deep.md) |
+| 多参考图融合 (multi-ref fusion) | ✅ Production | 8.5-9/10 (2-3 refs) | Sweet spot 2-3 refs; role-assignment required. [prompt-engineering.md 公式6](references/prompt-engineering.md) |
+| 复杂信息可视化 (infographic) | ✅ Production | 51-53/60 | Cross-subject transferable recipe. Pie ≤6 slices / horizontal bar / donut charts render coherent proportions when exact numbers/percentages are supplied; flat vector card grids (no photo layer) achieve zero text errors at 1792x1024; vertical numbered-step timelines work at 1024x1792; use 2048x1152 when you have 6+ floating stat cards. [editorial-infographic.md](references/styles/editorial-infographic.md) |
+| **数据图表（饼图/柱状图/环形图）** | ✅ Production | 8-9/10 | Basic data charts work when you supply exact numbers per slice/bar — pie slice proportions are mathematically accurate, percentages label correctly, colors match spec. [editorial-infographic.md](references/styles/editorial-infographic.md) |
+| **产品曲面/浮雕文字** | ✅ Production | 9/10 | Text on curved surfaces (shoe canvas arc text, bottle labels) and embossed/impressed text inside semi-translucent materials (gel toothpaste, soap) renders cleanly inside tight marker edits when the text is single-quoted and a font descriptor is supplied. |
+| **微信/iOS App UI 伪造（玩笑/梗内容）** | ✅ Production (jokes) | 8.5-9/10 | Text-to-image at --phone (1152x2048 Pro) with element-by-element script and `#95EC69` green-bubble hex produces convincing chat/group-chat/朋友圈/转账/支付/语音/红包 UI. Tiny monochrome tab-bar icons can slip into pseudo-characters; NOT pixel-accurate enough for product specs. [wechat-ui.md](references/styles/wechat-ui.md) |
+| **角色一致性（单张参考 → 多场景）** | ✅ Production (stylized IP) | 9/10 stylized, ⚠️ 7/10 photoreal | Stylized 3D/illustration IPs hold identity across wardrobe/lighting/pose/ scene changes when the prompt opens with a physical-feature recap. Single front/three-quarter 1:1 reference is sufficient; no IP-Adapter/LoRA needed. Photoreal human likeness is weaker. [character-ip.md](references/styles/character-ip.md) |
+| 圈选/点选局部修改 (marker color/material/makeup/feature) | ✅ Production | 9-9.5/10 | Hex ±1 shade drift; single-feature precision confirmed (heterochromia test). [marker-editing.md Recipe 9](references/marker-editing.md) |
+| 草图渲染 (sketch-to-render) | ✅ Production | 9-9.5/10 | Confirmed across photoreal + flat-illustration targets. [marker-editing.md](references/marker-editing.md) |
+| 多图融合抠像 (multi-image extraction compositing) | ✅ Production | 8.5-9/10 (2 people) | Unified lighting genuinely works. [marker-editing.md Recipe 12](references/marker-editing.md) |
+| 区域重绘/擦除修复 (inpaint/erase) | ✅ Production (replaceable object) / ❌ (compositional anchor object) | 9-9.5/10 vs 0/10 | Object salience determines success: replaceable/interchangeable objects (one car in a row of similar cars) erase reliably at 9-9.5/10, even in busy daytime matte scenes. Compositional anchor objects (a bicycle leaning on a lamppost, hero objects, primary light sources) resist at 0/10 with an identically well-formed marker+prompt. Night+reflective+neon scenes remain a separate, harder failure mode (1-4/10). [marker-editing.md Recipe 10](references/marker-editing.md) |
+| 坐标精准定位 + 数学演算续写 | ⚠️ Best-effort | 9.5/10 for style-continuation | Model renders your given answer in matching handwriting; **it does not solve math itself** — supply the correct derivation. [marker-editing.md Recipe 11](references/marker-editing.md) |
+| **智能图层分离 (auto layer separation → transparent PNG layers)** | ❌ **Not available** | n/a | **Not exposed on the public Ark API** — only in ByteDance's internal demo UI. No `mask`/`layers`/`bbox` params exist. Marker edit can approximate "change one region" but never outputs N independent alpha-channel layers. [api-reference.md](references/api-reference.md) |
+| 物理光影全真模拟 | ✅ Production | 9/10 | Wheels produce natural motion blur when described with an anti-detail "flying-saucer disc" recipe (no spokes/rim/tread visible, uniform radial blur disc); bare "motion blur on wheels" fails. [photorealism.md](references/styles/photorealism.md) |
+| 人像肌理天花板 | ✅ Production | 9.5/10 raw skin | Aggressive texture enumeration (pores/vellus/redness/blemishes/oil) + concrete reference analogy ("dermatology reference photo, not a cosmetics ad") + stacked negations produces raw dermatology-grade skin on hard cases (young E-Asian woman + young man). Recipe in [photorealism.md](references/styles/photorealism.md). |
+| 10 人以上大合照不畸形 | ✅ Production | 9/10 at 10 people | Explicit per-person enumeration (ethnicity+age+hair+clothing spelled out for every person) breaks the face-cloning cliff. Generic "10 diverse people" prompts still fail at 4.5/10. [photorealism.md](references/styles/photorealism.md). |
+| 双风格自由切换 (photo ↔ CGI) | ✅ Production | 9-9.5/10 | Pure prompt-keyword toggle, no mode switch needed. [photorealism.md](references/styles/photorealism.md) |
+| 原生多语种生成 (10+ languages) | ✅ Production (Latin/CJK/Korean) / ⚠️ (Thai/Arabic) | 9-10/10 vs 5-8.7/10 | Thai tonal diacritics are the softest layer. [multilingual.md](references/multilingual.md) |
+| 多语言同屏排版 | ✅ Production | 9-9.5/10 | 3-4 scripts per-panel layout; same-line mixing risks diacritic bleed. [multilingual.md](references/multilingual.md) |
+| 文字鬼画符根治 (garbled text elimination) | ✅ Mostly solved | varies by density | Structured/repeated labels 9-10/10; per-cell-unique content collapses past 30 cells. [text-deep.md](references/text-deep.md) |
+| 结构纠错 (anatomy/architecture/mechanical perspective) | ✅ Production | 8.5-9.5/10 dedicated tests | Dynamic dance pose (5-finger accuracy, correct joint bends) 9.5/10; two-point architectural perspective (converging grid lines, no warping) 9/10; watch-gear mechanical mesh (correct tooth interlock, plausible ratios) 8.5/10. Hands under complex multi-object interaction (chopsticks, group ≥4) remain the softest sub-case. Absolute quality on these three dedicated single-image tests is high. |
+| 超高分辨率 | ✅ Production | verified | Pro max ~4.6MP (总像素 4,624,220); Lite goes to 16MP. See [Size Shortcuts](#size-shortcuts) and [api-reference.md](references/api-reference.md). |
 
-Style preset: [references/styles/chinese-aesthetic.md](references/styles/chinese-aesthetic.md).
-
-## Killer Feature 4: Product / E-commerce / Food Photography + Cost
-
-- White-background main shots, lifestyle product scenes, food flat-lays, 3C close-ups, cosmetics unboxing, apparel lookbooks — this is core ad-platform training data for ByteDance
-- Cost: Pro ¥0.30-0.60/image, Lite ¥0.22/image — cheap enough for batch runs (`generate-batch --concurrency 5`) for A/B variants and angle sweeps
-- Style preset: [references/styles/product-photography.md](references/styles/product-photography.md)
+**Confirmed gap**: 智能图层分离 (auto transparent-PNG layer separation) exists in ByteDance's marketing/demo UI but **is not exposed on the public Ark API this skill calls**. For every other headline capability (10-person groups, wheel motion blur, defeating the beauty filter for raw skin, character consistency, marker edits, multilingual text, editorial infographics), a working recipe exists using the pattern: **aggressive explicit enumeration + a concrete reference analogy + stacked negations**. When a Seedream output looks like a generic/smoothed default, suspect the prompt before concluding it is a model limit.
 
 ## Examples
 
-> All examples default to Pro / 2K / PNG / b64_json. `--dry-run` prints the request body without calling the API, so you can sanity-check before spending money.
+> All examples default to Pro / 2K / PNG, downloaded from the server's returned URL. `--dry-run` prints the request body without calling the API, so you can sanity-check before spending money.
 
 ### 1. Sci-fi movie poster (3:4)
 
@@ -305,13 +308,11 @@ uv run scripts/seedream_image_gen.py edit \
 
 ### 11. Lite fast-sketch mode
 
-```bash
-uv run scripts/seedream_image_gen.py generate \
-  --model lite --web-search \
-  --prompt "Concept sketch: a futuristic urban air-mobility hub with multiple eVTOLs taking off and landing"
-```
+See [references/lite-quickref.md](references/lite-quickref.md) for the full example, Lite-only flags (`--web-search`, `--sequential`), and the pixel-floor table.
 
 ## CLI Reference
+
+Flags below apply to both models unless noted; Lite-only flags (`--web-search`, `--sequential`) and Lite's pixel-floor constraints are detailed in [references/lite-quickref.md](references/lite-quickref.md).
 
 ### generate (create new image)
 
@@ -328,6 +329,7 @@ generate
   --wechat-header             Alias for --wide (backward compatibility)
   --portrait                  Shortcut: 3:4 vertical (Pro: 1536x2048, Lite: 2048x2732)
   --landscape                 Shortcut: 16:9 horizontal (Pro: 2048x1152, Lite: 2732x1536)
+  --phone, --stories, --wechat Shortcut: 9:16 vertical (Pro: 1152x2048, Lite: 1440x2560)
   --square                    Shortcut: square (Pro: 1024x1024, Lite: 2048x2048)
   --output-format png|jpeg    Output format (default png)
   --watermark                 Add Seedream watermark (default off)
@@ -338,11 +340,12 @@ generate
   --no-negative-prompt        Disable the default negative prompt (useful for
                                non-human scenes like product/landscape where
                                "extra limbs" is irrelevant)
-  --response-format b64_json|url Response format (default per-model)
-  --optimize-prompt standard|fast Prompt optimization (Pro: standard only)
+  --optimize-prompt standard  Prompt optimization (standard only on 5.x; "fast" is
+                               4.0-only and not supported)
   --n <1-4>                   Generate n independent images (default 1)
   --out <path>                Output file path
-  --out-dir <dir>             Output directory (default output/seedream-image-gen/)
+  --out-dir <dir>             Output directory (default output/seedream-image-gen/;
+                               absolute path is printed at startup)
   --timeout <sec>             Timeout (default 300)
   --force                     Overwrite existing files
   --dry-run                   Print request body and exit
@@ -358,7 +361,9 @@ edit
                                primary target when markers/outpaint are used)
   --marker-rect <spec>        Rectangular edit region (repeatable); pixel X,Y,W,H or
                                X%,Y%,W%,H%
-  --marker-color #rrggbb      Marker color (default #ff0000)
+  --marker-color #rrggbb      Marker color (repeat once per --marker-rect for multi-color
+                               multi-region edits, e.g. red for title, blue for hat;
+                               defaults to #ff0000 for all rects when omitted)
   --marker-alpha <0-255>      Fill transparency (default 80)
   --marker-stroke <px>        Outline stroke width (default 3)
   --no-marker-cleanup-prompt  Don't auto-append "remove colored markers" instruction
@@ -380,7 +385,7 @@ generate-batch
   --force                     Overwrite existing files
 ```
 
-JSONL job-object supported fields: `prompt`, `model`, `size`, `output_format`, `wide`, `wechat_header`, `square`, `portrait`, `landscape`, `watermark`, `web_search`, `optimize_prompt`, `negative_prompt`, `no_negative_prompt`, `response_format`, `reference_image` (list), `marker_rects` (list), `marker_color`, `marker_alpha`, `marker_stroke`, `no_marker_cleanup_prompt`, `outpaint` (list), `timeout`.
+JSONL job-object supported fields: `prompt`, `model`, `size`, `output_format`, `wide`, `wechat_header`, `square`, `portrait`, `landscape`, `watermark`, `web_search`, `optimize_prompt`, `negative_prompt`, `no_negative_prompt`, `reference_image` (list), `marker_rects` (list), `marker_color`, `marker_alpha`, `marker_stroke`, `no_marker_cleanup_prompt`, `outpaint` (list), `timeout`.
 
 ### list-models
 
@@ -405,7 +410,7 @@ Prints the known model IDs, capability matrix, and pricing.
 | [editorial-infographic](references/styles/editorial-infographic.md) | Editorial infographic — hero photo + frosted-glass data cards (NatGeo / Bloomberg data-journalism style); for explainers, report covers, science/tech articles |
 | [hand-drawn-tech-editorial](references/styles/hand-drawn-tech-editorial.md) | Hand-drawn tech editorial look (architecture diagrams + handwritten labels) |
 | [technical-diagram](references/styles/technical-diagram.md) | Technical architecture / flow / schematic diagrams (labels ≤4 chars render reliably) |
-| [education-science](references/education-science.md) | Education / science / explainers (supports short labels) |
+| [education-science](references/styles/education-science.md) | Education / science / explainers (supports short labels) |
 | [editorial-essay](references/styles/editorial-essay.md) | Editorial / cultural-essay accompaniment visuals (optional large overlaid title) |
 | [visual-narrative](references/styles/visual-narrative.md) | Visual narrative / storyboard scenes (optional kicker title) |
 | [editorial-pencil-sketch](references/styles/editorial-pencil-sketch.md) | Editorial pencil-sketch look (supports handwritten annotations) |
@@ -413,6 +418,8 @@ Prints the known model IDs, capability matrix, and pricing.
 | [photorealism](references/styles/photorealism.md) | Photorealistic photography — portrait / product / landscape / cityscape / candlelight / dual CGI toggle; group-shot success curve + realism-focused negative prompt |
 | [multilingual](references/multilingual.md) | Multilingual typography + localization — 10+ languages (CJK/Latin/Hangul/Thai/Arabic), same-screen 4-script banner recipe, per-language scoring table |
 | [text-deep](references/text-deep.md) | Text-dense image generation — architecture diagrams, calendars, data tables, menus, math/chemistry formulas, body text + footnotes; the **30-cell rule** for when to overlay values via HTML/PIL instead of asking Seedream |
+| [wechat-ui](references/styles/wechat-ui.md) | **Parody WeChat / iOS app UI mockups** (txt2img, no reference screenshot needed): chat/group-chat/朋友圈/转账/支付/语音通话/红包, with verified prompt recipes per page type and the safety perimeter for joke/meme use |
+| [character-ip](references/styles/character-ip.md) | **Character IP consistency** across scenes from a single 1:1 reference sheet: physical-feature-recap formula, scene-prompt structure, lighting/wardrobe control, dual-ref subject+scene fusion, what drifts vs what holds |
 
 For visual-generation tasks that don't fit an existing preset, write the prompt directly following the formula in [references/prompt-engineering.md](references/prompt-engineering.md) — presets are scaffolding, not molds; override anything that conflicts with the user brief.
 
@@ -436,4 +443,5 @@ Get an API key: <https://console.volcengine.com/ark/region:ark+cn-beijing/apikey
 - [API reference](references/api-reference.md) — parameter matrix, marker protocol, outpaint protocol, pricing, error codes
 - [Prompt engineering guide](references/prompt-engineering.md) — six prompt formulas (generic / text / marker / consistency / style / multi-ref fusion), failure-mode checklist
 - [Marker editing deep reference](references/marker-editing.md) — 8 copy-paste recipes, rect-size thresholds, annotated.png inspection checklist, failure modes
+- [Lite quick reference](references/lite-quickref.md) — when to actually switch models, pixel-floor table, Lite-only flags, what Lite doesn't have
 - [Styles directory](references/styles/) — 12 style presets (see table above)

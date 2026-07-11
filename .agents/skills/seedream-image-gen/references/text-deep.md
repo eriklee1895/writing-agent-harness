@@ -8,7 +8,7 @@ Seedream 5.0 Pro 在文字密集型生图上**整体 8.4/10 平均**（14 张图
 
 | 项 | 阈值 | 失败模式 |
 |---|---|---|
-| 最小可读中文（2K）| 3-4 字/格 | <10px 实际高度笔画掉（实测未触发，模型自我保护放大）|
+| 最小可读中文（2K）| 3-4 字/格 | <10px 实际高度笔画掉（模型自我保护放大，通常不会触发）|
 | 网格最大 cell 数（重复标签）| 80+ 稳定 | 同结构（每格同样 4 个 label）能跑到 80+ cells 全过 |
 | 网格最大 cell 数（每格唯一内容）| **~30 cells** | 12×12 multiplication table 第 4 行起 69% 错；模型能 hold 几何但 hold 不住语义 |
 | 嵌入短 Latin 入长 Chinese body | 不可靠 | `AI` → `AA`，`Application examples` → `Applicatioiexamples` |
@@ -18,7 +18,7 @@ Seedream 5.0 Pro 在文字密集型生图上**整体 8.4/10 平均**（14 张图
 | Greek / 数学符号 | 100% 准确 | Σ / √ / ∂ / ∇ / ψ / Ĥ / ₁₂ / ² / × 全部正确 |
 | 真实中文地名/品牌 | 触发 input safety block | 见 prompt-engineering 反模式 10 |
 
-## Per-Category 实测评分
+## Per-Category 评分
 
 | 类别 | 代表 | 评分 | 甜点 | 硬限 | 反模式 |
 |---|---|---|---|---|---|

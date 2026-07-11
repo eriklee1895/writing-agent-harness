@@ -34,7 +34,15 @@ function serveFile(filePath, res) {
 }
 
 const server = http.createServer((req, res) => {
-  const safePath = path.normalize(req.url.split("?")[0]).replace(/^\/+/, "");
+  const rawPath = req.url.split("?")[0];
+  let safePath;
+  try {
+    safePath = path.normalize(decodeURIComponent(rawPath)).replace(/^\/+/, "");
+  } catch {
+    res.writeHead(400);
+    res.end("400 Bad Request");
+    return;
+  }
   let fullPath = path.join(ROOT, safePath);
 
   // Serve directory index

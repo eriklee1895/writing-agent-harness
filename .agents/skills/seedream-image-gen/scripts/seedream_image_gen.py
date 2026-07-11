@@ -10,8 +10,8 @@
 via the Volcengine Ark API.
 
 Subcommands:
-  generate         Create a new image from a text prompt (default: Pro / 2K / b64_json).
-  edit             Modify an image — supports marker-based region edits (red-rect protocol),
+  generate         Create a new image from a text prompt (default: Pro / 2K / URL download).
+  edit             Modify an image — supports marker-based region edits (colored-rect protocol),
                    reference-based style transfer, character consistency, and outpainting.
   generate-batch   Run many generation jobs from a JSONL file.
   list-models      Print the known model table and exit.
@@ -39,12 +39,13 @@ import json
 import os
 import re
 import sys
+import tempfile
 import time
 from pathlib import Path
 from typing import Any, Optional
 
 import httpx
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageOps
 
 
 # ---------------------------------------------------------------------------
@@ -70,7 +71,6 @@ MODEL_LITE_ALIASES = {"lite", "seedream-lite", "5-lite", "seedream-5-lite", "dou
 #   supports_sequential does it accept sequential_image_generation?
 #   supports_negative_prompt does it accept negative_prompt? (undocumented but accepted by Pro)
 #   optimize_modes     allowed values for optimize_prompt_options.mode
-#   response_format_default "url" or "b64_json" — Pro defaults to b64_json to skip a second hop
 #   price_per_image    rough ¥/image for the default size bucket; printed by list-models
 #   notes              human notes (limitations)
 
@@ -79,16 +79,16 @@ MODELS: dict[str, dict[str, Any]] = {
         "aliases": MODEL_PRO_ALIASES,
         "label": "Seedream 5.0 Pro (2026-06-28 build)",
         "size_strings": {"1K", "2K"},
-        "pixel_min": 921_600,          # 960×960 = 0.9MP; doc says ~0.9MP floor; 1024² OK
-        "pixel_max": 4_194_304,        # 2048×2048 = 4MP
+        "pixel_min": 921_600,          # official method-1 floor = 1280×720 = 0.92MP; 1024² OK
+        "pixel_max": 4_624_220,        # official method-1 ceiling = 2048²×1.1025 (not 2048²=4.19MP)
         "aspect_max": 16,
+        "method1_default": "1024x1024",  # official method-1 default when --size omitted
         "default_size": "2K",
         "max_refs": 10,
         "supports_web_search": False,
         "supports_sequential": False,
         "supports_negative_prompt": True,
         "optimize_modes": {"standard"},
-        "response_format_default": "b64_json",
         "price_per_image": "≤2.36MP ¥0.30 / >2.36MP ¥0.60 (extra input image ¥0.02)",
         "notes": "Headline features: strong Chinese+English text rendering; marker-based region editing. "
                  "No web_search, no sequential gen, no stream. Size preset stops at 2K (no 3K/4K). "
@@ -98,20 +98,21 @@ MODELS: dict[str, dict[str, Any]] = {
         "aliases": MODEL_LITE_ALIASES,
         "label": "Seedream 5.0 Lite (2026-01-28 build)",
         "size_strings": {"2K", "3K", "4K"},
-        "pixel_min": 3_686_400,        # 2560×1440 ≈ 3.69MP — hard floor enforced server-side
-        "pixel_max": 16_777_216,       # 4096×4096 = 16MP
+        "pixel_min": 3_686_400,        # official method-1 floor = 2560×1440 ≈ 3.69MP
+        "pixel_max": 16_777_216,       # official method-1 ceiling = 4096×4096 = 16MP
         "aspect_max": 16,
+        "method1_default": "2048x2048",  # official method-1 default when --size omitted
         "default_size": "2K",
         "max_refs": 14,
         "supports_web_search": True,
         "supports_sequential": True,
         "supports_negative_prompt": False,
-        "optimize_modes": {"standard", "fast"},
-        "response_format_default": "url",
+        "optimize_modes": {"standard"},
         "price_per_image": "¥0.22/张 (2K tier)",
         "notes": "Fast sketch/iteration workhorse. Text rendering weaker than Pro (avoid text-heavy "
                  "prompts). Supports web_search and sequential group generation. Pixel floor blocks "
-                 "1024² / 1792×1024 WeChat headers (use Pro for those).",
+                 "1024² / 1792×1024 WeChat headers (use Pro for those). optimize_prompt fast is NOT "
+                 "supported on Lite (5.0 Pro/Lite/4.5 all reject 'fast'; only Seedream 4.0 accepts it).",
     },
 }
 
@@ -284,11 +285,15 @@ def _apply_size_shortcuts(
     wide: bool,
     portrait: bool,
     landscape: bool,
+    phone: bool,
     caps: dict[str, Any],
 ) -> str:
     """Translate convenience flags into size strings; last explicit wins.
     Model-aware so --square and --wide produce valid sizes for both models.
     """
+    # 9:16 phone/Stories (1152x2048 Pro, 1440x2560 Lite) — most common vertical UI size
+    if phone:
+        return "1152x2048" if "1K" in caps["size_strings"] else "1440x2560"
     # Wide/header shortcuts (1792x1024, Pro only due to pixel floor on Lite)
     if wechat_header or wide:
         return "1792x1024"
@@ -323,7 +328,7 @@ def _validate_size(size: str, caps: dict[str, Any], model_id: str) -> tuple[int,
     if size_upper in {"3K", "4K"} and size_upper not in caps["size_strings"]:
         _die(
             f"Size '{size_upper}' is not supported by model {model_id}. "
-            f"Pro tops out at 2K (~4MP pixel cap). Allowed presets: {sorted(caps['size_strings'])}."
+            f"Pro tops out at 2K (~4.6MP method-1 pixel cap). Allowed presets: {sorted(caps['size_strings'])}."
         )
 
     m = re.fullmatch(r"(\d{3,5})x(\d{3,5})", size)
@@ -428,19 +433,30 @@ def _parse_color(spec: str) -> tuple[int, int, int]:
 
 
 def _apply_markers(src_path: Path, rects: list[tuple[float, float, float, float, bool]],
-                   color: tuple[int, int, int], fill_alpha: int, stroke_width: int) -> bytes:
+                   colors: list[tuple[int, int, int]], fill_alpha: int, stroke_width: int) -> bytes:
     """Draw semi-transparent rectangles on a copy of the source image and return
     the annotated image as PNG bytes.
+
+    `colors` is parallel to `rects` so each region can be its own color (red/blue/green for
+    multi-region prompts like "红框替换标题，蓝框改帽子"). When a single color is supplied
+    (legacy --marker-color without repeats), all rects use that color.
     """
     img = Image.open(src_path).convert("RGBA")
+    # Honor EXIF orientation (phone photos may be stored rotated; transpose so
+    # pixel coordinates match what the user sees on screen).
+    img = ImageOps.exif_transpose(img)
     W, H = img.size
 
     overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
-    fill_rgba = (*color, fill_alpha)
-    outline_rgb = color
 
-    for (x, y, w, h, is_percent) in rects:
+    # If caller gave one color for many rects, repeat it; if they gave one per rect, zip.
+    if len(colors) == 1:
+        colors = colors * len(rects)
+    elif len(colors) < len(rects):
+        colors = colors + [colors[-1]] * (len(rects) - len(colors))
+
+    for (x, y, w, h, is_percent), color in zip(rects, colors):
         if is_percent:
             x_px = int(round(x / 100.0 * W))
             y_px = int(round(y / 100.0 * H))
@@ -450,7 +466,8 @@ def _apply_markers(src_path: Path, rects: list[tuple[float, float, float, float,
             x_px, y_px, w_px, h_px = int(x), int(y), int(w), int(h)
 
         box = [x_px, y_px, x_px + w_px, y_px + h_px]
-        draw.rectangle(box, fill=fill_rgba, outline=outline_rgb, width=stroke_width)
+        fill_rgba = (*color, fill_alpha)
+        draw.rectangle(box, fill=fill_rgba, outline=color, width=stroke_width)
 
     combined = Image.alpha_composite(img, overlay).convert("RGB")
     buf = _BytesIO()
@@ -491,6 +508,7 @@ def _apply_outpaint(src_path: Path, paddings: dict[str, int]) -> tuple[bytes, st
     return PNG bytes + an aspect-word hint for the auto-prompt.
     """
     img = Image.open(src_path).convert("RGB")
+    img = ImageOps.exif_transpose(img)
     W, H = img.size
     pl = paddings.get("left", 0)
     pr = paddings.get("right", 0)
@@ -583,7 +601,6 @@ def _build_request_body(
     sequential: bool,
     max_images: int,
     negative_prompt: Optional[str],
-    response_format: str,
 ) -> dict[str, Any]:
     body: dict[str, Any] = {
         "model": model,
@@ -591,7 +608,6 @@ def _build_request_body(
         "size": size,
         "output_format": output_format,
         "watermark": watermark,
-        "response_format": response_format,
     }
 
     # Optimize prompt mode — Pro only accepts "standard"; Lite accepts both.
@@ -675,12 +691,11 @@ def _write_metadata(
     output_format: str,
     watermark: bool,
     web_search: bool,
-    reference_images: Optional[list[str]],
+    reference_count: int,
     optimize_prompt: Optional[str],
     base_url: str,
     dry_run: bool,
     negative_prompt: Optional[str] = None,
-    response_format: Optional[str] = None,
     marker_rects: Optional[list[str]] = None,
     outpaint_specs: Optional[list[str]] = None,
     reported_size: Optional[str] = None,
@@ -699,13 +714,10 @@ def _write_metadata(
         "watermark": watermark,
         "web_search": web_search,
         "optimize_prompt": optimize_prompt,
-        "reference_images_count": len(reference_images) if reference_images else 0,
+        "reference_images_count": reference_count,
         # Don't persist data URLs — they're huge and can contain secrets-adjacent material
-        "reference_images_are_data_urls": bool(reference_images) and all(
-            r.startswith("data:") for r in reference_images
-        ),
+        "reference_images_are_data_urls": None,  # populated below only when refs exist
         "negative_prompt": negative_prompt,
-        "response_format": response_format,
         "marker_rects": marker_rects or [],
         "outpaint": outpaint_specs or [],
         "base_url": base_url,
@@ -713,6 +725,8 @@ def _write_metadata(
         "created_at": _now_iso(),
         "dry_run": dry_run,
     }
+    # Callers pass reference_count explicitly so we don't confuse "single string data URL"
+    # (which would give a byte-length len() in Python) with 1 image.
     if reported_size:
         meta["reported_size"] = reported_size
     if elapsed_ms is not None:
@@ -793,9 +807,29 @@ async def _call_api(
 
 
 async def _download_image(client: httpx.AsyncClient, url: str, timeout: int) -> bytes:
-    response = await client.get(url, timeout=float(timeout))
-    response.raise_for_status()
-    return response.content
+    """Download the generated image with its own retry/backoff.
+
+    Separate from _call_api's retry loop on purpose: a transient failure here
+    (the generation call already succeeded and was already paid for) should
+    retry just the cheap download, not redo the whole generation.
+    """
+    last_error: Optional[Exception] = None
+    for attempt in range(MAX_RETRIES + 1):
+        try:
+            response = await client.get(url, timeout=float(timeout))
+            response.raise_for_status()
+            return response.content
+        except (httpx.TimeoutException, httpx.TransportError, httpx.HTTPStatusError) as e:
+            last_error = e
+            if attempt < MAX_RETRIES:
+                delay = RETRY_BACKOFF[min(attempt, len(RETRY_BACKOFF) - 1)]
+                print(
+                    f"Image download failed ({e.__class__.__name__}), retrying in "
+                    f"{delay:.0f}s (attempt {attempt+1}/{MAX_RETRIES})...",
+                    file=sys.stderr,
+                )
+                await asyncio.sleep(delay)
+    raise last_error  # type: ignore[misc]
 
 
 async def _generate_single(
@@ -892,7 +926,6 @@ def _cmd_list_models(_args: argparse.Namespace) -> int:
         print(f"    sequential:   {'yes' if caps['supports_sequential'] else 'no'}")
         print(f"    neg prompt:   {'yes (beta/undocumented)' if caps['supports_negative_prompt'] else 'no'}")
         print(f"    Opt modes:    {', '.join(sorted(caps['optimize_modes']))}")
-        print(f"    resp format:  {caps['response_format_default']}")
         print(f"    Price:        {caps['price_per_image']}")
         print(f"    Notes:        {caps['notes']}")
         print()
@@ -929,6 +962,9 @@ def _add_common_gen_args(p: argparse.ArgumentParser, *, include_lite_only: bool)
                    help="Shorthand for 3:4 vertical output (Pro: 1536x2048, Lite: 2048x2732).")
     p.add_argument("--landscape", action="store_true",
                    help="Shorthand for 16:9 horizontal output (Pro: 2048x1152, Lite: 2732x1536).")
+    p.add_argument("--phone", "--stories", "--wechat", action="store_true",
+                   help="Shorthand for 9:16 phone/Stories/WeChat-UI vertical output "
+                        "(Pro: 1152x2048, Lite: 1440x2560). Aliases: --stories, --wechat.")
     p.add_argument("--web-search", action="store_true", default=False,
                    help="Enable web search (Lite only; Pro ignores this with a warning). "
                         "Default OFF.")
@@ -936,16 +972,15 @@ def _add_common_gen_args(p: argparse.ArgumentParser, *, include_lite_only: bool)
                    help="Explicitly disable web search (default).")
     p.add_argument("--watermark", action="store_true",
                    help="Include Seedream watermark (default: off).")
-    p.add_argument("--optimize-prompt", choices=["standard", "fast"], default=None,
-                   help="Prompt optimization mode. Pro only supports 'standard'.")
+    p.add_argument("--optimize-prompt", choices=["standard"], default=None,
+                   help="Prompt optimization mode. Pro/Lite both accept 'standard' only "
+                        "(Seedream 4.0 'fast' mode is not supported on 5.x).")
     p.add_argument("--negative-prompt", default=None,
                    help=f"Negative prompt. On Pro defaults to a gentle quality guard "
                         f"({PRO_DEFAULT_NEGATIVE!r}); pass --negative-prompt '' to disable. "
                         f"Not supported on Lite.")
     p.add_argument("--no-negative-prompt", action="store_true",
                    help="Disable the default negative prompt (Pro only).")
-    p.add_argument("--response-format", choices=["b64_json", "url"], default=None,
-                   help="Response format. Default follows model (Pro: b64_json, Lite: url).")
     p.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT,
                    help=f"Timeout in seconds (default: {DEFAULT_TIMEOUT}).")
     p.add_argument("--dry-run", action="store_true",
@@ -969,7 +1004,8 @@ def _resolve_common(args: argparse.Namespace, *, require_prompt: bool = True) ->
 
     # Resolve size (convenience flags → explicit string; model-aware)
     size = _apply_size_shortcuts(
-        args.size, args.wechat_header, args.square, args.wide, args.portrait, args.landscape, caps,
+        args.size, args.wechat_header, args.square, args.wide, args.portrait, args.landscape,
+        getattr(args, "phone", False), caps,
     )
     _validate_size(size, caps, model_id)
 
@@ -990,9 +1026,6 @@ def _resolve_common(args: argparse.Namespace, *, require_prompt: bool = True) ->
     # Normalize empty string to None (so it doesn't get sent)
     if negative_prompt == "":
         negative_prompt = None
-
-    # Response format
-    response_format = getattr(args, "response_format", None) or caps["response_format_default"]
 
     # Reference images (used by both generate (optional) and edit (required))
     ref_paths = list(getattr(args, "reference_image", []) or [])
@@ -1026,26 +1059,50 @@ def _resolve_common(args: argparse.Namespace, *, require_prompt: bool = True) ->
     if marker_specs:
         if not ref_paths:
             _die("--marker-rect requires at least one --reference-image to annotate.")
+        # Marker editing is validated/tuned on Pro. Lite accepts image+prompt with visual
+        # markers too (it's just image+text), but text rendering is weaker and we haven't
+        # validated the rectangle-protocol thresholds (8%/70% bounds, color-box recognition,
+        # cleanup reliability) on Lite. Warn once rather than blocking; the user can still try.
+        if not caps.get("label", "").lower().startswith("seedream 5.0 pro"):
+            _warn(
+                "Marker editing (--marker-rect) is validated and tuned on Pro only. "
+                "On Lite the colored-rectangle protocol is untested: text-in-box results "
+                "are likely worse, cleanup may leave artifacts, and the 8%/70% size thresholds "
+                "may not apply. Pro is recommended for marker edits."
+            )
         # Markers always annotate the first reference; additional refs are passed as-is.
         src_primary = ref_paths[0]
         if outpaint_canvas_png is not None:
-            # We already padded; write that to a temp file so we can draw markers on it.
-            tmp_path = Path(args.out_dir if hasattr(args, "out_dir") else DEFAULT_OUTPUT_DIR) / ".marker-tmp.png"
-            tmp_path.parent.mkdir(parents=True, exist_ok=True)
-            tmp_path.write_bytes(outpaint_canvas_png)
-            src_for_markers = tmp_path
-            # Replace the first reference bytes (no longer outpaint canvas separately)
-            outpaint_canvas_png = None
+            # We already padded; write to a temp file so we can draw markers on it,
+            # then delete after encoding.
+            _tmp = tempfile.NamedTemporaryFile(suffix=".marker-tmp.png", delete=False)
+            try:
+                _tmp.write(outpaint_canvas_png)
+                _tmp.close()
+                src_for_markers = Path(_tmp.name)
+            except Exception:
+                Path(_tmp.name).unlink(missing_ok=True)
+                raise
+            outpaint_canvas_png = None  # no longer needed separately
         elif _is_url(src_primary):
             _die("--marker-rect needs a local reference image (URLs cannot be annotated client-side).")
         else:
             src_for_markers = Path(src_primary).expanduser().resolve()
 
         rects = [_parse_marker_rect(s) for s in marker_specs]
-        color = _parse_color(getattr(args, "marker_color", "#ff0000"))
+        raw_colors = list(getattr(args, "marker_color", None) or [])
+        if not raw_colors:
+            raw_colors = ["#ff0000"]
+        colors = [_parse_color(c) for c in raw_colors]
         fill_alpha = int(getattr(args, "marker_alpha", 80))
         stroke_width = int(getattr(args, "marker_stroke", 3))
-        annotated_png = _apply_markers(src_for_markers, rects, color, fill_alpha, stroke_width)
+        annotated_png = _apply_markers(src_for_markers, rects, colors, fill_alpha, stroke_width)
+        # Clean up outpaint+marker temp file if we created one
+        if outpaint_canvas_png is None and src_for_markers != Path(src_primary).expanduser().resolve():
+            try:
+                Path(src_for_markers).unlink(missing_ok=True)
+            except OSError:
+                pass
 
         # Save annotated image next to output for inspection
         out_dir = Path(getattr(args, "out_dir", DEFAULT_OUTPUT_DIR)).expanduser().resolve()
@@ -1108,9 +1165,9 @@ def _resolve_common(args: argparse.Namespace, *, require_prompt: bool = True) ->
         "web_search": web_search,
         "optimize_prompt": args.optimize_prompt,
         "negative_prompt": negative_prompt,
-        "response_format": response_format,
         "reference_images": refs,
         "reference_image_paths": list(getattr(args, "reference_image", []) or []),
+        "reference_count": len(ref_paths),
         "marker_specs": marker_specs,
         "outpaint_specs": outpaint_specs,
         "annotated_path": str(annotated_path) if annotated_path else None,
@@ -1148,11 +1205,13 @@ def _cmd_generate(args: argparse.Namespace) -> int:
         output_format=r["output_format"], watermark=r["watermark"], web_search=r["web_search"],
         reference_images=r["reference_images"], optimize_prompt=r["optimize_prompt"],
         sequential=r["sequential"], max_images=r["max_images"],
-        negative_prompt=r["negative_prompt"], response_format=r["response_format"],
+        negative_prompt=r["negative_prompt"],
     )
 
     out = getattr(args, "out", None)
     out_dir = getattr(args, "out_dir", DEFAULT_OUTPUT_DIR)
+    out_dir_resolved = str(Path(out_dir).expanduser().resolve())
+    _info(f"Output dir: {out_dir_resolved}")
 
     if r["dry_run"]:
         print(json.dumps(body, ensure_ascii=False, indent=2))
@@ -1161,9 +1220,10 @@ def _cmd_generate(args: argparse.Namespace) -> int:
         _write_metadata(
             image_path, prompt=r["prompt"], model=r["model_id"], size=r["size"],
             output_format=r["output_format"], watermark=r["watermark"], web_search=r["web_search"],
-            reference_images=r["reference_images"], optimize_prompt=r["optimize_prompt"],
+            reference_count=len(r.get("reference_image_paths", []) or []) or (1 if r["reference_images"] else 0),
+            optimize_prompt=body.get("optimize_prompt_options", {}).get("mode"),
             base_url=DEFAULT_BASE_URL, dry_run=True, negative_prompt=r["negative_prompt"],
-            response_format=r["response_format"], marker_rects=r["marker_specs"],
+            marker_rects=r["marker_specs"],
             outpaint_specs=r["outpaint_specs"],
         )
         return 0
@@ -1202,9 +1262,9 @@ async def _generate_one(
             image_path,
             prompt=r["prompt"], model=r["model_id"], size=r["size"],
             output_format=r["output_format"], watermark=r["watermark"],
-            web_search=r["web_search"], reference_images=r["reference_images"],
-            optimize_prompt=r["optimize_prompt"], base_url=base_url, dry_run=False,
-            negative_prompt=r["negative_prompt"], response_format=r["response_format"],
+            web_search=r["web_search"], reference_count=r["reference_count"],
+            optimize_prompt=body.get("optimize_prompt_options", {}).get("mode"), base_url=base_url, dry_run=False,
+            negative_prompt=r["negative_prompt"],
             marker_rects=r["marker_specs"], outpaint_specs=r["outpaint_specs"],
             reported_size=reported_size, elapsed_ms=elapsed_ms,
             revised_prompt=revised_prompt, usage=usage,
@@ -1255,9 +1315,9 @@ async def _generate_concurrent(
                 image_path,
                 prompt=r["prompt"], model=r["model_id"], size=r["size"],
                 output_format=r["output_format"], watermark=r["watermark"],
-                web_search=r["web_search"], reference_images=r["reference_images"],
-                optimize_prompt=r["optimize_prompt"], base_url=base_url, dry_run=False,
-                negative_prompt=r["negative_prompt"], response_format=r["response_format"],
+                web_search=r["web_search"], reference_count=r["reference_count"],
+                optimize_prompt=body.get("optimize_prompt_options", {}).get("mode"), base_url=base_url, dry_run=False,
+                negative_prompt=r["negative_prompt"],
                 marker_rects=r["marker_specs"], outpaint_specs=r["outpaint_specs"],
                 reported_size=reported_size, elapsed_ms=elapsed_ms,
                 revised_prompt=revised_prompt, usage=usage,
@@ -1290,8 +1350,10 @@ def _add_edit_parser(subparsers: argparse._SubParsersAction) -> None:
                         "Repeat for multiple regions. Use with a natural-language prompt "
                         "like 'Red box: replace the title with \"新标题\"' and add --marker-color "
                         "for multi-color regions.")
-    p.add_argument("--marker-color", default="#ff0000",
-                   help="Marker rectangle color (#RRGGBB, default #ff0000 red).")
+    p.add_argument("--marker-color", action="append", default=None,
+                   help="Marker rectangle color (#RRGGBB). Repeat once per --marker-rect for "
+                        "multi-color regions (e.g. red for title, blue for cap, so you can write "
+                        "'红框替换标题，蓝框改帽子'). Defaults to #ff0000 for all rects if omitted.")
     p.add_argument("--marker-alpha", type=int, default=80,
                    help="Marker fill alpha 0-255 (default 80).")
     p.add_argument("--marker-stroke", type=int, default=3,
@@ -1315,7 +1377,7 @@ def _cmd_edit(args: argparse.Namespace) -> int:
         output_format=r["output_format"], watermark=r["watermark"], web_search=r["web_search"],
         reference_images=r["reference_images"], optimize_prompt=r["optimize_prompt"],
         sequential=False, max_images=4,
-        negative_prompt=r["negative_prompt"], response_format=r["response_format"],
+        negative_prompt=r["negative_prompt"],
     )
 
     out = getattr(args, "out", None)
@@ -1327,9 +1389,10 @@ def _cmd_edit(args: argparse.Namespace) -> int:
         _write_metadata(
             image_path, prompt=r["prompt"], model=r["model_id"], size=r["size"],
             output_format=r["output_format"], watermark=r["watermark"], web_search=r["web_search"],
-            reference_images=r["reference_images"], optimize_prompt=r["optimize_prompt"],
+            reference_count=r["reference_count"],
+            optimize_prompt=body.get("optimize_prompt_options", {}).get("mode"),
             base_url=DEFAULT_BASE_URL, dry_run=True, negative_prompt=r["negative_prompt"],
-            response_format=r["response_format"], marker_rects=r["marker_specs"],
+            marker_rects=r["marker_specs"],
             outpaint_specs=r["outpaint_specs"],
         )
         return 0
@@ -1360,15 +1423,15 @@ def _add_batch_parser(subparsers: argparse._SubParsersAction) -> None:
     p.add_argument("--square", action="store_true", help="Default to square output.")
     p.add_argument("--portrait", action="store_true", help="Default to 3:4 vertical output.")
     p.add_argument("--landscape", action="store_true", help="Default to 16:9 horizontal output.")
+    p.add_argument("--phone", "--stories", "--wechat", action="store_true",
+                   help="Default to 9:16 phone/Stories/WeChat-UI output.")
     p.add_argument("--web-search", action="store_true", default=False, help="Default web-search on (Lite only).")
     p.add_argument("--no-web-search", action="store_false", dest="web_search", help="Default web-search off.")
     p.add_argument("--watermark", action="store_true", help="Default watermark on.")
-    p.add_argument("--optimize-prompt", choices=["standard", "fast"], default=None,
-                   help="Default prompt optimization mode.")
+    p.add_argument("--optimize-prompt", choices=["standard"], default=None,
+                   help="Default prompt optimization mode ('standard' only on 5.x; 'fast' is 4.0-only).")
     p.add_argument("--negative-prompt", default=None, help="Default negative prompt.")
     p.add_argument("--no-negative-prompt", action="store_true", help="Default negative-prompt off.")
-    p.add_argument("--response-format", choices=["b64_json", "url"], default=None,
-                   help="Default response format.")
     p.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT, help=f"Timeout (default: {DEFAULT_TIMEOUT}).")
     p.add_argument("--dry-run", action="store_true", help="Print bodies and exit.")
     p.add_argument("--force", action="store_true", help="Overwrite existing outputs.")
@@ -1430,10 +1493,10 @@ def _cmd_batch(args: argparse.Namespace) -> int:
         ns.optimize_prompt = job.get("optimize_prompt", args.optimize_prompt)
         ns.negative_prompt = job.get("negative_prompt", args.negative_prompt)
         ns.no_negative_prompt = bool(job.get("no_negative_prompt", False))
-        ns.response_format = job.get("response_format", args.response_format)
         ns.reference_image = list(job.get("reference_image", []) or [])
         ns.marker_rect = list(job.get("marker_rects", []) or [])
-        ns.marker_color = job.get("marker_color", "#ff0000")
+        mc = job.get("marker_color", ["#ff0000"])
+        ns.marker_color = list(mc) if isinstance(mc, list) else [mc]
         ns.marker_alpha = int(job.get("marker_alpha", 80))
         ns.marker_stroke = int(job.get("marker_stroke", 3))
         ns.no_marker_cleanup_prompt = bool(job.get("no_marker_cleanup_prompt", False))
@@ -1448,6 +1511,8 @@ def _cmd_batch(args: argparse.Namespace) -> int:
         ns.dry_run = bool(args.dry_run)
         ns.force = bool(args.force)
         ns.out = None
+        # Size shortcuts
+        ns.phone = bool(job.get("phone", False))
 
         r = _resolve_common(ns, require_prompt=True)
         body = _build_request_body(
@@ -1455,7 +1520,7 @@ def _cmd_batch(args: argparse.Namespace) -> int:
             output_format=r["output_format"], watermark=r["watermark"], web_search=r["web_search"],
             reference_images=r["reference_images"], optimize_prompt=r["optimize_prompt"],
             sequential=False, max_images=4,
-            negative_prompt=r["negative_prompt"], response_format=r["response_format"],
+            negative_prompt=r["negative_prompt"],
         )
         bodies.append((job["prompt"], body, r))
 
@@ -1498,11 +1563,10 @@ async def _run_batch(
                         image_path,
                         prompt=prompt, model=body["model"], size=body["size"],
                         output_format=r["output_format"], watermark=body.get("watermark", False),
-                        web_search="tools" in body, reference_images=body.get("image"),
+                        web_search="tools" in body, reference_count=r["reference_count"],
                         optimize_prompt=body.get("optimize_prompt_options", {}).get("mode"),
                         base_url=base_url, dry_run=False,
                         negative_prompt=body.get("negative_prompt"),
-                        response_format=body.get("response_format"),
                         marker_rects=r["marker_specs"], outpaint_specs=r["outpaint_specs"],
                         reported_size=reported_size, elapsed_ms=elapsed_ms,
                         revised_prompt=revised_prompt, usage=usage,

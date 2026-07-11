@@ -499,6 +499,47 @@ function parseBlocks(markdown) {
       continue;
     }
 
+    // ::compare:: ... ::end-compare:: — wraps exactly 2 image lines (each
+    // optionally followed by a caption paragraph) into a left/right before/after
+    // pair. Used for Marker Edit style demos where showing input+output side by
+    // side matters more than full-width sequential images. Labels default to
+    // "改前"/"改后"; override with ::compare left="..." right="..." ::.
+    const compareOpen = trimmed.match(/^::compare(?:\s+left="([^"]*)")?(?:\s+right="([^"]*)")?\s*::$/);
+    if (compareOpen) {
+      const leftLabel = compareOpen[1] || "改前";
+      const rightLabel = compareOpen[2] || "改后";
+      i += 1;
+      const panels = [];
+      while (i < lines.length && lines[i].trim() !== "::end-compare::") {
+        const innerTrimmed = lines[i].trim();
+        if (!innerTrimmed) {
+          i += 1;
+          continue;
+        }
+        if (isImageLine(innerTrimmed)) {
+          const img = parseImage(innerTrimmed);
+          i += 1;
+          // Optional caption: next non-blank line if it's a plain paragraph
+          // (not another image, not the closing tag).
+          let caption = "";
+          if (i < lines.length) {
+            const capTrimmed = lines[i].trim();
+            if (capTrimmed && capTrimmed !== "::end-compare::" && !isImageLine(capTrimmed)) {
+              caption = capTrimmed;
+              i += 1;
+            }
+          }
+          panels.push({ ...img, caption });
+          continue;
+        }
+        // Unexpected content inside ::compare:: — skip defensively.
+        i += 1;
+      }
+      if (i < lines.length && lines[i].trim() === "::end-compare::") i += 1;
+      blocks.push({ type: "compare", leftLabel, rightLabel, panels });
+      continue;
+    }
+
     const heading = trimmed.match(/^(#{1,6})\s+(.+)$/);
     if (heading) {
       blocks.push({ type: "heading", level: heading[1].length, text: heading[2].trim() });
@@ -829,6 +870,29 @@ function imageHtml(block) {
 </figure>`;
 }
 
+// Before/after side-by-side comparison (::compare:: ... ::end-compare:: in source).
+// Used for Marker Edit demos: left = input image, right = output image. No card
+// chrome, no "gallery" framing — just two flex columns with a small pill label
+// ("改前"/"改后") above each so the pairing reads instantly on mobile widths.
+function compareHtml(block) {
+  const tokens = getTokens();
+  const [left, right] = block.panels;
+  if (!left || !right) {
+    // Defensive fallback: if exactly 2 images weren't provided, render whatever
+    // we got as plain stacked figures rather than silently dropping content.
+    return block.panels.map((p) => imageHtml({ type: "image", src: p.src, alt: p.alt })).join("\n");
+  }
+  const panelHtml = (panel, label) => `<div style="${SAFE_WRAP} box-sizing:border-box; width:49.5%; flex:0 0 49.5%; text-align:center;">
+    <div style="${SAFE_WRAP} display:inline-block; font-size:11px; font-weight:700; letter-spacing:.04em; color:${tokens.accent}; background:${tokens.highlightBg || "rgba(216,75,55,.08)"}; border-radius:999px; padding:2px 10px; margin:0 0 8px;">${escapeHtml(label)}</div>
+    <img ${imageAttrs(panel.src, panel.alt)} style="box-sizing:border-box; width:100%; max-width:100%; height:auto; border-radius:8px; display:block; margin:0 auto;">
+    ${panel.caption || panel.alt ? `<p style="${SAFE_WRAP} font-size:12px; line-height:1.5; color:#6a727a; margin:8px 0 0;">${escapeHtml(panel.caption || panel.alt)}</p>` : ""}
+  </div>`;
+  return `<div style="${SAFE_WRAP} display:flex; align-items:flex-start; justify-content:space-between; width:100%; margin:20px 0 8px; gap:1%;">
+  ${panelHtml(left, block.leftLabel)}
+  ${panelHtml(right, block.rightLabel)}
+</div>`;
+}
+
 function videoPlaceholderHtml(block) {
   const tokens = getTokens();
   const srcLabel = block.src ? path.basename(block.src) : "待替换视频素材";
@@ -1020,6 +1084,8 @@ function blockHtml(block) {
       return videoPlaceholderHtml(block);
     case "imageGroup":
       return imageGroupHtml(block);
+    case "compare":
+      return compareHtml(block);
     case "table":
       return tableHtml(block);
     case "code":
@@ -1309,7 +1375,9 @@ async function main() {
   fs.writeFileSync(outputPath, html, "utf8");
 
   const imageCount = opening.blocks.reduce((count, block) => (
-    count + (block.type === "imageGroup" ? block.images.length : block.type === "image" ? 1 : 0)
+    count + (block.type === "imageGroup" ? block.images.length
+      : block.type === "compare" ? block.panels.length
+      : block.type === "image" ? 1 : 0)
   ), 0);
   console.log(JSON.stringify({ outputPath, title: opening.title, imageCount, style: ACTIVE_STYLE }, null, 2));
 
