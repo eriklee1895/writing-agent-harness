@@ -11,13 +11,13 @@ Marker 编辑是 Seedream 5.0 Pro 最具差异化的能力——不用画 mask�
 | 对比项 | 传统 mask/bbox API（MJ inpaint、DALL·E edit、SD inpaint） | Seedream marker edit |
 |---|---|---|
 | 输入 | 黑白 mask PNG / `[x,y,w,h]` bbox JSON / 涂抹画布 | 彩色矩形 + 自然语言描述 |
-| 精度要求 | mask 必须精确覆盖目标边缘，1-2 px 误差就漏/出血 | 矩形粗略框住即可（M4 矩形裁剪掉了底部引脚，模型仍把底部引脚也一起改了色） |
+| 精度要求 | mask 必须精确覆盖目标边缘，1-2 px 误差就漏/出血 | 矩形粗略框住即可（裁剪到引脚外一点，模型仍会把引脚一起改色） |
 | 多区域 | 多个独立 mask + 多段独立 prompt | 多个彩色矩形（红/蓝/绿/紫），一段 prompt 分颜色描述 |
-| 框外保持 | 理论上 100% 保持但实际模型常重绘 | 框外像素实测保持率 9-10/10（M3/M4/M5/M6/M7 都通过） |
+| 框外保持 | 理论上 100% 保持但实际模型常重绘 | 框外像素保持率 9-10/10 |
 | Marker 残留 | N/A | 模型自动擦除（全部 critique 里 NO_MARKER_LEFTOVER 都是 10/10） |
 | 上手成本 | 需要 PS/Figma/专业涂抹工具 | 命令行 `--marker-rect X%,Y%,W%,H%` + 一句话 prompt |
 
-Pro 的 marker 编辑实测可稳定处理：换大标题/副标题/标签文字、换产品材质/颜色、加图标/装饰点、移除图标/物体还原背景、多区域多色同时改、与 outpaint 组合扩图+改图。**Lite 不支持 marker。**
+Pro's marker editing reliably handles: headline/subtitle/label text swaps, product material/color changes, adding icons/decorative dots, removing icons/objects and restoring the background, simultaneous multi-region multi-color edits, and combined outpaint+marker canvas-extension edits. **Marker editing is validated on Pro; Lite is untested for this workflow.**
 
 ---
 
@@ -28,7 +28,7 @@ Pro 的 marker 编辑实测可稳定处理：换大标题/副标题/标签文字
 1. **Pillow 画框**：读取 `--reference-image`，按每个 `--marker-rect` 坐标在图上叠加一个半透明彩色矩形（fill alpha 默认 80，stroke 3px），保存为 `*-annotated.png` 到输出目录。
 2. **自动追加清理指令**：在 prompt 末尾追加中文指令"擦除所有红/蓝/绿/…彩色方框标记，方框线条和填充不要出现在结果里"。可用 `--no-marker-cleanup-prompt` 禁用（不建议，除非你自己在 prompt 里写了清理）。
 3. **发图**：把带框 annotated 图作为 image 引用发给 `/images/generations` 编辑接口（edit 与 generate 共用一个 endpoint，传 `--reference-image` 即自动走 edit 模态）。
-4. **出图**：API 返回 PNG，模型已经在框内改图 + 自动擦除了方框。**务必先目测 `*-annotated.png` 确认方框位置再看结果**——框画错了结果必然错（M9 失败的根因就是框只框了芯片顶部引脚没框住芯片本体）。
+4. **出图**：API 返回 PNG，模型已经在框内改图 + 自动擦除了方框。**务必先目测 `*-annotated.png` 确认方框位置再看结果**——框画错了结果必然错。
 
 ---
 
@@ -50,7 +50,7 @@ uv run scripts/seedream_image_gen.py edit \
 | 参数 | 默认 | 说明 |
 |---|---|---|
 | `--marker-rect` | 必填，可重复 | 矩形坐标，支持两种格式：**百分比** `10%,15%,60%,20%`（推荐，自适应分辨率）；**像素** `100,150,800,300`（固定分辨率图用）。坐标是 `top-left-X, top-left-Y, width, height`，不是 `x1,y1,x2,y2`。 |
-| `--marker-color` | `#ff0000` 红 | 矩形颜色。多区域时用不同颜色（红 `#ff0000` / 蓝 `#0000ff` / 绿 `#00cc00` / 紫 `#9333ea`），prompt 里按颜色引用。注意：当前 annotated 预览里多色可能都显示为绿色（M7 出现过 annotation 颜色 bug），但 API payload 里颜色独立，**不影响编辑结果**。 |
+| `--marker-color` | `#ff0000` 红 | 矩形颜色。**可重复**，与 `--marker-rect` 一一对应实现多区域多色编辑：每次 `--marker-rect` 后紧跟一个 `--marker-color` 指定该框颜色（红 `#ff0000` / 蓝 `#0000ff` / 绿 `#00cc00` / 紫 `#9333ea`），prompt 里按颜色引用（"红框改 X；蓝框改 Y"）。如果颜色数少于框数，所有框用最后一个颜色。只传一个颜色或不传时，所有框默认红色。`*-annotated.png` 预览会正确显示每个框的独立颜色。 |
 | `--marker-alpha` | `80` | 填充透明度 0-255。80 约为 30% 不透明，够模型识别又不会过度遮挡框内内容。 |
 | `--marker-stroke` | `3` | 描边宽度（像素）。 |
 | `--no-marker-cleanup-prompt` | off | 关闭自动追加的"擦除方框"指令。仅当你自己在 prompt 里写了明确清理指令时使用。 |
@@ -66,14 +66,14 @@ uv run scripts/seedream_image_gen.py edit \
 
 ## 4. 必看检查清单（每次用 marker 前过一遍）
 
-1. **先看 `*-annotated.png` 再评估结果**。M9 失败的全部原因就是 8%×8% 小框只框住了芯片顶部引脚，没框住芯片主体——看 annotated 一眼就能发现框画歪了。
-2. **框必须完全包围目标物体，四周留 5-10% padding**。图标/小物体推荐最小 15%×15%（M9 的 8%×8% 太小直接失败）。不要紧贴物体边缘。
-3. **不要画 >70% 画布的巨框**。M10 用 5%,5%,90%,90%（留 5% 边距）改整体色调，结果模型严格按硬边界裁切，中央变成一块蓝色矩形镶在米色海报里，像贴上去的色块而不是滤镜。要改整体色调直接 t2i 重出或在 prompt 里说"全图统一冷色调"不要画大框。
-4. **PRESERVE 要和 CHANGE 写得一样仔细**。每一段红框/蓝框 prompt 都要包含两部分："框内 A 改成 B" + "保持 C/D/E/F 不变"。只说改成什么不说保持什么，模型会自由发挥（M2 副标题替换成了"追加"而不是"替换"，就是没说"移除原文字"）。
+1. **先看 `*-annotated.png` 再评估结果**。8%×8% 的小框容易只框住物体局部没框住主体——看 annotated 一眼就能发现框画歪了。
+2. **框必须完全包围目标物体，四周留 5-10% padding**。图标/小物体推荐最小 15%×15%。不要紧贴物体边缘。
+3. **不要画 >70% 画布的巨框**。用 5%,5%,90%,90%（留 5% 边距）改整体色调，结果模型按硬边界裁切，中央变成贴上去的色块而不是滤镜。要改整体色调直接 t2i 重出或在 prompt 里说"全图统一冷色调"不要画大框。
+4. **PRESERVE 要和 CHANGE 写得一样仔细**。每一段红框/蓝框 prompt 都要包含两部分："框内 A 改成 B" + "保持 C/D/E/F 不变"。只说改成什么不说保持什么，模型会自由发挥（副标题"追加"而不是"替换"，就是没说"移除原文字"）。
 5. **框外不动要显式重申**。写一句"框外像素完全保持原样"。本 skill 自动追加的清理指令已有类似意思，但关键任务里再写一遍更稳。
 6. **文字替换必须显式指定字体/字号/颜色/对齐**。写"替换为『XXX』，保持原有粗黑无衬线字体、字号、居中、黑色不变"，不要只说"替换为 XXX"。
 7. **多色多框必须在 prompt 里按颜色分别说明**。"红框改 X；蓝框改 Y；绿框加 Z；其他区域不变"——颜色名用中文（红框/蓝框/绿框）。
-8. **文本替换失败时的重试策略**：如果模型追加文字而不是替换（M2 失败模式），把 prompt 改成"红框内**删除原有灰色英文副标题**'The Future is Agentic'，**替换为**'The Rise of Autonomous Agents'，同一位置同字体同色同字号"，明确"删除 + 替换"两个动作。
+8. **文本替换失败时的重试策略**：如果模型追加文字而不是替换，把 prompt 改成"红框内**删除原有灰色英文副标题**'The Future is Agentic'，**替换为**'The Rise of Autonomous Agents'，同一位置同字体同色同字号"，明确"删除 + 替换"两个动作。
 
 ---
 
@@ -81,15 +81,15 @@ uv run scripts/seedream_image_gen.py edit \
 
 | 阈值 | 失败表现 | 规避 |
 |---|---|---|
-| **矩形 <8% 画布面积** | 模型无视框内目标，变成"在框处加点东西"（M9：8%×8% 的框改芯片，模型在框顶加了颗爱心，芯片本身没动） | 最小 15%×15% 框小物体；周围必须留 padding |
-| **矩形 >70% 画布面积** | 模型按硬边界裁切，出现明显"贴块" seam，像打了块补丁而不是整体滤镜（M10：90%×90% 冷色滤镜变蓝矩形） | 整体改色不加框，直接走 t2i 或无框 edit |
-| **矩形出血到框外 5-10%** | 框紧邻物体时，模型会向框外延伸 5-10 px 完成 inpaint（M6 移除芯片时底部引脚超出红框 5-10 px 也被一起擦掉了）——这是良性溢出，结果反而更干净 | 要完全保留的元素离框 ≥10% 画布距离 |
+| **矩形 <8% 画布面积** | 模型无视框内目标，变成"在框处加点东西"（小框改芯片，模型在框顶加了一颗爱心，芯片本身没动） | 最小 15%×15% 框小物体；周围必须留 padding |
+| **矩形 >70% 画布面积** | 模型按硬边界裁切，出现明显"贴块" seam，像打了块补丁而不是整体滤镜 | 整体改色不加框，直接走 t2i 或无框 edit |
+| **矩形出血到框外 5-10%** | 框紧邻物体时，模型会向框外延伸 5-10 px 完成 inpaint（移除芯片时底部引脚超出红框 5-10 px 也被一起擦掉）——这是良性溢出，结果反而更干净 | 要完全保留的元素离框 ≥10% 画布距离 |
 | **链式编辑（同一图连续 edit ≥2 轮）** | 每轮都有 5-10% 轻微漂移（颜色微偏、位置微移、纹理微糊），3 轮后漂移可感 | 能一次改完就不要链；必须链式时每轮只改一个最小区域，且每轮都把"保持 X/Y/Z 不变"写全；2 轮以上建议回到 t2i 重出 |
-| **反射性表面（金属/玻璃/镜面）** | 只改物体颜色不改反射环境，金属高光/反射里会残留原色或者环境不匹配（M3 玫瑰金耳机内盖变成高光镜面，比原哑光黑反射强） | 加"柔和环境反射（模糊白/环境光），无反射具体人像或文字，保持原有光线方向" |
-| **多色框间距 <3% 画布** | 两个框太近时会合并成一个区域，或互相 bleed（M7 的三个框间距大没出问题；邻近框未实测但理论风险高） | 框与框之间留 ≥3% 间距 |
-| **文字替换不写字体/字号/颜色** | 新文字可能变成新的字号/字体/颜色，看起来像贴上去的；或者追加而不是替换（M2） | 逐字写"保持原字体/字号/颜色/对齐" |
-| **英文长单词（≥6 字母）挤在窄 rect** | 单词被截断（M11 的 FASHION 被裁成 FASI；REIMAGINED 溢出框外盖到人物头发上） | 长单词主动换行拆段（"FASH / ION" 分两行）或加宽 rect |
-| **Hex 色值精度** | 指定 `#dc2626` 深绯红，模型渲染成 `#ef4444` 亮红偏暖（M4）；指定 `#ea580c` 深陶土橙，渲染成 `#f97316` 亮橙（M5） | 色值是软引导不是硬校准，接受 ±1 档色偏；要精确色后期 PS 调 |
+| **反射性表面（金属/玻璃/镜面）** | 只改物体颜色不改反射环境，金属高光/反射里会残留原色或者环境不匹配（玫瑰金耳机内盖变成高光镜面，比原哑光黑反射强） | 加"柔和环境反射（模糊白/环境光），无反射具体人像或文字，保持原有光线方向" |
+| **多色框间距 <3% 画布** | 两个框太近时会合并成一个区域，或互相 bleed | 框与框之间留 ≥3% 间距 |
+| **文字替换不写字体/字号/颜色** | 新文字可能变成新的字号/字体/颜色，看起来像贴上去的；或者追加而不是替换 | 逐字写"保持原字体/字号/颜色/对齐" |
+| **英文长单词（≥6 字母）挤在窄 rect** | 单词被截断（FASHION 被裁成 FASI；REIMAGINED 溢出框外盖到人物头发上） | 长单词主动换行拆段（"FASH / ION" 分两行）或加宽 rect |
+| **Hex 色值精度** | 指定 `#dc2626` 深绯红，模型渲染成 `#ef4444` 亮红偏暖；指定 `#ea580c` 深陶土橙，渲染成 `#f97316` 亮橙 | 色值是软引导不是硬校准，接受 ±1 档色偏；要精确色后期 PS 调 |
 
 ---
 
@@ -152,7 +152,7 @@ uv run scripts/seedream_image_gen.py edit \
 
 > Recipe 1/2 有完整分步解读；其余 6 个 Recipe 见 SKILL.md Examples 6/7 或下方文字版。
 
-### Recipe 3：在空白区域加装饰元素（M5 加橙色圆点 + tagline 8.5/10）
+### Recipe 3：在空白区域加装饰元素
 
 ```bash
 uv run scripts/seedream_image_gen.py edit \
@@ -163,7 +163,7 @@ uv run scripts/seedream_image_gen.py edit \
 
 要点：尺寸必须用百分比（"直径占画面高度 2%"），不要说"小一点/大一点"。
 
-### Recipe 4：移除物体 + 还原背景（M6 去芯片 9/10）
+### Recipe 4：移除物体 + 还原背景
 
 ```bash
 uv run scripts/seedream_image_gen.py edit \
@@ -174,7 +174,7 @@ uv run scripts/seedream_image_gen.py edit \
 
 要点：移除物体时框要覆盖目标 + 四周 5-10% padding；一定要说"还原为 XX 背景"。
 
-### Recipe 5：多区域多色同时改（M7 三框 9/10）
+### Recipe 5：多区域多色同时改
 
 ```bash
 uv run scripts/seedream_image_gen.py edit \
@@ -212,7 +212,7 @@ uv run scripts/seedream_image_gen.py edit \
 
 注意：每轮 prompt 里必须写当前正确状态（轮 2 里主标题已经是"未来已至"不是"AGI 已来"），不要沿用老 prompt。
 
-### Recipe 7：Outpaint 扩图 + Marker 改图组合（M12 7.5/10）
+### Recipe 7：Outpaint 扩图 + Marker 改图组合
 
 ```bash
 uv run scripts/seedream_image_gen.py edit \
@@ -224,7 +224,7 @@ uv run scripts/seedream_image_gen.py edit \
 
 注意：`--outpaint left:500 --size 1792x1024` 在竖版原图上会同时缩放原图高度到 1024，原图顶部/底部留白会被裁掉。如果需要原图 100% 不裁切，用 Pillow 手工扩画布再无框 edit 填充。
 
-### Recipe 8：照片上加竖排英文大字（M11 高难度，必拆词）
+### Recipe 8：照片上加竖排英文大字（高难度，必拆词）
 
 ```bash
 uv run scripts/seedream_image_gen.py edit \
@@ -239,7 +239,7 @@ uv run scripts/seedream_image_gen.py edit \
 
 关键防御：长单词必须主动拆段（FASH-ION、REIMAG-INED），让每行 ≤5 字母；红框宽度 ≥38% 给 10 字母单词留空间。
 
-### Recipe 9：精准局部换色 + 五官特征改（2026-07-10 补测，9.5/10）
+### Recipe 9：精准局部换色 + 五官特征改（9.5/10）
 
 单眼虹膜变色（heterochromia 效果）——精度极高，能只改一只眼睛，另一只眼睛完全不动：
 
@@ -257,9 +257,9 @@ lighting, same background. Erase all colored edit marks."
 
 **关键**：显式指定"viewer's left/right"避免左右混淆；显式说另一只眼睛"stays [原颜色]"防止两眼都被改。同样模式适用于唇色（hex 精准度 ±1 shade，见 Recipe 1 附近说明）、单侧腮红、单个痣的增减。
 
-### Recipe 10：忙碌场景中的孤立物体擦除（2026-07-10 补测，9.5/10）
+### Recipe 10：删除孤立物体 (9.5/10 for replaceable objects in daytime matte scenes)
 
-早期报告认为"拥挤场景物体删除 1-4/10"，但那是**反射夜景 + 霓虹灯**的特殊失败模式。**日间 + 亚光表面的忙碌场景**（street/parking/market）删除孤立物体（车/自行车/摊位道具）实测稳定 9-9.5/10：
+**Daytime + matte-surface busy scenes** (street/parking/market) erase isolated objects (cars/bicycles/stall props) reliably at 9-9.5/10 when the object is replaceable/interchangeable:
 
 ```bash
 uv run scripts/seedream_image_gen.py edit \
@@ -274,18 +274,18 @@ must remain exactly in place, untouched, unmoved. Outside the marked region, kee
 everything else completely unchanged. Erase all colored edit marks."
 ```
 
-**关键杠杆**：(1) 显式说"restore X naturally, continuing the Y pattern"给模型明确的填充目标；(2) **显式点名相邻要保留的物体**（"white hatchback... silver wagon... must remain exactly in place"）——这是防止连带误删的核心；(3) 日间亚光表面（cobblestone/沥青/水泥）比夜间反射表面（湿沥青+霓虹）容易得多。
+**Key levers**: (1) Explicitly say "restore X naturally, continuing the Y pattern" to give the model a clear fill target; (2) **explicitly name adjacent objects that must remain** ("white hatchback... silver wagon... must remain exactly in place") — the core defense against collateral deletion; (3) daytime matte surfaces (cobblestone/asphalt/concrete) are far easier than nighttime reflective surfaces (wet asphalt + neon).
 
-**反例（同一张图、同样规范的 marker + prompt，却失败）**：同一条街景图上，紧挨着测试删除中景的黑色自行车（斜靠在路灯柱上），marker 覆盖完整 + 四周充分 padding、prompt 同样显式写"remove...restore cobblestone naturally...lamppost must remain exactly in place"——**结果自行车原样保留，编辑完全没生效**（0/10，annotated.png 确认框位置精准无误，不是框歪的问题）。
+**Counter-example (same image, equally well-formed marker+prompt, yet fails)**: on the same street scene, attempting to delete a black bicycle leaning against a lamppost (midground, in the same composition) with an equally precise marker and a prompt that explicitly says "remove...restore cobblestone naturally...lamppost must remain exactly in place" — **the bicycle remains untouched; the edit does not take effect at all** (0/10; annotated.png confirms the marker position is accurate; the failure is not a misplaced box).
 
-**更新后的场景判断规则（三轴，不是原来的两轴）**：
-- 忙碌但**日间/亚光/无强反射**的场景 → 孤立物体删除可靠 9+/10，**但仅当该物体是"可替换的、非构图焦点"**（一排相似车辆中的一辆——旁边还有白车银车，视觉上互相替代性强）
-- **同一日间亚光场景里，构图焦点/视觉锚点物体**（斜靠路灯柱、居中景深、高对比度轮廓的自行车）→ **仍然删不掉**，即使 marker 和 prompt 完全按最佳实践写。这与"hero 物体/主光源删除不可用"是**同一个失败机制的更广泛版本**——不限于光源，任何在构图上起"视觉锚点"作用的孤立物体都可能触发同样的抗删除 prior。
-- **夜间 + 湿反射地面 + 霓虹招牌** → 仍是 1-4/10 高失败区（原 Tokyo 测试结论保留）
+**Scene judgment (three axes)**:
+- Busy but **daytime/matte/non-reflective** scenes → isolated-object deletion is reliable at 9+/10, **but only when the object is replaceable, not a compositional focal point** (one car in a row of similar vehicles — high visual interchangeability).
+- Within that same daytime matte scene, **compositional anchor / visual-focal-point objects** (a bicycle leaning on a lamppost, center-depth, high-contrast silhouette) → **still cannot be removed**, even with a best-practice marker and prompt. This is a broader instance of the same failure mechanism as hero-object/primary-light-source failures — not limited to light sources, any isolated object that serves as a visual anchor can trigger the same resistance prior.
+- **Nighttime + wet reflective ground + neon signs** → remains a high-failure zone at 1-4/10.
 
-**实操判断法**：删除前问自己"这个物体在画面里是不是可以被同类物体互相替换、拿掉不会让构图显得空/断"（一排车里的一辆——可以）还是"这个物体是画面视觉重心，拿掉后构图会显得缺了主角"（斜靠灯柱的自行车——不行）。前者可靠删除，后者大概率删不掉，建议改用整图重绘（t2i 换一版无该物体的场景）而不是反复 retry marker。
+**Practical test**: before deleting, ask "is this object interchangeable with others of its kind in the scene, such that removing it won't leave a hole or break the composition?" (one car in a row of cars — yes) versus "is this object the visual anchor, such that removing it makes the scene feel empty or missing its subject?" (the bicycle leaning on the lamppost — no). The former deletes reliably; the latter is unlikely to delete, so regenerate the whole scene without the object (t2i) instead of retrying the marker.
 
-### Recipe 11：坐标精准数学推导续写（2026-07-10 补测，9.5/10）
+### Recipe 11：坐标精准数学推导续写（9.5/10）
 
 在手写数学题下方指定行数续写推导步骤，保持笔迹/笔色/位置一致：
 
@@ -303,7 +303,7 @@ equation at the top — it must stay pixel-identical. Erase all colored edit mar
 
 **关键**：(1) marker 框住"下一行"而不是整页，给出精确写入位置；(2) 显式给出目标公式内容（不要指望模型自己推导——它照抄你给的答案，不会算错但也不会主动验证数学正确性，**你需要自己算对再喂给它**）；(3) "matching the EXACT same pen style/slant/size" 触发风格延续。**局限：这是"手写风格续写"不是"数学求解"——模型不会主动计算，只会按你写的内容渲染成手写体。复杂计算仍需你自己算，模型只负责视觉呈现。**
 
-### Recipe 12：多图人物抠像 + 统一光影合成（2026-07-10 补测，8.5-9/10）
+### Recipe 12：多图人物抠像 + 统一光影合成（8.5-9/10）
 
 从两张独立参考图各提取一个人物，合成到统一场景+统一光影：
 
@@ -340,7 +340,7 @@ facial identity, hair, and clothing from their respective reference image."
 
 ## 9. API 层真相:没有 marker 字段,只有"图+文字"
 
-> ⚠️ **重要修正**(2026-07-10):Seedream API **不**接受 `marker.rectangle` 这种结构化坐标字段。这是 CLI 完全在客户端做的视觉伪装。
+> ⚠️ **Important**: The Seedream API does **not** accept a structured `marker.rectangle` coordinate field. The marker rectangle is a visual illusion produced entirely client-side by the CLI.
 
 CLI 实际发给 `/images/generations` 的 body 是这样的:
 
@@ -383,18 +383,18 @@ POST https://ark.cn-beijing.volces.com/api/v3/images/generations
 - 多色框的位置/大小是否合理？
 - 框与框之间是否留了 ≥3% 间距？
 
-确认 annotated 没问题再看最终出图。M9（8% 小框）和 M10（90% 巨框）的失败，如果 10 秒钟看一眼 annotated 就能避免白烧一次 API。
+确认 annotated 没问题再看最终出图。8% 小框和 90% 巨框的失败，看一眼 annotated 就能避免白烧一次 API。
 
 ### 附：Marker 尺寸速查卡（以 1536×2048 3:4 竖版为参考）
 
 | 框尺寸占画布 | 典型像素 | 适合场景 | 风险等级 |
 |---|---|---|---|
-| <8%（如 8%×8%） | ≈123×164 px | 不够用（M9 失败尺寸，框不住主体） | ❌ 避免 |
+| <8%（如 8%×8%） | ≈123×164 px | 不够用（框不住主体） | ❌ 避免 |
 | 10-15% | ≈150×200 px | 只能加单个小点/小图标 | ⚠️ 勉强，建议 ≥15% |
-| 15-25% | ≈230-380 px | 图标换色、小标签替换、加 tagline（M4/M5/M6/M7 单卡都在这区间，9/10） | ✅ 甜点下半区 |
-| 25-50% | ≈400-770 px | 标题替换、产品换材质、加装饰块（M2/M3 都在这区间，8-9/10） | ✅ 甜点区（成功率 8-9/10） |
+| 15-25% | ≈230-380 px | 图标换色、小标签替换、加 tagline | ✅ 甜点下半区 |
+| 25-50% | ≈400-770 px | 标题替换、产品换材质、加装饰块 | ✅ 甜点区（成功率 8-9/10） |
 | 50-70% | ≈770-1075 px | 大块区域改色、大幅面重绘 | ⚠️ 注意硬边界 seam |
-| 70-90% | >1075 px | 接近全画布改色/改风格 | ❌ 出"贴块"seam（M10 失败区间） |
+| 70-90% | >1075 px | 接近全画布改色/改风格 | ❌ 出"贴块"seam |
 | 90-100%（0%,0%,100%,100%） | 全画布 | 等同于无框 edit / 重绘 | ✅ 全覆盖时不留 seam |
 
 1792×1024（16:9 横版）上百分比阈值一致；1024×1024（1:1 方图）按同样百分比换算即可。核心经验：**框宁可略大（留 5-10% padding）不要小，宁可一个框把目标完全包住不要切边，但框不要大到 70% 以上（除非是 100% 全画布）。**

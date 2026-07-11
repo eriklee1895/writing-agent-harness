@@ -15,7 +15,7 @@
 | 把照片变成某种画风 | 公式 5：风格迁移 |
 | 多张参考图融合（脸+服装+色板等） | 公式 6：多参考图融合 |
 | 调 negative / 选中英文 / 速查最佳实践 | Negative Prompt · 语言选择 · 最佳实践速查表 |
-| **动笔前必看**：11 条实测翻车关键词与防御 | 常见反模式 |
+| **动笔前必看**：11 条高频翻车关键词与防御 | 常见反模式 |
 | 哪些场景别指望 Pro / 高级镜头·字体·权重技巧 | 已知翻车场景 · 社区验证有效的高级技巧 |
 | 一个从啰嗦到精炼的完整改写案例 | 经典 Prompt 改写示例 |
 
@@ -31,6 +31,24 @@
 - **细节**：具体物体、材质、纹理、氛围；用**具象名词**（中式场景下"白墙黑瓦徽派建筑" > "古建筑"，"霁红釉" > "传统红色"；西式/通用场景下"matte black aluminum unibody" > "sleek modern object"，"terrazzo flooring with brass inlay" > "nice floor"）。
 - **色彩+光影+构图**：色板、光源方向、景别（特写/中景/远景）、景深。
 - **分辨率/比例/用途**：如"16:9 宽幅 banner/封面（社媒/博客 hero/公众号头图/视频封面）"、"3:4 竖版海报"、"1:1 方形头像/产品图"、"9:16 手机竖屏/Stories"、"A4 印刷海报"。如果你已经通过 CLI flag（`--wide`/`--portrait`/`--landscape`/`--square`/`--size WxH`）传了精确尺寸，这里只要描述用途和留白需求即可；如果没传尺寸 flag，这里写的"竖版/横版/方形/手机壁纸"会让模型在默认 2K 附近挑一个合理比例——精确要求（平台像素规范）优先用 CLI flag，自然语言描述（"手机壁纸感"）适合不锁死像素的场景。
+
+### 1.1 草图/线框图 → 高保真渲染（img2img）
+
+把手绘草稿/线框图/block layout 作为 `--reference-image` 传入，prompt 里**明确说"严格保持参考图的布局分区/元素位置关系"**，再指定风格和细节填充：
+
+```
+根据参考图的粗略线框图/block layout 生成高保真[活动海报/官网首屏/产品海报]。
+严格保持参考图的区域划分和元素位置关系——顶部为[标题区]、中间为[主视觉区]、
+右侧/底部为[辅助信息区]——每个区域的相对位置和大致比例不要变动。
+填充细节：[风格/色彩/光影/具体元素描述]。
+文字包括：『[逐字写内容]』，清晰无错字。整体[风格关键词]，2K，[比例]。
+```
+
+关键：
+1. **布局描述必须绑定"参考图"**——"保持参考图布局 / follow the layout in the reference"而不是自己凭空描述分区，否则模型会自由重排。
+2. **风格词放在布局词之后**——先锁结构再填风格，跟公式 5（风格迁移）"先锁内容再换皮肤"同一个顺序原则。
+3. **文字/按钮/标签等 UI 元素逐字写**——草图里写的占位（"标题""按钮"）不会自动渲染成真实文字。
+4. For "sketch → tech-style" AI-conference-poster tasks, the layout is roughly preserved, but visual punch (gradients, light beams, grids, chip textures) comes out under-specified unless the prompt piles on concrete light/material/reference-genre details.
 
 ## 公式 2：文字渲染（Pro 专属 headline 能力）⭐
 
@@ -107,7 +125,7 @@ Pro 的文字能力**边界**：
 
 ### 2.7 为什么默认 2K
 
-实测 1K→2K 延迟几乎无差（均值都 ~95s），但 2K 下：
+Latency is nearly identical at 1K and 2K (both ~95s mean), but at 2K:
 - 中文字笔画更锐利，不会出现"糊边"。
 - 英文字母间距更均匀。
 - 小字错误率明显下降。
@@ -118,7 +136,7 @@ Pro 的文字能力**边界**：
 
 Marker 编辑是 Pro 最大的效率提升——**不需要 mask/bbox API**，在参考图上画个彩色矩形，prompt 用自然语言描述框内要做的改动即可。本 skill 的 `edit` 子命令通过 `--marker-rect X,Y,W,H` 自动完成画框、发图、追加擦除指令三步。
 
-### 3.1 换字（最常见，实测一次成）
+### 3.1 换字（最常见，first-try成功率高）
 
 ```bash
 uv run scripts/seedream_image_gen.py edit \
@@ -180,11 +198,11 @@ uv run scripts/seedream_image_gen.py edit \
 1. **先说颜色+位置**："红框内……"
 2. **说清楚原对象→新对象**："把米色沙发换成深蓝丝绒"
 3. **说要保留的不变量**："保持透视、光照、阴影方向不变"
-4. **说框外不动**："框外像素完全保持"——本 skill 自动追加的清理指令已经包含这层意思，但在关键任务里再写一遍更稳。
+4. **Say the outside stays unchanged**: "pixels outside the box remain exactly as-is" — the auto-appended cleanup instruction already carries this meaning; restate it for critical jobs.
 
 ## 公式 4：参考图一致性（同一人/物多场景）
 
-Pro 的单参考图身份保持能力实测达到"角色卡"级可用——正面肖像作 ref，prompt 描述新场景新姿势，面部/服装/关键特征能保持。
+Pro's single-reference identity hold reaches "character-sheet" usability — a front-facing portrait as ref plus a prompt describing a new scene and pose keeps the face/outfit/key features intact.
 
 ```bash
 uv run scripts/seedream_image_gen.py generate \
@@ -214,11 +232,11 @@ uv run scripts/seedream_image_gen.py edit \
 前景人物与物体保留构图但全部用可见笔触重画"
 ```
 
-实测对"梵高、莫奈、吉卜力、新海诚、漫威漫画、像素风、浮世绘、赛博朋克、水墨写意"等主流风格锚点响应明显。
+Mainstream style anchors ("梵高/莫奈/吉卜力/新海诚/漫威漫画/像素风/浮世绘/赛博朋克/水墨写意") elicit strong responses.
 
 ## 公式 6：多参考图融合（Multi-Reference Fusion，Pro 最多 10 张，Lite 14 张）
 
-Pro 支持多张 `--reference-image`（最多 10 张）同时传入，用于：同一角色多角度锁定身份、同一产品放不同场景、角色脸 + 服装参考 + 色板的分工组合、前后景合成。实测 2-3 张是甜点，>4 张开始"平均化糊掉"。
+Pro accepts multiple `--reference-image` arguments (up to 10) for: locking a character's identity across angles, placing a product in different scenes, role-split composition of face + outfit + palette, foreground/background compositing. The sweet spot is 2-3 refs; above 4 refs outputs begin to average/muddle.
 
 ```bash
 uv run scripts/seedream_image_gen.py generate \
@@ -234,7 +252,7 @@ uv run scripts/seedream_image_gen.py generate \
 
 ### 6.1 参考图数量甜点
 
-| 参考图数量 | 效果 | 实测评分 |
+| 参考图数量 | 效果 | 评分 |
 |---|---|---|
 | 1 张 | 强身份锚定（面部/产品造型锁得最死），场景/光线/姿势可完全重生成（R1/R6 都拿到 8.5-9/10 身份保持） | 8-9/10 |
 | 2-3 张 | 甜点。脸 + 服装 / 产品 + 场景 / 角色 + 色板这种"异质参考"组合效果最好（R4：脸+旗袍 9/10 身份保持；R7：脸+色板 8.6/10） | 8-9/10 |
@@ -264,7 +282,7 @@ uv run scripts/seedream_image_gen.py generate \
 穿黑色风衣、打黑伞，霓虹粉蓝光打在脸上，湿地面反射霓虹，浅景深电影感，2K，16:9"
 ```
 
-R1/R6 实测身份保持 7-8.5/10，小配饰（发夹）会缩小简化，眼镜框材质可能漂移（透明醋酸→细金属），但整体一眼认得出是同一个人。
+Identity hold lands at 7-8.5/10; small accessories (hair clips) shrink/simplify, and eyeglass-frame material may drift (clear acetate → thin metal), but the subject is recognizably the same person across scenes.
 
 #### 模式 B：产品白底 + 场景 lifestyle（1-2 refs）
 
@@ -300,7 +318,39 @@ uv run scripts/seedream_image_gen.py generate \
 
 关键是**在 prompt 里逐张明确说"X 图用什么，Y 图用什么"**——不要只说"combining all references"，R3 两张同角色不同表情/服装/眼镜/光线的 ref 没分配角色时模型会挑一张当主锚（R3 选了带笑的第二张），第一张只贡献了服装和光线。
 
-### 6.4 多 ref 坑点（sweep 实测）
+#### 模式 D：多张人脸合成到同一场景合影（N 张单人照 → 1 张合影，refs ≥3）
+
+适合"把 N 张单人证件照/自拍合成同一张合影"（团队照、活动合影、family portrait 类场景）。关键是**显式给每张脸分配站位**，否则模型会把人脸平均化。
+
+```bash
+uv run scripts/seedream_image_gen.py generate \
+  --reference-image group-pose-ref.png \
+  --reference-image person-A.jpg \
+  --reference-image person-B.jpg \
+  --reference-image person-C.jpg \
+  --reference-image person-D.jpg \
+  --reference-image person-E.jpg \
+  --size 2048x1152 --landscape \
+  --prompt "第一张参考图给出合影站位构图：户外咖啡馆露台，五人合影，
+后排站立三人、前排坐着两人，背景是树木和咖啡馆门店。
+第 2-6 张参考图分别是五位人物的面部参考：
+后排左一用图2的人脸（短发戴眼镜东亚男性，30 多岁），
+后排中间用图3的人脸（齐肩卷发东亚女性，28 岁穿米白针织衫），
+后排右一用图4的人脸（络腮胡白人男性，40 岁深色衬衫），
+前排左一用图5的人脸（马尾年轻女性，25 岁牛仔外套），
+前排右一用图6的人脸（灰发戴眼镜长者，60 岁休闲西装）。
+统一下午四点侧逆光暖金色光线，所有人面部光照方向一致、色温一致，
+真实摄影质感、f/4 中焦镜头、浅景深、团队合影商业摄影。2K，16:9"
+```
+
+关键：
+1. **第一张 ref 用作站位/构图参考**（可以是 AI 生成的占位合影、一张任意人群照片——只取站位关系不保留脸），后续 refs 逐张对应到站位上。
+2. **逐人给四元组**：位置（后排左一）+ ref 编号 + 关键视觉锚（发型/年龄/服装关键词），跟群体照逐人枚举（photorealism.md）同一个方法论。
+3. **显式说"统一光源方向/色温"**——N 张来源不同的自拍光线差异大，必须用一句话强制模型重打光，否则每个人物脸上光方向不一致会露馅。
+4. 参考图总数建议 ≤6（1 站位 + 5 人脸），再多会撞"4 张以上身份糊化"坑点。超过 6 人合影分两排（3 站 3 坐），每人描述缩短到"位置 + ref 编号 + 一个视觉锚"三元组。
+5. Facial similarity lands at ~7-8/10 — subjects are recognizably themselves, but details (moles, frame material, small accessories) simplify and drift; for high-stakes formal settings use a real photograph.
+
+### 6.4 多 ref 坑点
 
 | 坑 | 表现 | 规避 |
 |---|---|---|
@@ -352,7 +402,7 @@ Seedream 是**中文原生模型**——这点和以英文语料为主训练的�
 
 ### 常见误区
 
-- ❌ **"英文 prompt 更专业"——对 Seedream 不成立。** 这是早期英语模型时代的肌肉记忆。Seedream 的中文训练语料对中国场景/中文文字/文化词覆盖远超英文。中式场景写英文 prompt 只会出"东方风"式的日式混搭。
+- ❌ **"English prompts are more professional" — does not hold for Seedream.** This is muscle memory from English-native model eras. Seedream's Chinese training corpus covers Chinese scenes, Chinese text, and cultural terms far more deeply than English. Writing English prompts for Chinese subjects tends to produce "Oriental-style" pan-Asian (Japan-inflected) mixes.
 - ❌ **全英文 prompt + 中文文字内容**——容易错字、笔画糊。中文文字必须中文描述字体、字号、位置。
 - ❌ **硬翻英文技术术语成中文**——"散景""景深""体积光"这类中文译法模型也能认，但英文原词（bokeh/depth of field/volumetric lighting）更稳，尤其当你想精确控制光效时。
 - ✅ **黄金组合：中文叙事主语 + 英文技术术语 + 需要出现的文字逐字「」包裹。** 这是中国设计师日常说话的方式，也是 Seedream 最强的 prompt 形态。
@@ -395,9 +445,9 @@ Vogue-style magazine cover, right 2/3 is a close-up portrait of a young East-Asi
 | 批量并发要克制 | `--concurrency 3` 已经很快（RPM 500 理论上限，实际 5–10 并发稳） |
 | 错字/畸形重试一次 | 同 prompt 跑两次选好的；第二次可微调"字迹清晰锐利，逐字准确"加强 |
 
-## 常见反模式（实测会翻车，用这些关键词防御）
+## 常见反模式（高频翻车，用这些关键词防御）
 
-这些是我们在 21-case eval + 社区大量实测里反复踩到的坑。每个都给一个"怎么写才对"的改写示例。
+These are recurring pitfalls from 21-case evals and community reports. Each includes a corrected "how to write it" example.
 
 ### 1. "手机/9:16/stories" 会生成假的手机 UI 界面
 
@@ -454,7 +504,7 @@ Vogue-style magazine cover, right 2/3 is a close-up portrait of a young East-Asi
 
 ### 6. 不要在 API prompt 里随意换行
 
-社区实测：部分版本 API 对 prompt 里的 `\n` 换行解析不稳定，可能导致后面的描述被截断或降低权重。
+Prompt 中 `\n` 换行在部分 API 版本上解析不稳定，可能导致后面的描述被截断或降低权重。
 
 **防御**：在 shell 里传 prompt 时用单行字符串（或用 here-doc 但 strip 换行），用中文逗号"，"或英文逗号"+"space分隔子句，不要靠换行断句。CLI 的 `--prompt` 参数已做基础 strip，但自己拼接 JSONL 或 body 时要注意。
 
@@ -482,7 +532,7 @@ Vogue-style magazine cover, right 2/3 is a close-up portrait of a young East-Asi
 
 ### 10. 真实地名（车站/地标/品牌）会触发 `InputTextContentDetected` 安全 block
 
-实测 prompt 提到"北京地铁 天安门 / 王府井 / 东单"等真实地名时，整个 prompt 被 Stage 1 输入侧安全分类器拦截，返回 `InputTextContentDetected`，需要改名后重试。改名后模型自己发明了 12 个看起来像真的但其实是生成的中文站名（金融城/望江门/湖滨东/...），全部字符正确。
+Prompts that include real Chinese place names (e.g. "北京地铁 天安门 / 王府井 / 东单") trigger the Stage 1 input-side safety classifier, returning `InputTextContentDetected`. Rename and retry; the model will invent plausible-looking Chinese station names (金融城/望江门/湖滨东/...) with correct characters.
 
 **防御**：写有真实城市/地标/品牌的场景时，先用泛化占位词（如"3-character Chinese station names"、"a famous European capital"、"a well-known luxury brand"），让模型自由生成占位；或用 **英文 transliteration**（"Tiananmen" / "Wangfujing"）绕过中文输入触发器。如果客户硬要真名，prompt 用 `"a major Beijing subway station on Line 1"` 这种描述性代替而不是直接 `天安门` 站。
 
@@ -510,7 +560,7 @@ station names + 8pt grey pinyin"
 红框中的主标题「AGI 已来」替换为「智能崛起」四个字，
 保持完全相同的字体字号不变...
 
-# ✅ 通过（实测 10/10 成功）
+# ✅ Passes reliably:
 Inside the marked red rectangular region, perform an in-place text replacement on
 the existing Chinese headline: replace the four Chinese characters with a different
 four-character Chinese headline. The new text is the characters 智能崛起.
@@ -543,10 +593,12 @@ changes. Erase all colored edit marks.
 | 密集周期性网格（元素周期表式 72+ tiles） | ~40% 标签乱码/错语言/重复/数字错乱；英文品牌名拼写大面积损坏（T5 周期表 72 tiles 只有 2/10 分） | 密度上限：横版 ≤20 tiles；超出后期 HTML/CSS 网格渲染再合成 |
 | 金融仪表盘/表格（10+ 行同格式数字重复） | 千分位逗号稳定正确但中间 3-4 位数字会被随机生成（anchor-recency 效应）；股票代码字母→数字；月份缩写 Fer/Uer/Cer/Jar/Dar 系统性错误；涨跌箭头颜色错配 | 大 KPI tile（3 个以内）大字数字可靠；10+ 行表格数据不要靠 AI；月份全拼不用缩写 |
 | 竖排英文大字（每行 1 词逐行堆叠，长词 ≥6 字母） | 长词（FASHION/REIMAGINED）在窄 rect 内被截断（FASHION→FASI）或溢出框外覆盖主体；字重不均 | 长词按音节强制拆行（FASH/ION、REIMAG/INED）；rect 宽度 ≥38% 画布；显式"严格限制在 x<38% 内不溢出" |
+| 社交平台截图/手机 UI 录屏级复刻（朋友圈/推文/直播截图/App 首页）| 状态栏/头像/点赞栏/评论区元素能组织起来，但细节对不上（头像不像本人、点赞数格式错、控件位置漂移）— output is "visually similar to a screenshot" rather than pixel-accurate | Use Playwright to capture real screenshots; or accept Seedream producing a mockup that evokes the feel rather than a spec replica |
+| 未指定视觉风格的信息图/网格卡片 | 模型默认偏浅色、浅蓝/莫兰迪配色、通用 PPT 风——若不指定风格锚点，8 格模型入门卡/AI 模型卡片等会出"企业内训 PPT"质感 | **公式 1 第一项"风格锚点"一定要写**：哪怕只加"编辑信息图质感 / Bloomberg data journalism / 复古印刷风"都能显著拉高完成度 |
 
 ## 社区验证有效的高级技巧
 
-这些是中文社区（小红书、知乎、即刻、B站、微信公众号）大量实测沉淀下来、在 Seedream 5.0 Pro 上确实有效的 prompt 技巧。
+以下技巧来自中文社区（小红书、知乎、即刻、B站、微信公众号）沉淀，在 Seedream 5.0 Pro 上确实有效。
 
 ### 镜头/相机/焦段词汇（英文术语最稳）
 
@@ -600,7 +652,7 @@ Seedream 支持和早期英文模型类似的括号加权语法，但只在需�
 
 ### 平台关键词触发内部优化
 
-社区实测以下平台关键词会让服务端自动套用经过优化的内部 preset，出图质量明显更贴平台调性：
+以下平台关键词会让服务端自动套用经过优化的内部 preset，出图质量明显更贴平台调性：
 
 - `淘宝详情页风格` / `optimized for Amazon product listing` —— 电商主图
 - `小红书封面` —— 3:4 竖版 + 强文字标题感

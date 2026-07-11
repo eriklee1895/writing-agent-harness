@@ -1,6 +1,6 @@
 # Seedream 5.0 API Reference (Pro + Lite)
 
-本 skill 当前**以 Seedream 5.0 Pro 为默认模型**，并保留 Seedream 5.0 Lite 作为 fast-sketch 备用。本文件记录两个模型在火山方舟（Volcengine Ark）上的 HTTP API 细节，以及本 skill 在客户端侧做的 marker 编辑与 outpaint 约定。
+This doc covers HTTP API details for both Seedream 5.0 Pro and 5.0 Lite on Volcengine Ark, plus client-side conventions for marker editing and outpaint used by this skill. Pro is the default model; Lite is the fast-sketch fallback.
 
 ## 官方文档
 
@@ -35,7 +35,7 @@ Content-Type: application/json
 
 | Version | Model ID | 默认 | 预设 size | 像素范围 | Refs | web_search | sequential | neg_prompt | 延迟（2K） | 价格 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| **Seedream 5.0 Pro** | **`doubao-seedream-5-0-pro-260628`** | ✅ default | `1K`, `2K` | 921,600 – 4,624,220 (0.9MP–4.6MP，默认 1024²) | 10 | ❌ 拒绝 | ❌ 拒绝 | ✅ beta（未入文档，实测可用） | ~75–124s 均值 ≈95s | ≤2.36MP ¥0.30；>2.36MP ¥0.60；额外输入图 ¥0.02/张 |
+| **Seedream 5.0 Pro** | **`doubao-seedream-5-0-pro-260628`** | ✅ default | `1K`, `2K` | 921,600 – 4,624,220 (0.9MP–4.6MP，默认 1024²) | 10 | ❌ rejected | ❌ rejected | ✅ beta (undocumented; accepted by the API) | ~75–124s mean ≈95s | ≤2.36MP ¥0.30; >2.36MP ¥0.60; extra input image ¥0.02/each |
 | Seedream 5.0 Lite | `doubao-seedream-5-0-260128` | `--model lite` | `2K`, `3K`, `4K` | 3,686,400 – 16,777,216 (3.7MP–16MP，默认 2048²) | 14 | ✅ | ✅ | ❌ | ~30–60s | ¥0.22/张（2K 档） |
 
 > CLI 接受别名：`pro` / `seedream-pro` / `5-pro` → Pro；`lite` / `seedream-lite` / `5-lite` → Lite。传入未知完整 ID 时按 Pro 能力默认值透传（方便使用新的 dated build）。
@@ -46,11 +46,11 @@ Content-Type: application/json
 2. **Lite 有 3.69MP 像素下限**（2560×1440 起步），**不允许 1K/1024²/1792×1024**。因此：
    - 宽幅 16:9 banner/cover（1792×1024≈1.84MP，例如微信公众号头图、博客 hero、YouTube 封面、视频封面、PPT cover）是 **Pro 专属**，Lite 跑不了。
    - 方形 1024×1024 图标、社交头像也是 Pro 专属。
-3. **Pro 不接受 `tools:[{type:"web_search"}]`、`sequential_image_generation`、`stream: true`**——这些参数会被 API 400 拒绝。本 skill 的 `_build_request_body` 会按模型能力自动裁剪，Lite 才发 `tools`。
-4. **`optimize_prompt_options.mode` 在 5.0 Pro / 5.0 Lite / 4.5 上都只接受 `"standard"`**——`"fast"` 仅 Seedream 4.0 支持；CLI 在不支持的模型上传 `--optimize-prompt fast` 会告警并忽略，不会发往 API。
-5. **`negative_prompt` 在 Pro 上实测可用**（官方暂未写入文档），本 skill 默认发一条温和的质量守护 "模糊, 低质量, 水印, 变形, 多余肢体"，可通过 `--no-negative-prompt` 关闭或 `--negative-prompt "..."` 覆盖。Lite 上不发送（API 接受但效果不显著）。
-6. 两模型共享最长 prompt 字符数：中文 ≤300 字、英文 ≤600 词，服务端截断但不报错。
-7. Pro 实测 1K→2K 延迟几乎无差（~95s 均值），所以**默认 size 是 `2K`**——2K 下文字渲染细节明显更好，价格只在 ≤2.36MP 档和 1K 差 ¥0.30。
+3. **Pro rejects `tools:[{type:"web_search"}]`, `sequential_image_generation`, and `stream: true`** — these parameters return 400 on Pro. The CLI's `_build_request_body` filters them per-model capability; only Lite sends `tools`.
+4. **`optimize_prompt_options.mode` accepts `"standard"` on both 5.0 Pro and 5.0 Lite (and 4.5)** — `"fast"` is Seedream 4.0 only; the CLI warns and ignores unsupported values rather than sending them to the API.
+5. **`negative_prompt` works on Pro** (not yet in official docs); the CLI sends a gentle quality guard by default: `模糊, 低质量, 水印, 变形, 多余肢体`. Disable with `--no-negative-prompt` or override with `--negative-prompt "..."`. Lite accepts the field but produces negligible effect, so the CLI omits it.
+6. Both models share a prompt-length ceiling: Chinese ≤300 characters, English ≤600 words; the server truncates silently rather than erroring.
+7. **Default size is `2K`** — latency at 1K and 2K is nearly identical (~95s mean), and 2K produces noticeably sharper text. Price differs only at the ≤2.36MP tier (¥0.30).
 
 ## Request Body
 
@@ -91,40 +91,40 @@ Content-Type: application/json
 | `prompt` | string | — | ✅ 必填 | ✅ 必填 | 文字描述；中 ≤300 字/英 ≤600 词 |
 | `size` | string | Pro=`2K`, Lite=`2K` | ✅ | ✅ | 预设（见下）或 `WIDTHxHEIGHT` |
 | `output_format` | string | — | `png`/`jpeg` | `png`/`jpeg` | 输出格式 |
-| `response_format` | string | 官方默认 `url`（本 skill 不发送这个字段，跟随官方默认） | ✅ | ✅ | 支持 `url`（24h 有效的 TOS 下载链接）或 `b64_json`（内嵌 base64 字节）。本 skill 2026-07-11 起不再暴露这个参数，统一走 url 下载，理由见文末"为什么统一走 url 下载"一节 |
+| `response_format` | string | `url` (official default; the CLI omits this field and relies on the default) | ✅ | ✅ | `url` returns a 24h-valid TOS download link; `b64_json` returns inline base64 bytes. The CLI does not expose this parameter and always downloads via URL (rationale: url mode supports streaming download, avoids the +33% base64 overhead, and the CLI downloads immediately so the 24h expiry is irrelevant). |
 | `watermark` | boolean | false | ✅ | ✅ | 是否加 Seedream 水印 |
 | `image` | string\|string[] | — | 最多 10 | 最多 14 | 参考图，支持 URL 或 data URL |
 | `optimize_prompt_options.mode` | string | `standard` | `standard` 唯一 | `standard` 唯一（fast 仅 4.0） | prompt 优化模式；CLI 传非法值会告警并忽略 |
-| `negative_prompt` | string | 无（本 skill 默认加） | ✅ beta | ⚠️ 忽略 | 反向提示词，Pro 上实测有效 |
+| `negative_prompt` | string | none (CLI adds a default on Pro) | ✅ beta | ⚠️ ignored | Negative prompt; effective on Pro |
 | `tools` | array | — | ❌ 拒绝 | `[{"type":"web_search"}]` | 联网搜索；Lite 上 `--web-search` 显式开启才发 |
 | `sequential_image_generation` | string | — | ❌ 拒绝 | `"auto"` | 连续组图/分镜模式 |
 | `sequential_image_generation_options.max_images` | int | — | ❌ | 1–15 | 连续组图张数 |
-| `stream` | boolean | — | ❌ 拒绝 | ✅ | 流式响应（本 skill 不使用） |
+| `stream` | boolean | — | ❌ rejected | ✅ | Streaming response (not used by this CLI) |
 
-**不要发的字段（Pro/Lite 都不支持）**：`num_images`/`n`（批量要用本 skill 的并发或 Lite sequential）、`seed`、`guidance_scale`、`steps`、`mask`、`bbox`、`layers`、`control_image`——这些要么被静默忽略要么 400。
+**Fields not to send (unsupported on both Pro and Lite)**: `num_images`/`n` (use the CLI concurrency or Lite sequential for batches), `seed`, `guidance_scale`, `steps`, `mask`, `bbox`, `layers`, `control_image` — these are either silently ignored or return 400.
 
-### 公开 API 不暴露的能力（用户期望 vs 现实）
+### Capabilities not exposed on the public API
 
-下面这些能力在 Seedream 5.0 Pro **官方 demo UI** 或 **营销文案** 中演示过，但**当前公开 Ark API 没有暴露**——本 skill 客户端无法实现这些。如有需求请向火山引擎提产品反馈。
+The capabilities below appear in Seedream 5.0 Pro **official demo UI** or **marketing materials** but are **not exposed on the public Ark API** and cannot be implemented by the CLI. File product feedback with Volcengine if you need them.
 
-| 能力 | UI demo 有？ | 公开 API 暴露？ | 本 skill workaround |
+| Capability | Demo UI? | Public API? | CLI workaround |
 |---|---|---|---|
-| **智能图层分离**（一键把画面拆为 N 个透明 PNG layer + 遮挡背景 inpaint）| 是（产品宣传视频）| **否** | 不可能单次 call 完成。可用 marker 多区域 + 多轮 edit 近似（每轮删一个元素、保留 1 个），但 N 个 layer 各自保留透明通道无法实现——Marker 只能"改这一块"不能"输出 4 张图每张只含一个元素"。**真需要 PS 级分层：换 LayerSwap / Segment Anything / ComfyUI workflow。** |
-| **原生 mask 输入**（上传黑白 mask 限定编辑区域）| 否 | **否** | Marker 矩形是替代方案，但只能粗略定位；曲线 mask、feather 边缘、多 mask 组合均无。 |
-| **bbox / polygon 输入**（精确圈选非矩形区域）| 否 | **否** | Marker 矩形唯一支持的视觉标记协议。 |
-| **ControlNet 条件输入**（canny/depth/openpose）| 否 | **否** | 无。Sketch 渲染靠 img2img + 自然语言描述；不能传参考骨架/深度图。 |
-| **ControlNet-style 风格强度控制**（style_strength 0-1）| 否 | **否** | 风格强度靠 prompt 措辞承诺（"inspired by" 弱 / "fully re-painted" 强）实现，没有数值滑块。 |
-| **per-layer 透明度 / 混合模式**（输出带 alpha 的多通道图）| 否 | **否** | 输出永远是 RGB 单张 PNG；无 alpha channel、无多通道、无 PSD/EXR。 |
-| **原生 LoRA / fine-tune adapter** | 是（开发者） | 限定（`--reference-image` + 隐式 adapter，但用户不可上传自定义 LoRA）| 无 `--lora <path>` 接口。 |
-| **旋转/运动模糊物理模拟**（车轮 / 风扇叶片）| 否 | **是（prompt 杠杆可达 9/10）** | ❗ 2026-07-10 推翻原结论：`motion blur on wheels` 裸写会被忽略，但用反细节措辞（"flying-saucer disc, no spokes/rim/tread visible, smooth rotational blur disc"把车轮描述成看不见辐条的模糊圆盘）实测 9/10 出自然车轮拖影。详见 photorealism.md Recipe。直写 "motion blur" 仍会失败；关键是把"要模糊到看不见辐条"具象描述。 |
-| **3D 几何先验**（同一物体多视角一致 / 3D 重建）| 否 | **否** | 同一物体不同视角会出现几何不一致。无 multi-view diffusion / NeRF / 3D Gaussian Splatting 能力。 |
-| **像素级精确 UI 截图** | 否 | **否** | UI 控件位置/字号不可控。**真需要 UI mockup：Figma + design system。** |
+| **Auto layer separation** (split the scene into N transparent PNG layers + occlusion inpaint) | Yes (product demo video) | **No** | Impossible in a single call. Multi-region marker edits over multiple rounds can approximate "remove one element at a time", but never produce N independent alpha-channel layers. **For PS-grade layer separation, use LayerSwap / Segment Anything / a ComfyUI workflow.** |
+| **Native mask input** (upload B/W mask to constrain edit area) | No | **No** | Marker rectangles are the alternative; only rough rectangles, no curved masks/feathered edges/multi-mask compositing. |
+| **Bbox / polygon input** (precise non-rectangular region selection) | No | **No** | Marker rectangles are the only supported visual-marker protocol. |
+| **ControlNet conditional input** (canny/depth/openpose) | No | **No** | Not available. Sketch-to-render relies on img2img + natural-language description; skeleton/depth references cannot be supplied. |
+| **ControlNet-style strength slider** (style_strength 0-1) | No | **No** | Style strength is controlled through prompt wording ("inspired by" = weak, "fully re-painted" = strong); there is no numeric slider. |
+| **Per-layer alpha / blend modes** (multi-channel output) | No | **No** | Output is always a single RGB PNG; no alpha channel, no multi-channel, no PSD/EXR. |
+| **Native LoRA / fine-tune adapter upload** | Yes (developer) | Limited (`--reference-image` acts as an implicit adapter, but custom LoRA uploads are not accepted)| No `--lora <path>` interface. |
+| **Rotational / motion blur physics** (wheels / fan blades) | No | **Yes (prompt-driven to 9/10)** | ❗ Bare "motion blur on wheels" is ignored. Use anti-detail phrasing describing the wheel as "flying-saucer disc, no spokes/rim/tread visible, smooth rotational blur disc" to produce natural wheel-motion blur. See photorealism.md recipe. The key is concretely describing the blur target (a disc with no spoke detail), not naming the effect. |
+| **3D geometric prior** (multi-view consistency / 3D reconstruction) | No | **No** | Different views of the same object can be geometrically inconsistent. No multi-view diffusion / NeRF / 3D Gaussian Splatting capability. |
+| **Pixel-perfect UI screenshot generation** | No | **No** | UI control position/size is not controllable. **For spec UI mockups, use Figma + a design system.** |
 
-> **诚实声明**：营销文案中"智能图层分离、PS 级分层、可单独移动/删除物体"等能力在**当前公开 Ark API 不可用**。Skill 能做到的是 marker 多区域编辑（区域换色/换物/加/减元素），**不是**输出 alpha 通道分层 PSD。要 PS 级分层请换专业工具链（Segment Anything + 手动 export / Photoshop Generative Fill / ComfyUI workflow）。
+> **Honest note**: Marketing claims of "intelligent layer separation, PS-grade layering, movable/deletable objects" refer to capabilities that do **not** exist on the public Ark API. This CLI delivers marker-based multi-region edits (region recolor/swap/add/remove), **not** alpha-channel layered PSD output. For PS-grade layer separation, switch to a dedicated toolchain (Segment Anything + manual export / Photoshop Generative Fill / a ComfyUI workflow).
 
 ### Size：两种指定方式（不可混用）
 
-**方式 1 — 精确像素 `WIDTHxHEIGHT`**（本 skill 的 shortcut 全走这条，你完全掌控像素）：
+**Method 1 — Explicit pixels `WIDTHxHEIGHT`** (all CLI shortcuts use this method; you control pixels exactly):
 - Pro：默认值 `1024×1024`；总像素 921,600（1280×720）–4,624,220（2048²×1.1025），长宽比 ∈ [1/16, 16]
 - Lite：默认值 `2048×2048`；总像素 3,686,400（2560×1440）–16,777,216（4096×4096），长宽比 ∈ [1/16, 16]
 - 约束是**总像素乘积** + 长宽比，两者需同时满足；不是对单边像素设限。模型可出这两个区间内的**任意**宽高比，不局限于下表列的几个。
@@ -160,7 +160,7 @@ Content-Type: application/json
 | 2:3 | 1664×2496 | 2496×3744 | 3328×4992 |
 | 21:9 | 3136×1344 | 4704×2016 | 6240×2656 |
 
-> **方式 1 vs 方式 2 何时用哪个**：需要确定像素（平台上传/印刷/匹配既有版式）→ 方式 1（`--size WxH` 或 shortcut）；只描述"感觉"、比例对即可、接受模型判断具体像素 → 方式 2（`--size 2K` + prompt 写"16:9 横版"，输出为上表/上表对应像素）。本 skill 的 `--wide`/`--landscape`/`--square` 等 shortcut 是方式 1 的预设精确像素（见下），与方式 2 档位是两套机制。
+> **Method 1 vs Method 2, when to use which**: For deterministic pixels (platform uploads, print, matching an existing layout) → Method 1 (`--size WxH` or a shortcut). For a "feel" where the ratio matters more than exact pixels → Method 2 (`--size 2K` + describe the ratio in the prompt). The CLI's `--wide`/`--landscape`/`--square` shortcuts are Method-1 exact-pixel presets, separate from the Method-2 preset tiers.
 
 常用精确尺寸（Pro 下）：
 - 1024×1024 = 1.05MP（1:1 方图：产品主图、头像、logo、app icon、social 方图）—— `--square`
@@ -235,7 +235,7 @@ CLI 提供以下 aspect-ratio shortcut，按模型自动解析为合法精确像
 
 ## Response (200 OK)
 
-本 skill 不发送 `response_format`，跟随官方默认 `url`，实际收到的是这个形状：
+The CLI omits `response_format` and relies on the official default `url`. Actual response shape:
 
 ```json
 {
@@ -257,12 +257,12 @@ CLI 提供以下 aspect-ratio shortcut，按模型自动解析为合法精确像
 }
 ```
 
-若客户端显式传 `response_format: b64_json`（本 skill 不这么做，但 API 原生支持），`data[]` 里的字段会换成 `b64_json`（base64 编码字节）而不是 `url`。
+If the client explicitly sends `response_format: b64_json` (not done by the CLI, but natively supported by the API), fields inside `data[]` use `b64_json` (base64-encoded bytes) instead of `url`.
 
 | 字段 | 说明 |
 |---|---|
-| `data[].url` | 本 skill 实际收到的字段——24h 有效的下载链接，`_download_image` 立即拉取并落盘（带 8 次指数退避重试，2026-07-11 起补上） |
-| `data[].b64_json` | 只在显式传 `response_format=b64_json` 时出现，本 skill 不这么用 |
+| `data[].url` | URL returned by the API — a 24h-valid download link; `_download_image` fetches and saves it immediately (with 8-attempt exponential-backoff retry) |
+| `data[].b64_json` | Present only when the caller explicitly sends `response_format=b64_json`; not used by the CLI |
 | `data[].revised_prompt` | 模型改写后的 prompt（不一定有） |
 | `data[].size` | 实际输出分辨率（精确 `WxH`） |
 | `data[].output_format` | 实际输出格式 |
@@ -273,81 +273,81 @@ CLI 提供以下 aspect-ratio shortcut，按模型自动解析为合法精确像
 
 ## Marker 编辑协议（客户端约定，不是 API 原生字段）
 
-这是 Pro 的 headline 能力之一，也是本 skill 的 edit 子命令的默认路径。**API 本身没有 mask/bbox 参数**——Pro 的"区域编辑"完全靠"在参考图上画彩色标记 + prompt 自然语言描述该区域改动"实现，模型读取输入图像识别这些标记，执行局部改动后自动擦除标记。
+Marker editing is one of Pro's headline capabilities and is the default path for the `edit` subcommand. **The API itself has no mask/bbox parameter** — Pro's "local edit" works entirely by "drawing a colored marker on the reference image + describing the change in natural language"; the model reads the image to recognize the marker, performs the local edit, and erases the marker automatically.
 
-### 协议步骤（本 skill 已自动化）
+### Protocol steps (automated by the CLI)
 
-1. 用户通过 `--marker-rect X,Y,W,H`（可传多次）指定要编辑的矩形区域，支持像素坐标或百分比（如 `20%,10%,60%,25%`）。
-2. 客户端用 Pillow 在参考图上绘制**半透明填充矩形 + 同色描边**（默认 `#ff0000` 红，fill alpha=80/255，stroke=3px）。
-3. 可通过 `--marker-color #00ff00` 改色（多区域多色时，在 prompt 里分别说"红框内换 XX，蓝框内加 YY"）。
-4. 保存 annotated 副本到输出目录供人检查（`*-annotated.png`），同时把 annotated 图作为 `image` 字段发送。
-5. 客户端**自动在 prompt 末尾追加"擦除标记"指令**（中文/英文按 prompt 语言自动选择）：
-   - 中文：`图中彩色方框/圆圈/涂写是我手工标出的编辑区域标记，请严格按上面的描述修改标记区域内的内容，标记区域之外的像素尽量保持不变，完成后清除所有彩色标记线条与填充。`
-   - 英文：`The colored rectangles/circles/scribbles in the image are edit markers I drew by hand. Apply the change described above strictly inside the marked regions, keep pixels outside the markers unchanged, and remove all colored marks once done.`
-6. `--no-marker-cleanup-prompt` 可关闭自动追加（高级用户想自写清理指令时用）。
+1. The user specifies rectangular regions to edit via repeatable `--marker-rect X,Y,W,H` arguments, accepting pixel coordinates or percent (e.g. `20%,10%,60%,25%`).
+2. The CLI draws a **semi-transparent filled rectangle with a solid outline of the same color** on the reference using Pillow (default `#ff0000` red, fill alpha=80/255, stroke=3px).
+3. Color can be changed per rectangle with `--marker-color #00ff00` (for multi-color multi-region edits, say "红框内换 XX，蓝框内加 YY" in the prompt).
+4. An annotated copy is saved to the output directory (`*-annotated.png`) for visual inspection, and the annotated image is sent as the `image` field.
+5. The CLI **auto-appends a marker-cleanup instruction** to the end of the prompt (Chinese/English chosen by prompt-language heuristic):
+   - Chinese: `图中彩色方框/圆圈/涂写是我手工标出的编辑区域标记，请严格按上面的描述修改标记区域内的内容，标记区域之外的像素尽量保持不变，完成后清除所有彩色标记线条与填充。`
+   - English: `The colored rectangles/circles/scribbles in the image are edit markers I drew by hand. Apply the change described above strictly inside the marked regions, keep pixels outside the markers unchanged, and remove all colored marks once done.`
+6. `--no-marker-cleanup-prompt` disables the auto-appended instruction (for advanced users who write their own cleanup prompt).
 
-### 已验证的典型 marker 场景（实测）
+### Validated marker scenarios
 
-- ✅ 海报/封面**换标题文字**（同字体同字号同位置换字，周围像素保持）。
-- ✅ 物体替换（把红框内沙发换成深蓝丝绒，茶几上加猫，周围光影不变）。
-- ✅ 材质替换（金属雕塑变透明玻璃，保留反光结构）。
-- ✅ 多区域多色（红框换字、蓝框加元素）。
-- ❌ 目前 marker 只支持矩形；圆形/任意 scribble 需要手动预处理（用 Pillow 自己画）。
+- ✅ Headline/subtitle **text swaps** on posters/covers (matching font/size/position; surrounding pixels preserved).
+- ✅ Object replacement (swap a sofa for a navy-velvet sofa and add a cat; lighting/background unchanged).
+- ✅ Material change (metal sculpture → transparent glass, preserving reflection structure).
+- ✅ Multi-region multi-color edits (red box: swap title, blue box: add element).
+- ❌ Only rectangles are supported out of the box; circles/arbitrary scribbles require pre-drawing with Pillow.
 
-## Outpaint 协议（客户端画布扩展，不是 API 原生字段）
+## Outpaint protocol (client-side canvas extension; not an API field)
 
-API 没有 `outpaint` 参数，真正的像素级 outpaint 通过客户端 trick 实现：
+The API has no `outpaint` parameter; true pixel-level outpaint is implemented via a client-side technique:
 
-1. 用 `--outpaint <dir>:<pixels>`（多传多方向，如 `--outpaint left:400 --outpaint right:400`）指定要扩展的方向与像素。
-2. 客户端把原图粘贴到更大的空白 canvas 中央，空白用图像边缘采样的中性色填充（避免硬接缝）。
-3. 自动在 prompt 末尾追加中文/英文填充指令（"画布中央是原图片，请自然延伸填充四周的空白区域，使整张图变成一张完整的 [W×H/横版/竖版] 图片，延续原有风格、光照、色调与材质，不要让中心与新填充区域有可见接缝。"）。
-4. 把扩展后的 canvas 作为 `image` 发送；模型填充扩展区域（中心大概率会被轻微重绘，不是 Photoshop 那种像素锁死的扩展，但对大部分文章配图场景够用）。
+1. Specify directions and pixel amounts with repeatable `--outpaint <dir>:<pixels>` (e.g. `--outpaint left:400 --outpaint right:400`).
+2. The CLI pastes the source image onto the center of a larger canvas and fills empty space with an edge-sampled neutral color to mask seams.
+3. A Chinese/English fill instruction is auto-appended to the prompt (e.g. "The center of this canvas is the original image. Naturally extend and fill the surrounding blank areas...").
+4. The extended canvas is sent as `image`; the model fills the extended region (the center is likely to be slightly repainted rather than being pixel-locked — sufficient for most article-illustration use cases).
 
-> 如果需要"中心像素一个不动"的严格 outpaint，需要配合局部 inpaint mask（Pro 当前公开 API 没有这个能力，要么等官方要么换栈）。
+> Strict outpaint that leaves the center pixel-identical requires a local inpaint mask; the public Ark API does not expose this capability.
 
-## 定价（截至 2026-07）
+## Pricing
 
-| 模型 | 单价 |
+| Model | Price |
 |---|---|
-| Seedream 5.0 Pro，输出 ≤ 2.36MP | ¥0.30/张 |
-| Seedream 5.0 Pro，输出 > 2.36MP | ¥0.60/张 |
-| Pro 额外输入图（第 2 张起） | ¥0.02/张 |
-| Seedream 5.0 Lite | ¥0.22/张（2K 档） |
+| Seedream 5.0 Pro, output ≤ 2.36MP | ¥0.30/image |
+| Seedream 5.0 Pro, output > 2.36MP | ¥0.60/image |
+| Pro additional input images (from the 2nd) | ¥0.02/image |
+| Seedream 5.0 Lite | ¥0.22/image (2K tier) |
 
-RPM ≈ 500；本 skill 默认并发 3，且带 8 次指数退避（2/4/8/16/30/30/30/30s）并尊重 `retry-after` header，正常使用不会触发 429 熔断。
+RPM ≈ 500; the CLI defaults to concurrency 3 with 8-attempt exponential backoff (2/4/8/16/30/30/30/30s) and honors the `retry-after` header, so normal usage stays under the 429 throttle.
 
 ## Error Codes
 
-| HTTP | Code | 说明 | Retry? |
+| HTTP | Code | Meaning | Retry? |
 |---|---|---|---|
-| 400 | `InvalidParameter` / `BadRequest` | 参数错误（如 Pro 传了 web_search、size 超出范围、引用图损坏） | No |
-| 401 | `AuthenticationError` | API Key 格式错误或过期 | No |
-| 403 | `RequestForbidden` | 鉴权通过但无权限（模型未开通、欠费） | No |
-| 429 | `RequestLimitExceeded` | 限流；尊重 `retry-after` header | **Yes** |
-| 500 | `InternalError` | 服务端错误 | **Yes** |
-| 502/503/504 | — | 网关/服务不可用 | **Yes** |
+| 400 | `InvalidParameter` / `BadRequest` | Parameter error (e.g. web_search on Pro, size out of range, corrupt reference) | No |
+| 401 | `AuthenticationError` | API key malformed or expired | No |
+| 403 | `RequestForbidden` | Authenticated but not permitted (model not enabled, account in arrears) | No |
+| 429 | `RequestLimitExceeded` | Rate limited; honor `retry-after` header | **Yes** |
+| 500 | `InternalError` | Server-side error | **Yes** |
+| 502/503/504 | — | Gateway / service unavailable | **Yes** |
 
-错误响应体：
+Error response body:
 
 ```json
 { "error": { "code": "BadRequest", "message": "..." } }
 ```
 
-## 为什么本 skill 统一走 url 下载（2026-07-11 起，不再暴露 `response_format`）
+## Why the CLI downloads via URL
 
-早期版本对 Pro 默认发 `b64_json`（覆盖官方默认 `url`），理由是"省一次 HTTP hop + 无 URL 过期风险"。经过实测复盘，这个默认值被撤销，理由：
+The CLI omits `response_format` so the API defaults to returning `url`. Rationale:
 
-1. **官方文档统一默认 `url`**，不区分模型——之前 Pro 默认 b64_json 是主动偏离官方设计，没有足够收益支撑这个偏离。
-2. **base64 有 +33% 硬开销**，且必须整体进内存解析再解码，2K PNG 变成 4-8MB 的 JSON 字符串对本机没压力，但大图（Lite 16MP 输出）开销会更明显；url 模式可以流式下载，不吃这个税。
-3. **24h 过期风险在本 skill 的真实用法里几乎不存在**——生成后立即在同一进程内下载落盘，中间没有排队/人工审核之类的延迟窗口。
-4. **`response_format` 这个参数贯穿了 21 处代码（能力字典/CLI flag/请求体构造/batch 流水线逐层传参）**，维护成本比"省一次 HTTP hop"这点收益更高；砍掉整条管线比维护"默认值 + 可选覆盖"更简单。
-5. **真正要补的不是"多一个可选模式"，是"让 url 这条路径足够健壮"**——`_download_image` 现在有独立的 8 次指数退避重试（跟 `_call_api` 一致的 backoff 曲线），网络抖动只重试便宜的下载步骤，不会让已经成功且已计费的生成步骤陪葬。
+1. The official API default is `url` across all models; aligning with the default avoids unnecessary divergence.
+2. base64 adds a hard +33% size overhead and must be parsed and decoded entirely in memory; for large images (Lite up to 16MP) this becomes noticeable. URL mode supports streaming download without that overhead.
+3. The 24h URL expiry is irrelevant in the CLI's workflow — the image is downloaded in-process immediately after generation, with no intervening queue or human-review window.
+4. Keeping a single code path (no `--response-format` flag) is simpler than plumbing the option through the capability dict, CLI flags, body builder, and batch pipeline.
+5. `_download_image` has its own 8-attempt exponential-backoff retry (matching `_call_api`'s backoff curve), so transient network failures only retry the cheap download step and never waste a successful (and already billed) generation call.
 
-如果未来有真实场景需要 b64_json（比如受限网络环境连不上图片托管域名），API 本身仍然原生支持这个参数——只是本 skill 客户端不再暴露 `--response-format` flag，需要的话可以在 `_build_request_body` 里加回一行 `"response_format": "b64_json"`。
+The API still natively supports `b64_json` for environments that cannot reach the image-host domain; add `"response_format": "b64_json"` inside `_build_request_body` if you need it.
 
-## 本 skill 不做的事
+## Out of scope for this CLI
 
-- **不调 volcengine Python SDK**——只用 `httpx` 直连 REST，依赖最小、可审计、`uv run` 无额外安装成本。
-- **不实现 ControlNet/深度图/姿态控制等外部控制手段**——公开 API 没暴露这些控制方式。
-- **不做 pixel-perfect 图层分离**——官方营销里的"拆十余图层"是火山引擎客户端 UI 能力，未在 Ark 公开 API 提供。
-- **不做 batch n>1 单次请求**——Pro 单次请求只出 1 张；批量用客户端并发（`generate-batch --concurrency N`）。
+- **No volcengine Python SDK** — uses `httpx` against the raw REST endpoint for minimal, auditable dependencies and zero-install `uv run`.
+- **No ControlNet / depth-map / pose-pose control** — the public API does not expose these controls.
+- **No pixel-perfect layer separation** — the "split into a dozen layers" capability shown in ByteDance marketing is client-side UI functionality and is not exposed on the public Ark API.
+- **No n>1 batch in a single request** — Pro returns 1 image per request; batches use client-side concurrency via `generate-batch --concurrency N`.
