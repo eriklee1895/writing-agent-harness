@@ -12,11 +12,13 @@
 
 ## 🗺️ AI 写作 Harness 全景
 
-![AI 写作自动化 Harness 全景信息图](docs/assets/ai-writing-harness-overview.png)
+![AI 写作 Pipeline 概览（端到端 6 阶段 + 持续进化闭环）](docs/assets/ai-writing-pipeline-brief.png)
 
 `writing-agent-harness` 的核心不是一条固定流水线，而是一个可追踪、可扩展、会复盘进化的写作自动化系统：`AGENTS.md` 负责把 agent 路由到最小必要文档，`docs/` 保存 runbooks 和决策，`.agents/skills/` 执行具体能力，`content/origin/` 保存长期 canonical Markdown / MDX，再派生到微信公众号、博客和未来渠道。
 
-详细 Mermaid 架构图和可维护流程见 [docs/workflows/ai-writing-workflow.md](docs/workflows/ai-writing-workflow.md)。
+详细 harness 架构（skills 分工、目录约定、渠道派生、memory 分层）见下图与 [docs/workflows/ai-writing-workflow.md](docs/workflows/ai-writing-workflow.md)：
+
+![AI 写作自动化 Harness 详细架构图](docs/assets/ai-writing-harness-overview.png)
 
 ## ⚡ Install Skills
 

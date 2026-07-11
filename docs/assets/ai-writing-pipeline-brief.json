@@ -1,0 +1,27 @@
+{
+  "prompt": "横版16:9，AI写作工作流全景信息图。视觉风格：温暖的编辑桌面hero照片+现代毛玻璃卡片融合——一张浅橡木色办公桌俯视45度hero照片（桌面占画面中下部70%，顶部露出浅米色墙面和左上角窗户一角），柔和左上窗自然光在桌面投下窗格阴影。桌上：左上角（卡片1和卡片2后方）一台银色笔记本电脑合上盖（无屏幕显示），画面中上（卡片3和卡片4之间后方，不遮挡卡片）一杯白色陶瓷拿铁咖啡（心形拉花完整可见），画面右下角（回流弧pill标签右侧）放一张米色手账纸+一支黑色 fountain pen 钢笔斜放在纸上。桌面其它区域干净留白。shot on Sony A1 50mm f/4柔和景深（桌面和卡片锐利、墙面微虚），整体暖米白#FAF7F2+深琥珀色线条。禁止CGI、禁止3D、禁止科技蓝光、禁止暗色背景、禁止赛博风、禁止右下角荧光笔/马克笔/彩色笔（只允许米色纸+黑钢笔）。\n\n画面顶部（纵向2-9%）在浅米色墙面前居中：超大号深棕色#3E2723粗黑无衬线中文大标题\"AI 写作工作流全景\"（字号占画面高度1/10，PingFang/思源黑体，印刷锐利，逐字准确）；其下一行小号深琥珀色英文无衬线副标题\"Writing Agent Harness · end-to-end AI writing pipeline\"。\n\n画面中部（纵向15-68%），从左到右6张等大毛玻璃卡片水平排成流水线（每张宽13%、高47%、等间距）。卡片之间用清晰的连接表达从左到右的主流程——使用**深色箭头**连接，不要用线段加小三角：\n- 箭头是**深琥珀棕色#92400E的实心粗箭头**（chevron/箭头符号\"→\"形状，线宽3px，箭头头部大且清晰可见，不要把三角埋在线段里），每个箭头位于两张相邻卡片的中线上、在卡片之间空隙居中位置\n- 箭头颜色是深琥珀棕色#92400E（比陶土橙深很多，在浅橡木色桌面上高对比度清晰可见，不会和木纹颜色融合）\n- 卡片是frosted white glass毛玻璃（rgba(255,255,255,0.85)白色填充、backdrop-blur 24px、1px rgba(146,64,14,0.15)浅琥珀描边、18px圆角、柔和投影0 4px 16px rgba(62,39,35,0.10)），卡片能透见背后桌面木纹\n- 每张卡片顶部居中一个44px直径彩色圆图标，图标下方大号深棕#3E2723粗无衬线4字中文阶段名，再下一行小号灰色英文词，再下两行更小深灰说明（逐字准确无错字无斜杠）：\n卡片1 最左(x:2.5%)，暖黄#FBBF24圆+白色灯泡图标：\"灵感捕捉\"+\"Spark\"+\"飞书Notion网页碎片\"+\"→ inbox / drafts\"\n卡片2(x:17.5%)，天蓝#3B82F6圆+白色对话气泡：\"选题脑暴\"+\"Ideation\"+\"article-ideation\"+\"→ brief+outline\"\n卡片3(x:32.5%)，翠绿#10B981圆+白色钢笔尖：\"写作打磨\"+\"Writing\"+\"research + polish-article\"+\"→ content/origin\"\n卡片4(x:47.5%)，紫#8B5CF6圆+白色图片山形：\"配图视觉\"+\"Visuals\"+\"article-illustration\"+\"→ 封面与插图\"\n卡片5(x:62.5%)，陶土橙#F97316圆+白色纸飞机：\"渠道发布\"+\"Publish\"+\"readiness-check + render\"+\"→ 微信/博客\"\n卡片6 最右(x:77.5%)，青#06B6D4圆+白色循环箭头：\"复盘沉淀\"+\"Evolve\"+\"writing-task-closeout\"+\"→ memory/skills\"\n\nCRITICAL — 回流弧线规则：\n- 唯一一条回流弧线**完全在卡片下方（纵向75%以下的桌面区域）**，是一条顺滑的深琥珀色U形虚线\n- 弧线颜色与卡片间箭头一致，用深琥珀棕#92400E虚线（线粗2.5px，虚线间隔8px，在浅橡木色桌面上清晰可见，高对比度）\n- 弧线起点：卡片6底部偏右位置\n- 弧线走向：从卡片6底部垂直向下一小段（到纵向78%），然后水平向左沿画面底部平缓U形走，到卡片1正下方再垂直向上\n- 弧线终点：箭头从下方垂直向上指向卡片1底边中央（箭头头部也是深琥珀#92400E实心三角形，清晰可见，表达反馈回到起点）\n- **绝对禁止弧线向上越过卡片顶部**；**绝对禁止弧线出现在画面上半部分（纵向70%以上）**；**绝对禁止弧线穿过标题区、墙面、笔记本电脑上方**\n- 弧线在底部正中央（横向50%、纵向82%左右）叠一个**深琥珀#92400E填充、白色字**的圆角pill标签，标签文字\"持续进化 · memory/skills/retrospectives 反哺下一轮\"（逐字准确，字清晰可读）\n- 回流弧虚线的箭头和卡片之间的正向→箭头都是深琥珀色，形成统一高对比度视觉语言\n\n禁止项：不要底部横带、不要\"Human Final Review\"字样、不要对勾、不要footer路径文字、不要荧光笔/马克笔/彩色笔（右下角只放米色纸+黑钢笔）；桌面物品不遮挡卡片文字；卡片内所有中文英文逐字准确无错字无同音字替换；6张卡片等大等距；2K、16:9横版、png印刷锐利。",
+  "model": "doubao-seedream-5-0-pro-260628",
+  "model_label": "Seedream 5.0 Pro (2026-06-28 build)",
+  "size": "2048x1152",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": false,
+  "optimize_prompt": null,
+  "reference_images_count": 0,
+  "reference_images_are_data_urls": false,
+  "negative_prompt": "模糊, 低质量, 水印, 变形, 多余肢体",
+  "marker_rects": [],
+  "outpaint": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/.local-memory/seedream-showcase-repro/v6-dark-arrows-2.png",
+  "created_at": "2026-07-11T21:33:08",
+  "dry_run": false,
+  "reported_size": "2048x1152",
+  "elapsed_ms": 93498,
+  "usage": {
+    "input_images": 0,
+    "generated_images": 1,
+    "output_tokens": 9216,
+    "total_tokens": 9216
+  }
+}
