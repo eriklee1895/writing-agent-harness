@@ -37,8 +37,8 @@ Lite pixel range: **3.7 MP – 16 MP**, aspect ratio ≤16:1. This is a **floor*
 
 ## What Lite does NOT have
 
-- **No marker-based local editing.** The entire Killer Feature 2 protocol (`references/marker-editing.md`) is Pro-only. `--marker-rect` on a Lite request is either ignored or produces materially worse results — don't rely on it.
-- **Weaker text rendering.** Pro's text-reliability table (`SKILL.md` Killer Feature 1) does not transfer to Lite. Expect frequent character errors even on short headlines. If text matters at all, use Pro regardless of resolution needs.
+- **No marker-based local editing.** The entire marker-editing protocol (`references/marker-editing.md`) is Pro-only. `--marker-rect` on a Lite request is either ignored or produces materially worse results — don't rely on it.
+- **Weaker text rendering.** Pro's text-reliability table (SKILL.md → "Text rendering") does not transfer to Lite. Expect frequent character errors even on short headlines. If text matters at all, use Pro regardless of resolution needs.
 - **Untested prompt-engineering transfer.** Every commitment-language formula, per-person group-photo enumeration trick, anti-detail motion-blur phrasing, and multilingual same-screen recipe in this skill's reference docs (`style-transfer.md`, `photorealism.md`, `multilingual.md`, `text-deep.md`) was empirically validated **on Pro only** (300+ test images, 2026-07-10 sweep). These techniques are plausible-but-unverified on Lite — don't assume they carry over with the same reliability. If you need one of these capabilities and are on Lite for a resolution/cost reason, expect to re-validate empirically rather than trusting the Pro-derived scores.
 
 ## Example

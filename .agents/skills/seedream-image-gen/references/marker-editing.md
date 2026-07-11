@@ -2,7 +2,7 @@
 
 Marker 编辑是 Seedream 5.0 Pro 最具差异化的能力——不用画 mask、不用导出 bbox JSON，**在参考图上画一个彩色矩形，用自然语言说"这里改成什么"，模型识别彩色方框、在框内改图、自动擦除方框痕迹**，一张图一次 API call 完成换字、换物、换材质、加/减元素、多区域同时改等以前必须 Photoshop 才能做的事。本 skill 的 `edit` 子命令通过 Pillow 自动完成画框、发图、追加擦除指令三步。
 
-> 本文件是 SKILL.md "Killer Feature 2" 的深度参考。快速入门请看 SKILL.md 的 Example 6/7；**首次用 marker 务必先读 §2 协议 + §3 检查清单 + §5 翻车阈值**。
+> 本文件是 SKILL.md "Marker-based local editing" 一节的深度参考。快速入门请看 SKILL.md 的 Example 6/7；**首次用 marker 务必先读 §2 协议 + §3 检查清单 + §5 翻车阈值**。
 
 ---
 

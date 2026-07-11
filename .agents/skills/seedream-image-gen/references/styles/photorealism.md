@@ -2,14 +2,14 @@
 
 适合：肖像、产品写实、人物故事、风光大片、城市夜景、电影场景、纪实摄影、editorial 人像、social media hero image、博客 cover。
 
-Seedream 5.0 Pro 在单主体静物摄影上是同价位模型中最强（实测 8.8/10 平均）。物理光学（玻璃折射 / 金属反射 / 焦散 / SSS / 散景 / 蓝金光影 / 单点光衰减 / 旋转运动模糊-需突破配方）真实可信；残留弱点集中在手部复杂解剖、场景文字 logo、默认美颜滤镜。**群体身份多样性、旋转运动模糊两项原以为是模型能力天花板，2026-07-10 复测证实是 prompt 工程问题，均有突破配方（见下文）。**
+Seedream 5.0 Pro 在单主体静物摄影上是同价位模型中最强（实测 8.8/10 平均）。物理光学（玻璃折射 / 金属反射 / 焦散 / SSS / 散景 / 蓝金光影 / 单点光衰减 / 旋转运动模糊-需突破配方）真实可信；残留弱点集中在手部复杂解剖、场景文字 logo。**群体身份多样性、旋转运动模糊、默认美颜滤镜三项原以为是模型能力天花板，复测证实全部是 prompt 工程问题，均有突破配方（见下文）。**
 
 ## 总览（24 张初测 + 补测，按类别）
 
 | 类别 | 平均 | 典型最强 | 典型翻车（初测）| 突破后 |
 |---|---|---|---|---|
 | 物理光学 (8 张) | 8.8 | 玻璃焦散 9, 金属反射 9.5, 耳部 SSS 9.5, 火焰物理 9, 蓝金光影 10 | 旋转车轮运动模糊 7.5（轮子清晰，背景有 blur） | **9/10**（显式反细节 prompt，见下文突破配方）|
-| 皮肤/材质 (4 张) | 9.1 | 发丝 9.5, 织物编织 9, 织物垂坠 9 | 皮肤仍偏美颜 8.5 | 未突破，仍需接受 ~80% |
+| 皮肤/材质 (4 张 + 补测 2 张) | 9.1→9.5 | 发丝 9.5, 织物编织 9, 织物垂坠 9, **raw 皮肤肌理 9.5**（补测突破配方）| 皮肤仍偏美颜 8.5 | **已突破**（激进纹理枚举配方，见下文）|
 | 群体 (6 张 + 补测 3 张) | 7.6→9 | 双人 9, 三人 9, 群像 distant 8, **10人逐人枚举 9** | 5 人脸开始重复 6.5, 10 人彻底克隆 4.5 | **9/10**（逐人枚举配方，见下文）|
 | 风格切换 (2 张) | 9.3 | 摄影纪实 9, CGI cinematic 9.5 | — | — |
 | 光影 (4 张) | 9.6 | 金时刻 10, 蓝时刻 9.5, 单烛光 10 | 伦勃朗三角偶尔不到位 | — |
@@ -38,11 +38,11 @@ Seedream 5.0 Pro 在单主体静物摄影上是同价位模型中最强（实测
 
 ### 材质纹理（按需加）
 
-- `visible skin pores` — P1 帮 anti-美颜，但不会完全打败默认
+- `visible skin pores` — anti-美颜关键词之一；单独用弱，但和下方"人像肌理突破配方"的完整枚举组合可稳定打败默认磨皮
 - `fine peach-fuzz hairs` / `vellus hairs` — R5, P1 边缘绒毛
 - `individual hair strands`, `flyaways` — P2 关键
 - `visible weave`, `thread detail` — P3 织物
-- `NOT smoothed`, `no airbrushing`, `no over-smoothing` — 弱有效，不能单独依赖
+- `NOT smoothed`, `no airbrushing`, `no over-smoothing` — 单独用弱；必须和"逐项纹理枚举 + 具象参考类比"组合（见"人像肌理突破配方"）才能真正打败默认美颜
 - `photorealistic`, `hyperrealistic` — 基础
 - `documentary photography`, `photojournalism`, `National Geographic` — D1, L1, G5 推向纪实
 
@@ -189,15 +189,39 @@ or Porsche AG press shots."
 
 **结论：R3 miss 不是模型能力天花板，是 prompt 工程问题。** "motion blur" 这个词本身太弱，模型会默认加背景纹理而不动车轮；需要显式禁止车轮细节 + 具象化"disc"目标才能触发真正的旋转模糊渲染。
 
-### "人像肌理天花板" — 东亚柔光女性约 80% 真
+### "人像肌理天花板" — 突破配方已拿到 raw dermatology 级皮肤（原 ~80% 结论已推翻）
 
-- 真天花板：年轻东亚女性 + 柔金光 + SSS + 毛孔（muted 但有）+ 绒毛 + 头发 rim light + 眼睛 catchlight
-- 默认美颜：即便写 `NOT smoothed` 也偏 polished editorial，需要 80% 努力才能拿到 raw 皮肤
+**早期结论已被修正。** 最初以为默认美颜滤镜是硬天花板：即便写 `NOT smoothed` 也偏 polished editorial，年轻东亚女性尤其难拿到 raw 皮肤，只能到 ~80%。**补测证实这又是 prompt 工程问题**——和旋转模糊、群体照一样，弱 prompt 触发不了，需要激进配方。
+
 - 发丝（P2）真的 category-leading，超过 Midjourney v6 / DALL-E 3
 - 老龄皮肤（L4）皱纹/老年斑/白发/血管纹理都好
-- 弱项：深肤色、强纹理皮肤、烈日下皮肤、dermatology macro
+- 现在**年轻东亚女性 + 年轻男性**（原最难的 case）都能拿到 9.5/10 的 raw dermatology 级皮肤：可见粗大毛孔、鼻翼黑头/皮脂丝、真实泛红、痘印瑕疵、绒毛、T 区油光、无蜡像感
 
-**"天花板"是营销话术，"当前最强之一，尤其东亚柔光"是真。**
+#### 突破配方：激进纹理枚举 + 具象参考类比 + 堆叠否定
+
+**核心：`NOT smoothed` 单独太弱。三个杠杆缺一不可**——(1) 逐项枚举要出现的纹理，(2) 给一个具象的"生图目标"参考类比，(3) 堆叠否定 beauty 词。实测年轻男女都 9.5/10、可复现（非幸运种子）：
+
+```
+Raw unretouched documentary close-up portrait of a [年龄+人物], [自然光], no makeup.
+CRITICAL SKIN REALISM: clearly visible enlarged pores across the nose and cheeks,
+individual vellus peach-fuzz hairs [男性加 short stubble hairs] catching the light,
+natural skin unevenness with slight redness around the nose and chin, a few tiny
+visible blemishes and freckles, faint fine lines under the eyes, subtle oil sheen
+on the T-zone, real skin micro-texture like a dermatology reference photograph.
+Shot on 100mm macro lens f/5.6, sharp focus on skin.
+This is a RAW UNRETOUCHED photo — absolutely NO beauty retouching, NO skin smoothing,
+NO airbrushing, NO frequency-separation, NO beauty-campaign gloss, NO wax-figure skin.
+Documentary realism like a National Geographic face portrait, not a cosmetics ad. 2K
+```
+
+**为什么有效**（和旋转模糊/群体照同一套方法论）：
+1. **逐项枚举纹理**（enlarged pores / vellus hairs / redness / blemishes / freckles / fine lines / oil sheen）——不是笼统 "NOT smoothed"，而是把每一种要出现的皮肤特征点名
+2. **具象参考类比**（"dermatology reference photograph" / "National Geographic face portrait, not a cosmetics ad"）——给模型一个明确的"生成目标图种"锚点，把它从默认的 beauty-campaign register 拉走
+3. **堆叠否定**（NO beauty retouching / NO smoothing / NO airbrushing / NO frequency-separation / NO gloss / NO wax-figure）——一连串否定压制默认磨皮
+
+**弱项残留**：深肤色、烈日下皮肤 less tested；dermatology macro 极端特写未测。但常规肖像的"美颜默认"已经可以稳定打败。
+
+**"天花板"是营销话术，但"当前最强之一 + raw 皮肤可通过配方拿到"是真。**
 
 ## 翻车区（诚实清单，2026-07-10 更新）
 
@@ -206,7 +230,7 @@ or Porsche AG press shots."
 3. **场景文字/Logo** — 短招牌的英/日/韩文字仍产 gibberish Latin；长段中文段落好；散落小 logo 仍假
 4. ~~旋转/动态模糊~~ — **已被显式反细节 prompt 突破**（见上文"旋转运动模糊突破配方"）。弱形式 prompt（"motion blur on wheels"）仍会失败，需要用突破配方
 5. **安全过激** — diversity/ethnicities 抽象词触发安全；**具体种族描述（"Black man"/"South Asian woman"）实测未触发**
-6. **美颜默认难以关闭** — 强 anti-smoothing prompt 也只能拿到 ~80%
+6. ~~美颜默认难以关闭~~ — **已被激进纹理枚举配方突破**（见上文"人像肌理天花板"），年轻男女均可拿到 9.5/10 raw 皮肤。弱 prompt（单写 `NOT smoothed`）仍失败，需用完整配方
 7. **保守 subject 默认** — 宇航员头盔不脱 / fashion model headless crop
 8. **暗肤色/烈日皮肤** less tested but 弱
 
