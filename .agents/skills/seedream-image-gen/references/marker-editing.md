@@ -259,6 +259,92 @@ uv run scripts/seedream_image_gen.py edit \
 
 关键防御：长单词必须主动拆段（FASH-ION、REIMAG-INED），让每行 ≤5 字母；红框宽度 ≥38% 给 10 字母单词留空间。
 
+### Recipe 9：精准局部换色 + 五官特征改（2026-07-10 补测，9.5/10）
+
+单眼虹膜变色（heterochromia 效果）——精度极高，能只改一只眼睛，另一只眼睛完全不动：
+
+```bash
+uv run scripts/seedream_image_gen.py edit \
+  --reference-image portrait.png \
+  --marker-rect "20%,38%,25%,12%" \
+  --prompt "Inside the marked red rectangular region covering the left eye (viewer's left),
+change the iris color from dark brown to a warm hazel-green (hex #6B8E4E), keep the same
+eye shape, same eyelid, same eyelashes, same catchlight position, natural realistic iris
+texture with color variation. Outside the marked region, keep the entire face completely
+unchanged including the right eye which stays dark brown, same skin, same hair, same
+lighting, same background. Erase all colored edit marks."
+```
+
+**关键**：显式指定"viewer's left/right"避免左右混淆；显式说另一只眼睛"stays [原颜色]"防止两眼都被改。同样模式适用于唇色（hex 精准度 ±1 shade，见 Recipe 1 附近说明）、单侧腮红、单个痣的增减。
+
+### Recipe 10：忙碌场景中的孤立物体擦除（2026-07-10 补测，9.5/10）
+
+早期报告认为"拥挤场景物体删除 1-4/10"，但那是**反射夜景 + 霓虹灯**的特殊失败模式。**日间 + 亚光表面的忙碌场景**（street/parking/market）删除孤立物体（车/自行车/摊位道具）实测稳定 9-9.5/10：
+
+```bash
+uv run scripts/seedream_image_gen.py edit \
+  --reference-image busy-street.png \
+  --marker-rect "35%,55%,15%,30%" \
+  --prompt "Inside the marked red rectangular region, remove the blue SUV completely.
+Restore the empty parking space naturally: continue the same cobblestone pavement
+pattern where the car was, matching the lighting and texture, add a natural soft
+shadow gap between the white hatchback and silver wagon that remain parked on
+either side. The white hatchback (to the left) and silver wagon (to the right)
+must remain exactly in place, untouched, unmoved. Outside the marked region, keep
+everything else completely unchanged. Erase all colored edit marks."
+```
+
+**关键杠杆**：(1) 显式说"restore X naturally, continuing the Y pattern"给模型明确的填充目标；(2) **显式点名相邻要保留的物体**（"white hatchback... silver wagon... must remain exactly in place"）——这是防止连带误删的核心；(3) 日间亚光表面（cobblestone/沥青/水泥）比夜间反射表面（湿沥青+霓虹）容易得多。
+
+**反例（同一张图、同样规范的 marker + prompt，却失败）**：同一条街景图上，紧挨着测试删除中景的黑色自行车（斜靠在路灯柱上），marker 覆盖完整 + 四周充分 padding、prompt 同样显式写"remove...restore cobblestone naturally...lamppost must remain exactly in place"——**结果自行车原样保留，编辑完全没生效**（0/10，annotated.png 确认框位置精准无误，不是框歪的问题）。
+
+**更新后的场景判断规则（三轴，不是原来的两轴）**：
+- 忙碌但**日间/亚光/无强反射**的场景 → 孤立物体删除可靠 9+/10，**但仅当该物体是"可替换的、非构图焦点"**（一排相似车辆中的一辆——旁边还有白车银车，视觉上互相替代性强）
+- **同一日间亚光场景里，构图焦点/视觉锚点物体**（斜靠路灯柱、居中景深、高对比度轮廓的自行车）→ **仍然删不掉**，即使 marker 和 prompt 完全按最佳实践写。这与"hero 物体/主光源删除不可用"是**同一个失败机制的更广泛版本**——不限于光源，任何在构图上起"视觉锚点"作用的孤立物体都可能触发同样的抗删除 prior。
+- **夜间 + 湿反射地面 + 霓虹招牌** → 仍是 1-4/10 高失败区（原 Tokyo 测试结论保留）
+
+**实操判断法**：删除前问自己"这个物体在画面里是不是可以被同类物体互相替换、拿掉不会让构图显得空/断"（一排车里的一辆——可以）还是"这个物体是画面视觉重心，拿掉后构图会显得缺了主角"（斜靠灯柱的自行车——不行）。前者可靠删除，后者大概率删不掉，建议改用整图重绘（t2i 换一版无该物体的场景）而不是反复 retry marker。
+
+### Recipe 11：坐标精准数学推导续写（2026-07-10 补测，9.5/10）
+
+在手写数学题下方指定行数续写推导步骤，保持笔迹/笔色/位置一致：
+
+```bash
+uv run scripts/seedream_image_gen.py edit \
+  --reference-image math-worksheet.png \
+  --marker-rect "17%,42%,50%,15%" \
+  --prompt "Inside the marked red rectangular region (on the first faint ruled line
+below the equation), add the next handwritten step of the derivation, matching the
+EXACT same dark blue ballpoint pen style, same handwriting slant and size as the
+equation above: factor the quadratic as '(x - 2)(x - 3) = 0'. Write it left-aligned
+starting at the same x-position as the equation above. Do not modify the original
+equation at the top — it must stay pixel-identical. Erase all colored edit marks."
+```
+
+**关键**：(1) marker 框住"下一行"而不是整页，给出精确写入位置；(2) 显式给出目标公式内容（不要指望模型自己推导——它照抄你给的答案，不会算错但也不会主动验证数学正确性，**你需要自己算对再喂给它**）；(3) "matching the EXACT same pen style/slant/size" 触发风格延续。**局限：这是"手写风格续写"不是"数学求解"——模型不会主动计算，只会按你写的内容渲染成手写体。复杂计算仍需你自己算，模型只负责视觉呈现。**
+
+### Recipe 12：多图人物抠像 + 统一光影合成（2026-07-10 补测，8.5-9/10）
+
+从两张独立参考图各提取一个人物，合成到统一场景+统一光影：
+
+```bash
+uv run scripts/seedream_image_gen.py edit \
+  --reference-image personA.png \
+  --reference-image personB.png \
+  --wide \
+  --prompt "Extract the man from the FIRST reference image (Black, short fade
+haircut, trimmed beard, navy sweater) and the woman from the SECOND reference
+image (White, long strawberry-blonde wavy hair, mustard cardigan). Composite
+them together standing side by side as two coworkers in a shared scene: a
+bright modern office lounge with a large window letting in warm afternoon
+sunlight from the right side. Both people must be lit consistently by the same
+warm afternoon sun — matching shadow direction, matching warm color temperature
+on skin and clothing, matching contrast level. Preserve each person's exact
+facial identity, hair, and clothing from their respective reference image."
+```
+
+**关键**：(1) "Extract the X from the FIRST/SECOND reference image"显式绑定身份来源，防止两人特征互相污染；(2) 显式描述目标统一光源方向+色温+对比度，这是让两个原本在不同棚拍光线下拍摄的人"看起来在同一场景"的核心指令；(3) 该 recipe 是"多图融合抠像"目标的直接实现——2 张参考图上限内工作良好，见 prompt-engineering.md 公式 6 的 refs 数量甜点（2-3 张最佳）。
+
 ---
 
 ## 8. 通用 Edit Prompt 模板
@@ -286,7 +372,6 @@ POST https://ark.cn-beijing.volces.com/api/v3/images/generations
   "prompt": "红框内：把原本的 medium rare 粉棕色切开的和牛牛排替换为...\n\n图中彩色方框/圆圈/涂写是我手工标出的编辑区域标记，请严格按上面的描述修改标记区域内的内容，标记区域之外的像素尽量保持不变，完成后清除所有彩色标记线条与填充。",
   "size": "2K",
   "output_format": "png",
-  "response_format": "b64_json",
   "negative_prompt": "模糊, 低质量, 水印, 变形, 多余肢体"
 }
 ```

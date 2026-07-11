@@ -2,17 +2,17 @@
 
 适合：肖像、产品写实、人物故事、风光大片、城市夜景、电影场景、纪实摄影、editorial 人像、social media hero image、博客 cover。
 
-Seedream 5.0 Pro 在单主体静物摄影上是同价位模型中最强（实测 8.8/10 平均）。物理光学（玻璃折射 / 金属反射 / 焦散 / SSS / 散景 / 蓝金光影 / 单点光衰减）真实可信；弱点集中在动态模糊、群体身份多样性、手部复杂解剖、场景文字 logo、默认美颜滤镜。
+Seedream 5.0 Pro 在单主体静物摄影上是同价位模型中最强（实测 8.8/10 平均）。物理光学（玻璃折射 / 金属反射 / 焦散 / SSS / 散景 / 蓝金光影 / 单点光衰减 / 旋转运动模糊-需突破配方）真实可信；残留弱点集中在手部复杂解剖、场景文字 logo、默认美颜滤镜。**群体身份多样性、旋转运动模糊两项原以为是模型能力天花板，2026-07-10 复测证实是 prompt 工程问题，均有突破配方（见下文）。**
 
-## 总览（24 张实测图，按类别）
+## 总览（24 张初测 + 补测，按类别）
 
-| 类别 | 平均 | 典型最强 | 典型翻车 |
-|---|---|---|---|
-| 物理光学 (8 张) | 8.8 | 玻璃焦散 9, 金属反射 9.5, 耳部 SSS 9.5, 火焰物理 9, 蓝金光影 10 | 旋转车轮运动模糊 7.5（轮子清晰，背景有 blur） |
-| 皮肤/材质 (4 张) | 9.1 | 发丝 9.5, 织物编织 9, 织物垂坠 9 | 皮肤仍偏美颜 8.5 |
-| 群体 (6 张) | 7.6 | 双人 9, 三人 9, 群像 distant 8 | 5 人脸开始重复 6.5, 10 人彻底克隆 4.5 |
-| 风格切换 (2 张) | 9.3 | 摄影纪实 9, CGI cinematic 9.5 | — |
-| 光影 (4 张) | 9.6 | 金时刻 10, 蓝时刻 9.5, 单烛光 10 | 伦勃朗三角偶尔不到位 |
+| 类别 | 平均 | 典型最强 | 典型翻车（初测）| 突破后 |
+|---|---|---|---|---|
+| 物理光学 (8 张) | 8.8 | 玻璃焦散 9, 金属反射 9.5, 耳部 SSS 9.5, 火焰物理 9, 蓝金光影 10 | 旋转车轮运动模糊 7.5（轮子清晰，背景有 blur） | **9/10**（显式反细节 prompt，见下文突破配方）|
+| 皮肤/材质 (4 张) | 9.1 | 发丝 9.5, 织物编织 9, 织物垂坠 9 | 皮肤仍偏美颜 8.5 | 未突破，仍需接受 ~80% |
+| 群体 (6 张 + 补测 3 张) | 7.6→9 | 双人 9, 三人 9, 群像 distant 8, **10人逐人枚举 9** | 5 人脸开始重复 6.5, 10 人彻底克隆 4.5 | **9/10**（逐人枚举配方，见下文）|
+| 风格切换 (2 张) | 9.3 | 摄影纪实 9, CGI cinematic 9.5 | — | — |
+| 光影 (4 张) | 9.6 | 金时刻 10, 蓝时刻 9.5, 单烛光 10 | 伦勃朗三角偶尔不到位 | — |
 
 ## 摄影真实感关键词（实测稳定）
 
@@ -62,28 +62,66 @@ Seedream 5.0 Pro 在单主体静物摄影上是同价位模型中最强（实测
 
 > 注意：宇航员 prompt 即便写了 "helmet off" 也默认戴头盔；"fashion model" 触发 headless crop——某些 subject 类型有过度保守的安全默认。
 
-## 群体照（重大限制）
+## 群体照（2026-07-10 更新：10 人断裂已被突破）
 
-群体照随人数急剧退化。**核心阈值：5 人是 cliff。**
+**早期结论已被修正。** 最初 sweep（用通用 prompt "10 diverse business people"）发现 5 人是身份多样性 cliff，10 人大合照彻底崩（4.5/10，7 男 1 张脸 + 3 女 1 张脸）。**但这是 prompt 工程问题，不是模型能力天花板。**
 
-| 人数 | 身份多样性 | 手部 | 身体融合 | 可用？ |
-|---|---|---|---|---|
-| 2 人 | 2 张不同脸，自然表情 | 全对 | 无 | ✅ 真 candid |
-| 3 人 | 3 张不同脸（含孩子） | 对 | 无 | ✅ 家庭照 |
-| 4 人（含道具/蒸汽遮挡） | 4 张不同脸（差异发型/眼镜/表情） | 筷子轻度融合，蒸汽遮多数 | 无 | ✅ social-media 分辨率可通过 |
-| 5 人 | **脸开始重复**——3 个女性共享脸型 | 中间女性多 1 指；手臂边缘融合 | 轻度 | ⚠️ 氛围 OK，close-up 不行 |
-| 10 人 | **大克隆**——7 个男性 1 张脸，3 个女性 1 张脸 | 模型把手藏口袋/身后；可见手模糊 | 后排头还行但西装重复 | ❌ uncanny |
-| 30+ 群像 | 前景 5-6 张不同；中景/远景通用 | 摊档可见手，轻微 | 无 | ✅ 真新闻摄影感（远景小脸不需要多样性） |
+### 突破配方：逐人显式枚举（Explicit Per-Person Enumeration）
 
-**反直觉发现：大群像（30+）比 5-10 人合影好**，因为远景小脸"通用亚洲脸"反而读为自然差异。**4 人围桌带蒸汽/食材遮挡手部**也比 5 人干净合影好。
+**核心改动：不要用"10 diverse coworkers"这种整体描述，给每一个人单独写一行——种族/年龄/发型/服装全部显式指定。** 实测在 5 人、7 人、10 人三个尺度上都拿到 9/10，零脸克隆：
 
-### 群体照策略
+```
+Editorial team photograph of exactly TEN coworkers arranged in two rows
+(5 standing back row, 5 seated front row), half-body framing, bright office atrium.
+Each person is a completely different person with completely distinct facial features,
+listed left to right, back row first then front row:
 
-- **≤4 人**：production-ready，姿势可控，手基本对
-- **5 人**：脸开始克隆，至少 1-2 处手错误
-- **10 人正面合影**：不可用，需要后期换脸
-- **20+ 群像**：可用，远景通用脸是正确输出
-- **动作/围餐（4 人带蒸汽/餐具）**：比静止合影更好，因为蒸汽/餐具/手部忙碌遮挡问题
+Back row:
+Person 1: East Asian woman, age 45, short grey-streaked bob, wearing navy blazer
+Person 2: Black man, age 38, shaved head, thick-framed glasses, wearing charcoal turtleneck
+Person 3: White woman, age 29, long blonde wavy hair, wearing mustard cardigan
+Person 4: Middle Eastern man, age 50, salt-and-pepper beard, wearing brown suit vest
+Person 5: Southeast Asian woman, age 34, long straight black hair with side part, wearing emerald blouse
+
+Front row (seated):
+Person 6: Latino man, age 26, short curly dark hair, wearing light blue denim jacket
+Person 7: South Asian woman, age 31, long black hair in ponytail, wearing burgundy kurta
+Person 8: White man, age 60, bald with grey beard, wearing forest green sweater vest
+Person 9: Black woman, age 24, box braids, wearing coral top
+Person 10: East Asian man, age 42, short black hair with glasses, wearing grey suit jacket
+
+All TEN faces must be visibly distinct — different nose shapes, different eye shapes,
+different skin tones, different hair textures, different ages ranging 24-60. They smile
+naturally at camera. Sharp focus on all 10 faces, soft bokeh background, 50mm lens,
+photorealistic corporate editorial photography, 2K, 16:9
+```
+
+**为什么有效**：模型的 face-cloning 问题根源是"生成式随机采样在没有约束时会收敛到少数几个 face template"。**逐人给出具体锚点（种族+年龄+发型+服装四元组）**相当于给每个人一个独立的采样种子提示，阻止收敛。整体式描述（"10 diverse people"）没有个体锚点，模型自由采样时就会重复。
+
+**实测数据（本次 sweep）**：
+
+| 人数 | Prompt 策略 | 身份多样性 | 评分 |
+|---|---|---|---|
+| 5 人 | 逐人枚举（种族+年龄+发型+服装）| 5 张完全不同脸 | **9/10** |
+| 7 人 | 逐人枚举 | 7 张完全不同脸，年龄段分布正确 | **9/10** |
+| 10 人（2 排：5 站 5 坐）| 逐人枚举 | 10 张完全不同脸，24-60 岁跨度正确 | **9/10** |
+| 10 人（原始 sweep，泛化 prompt）| "10 diverse business people (mixed ages/ethnicities)" | 7 男 1 脸 + 3 女 1 脸 | 4.5/10（旧结论）|
+
+**关键规则**：
+1. **每人一行，四元组齐全**：种族 + 年龄 + 发型细节 + 服装颜色/款式，缺一不可
+2. **年龄要给具体数字并跨度大**（24-60 而不是"mixed ages"）——具体数字比"diverse"更能防止收敛
+3. **发型要给具体细节**（"box braids"/"short fade"/"grey-streaked bob"）而不是"different hairstyles"
+4. **10 人以上排布用两排（站/坐）分层**——避免所有人脸在同一水平线上挤压变形
+5. **手部策略延续**：手放两侧自然下垂、坐姿手放腿上，避免复杂手势——这条仍然有效，10 人测试里没有一处手部畸形
+
+**旧版 negative prompt 仍建议保留**（extra hands, fused fingers 等），但**核心杠杆是逐人枚举，不是 negative prompt**。
+
+### 群体照策略（更新）
+
+- **≤10 人，用逐人枚举 recipe**：production-ready，9/10 稳定，参考上面模板
+- **10 人以上（12-20人）**：未测试，理论上枚举 prompt 会变得很长（token 限制 ≤300 字中文/600 词英文），需要精简描述（缩短到"种族+年龄+1个视觉锚点"三元组）
+- **20+ 大群像**：仍推荐原策略（远景通用脸），不需要逐人枚举——远景小脸不需要个体区分
+- **动作/围餐场景**：手部遮挡策略依然适用，可与逐人枚举组合使用效果更佳
 
 ### 群体照 negative prompt 叠加
 
@@ -93,7 +131,7 @@ Seedream 5.0 Pro 在单主体静物摄影上是同价位模型中最强（实测
 
 ### 群体照 diversity 语言小心
 
-> 实测 `10 diverse business people (5 men 5 women, mixed ages/ethnicities)` 触发 `OutputImageSensitiveContentDetected`。**"ethnicities" 词会触发安全检查**，改成 `ten coworkers, mixed men and women of various ages` 通过。
+> 实测 `10 diverse business people (5 men 5 women, mixed ages/ethnicities)` 触发 `OutputImageSensitiveContentDetected`。**"ethnicities" 词会触发安全检查**，改成 `ten coworkers, mixed men and women of various ages` 通过。**逐人枚举版本的 prompt（写具体种族如 "Black man" / "South Asian woman"）实测未触发安全检查**——推断触发点是"ethnicities"这个抽象词汇本身，不是具体种族描述。
 
 ## Realism 推荐的 Negative Prompt（替换默认）
 
@@ -116,12 +154,40 @@ CGI cinematic 工作去掉 anti-3D 词（`3D渲染, C4D质感`），加 `photogr
 
 ## Marketing Claim 诚实对照
 
-### "物理光影全真模拟" — 约 85% 真
+### "物理光影全真模拟" — 约 90% 真（2026-07-10 更新：旋转模糊已被突破）
 
-- 真模拟：玻璃折射、焦散、镜面反射、SSS、散景、大气散射、彩色光混合、金/蓝时刻、烛光衰减、火焰色温、水焦散、单点光衰减
-- 近似/失败：旋转运动模糊（R3 车轮清晰是真 miss）、曲面透明物体折射量略小、烟状态（闷 vs 燃烧混淆）、动态模糊（模型加"blur"纹理而非模拟物体运动）
+- 真模拟：玻璃折射、焦散、镜面反射、SSS、散景、大气散射、彩色光混合、金/蓝时刻、烛光衰减、火焰色温、水焦散、单点光衰减、**车轮旋转模糊（用突破配方后）**
+- 近似/失败：曲面透明物体折射量略小、烟状态（闷 vs 燃烧混淆）
 
 **静态单主体 + 产品/棚拍/肖像领域，光的物理是真同价位最佳。**
+
+#### 旋转运动模糊突破配方（原 R3 miss 已修复）
+
+最初测试（"motion blur on wheels"）车轮渲染清晰，只有背景/路面模糊，7.5/10。**问题是 prompt 没有显式禁止车轮细节**，模型默认保留清晰车轮 + 加背景 blur 纹理。**修复：显式反细节语言 + "flying-saucer disc" 类比**：
+
+```
+❌ 弱（7.5/10，车轮仍清晰）：
+"panning shot, motion blur on wheels, background streaked"
+
+✅ 强（9/10，车轮变真实旋转模糊盘）：
+"CRITICAL PHYSICS REQUIREMENT: The WHEELS must be rendered as solid circular
+discs of rotational motion blur — NO individual spokes, NO rim detail, NO tire
+tread visible, the entire wheel is a uniform grey/silver radial blur disc.
+The car body silhouette is sharp but the WHEELS specifically are NOT sharp,
+they appear as two grey flying-saucer discs at the contact patches.
+Background streaked horizontally with motion blur. Road surface streaked.
+ONLY the car body and driver helmet are in sharp focus; WHEELS and BACKGROUND
+and ROAD are motion-blurred. Reference: real F1 panning photos by Darren Heath
+or Porsche AG press shots."
+```
+
+**关键杠杆**：
+1. **显式否定车轮细节**（"NO individual spokes, NO rim detail, NO tire tread"）——不写这条模型默认保留清晰车轮
+2. **"uniform grey/silver radial blur disc" / "flying-saucer discs" 具象类比**——给模型一个清晰的视觉目标而不是抽象的"blur"
+3. **显式列出哪些部分保持清晰**（车身+头盔）vs 哪些部分必须模糊（车轮+背景+路面）——对比锚定比单纯说"motion blur"有效
+4. **Reference 真实摄影师名字**（"Darren Heath" F1 摄影、"Porsche AG press shots"）——锚定到已知视觉语言
+
+**结论：R3 miss 不是模型能力天花板，是 prompt 工程问题。** "motion blur" 这个词本身太弱，模型会默认加背景纹理而不动车轮；需要显式禁止车轮细节 + 具象化"disc"目标才能触发真正的旋转模糊渲染。
 
 ### "人像肌理天花板" — 东亚柔光女性约 80% 真
 
@@ -133,13 +199,13 @@ CGI cinematic 工作去掉 anti-3D 词（`3D渲染, C4D质感`），加 `photogr
 
 **"天花板"是营销话术，"当前最强之一，尤其东亚柔光"是真。**
 
-## 翻车区（诚实清单）
+## 翻车区（诚实清单，2026-07-10 更新）
 
-1. **群体身份多样性 ≥5 人断裂** — marketing demo 多是单人/双人，10 人测试是真失败
-2. **手部复杂解剖** — 筷子/伸/多物体互动
+1. ~~群体身份多样性 ≥5 人断裂~~ — **已被逐人枚举配方突破**，10 人测试 9/10（见上文"群体照"章节）。**残留限制**：未测试 12+ 人，逐人枚举 prompt 长度可能撞 token 上限
+2. **手部复杂解剖** — 筷子/伸/多物体互动（这条仍然真实存在，逐人枚举也没解决这个）
 3. **场景文字/Logo** — 短招牌的英/日/韩文字仍产 gibberish Latin；长段中文段落好；散落小 logo 仍假
-4. **旋转/动态模糊** — R3 是最清晰的 single fail
-5. **安全过激** — diversity/ethnicities 词触发安全
+4. ~~旋转/动态模糊~~ — **已被显式反细节 prompt 突破**（见上文"旋转运动模糊突破配方"）。弱形式 prompt（"motion blur on wheels"）仍会失败，需要用突破配方
+5. **安全过激** — diversity/ethnicities 抽象词触发安全；**具体种族描述（"Black man"/"South Asian woman"）实测未触发**
 6. **美颜默认难以关闭** — 强 anti-smoothing prompt 也只能拿到 ~80%
 7. **保守 subject 默认** — 宇航员头盔不脱 / fashion model headless crop
 8. **暗肤色/烈日皮肤** less tested but 弱

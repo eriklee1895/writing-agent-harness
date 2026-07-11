@@ -70,7 +70,6 @@ MODEL_LITE_ALIASES = {"lite", "seedream-lite", "5-lite", "seedream-5-lite", "dou
 #   supports_sequential does it accept sequential_image_generation?
 #   supports_negative_prompt does it accept negative_prompt? (undocumented but accepted by Pro)
 #   optimize_modes     allowed values for optimize_prompt_options.mode
-#   response_format_default "url" or "b64_json" — Pro defaults to b64_json to skip a second hop
 #   price_per_image    rough ¥/image for the default size bucket; printed by list-models
 #   notes              human notes (limitations)
 
@@ -88,7 +87,6 @@ MODELS: dict[str, dict[str, Any]] = {
         "supports_sequential": False,
         "supports_negative_prompt": True,
         "optimize_modes": {"standard"},
-        "response_format_default": "b64_json",
         "price_per_image": "≤2.36MP ¥0.30 / >2.36MP ¥0.60 (extra input image ¥0.02)",
         "notes": "Headline features: strong Chinese+English text rendering; marker-based region editing. "
                  "No web_search, no sequential gen, no stream. Size preset stops at 2K (no 3K/4K). "
@@ -107,7 +105,6 @@ MODELS: dict[str, dict[str, Any]] = {
         "supports_sequential": True,
         "supports_negative_prompt": False,
         "optimize_modes": {"standard", "fast"},
-        "response_format_default": "url",
         "price_per_image": "¥0.22/张 (2K tier)",
         "notes": "Fast sketch/iteration workhorse. Text rendering weaker than Pro (avoid text-heavy "
                  "prompts). Supports web_search and sequential group generation. Pixel floor blocks "
@@ -583,7 +580,6 @@ def _build_request_body(
     sequential: bool,
     max_images: int,
     negative_prompt: Optional[str],
-    response_format: str,
 ) -> dict[str, Any]:
     body: dict[str, Any] = {
         "model": model,
@@ -591,7 +587,6 @@ def _build_request_body(
         "size": size,
         "output_format": output_format,
         "watermark": watermark,
-        "response_format": response_format,
     }
 
     # Optimize prompt mode — Pro only accepts "standard"; Lite accepts both.
@@ -680,7 +675,6 @@ def _write_metadata(
     base_url: str,
     dry_run: bool,
     negative_prompt: Optional[str] = None,
-    response_format: Optional[str] = None,
     marker_rects: Optional[list[str]] = None,
     outpaint_specs: Optional[list[str]] = None,
     reported_size: Optional[str] = None,
@@ -705,7 +699,6 @@ def _write_metadata(
             r.startswith("data:") for r in reference_images
         ),
         "negative_prompt": negative_prompt,
-        "response_format": response_format,
         "marker_rects": marker_rects or [],
         "outpaint": outpaint_specs or [],
         "base_url": base_url,
@@ -793,9 +786,29 @@ async def _call_api(
 
 
 async def _download_image(client: httpx.AsyncClient, url: str, timeout: int) -> bytes:
-    response = await client.get(url, timeout=float(timeout))
-    response.raise_for_status()
-    return response.content
+    """Download the generated image with its own retry/backoff.
+
+    Separate from _call_api's retry loop on purpose: a transient failure here
+    (the generation call already succeeded and was already paid for) should
+    retry just the cheap download, not redo the whole generation.
+    """
+    last_error: Optional[Exception] = None
+    for attempt in range(MAX_RETRIES + 1):
+        try:
+            response = await client.get(url, timeout=float(timeout))
+            response.raise_for_status()
+            return response.content
+        except (httpx.TimeoutException, httpx.TransportError, httpx.HTTPStatusError) as e:
+            last_error = e
+            if attempt < MAX_RETRIES:
+                delay = RETRY_BACKOFF[min(attempt, len(RETRY_BACKOFF) - 1)]
+                print(
+                    f"Image download failed ({e.__class__.__name__}), retrying in "
+                    f"{delay:.0f}s (attempt {attempt+1}/{MAX_RETRIES})...",
+                    file=sys.stderr,
+                )
+                await asyncio.sleep(delay)
+    raise last_error  # type: ignore[misc]
 
 
 async def _generate_single(
@@ -892,7 +905,6 @@ def _cmd_list_models(_args: argparse.Namespace) -> int:
         print(f"    sequential:   {'yes' if caps['supports_sequential'] else 'no'}")
         print(f"    neg prompt:   {'yes (beta/undocumented)' if caps['supports_negative_prompt'] else 'no'}")
         print(f"    Opt modes:    {', '.join(sorted(caps['optimize_modes']))}")
-        print(f"    resp format:  {caps['response_format_default']}")
         print(f"    Price:        {caps['price_per_image']}")
         print(f"    Notes:        {caps['notes']}")
         print()
@@ -944,8 +956,6 @@ def _add_common_gen_args(p: argparse.ArgumentParser, *, include_lite_only: bool)
                         f"Not supported on Lite.")
     p.add_argument("--no-negative-prompt", action="store_true",
                    help="Disable the default negative prompt (Pro only).")
-    p.add_argument("--response-format", choices=["b64_json", "url"], default=None,
-                   help="Response format. Default follows model (Pro: b64_json, Lite: url).")
     p.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT,
                    help=f"Timeout in seconds (default: {DEFAULT_TIMEOUT}).")
     p.add_argument("--dry-run", action="store_true",
@@ -990,9 +1000,6 @@ def _resolve_common(args: argparse.Namespace, *, require_prompt: bool = True) ->
     # Normalize empty string to None (so it doesn't get sent)
     if negative_prompt == "":
         negative_prompt = None
-
-    # Response format
-    response_format = getattr(args, "response_format", None) or caps["response_format_default"]
 
     # Reference images (used by both generate (optional) and edit (required))
     ref_paths = list(getattr(args, "reference_image", []) or [])
@@ -1108,7 +1115,6 @@ def _resolve_common(args: argparse.Namespace, *, require_prompt: bool = True) ->
         "web_search": web_search,
         "optimize_prompt": args.optimize_prompt,
         "negative_prompt": negative_prompt,
-        "response_format": response_format,
         "reference_images": refs,
         "reference_image_paths": list(getattr(args, "reference_image", []) or []),
         "marker_specs": marker_specs,
@@ -1148,7 +1154,7 @@ def _cmd_generate(args: argparse.Namespace) -> int:
         output_format=r["output_format"], watermark=r["watermark"], web_search=r["web_search"],
         reference_images=r["reference_images"], optimize_prompt=r["optimize_prompt"],
         sequential=r["sequential"], max_images=r["max_images"],
-        negative_prompt=r["negative_prompt"], response_format=r["response_format"],
+        negative_prompt=r["negative_prompt"],
     )
 
     out = getattr(args, "out", None)
@@ -1163,7 +1169,7 @@ def _cmd_generate(args: argparse.Namespace) -> int:
             output_format=r["output_format"], watermark=r["watermark"], web_search=r["web_search"],
             reference_images=r["reference_images"], optimize_prompt=r["optimize_prompt"],
             base_url=DEFAULT_BASE_URL, dry_run=True, negative_prompt=r["negative_prompt"],
-            response_format=r["response_format"], marker_rects=r["marker_specs"],
+            marker_rects=r["marker_specs"],
             outpaint_specs=r["outpaint_specs"],
         )
         return 0
@@ -1204,7 +1210,7 @@ async def _generate_one(
             output_format=r["output_format"], watermark=r["watermark"],
             web_search=r["web_search"], reference_images=r["reference_images"],
             optimize_prompt=r["optimize_prompt"], base_url=base_url, dry_run=False,
-            negative_prompt=r["negative_prompt"], response_format=r["response_format"],
+            negative_prompt=r["negative_prompt"],
             marker_rects=r["marker_specs"], outpaint_specs=r["outpaint_specs"],
             reported_size=reported_size, elapsed_ms=elapsed_ms,
             revised_prompt=revised_prompt, usage=usage,
@@ -1257,7 +1263,7 @@ async def _generate_concurrent(
                 output_format=r["output_format"], watermark=r["watermark"],
                 web_search=r["web_search"], reference_images=r["reference_images"],
                 optimize_prompt=r["optimize_prompt"], base_url=base_url, dry_run=False,
-                negative_prompt=r["negative_prompt"], response_format=r["response_format"],
+                negative_prompt=r["negative_prompt"],
                 marker_rects=r["marker_specs"], outpaint_specs=r["outpaint_specs"],
                 reported_size=reported_size, elapsed_ms=elapsed_ms,
                 revised_prompt=revised_prompt, usage=usage,
@@ -1315,7 +1321,7 @@ def _cmd_edit(args: argparse.Namespace) -> int:
         output_format=r["output_format"], watermark=r["watermark"], web_search=r["web_search"],
         reference_images=r["reference_images"], optimize_prompt=r["optimize_prompt"],
         sequential=False, max_images=4,
-        negative_prompt=r["negative_prompt"], response_format=r["response_format"],
+        negative_prompt=r["negative_prompt"],
     )
 
     out = getattr(args, "out", None)
@@ -1329,7 +1335,7 @@ def _cmd_edit(args: argparse.Namespace) -> int:
             output_format=r["output_format"], watermark=r["watermark"], web_search=r["web_search"],
             reference_images=r["reference_images"], optimize_prompt=r["optimize_prompt"],
             base_url=DEFAULT_BASE_URL, dry_run=True, negative_prompt=r["negative_prompt"],
-            response_format=r["response_format"], marker_rects=r["marker_specs"],
+            marker_rects=r["marker_specs"],
             outpaint_specs=r["outpaint_specs"],
         )
         return 0
@@ -1367,8 +1373,6 @@ def _add_batch_parser(subparsers: argparse._SubParsersAction) -> None:
                    help="Default prompt optimization mode.")
     p.add_argument("--negative-prompt", default=None, help="Default negative prompt.")
     p.add_argument("--no-negative-prompt", action="store_true", help="Default negative-prompt off.")
-    p.add_argument("--response-format", choices=["b64_json", "url"], default=None,
-                   help="Default response format.")
     p.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT, help=f"Timeout (default: {DEFAULT_TIMEOUT}).")
     p.add_argument("--dry-run", action="store_true", help="Print bodies and exit.")
     p.add_argument("--force", action="store_true", help="Overwrite existing outputs.")
@@ -1430,7 +1434,6 @@ def _cmd_batch(args: argparse.Namespace) -> int:
         ns.optimize_prompt = job.get("optimize_prompt", args.optimize_prompt)
         ns.negative_prompt = job.get("negative_prompt", args.negative_prompt)
         ns.no_negative_prompt = bool(job.get("no_negative_prompt", False))
-        ns.response_format = job.get("response_format", args.response_format)
         ns.reference_image = list(job.get("reference_image", []) or [])
         ns.marker_rect = list(job.get("marker_rects", []) or [])
         ns.marker_color = job.get("marker_color", "#ff0000")
@@ -1455,7 +1458,7 @@ def _cmd_batch(args: argparse.Namespace) -> int:
             output_format=r["output_format"], watermark=r["watermark"], web_search=r["web_search"],
             reference_images=r["reference_images"], optimize_prompt=r["optimize_prompt"],
             sequential=False, max_images=4,
-            negative_prompt=r["negative_prompt"], response_format=r["response_format"],
+            negative_prompt=r["negative_prompt"],
         )
         bodies.append((job["prompt"], body, r))
 
@@ -1502,7 +1505,6 @@ async def _run_batch(
                         optimize_prompt=body.get("optimize_prompt_options", {}).get("mode"),
                         base_url=base_url, dry_run=False,
                         negative_prompt=body.get("negative_prompt"),
-                        response_format=body.get("response_format"),
                         marker_rects=r["marker_specs"], outpaint_specs=r["outpaint_specs"],
                         reported_size=reported_size, elapsed_ms=elapsed_ms,
                         revised_prompt=revised_prompt, usage=usage,

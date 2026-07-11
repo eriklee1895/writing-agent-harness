@@ -62,8 +62,7 @@ Content-Type: application/json
   "prompt": "充满活力的特写编辑肖像，模特眼神犀利，头戴雕塑感帽子，色彩拼接丰富，眼部焦点锐利，景深较浅，Vogue 杂志封面美学，中画幅，工作室强灯。",
   "size": "2K",
   "output_format": "png",
-  "watermark": false,
-  "response_format": "b64_json"
+  "watermark": false
 }
 ```
 
@@ -76,8 +75,7 @@ Content-Type: application/json
   "image": "data:image/png;base64,<base64-of-annotated-png>",
   "size": "2K",
   "output_format": "png",
-  "watermark": false,
-  "response_format": "b64_json"
+  "watermark": false
 }
 ```
 
@@ -93,7 +91,7 @@ Content-Type: application/json
 | `prompt` | string | — | ✅ 必填 | ✅ 必填 | 文字描述；中 ≤300 字/英 ≤600 词 |
 | `size` | string | Pro=`2K`, Lite=`2K` | ✅ | ✅ | 预设（见下）或 `WIDTHxHEIGHT` |
 | `output_format` | string | — | `png`/`jpeg` | `png`/`jpeg` | 输出格式 |
-| `response_format` | string | Pro=`b64_json`, Lite=`url` | ✅ | ✅ | `b64_json` 省一次 HTTP hop 且无 URL 过期；`url` 是 24h 有效的 TOS 链接 |
+| `response_format` | string | 官方默认 `url`（本 skill 不发送这个字段，跟随官方默认） | ✅ | ✅ | 支持 `url`（24h 有效的 TOS 下载链接）或 `b64_json`（内嵌 base64 字节）。本 skill 2026-07-11 起不再暴露这个参数，统一走 url 下载，理由见文末"为什么统一走 url 下载"一节 |
 | `watermark` | boolean | false | ✅ | ✅ | 是否加 Seedream 水印 |
 | `image` | string\|string[] | — | 最多 10 | 最多 14 | 参考图，支持 URL 或 data URL |
 | `optimize_prompt_options.mode` | string | `standard` | `standard` 唯一 | `standard`/`fast` | prompt 优化模式 |
@@ -104,6 +102,25 @@ Content-Type: application/json
 | `stream` | boolean | — | ❌ 拒绝 | ✅ | 流式响应（本 skill 不使用） |
 
 **不要发的字段（Pro/Lite 都不支持）**：`num_images`/`n`（批量要用本 skill 的并发或 Lite sequential）、`seed`、`guidance_scale`、`steps`、`mask`、`bbox`、`layers`、`control_image`——这些要么被静默忽略要么 400。
+
+### 公开 API 不暴露的能力（用户期望 vs 现实）
+
+下面这些能力在 Seedream 5.0 Pro **官方 demo UI** 或 **营销文案** 中演示过，但**当前公开 Ark API 没有暴露**——本 skill 客户端无法实现这些。如有需求请向火山引擎提产品反馈。
+
+| 能力 | UI demo 有？ | 公开 API 暴露？ | 本 skill workaround |
+|---|---|---|---|
+| **智能图层分离**（一键把画面拆为 N 个透明 PNG layer + 遮挡背景 inpaint）| 是（产品宣传视频）| **否** | 不可能单次 call 完成。可用 marker 多区域 + 多轮 edit 近似（每轮删一个元素、保留 1 个），但 N 个 layer 各自保留透明通道无法实现——Marker 只能"改这一块"不能"输出 4 张图每张只含一个元素"。**真需要 PS 级分层：换 LayerSwap / Segment Anything / ComfyUI workflow。** |
+| **原生 mask 输入**（上传黑白 mask 限定编辑区域）| 否 | **否** | Marker 矩形是替代方案，但只能粗略定位；曲线 mask、feather 边缘、多 mask 组合均无。 |
+| **bbox / polygon 输入**（精确圈选非矩形区域）| 否 | **否** | Marker 矩形唯一支持的视觉标记协议。 |
+| **ControlNet 条件输入**（canny/depth/openpose）| 否 | **否** | 无。Sketch 渲染靠 img2img + 自然语言描述；不能传参考骨架/深度图。 |
+| **ControlNet-style 风格强度控制**（style_strength 0-1）| 否 | **否** | 风格强度靠 prompt 措辞承诺（"inspired by" 弱 / "fully re-painted" 强）实现，没有数值滑块。 |
+| **per-layer 透明度 / 混合模式**（输出带 alpha 的多通道图）| 否 | **否** | 输出永远是 RGB 单张 PNG；无 alpha channel、无多通道、无 PSD/EXR。 |
+| **原生 LoRA / fine-tune adapter** | 是（开发者） | 限定（`--reference-image` + 隐式 adapter，但用户不可上传自定义 LoRA）| 无 `--lora <path>` 接口。 |
+| **旋转/运动模糊物理模拟**（车轮 / 风扇叶片）| 否 | **否** | 实测 R3 车轮清晰而非 rotational blur disc；prompt 写 `motion blur on wheels` 被忽略。**真需要 motion blur：Photoshop render / After Effects / Runway。** |
+| **3D 几何先验**（同一物体多视角一致 / 3D 重建）| 否 | **否** | 同一物体不同视角会出现几何不一致。无 multi-view diffusion / NeRF / 3D Gaussian Splatting 能力。 |
+| **像素级精确 UI 截图** | 否 | **否** | UI 控件位置/字号不可控。**真需要 UI mockup：Figma + design system。** |
+
+> **诚实声明**：营销文案中"智能图层分离、PS 级分层、可单独移动/删除物体"等能力在**当前公开 Ark API 不可用**。Skill 能做到的是 marker 多区域编辑（区域换色/换物/加/减元素），**不是**输出 alpha 通道分层 PSD。要 PS 级分层请换专业工具链（Segment Anything + 手动 export / Photoshop Generative Fill / ComfyUI workflow）。
 
 ### Size 预设
 
@@ -188,13 +205,15 @@ CLI 提供以下 aspect-ratio shortcut，按模型自动解析为合法精确像
 
 ## Response (200 OK)
 
+本 skill 不发送 `response_format`，跟随官方默认 `url`，实际收到的是这个形状：
+
 ```json
 {
   "model": "doubao-seedream-5-0-pro-260628",
   "created": 1757321139,
   "data": [
     {
-      "b64_json": "<base64 PNG bytes>",
+      "url": "https://ark-content-generation-*.tos-cn-*.volces.com/*.png?...",
       "size": "2848x1600",
       "output_format": "png"
     }
@@ -208,10 +227,12 @@ CLI 提供以下 aspect-ratio shortcut，按模型自动解析为合法精确像
 }
 ```
 
+若客户端显式传 `response_format: b64_json`（本 skill 不这么做，但 API 原生支持），`data[]` 里的字段会换成 `b64_json`（base64 编码字节）而不是 `url`。
+
 | 字段 | 说明 |
 |---|---|
-| `data[].url` | `response_format=url` 时返回，24h 有效 |
-| `data[].b64_json` | `response_format=b64_json` 时返回，base64 图片字节 |
+| `data[].url` | 本 skill 实际收到的字段——24h 有效的下载链接，`_download_image` 立即拉取并落盘（带 8 次指数退避重试，2026-07-11 起补上） |
+| `data[].b64_json` | 只在显式传 `response_format=b64_json` 时出现，本 skill 不这么用 |
 | `data[].revised_prompt` | 模型改写后的 prompt（不一定有） |
 | `data[].size` | 实际输出分辨率（精确 `WxH`） |
 | `data[].output_format` | 实际输出格式 |
@@ -282,12 +303,17 @@ RPM ≈ 500；本 skill 默认并发 3，且带 8 次指数退避（2/4/8/16/30/
 { "error": { "code": "BadRequest", "message": "..." } }
 ```
 
-## 为什么本 skill 默认用 `b64_json`
+## 为什么本 skill 统一走 url 下载（2026-07-11 起，不再暴露 `response_format`）
 
-1. 省一次 HTTP hop（url 模式需要再 GET 一次图片，增加失败面与延迟）。
-2. 没有 24h URL 过期问题——b64 立即解码写盘。
-3. 体积 overhead 可接受（base64 比二进制大 33%，但 2K PNG 约 3–6MB，在本地 SSD 上毫无压力）。
-4. Lite 默认还是 `url`（历史默认，且 Lite 主要用于快速批量迭代时可让用户自己处理 URL）。
+早期版本对 Pro 默认发 `b64_json`（覆盖官方默认 `url`），理由是"省一次 HTTP hop + 无 URL 过期风险"。经过实测复盘，这个默认值被撤销，理由：
+
+1. **官方文档统一默认 `url`**，不区分模型——之前 Pro 默认 b64_json 是主动偏离官方设计，没有足够收益支撑这个偏离。
+2. **base64 有 +33% 硬开销**，且必须整体进内存解析再解码，2K PNG 变成 4-8MB 的 JSON 字符串对本机没压力，但大图（Lite 16MP 输出）开销会更明显；url 模式可以流式下载，不吃这个税。
+3. **24h 过期风险在本 skill 的真实用法里几乎不存在**——生成后立即在同一进程内下载落盘，中间没有排队/人工审核之类的延迟窗口。
+4. **`response_format` 这个参数贯穿了 21 处代码（能力字典/CLI flag/请求体构造/batch 流水线逐层传参）**，维护成本比"省一次 HTTP hop"这点收益更高；砍掉整条管线比维护"默认值 + 可选覆盖"更简单。
+5. **真正要补的不是"多一个可选模式"，是"让 url 这条路径足够健壮"**——`_download_image` 现在有独立的 8 次指数退避重试（跟 `_call_api` 一致的 backoff 曲线），网络抖动只重试便宜的下载步骤，不会让已经成功且已计费的生成步骤陪葬。
+
+如果未来有真实场景需要 b64_json（比如受限网络环境连不上图片托管域名），API 本身仍然原生支持这个参数——只是本 skill 客户端不再暴露 `--response-format` flag，需要的话可以在 `_build_request_body` 里加回一行 `"response_format": "b64_json"`。
 
 ## 本 skill 不做的事
 

@@ -75,16 +75,9 @@ Each line of the JSONL is either a bare prompt string or a JSON object like `{"p
 
 Pro is the default for a reason: it renders text reliably, supports marker edits, produces the Chinese-aesthetic and product-photography looks, and latency (~95s @ 2K) is nearly identical to Lite — so there is little reason to switch unless you have a specific constraint.
 
-Switch to Lite with `--model lite` only when:
-- You need **fast concept sketches** with no text (Lite ~30–60s, but text rendering is weak and marker edits are limited)
-- You need **3K/4K upscaled resolutions** or **large pixel counts above 4 MP** (Pro caps at 4 MP; Lite goes to 16 MP)
-- You need **web-search grounding** (`--web-search`, Lite-only) or **sequential storyboard generation** (`--sequential`, Lite-only)
-- You are running **large cheap batches** of non-text visuals (Lite ¥0.22 vs Pro ¥0.30–0.60) and can tolerate weaker texture/material quality
+Switch to Lite with `--model lite` only when you need: fast no-text concept sketches, >4 MP resolution, `--web-search`/`--sequential` (Lite-only params), or large cheap batches of non-text visuals. Full decision detail, pixel-range table, Lite-only flags, and the "what Lite doesn't have" list (no marker edit, weaker text, unverified prompt-technique transfer) are in **[references/lite-quickref.md](references/lite-quickref.md)** — read it before reaching for `--model lite`, not after.
 
-Pro pixel range: 0.9 MP – 4 MP (supports 1K/2K presets, including 1792×1024 wide and 1024² square).
-Lite pixel range: 3.7 MP – 16 MP (supports 2K/3K/4K presets; 1K, 1024², and 1792×1024 are below its floor).
-
-Print the full capability matrix (max refs, response formats, optimize modes, etc.):
+Print the full capability matrix (max refs, optimize modes, etc.):
 `uv run scripts/seedream_image_gen.py list-models`
 
 ## Size Shortcuts
@@ -101,7 +94,7 @@ Print the full capability matrix (max refs, response formats, optimize modes, et
 
 Size and aspect ratio can also be described in natural language inside the prompt (e.g. "竖版 3:4 海报", "手机壁纸 9:16", "16:9 横版", "方形头像") — the model will pick a reasonable size near its default (2K). Prefer the explicit `--size` / shortcut flags when you need deterministic dimensions (platform uploads, print specs, matching an existing layout); use in-prompt sizing when you are describing a feel and the exact pixel count does not matter.
 
-Valid custom-WxH bounds: **Pro** 0.9 MP – 4 MP with aspect ratio ≤16:1; **Lite** 3.7 MP – 16 MP with aspect ratio ≤16:1. The client rejects out-of-range sizes before spending an API call. For common platform/destination sizes (e-commerce mains, social posts, stories, video covers, wallpapers), see the [Common Use-Case Size Reference](references/api-reference.md#common-use-case-size-reference) in the API reference.
+Valid custom-WxH bounds: **Pro** 0.9 MP – 4 MP with aspect ratio ≤16:1; **Lite** 3.7 MP – 16 MP (see [lite-quickref.md](references/lite-quickref.md) for the full floor/ceiling table — note Lite categorically cannot do 1K/1024²/1792×1024). The client rejects out-of-range sizes before spending an API call. For common platform/destination sizes (e-commerce mains, social posts, stories, video covers, wallpapers), see the [Common Use-Case Size Reference](references/api-reference.md#common-use-case-size-reference) in the API reference.
 
 ## Killer Feature 1: Text Rendering (Pro)
 
@@ -214,9 +207,37 @@ Style preset: [references/styles/chinese-aesthetic.md](references/styles/chinese
 - Cost: Pro ¥0.30-0.60/image, Lite ¥0.22/image — cheap enough for batch runs (`generate-batch --concurrency 5`) for A/B variants and angle sweeps
 - Style preset: [references/styles/product-photography.md](references/styles/product-photography.md)
 
+## Honest Capability Scorecard (2026-07-10, 200+ test images)
+
+Every row below is empirically tested, not inferred from marketing copy. "✅ Production" = reliable with the documented recipe; "⚠️ Best-effort" = works but has a known failure mode; "❌ Not available" = the public Ark API does not expose this.
+
+| Capability | Verdict | Score | Notes |
+|---|---|---|---|
+| 风格迁移 (style transfer) | ✅ Production | 9.5/10 top styles | Commitment-language formula is the lever. [style-transfer.md](references/styles/style-transfer.md) |
+| 文字渲染 (text rendering) | ✅ Production | 9-10/10 structured, 2/10 per-cell-unique | 30-cell rule for tables/grids. [text-deep.md](references/text-deep.md) |
+| 多参考图融合 (multi-ref fusion) | ✅ Production | 8.5-9/10 (2-3 refs) | Sweet spot 2-3 refs; role-assignment required. [prompt-engineering.md 公式6](references/prompt-engineering.md) |
+| 复杂信息可视化 (infographic) | ✅ Production | 51-53/60 | Cross-subject transferable recipe. [editorial-infographic.md](references/styles/editorial-infographic.md) |
+| 圈选/点选局部修改 (marker color/material/makeup/feature) | ✅ Production | 9-9.5/10 | Hex ±1 shade drift; single-feature precision confirmed (heterochromia test). [marker-editing.md Recipe 9](references/marker-editing.md) |
+| 草图渲染 (sketch-to-render) | ✅ Production | 9-9.5/10 | Confirmed across photoreal + flat-illustration targets. [marker-editing.md](references/marker-editing.md) |
+| 多图融合抠像 (multi-image extraction compositing) | ✅ Production | 8.5-9/10 (2 people) | Unified lighting genuinely works. [marker-editing.md Recipe 12](references/marker-editing.md) |
+| 区域重绘/擦除修复 (inpaint/erase) | ✅ Production (replaceable object) / ❌ (compositional anchor object) | 9-9.5/10 vs 0/10 | **Refined 2026-07-10**: not purely day/night-dependent — within the SAME daytime matte scene, a parked car in a row of similar cars erased at 9.5/10 while a bicycle leaning on a lamppost (compositional focal point) failed at 0/10 with an identically well-formed marker+prompt. The real variable is object salience: replaceable/interchangeable objects erase reliably, visual-anchor objects resist (same underlying mechanism as hero-object/primary-light-source failures). Night+reflective+neon scenes remain a separate, harder failure mode (1-4/10). [marker-editing.md Recipe 10](references/marker-editing.md) |
+| 坐标精准定位 + 数学演算续写 | ⚠️ Best-effort | 9.5/10 for style-continuation | Model renders your given answer in matching handwriting; **it does not solve math itself** — you supply the correct derivation. [marker-editing.md Recipe 11](references/marker-editing.md) |
+| **智能图层分离 (auto layer separation → transparent PNG layers)** | ❌ **Not available** | n/a | **Not exposed on the public Ark API** — only in ByteDance's internal demo UI. No `mask`/`layers`/`bbox` params exist. Marker edit can approximate "change one region" but never outputs N independent alpha-channel layers. [api-reference.md](references/api-reference.md) |
+| 物理光影全真模拟 | ✅ Production | 8.8→9/10 | Rotational wheel-blur solved with explicit anti-detail prompting (was thought to be a hard fail). [photorealism.md](references/styles/photorealism.md) |
+| 人像肌理天花板 | ⚠️ Best-effort | ~80% | Beauty-filter default persists even with strong anti-smoothing language. [photorealism.md](references/styles/photorealism.md) |
+| 10 人以上大合照不畸形 | ✅ Production (was ❌) | 9/10 at 10 people | **Overturned original finding.** Explicit per-person enumeration (ethnicity+age+hair+clothing spelled out for every person) breaks the face-cloning cliff. Generic "10 diverse people" prompts still fail at 4.5/10. [photorealism.md](references/styles/photorealism.md) |
+| 双风格自由切换 (photo ↔ CGI) | ✅ Production | 9-9.5/10 | Pure prompt-keyword toggle, no mode switch needed. [photorealism.md](references/styles/photorealism.md) |
+| 原生多语种生成 (10+ languages) | ✅ Production (Latin/CJK/Korean) / ⚠️ (Thai/Arabic) | 9-10/10 vs 5-8.7/10 | Thai tonal diacritics are the softest layer. [multilingual.md](references/multilingual.md) |
+| 多语言同屏排版 | ✅ Production | 9-9.5/10 | 3-4 scripts per-panel layout; same-line mixing risks diacritic bleed. [multilingual.md](references/multilingual.md) |
+| 文字鬼画符根治 (garbled text elimination) | ✅ Mostly solved | varies by density | Structured/repeated labels 9-10/10; per-cell-unique content collapses past 30 cells. [text-deep.md](references/text-deep.md) |
+| 结构纠错 (anatomy/architecture/mechanical perspective) | ✅ Production | 8.5-9.5/10 dedicated tests | Dynamic dance pose (5-finger accuracy, correct joint bends) 9.5/10; two-point architectural perspective (converging grid lines, no warping) 9/10; watch-gear mechanical mesh (correct tooth interlock, plausible ratios) 8.5/10. Hands under complex multi-object interaction (chopsticks, group ≥4) remain the softest sub-case. No pre-Pro baseline exists to quantify the marketed "90% error reduction," but absolute quality on these three dedicated single-image tests is high. |
+| 超高分辨率 (2.36 MP) | ✅ Production | verified | Pro max ~4MP (2048×2048); Lite goes to 16MP. See [Size Shortcuts](#size-shortcuts) and [api-reference.md](references/api-reference.md). |
+
+**The one confirmed gap**: 智能图层分离 (auto transparent-PNG layer separation) is a real capability shown in ByteDance's marketing/demo UI but **not present on the public Ark API this skill calls**. Every other originally-requested killer capability has a working recipe, even the two (10-person groups, wheel motion blur) that earlier testing had marked as hard failures — both turned out to be prompt-engineering gaps, not model ceilings.
+
 ## Examples
 
-> All examples default to Pro / 2K / PNG / b64_json. `--dry-run` prints the request body without calling the API, so you can sanity-check before spending money.
+> All examples default to Pro / 2K / PNG, downloaded from the server's returned URL. `--dry-run` prints the request body without calling the API, so you can sanity-check before spending money.
 
 ### 1. Sci-fi movie poster (3:4)
 
@@ -305,13 +326,11 @@ uv run scripts/seedream_image_gen.py edit \
 
 ### 11. Lite fast-sketch mode
 
-```bash
-uv run scripts/seedream_image_gen.py generate \
-  --model lite --web-search \
-  --prompt "Concept sketch: a futuristic urban air-mobility hub with multiple eVTOLs taking off and landing"
-```
+See [references/lite-quickref.md](references/lite-quickref.md) for the full example, Lite-only flags (`--web-search`, `--sequential`), and the pixel-floor table.
 
 ## CLI Reference
+
+Flags below apply to both models unless noted; Lite-only flags (`--web-search`, `--sequential`) and Lite's pixel-floor constraints are detailed in [references/lite-quickref.md](references/lite-quickref.md).
 
 ### generate (create new image)
 
@@ -338,7 +357,6 @@ generate
   --no-negative-prompt        Disable the default negative prompt (useful for
                                non-human scenes like product/landscape where
                                "extra limbs" is irrelevant)
-  --response-format b64_json|url Response format (default per-model)
   --optimize-prompt standard|fast Prompt optimization (Pro: standard only)
   --n <1-4>                   Generate n independent images (default 1)
   --out <path>                Output file path
@@ -380,7 +398,7 @@ generate-batch
   --force                     Overwrite existing files
 ```
 
-JSONL job-object supported fields: `prompt`, `model`, `size`, `output_format`, `wide`, `wechat_header`, `square`, `portrait`, `landscape`, `watermark`, `web_search`, `optimize_prompt`, `negative_prompt`, `no_negative_prompt`, `response_format`, `reference_image` (list), `marker_rects` (list), `marker_color`, `marker_alpha`, `marker_stroke`, `no_marker_cleanup_prompt`, `outpaint` (list), `timeout`.
+JSONL job-object supported fields: `prompt`, `model`, `size`, `output_format`, `wide`, `wechat_header`, `square`, `portrait`, `landscape`, `watermark`, `web_search`, `optimize_prompt`, `negative_prompt`, `no_negative_prompt`, `reference_image` (list), `marker_rects` (list), `marker_color`, `marker_alpha`, `marker_stroke`, `no_marker_cleanup_prompt`, `outpaint` (list), `timeout`.
 
 ### list-models
 
@@ -436,4 +454,5 @@ Get an API key: <https://console.volcengine.com/ark/region:ark+cn-beijing/apikey
 - [API reference](references/api-reference.md) — parameter matrix, marker protocol, outpaint protocol, pricing, error codes
 - [Prompt engineering guide](references/prompt-engineering.md) — six prompt formulas (generic / text / marker / consistency / style / multi-ref fusion), failure-mode checklist
 - [Marker editing deep reference](references/marker-editing.md) — 8 copy-paste recipes, rect-size thresholds, annotated.png inspection checklist, failure modes
+- [Lite quick reference](references/lite-quickref.md) — when to actually switch models, pixel-floor table, Lite-only flags, what Lite doesn't have
 - [Styles directory](references/styles/) — 12 style presets (see table above)
