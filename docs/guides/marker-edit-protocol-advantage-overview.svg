@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <!-- Subtle gradient bar at the bottom for visual interest -->
+    <linearGradient id="bottomBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#3b82f6"/>
+      <stop offset="50%"  stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <!-- Red ✗ icon (cross mark) -->
+    <symbol id="x-mark" viewBox="0 0 24 24">
+      <path d="M6 6 L18 18 M18 6 L6 18" stroke="#dc2626" stroke-width="3" stroke-linecap="round"/>
+    </symbol>
+    <!-- Green ✓ icon (check mark) -->
+    <symbol id="check-mark" viewBox="0 0 24 24">
+      <path d="M5 12 L10 17 L19 7" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </symbol>
+  </defs>
+
+  <!-- Title -->
+  <text x="600" y="62" font-size="40" font-weight="900" fill="#0f172a" text-anchor="middle">区域编辑能力对比</text>
+  <!-- Subtitle -->
+  <text x="600" y="98" font-size="20" fill="#64748b" text-anchor="middle">Seedream 5.0 Pro — official Ark API vs seedream-image-gen skill</text>
+
+  <!-- Column headers -->
+  <text x="300" y="172" font-size="26" font-weight="800" fill="#dc2626" text-anchor="middle">官方公开 API</text>
+  <text x="900" y="172" font-size="26" font-weight="800" fill="#10b981" text-anchor="middle">seedream-image-gen skill</text>
+
+  <!-- Vertical divider -->
+  <line x1="600" y1="200" x2="600" y2="640" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3 4"/>
+
+  <!-- Row template: y starts at 220, each row is 52px tall, total 8 rows = 416 -->
+
+  <!-- Row 1 -->
+  <g>
+    <use href="#x-mark" x="40" y="232" width="22" height="22"/>
+    <text x="72" y="250" font-size="18" fill="#334155">mask / bbox / polygon 参数</text>
+    <use href="#check-mark" x="640" y="232" width="22" height="22"/>
+    <text x="672" y="250" font-size="18" fill="#334155"><tspan font-family="Menlo, Consolas, monospace" font-size="16" fill="#0f172a">--marker-rect</tspan> 像素/百分比双格式</text>
+  </g>
+
+  <!-- Row 2 -->
+  <g>
+    <use href="#x-mark" x="40" y="284" width="22" height="22"/>
+    <text x="72" y="302" font-size="18" fill="#334155">原生区域编辑字段</text>
+    <use href="#check-mark" x="640" y="284" width="22" height="22"/>
+    <text x="672" y="302" font-size="18" fill="#334155">自动 Pillow 画半透明矩形</text>
+  </g>
+
+  <!-- Row 3 -->
+  <g>
+    <use href="#x-mark" x="40" y="336" width="22" height="22"/>
+    <text x="72" y="354" font-size="18" fill="#334155">文档未提画框协议</text>
+    <use href="#check-mark" x="640" y="336" width="22" height="22"/>
+    <text x="672" y="354" font-size="18" fill="#334155">12 份实测 recipe (标题换字/物体替换/</text>
+    <text x="672" y="378" font-size="18" fill="#334155">材质换/多区域/链系)</text>
+  </g>
+
+  <!-- Row 4 -->
+  <g>
+    <use href="#x-mark" x="40" y="408" width="22" height="22"/>
+    <text x="72" y="426" font-size="18" fill="#334155">多区域多色组合</text>
+    <use href="#check-mark" x="640" y="408" width="22" height="22"/>
+    <text x="672" y="426" font-size="18" fill="#334155">多色多区域单次完成</text>
+  </g>
+
+  <!-- Row 5 -->
+  <g>
+    <use href="#x-mark" x="40" y="460" width="22" height="22"/>
+    <text x="72" y="478" font-size="18" fill="#334155">自动 cleanup prompt</text>
+    <use href="#check-mark" x="640" y="460" width="22" height="22"/>
+    <text x="672" y="478" font-size="18" fill="#334155">自动中英双语 cleanup prompt 追加</text>
+  </g>
+
+  <!-- Row 6 -->
+  <g>
+    <use href="#x-mark" x="40" y="512" width="22" height="22"/>
+    <text x="72" y="530" font-size="18" fill="#334155">失败模式文档</text>
+    <use href="#check-mark" x="640" y="512" width="22" height="22"/>
+    <text x="672" y="530" font-size="18" fill="#334155"><tspan font-family="Menlo, Consolas, monospace" font-size="16" fill="#0f172a">8% / 70% /</tspan> hero-object 失败模式表</text>
+  </g>
+
+  <!-- Row 7 -->
+  <g>
+    <use href="#x-mark" x="40" y="564" width="22" height="22"/>
+    <text x="72" y="582" font-size="18" fill="#334155">视觉预览 (避免 API 试错)</text>
+    <use href="#check-mark" x="640" y="564" width="22" height="22"/>
+    <text x="672" y="582" font-size="18" fill="#334155">发请求前自动生成 <tspan font-family="Menlo, Consolas, monospace" font-size="16" fill="#0f172a">*-annotated.png</tspan> 视觉预览</text>
+  </g>
+
+  <!-- Row 8 -->
+  <g>
+    <use href="#x-mark" x="40" y="616" width="22" height="22"/>
+    <text x="72" y="634" font-size="18" fill="#334155">链系多步编辑工作流</text>
+    <use href="#check-mark" x="640" y="616" width="22" height="22"/>
+    <text x="672" y="634" font-size="18" fill="#334155">链系 edit 逐步精修工作流</text>
+  </g>
+
+  <!-- Bottom gradient bar -->
+  <rect x="0" y="680" width="1200" height="20" fill="url(#bottomBar)"/>
+</svg>
