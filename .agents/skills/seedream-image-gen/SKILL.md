@@ -1,6 +1,6 @@
 ---
 name: seedream-image-gen
-description: "Generate and edit images with ByteDance Seedream 5.0 Pro/Lite: text-to-image, reference-image style transfer, no-mask marker-box edits, outpainting, and batch generation. Choose Seedream especially for Chinese-first or mixed-language graphic design, Chinese-style visuals, product marketing images, and posters, covers, banners, or editorial infographics; prefer it when a marker-box edit, Chinese-first typography, or Chinese-native visual direction is central."
+description: "Generate and edit images with ByteDance Seedream 5.0 Pro/Lite image models: text-to-image, text-rich graphics, reference-image style transfer, no-mask colored-box local edits, outpainting, and batch generation. Use for production visual work, especially product/e-commerce imagery, editorial infographics, or replacing titles, objects, and materials in existing images."
 ---
 
 # seedream-image-gen
@@ -103,7 +103,7 @@ Print the full capability matrix (max refs, optimize modes, etc.):
 
 Size and aspect ratio can also be described in natural language inside the prompt (e.g. "竖版 3:4 海报", "手机壁纸 9:16", "16:9 横版", "方形头像") — the model will pick a reasonable size near its default (2K). Prefer the explicit `--size` / shortcut flags when you need deterministic dimensions (platform uploads, print specs, matching an existing layout); use in-prompt sizing when you are describing a feel and the exact pixel count does not matter.
 
-Valid custom-WxH bounds: **Pro** 0.9 MP – 4.6 MP (default 1024×1024) with aspect ratio ∈ [1/16, 16]; **Lite** 3.7 MP – 16 MP (default 2048×2048; see [lite-quickref.md](references/lite-quickref.md) for the full floor/ceiling table — note Lite categorically cannot do 1K/1024²/1792×1024). The bound is on total pixels (W×H), not per-side. The client rejects out-of-range sizes before spending an API call. For common platform/destination sizes (e-commerce mains, social posts, stories, video covers, wallpapers), see the [Common Use-Case Size Reference](references/api-reference.md) in the API reference.
+Valid custom-WxH bounds: **Pro** 0.9 MP – 4.6 MP (default 1024×1024) with aspect ratio ∈ [1/16, 16]; **Lite** 3.7 MP – 16 MP (default 2048×2048; see [lite-quickref.md](references/lite-quickref.md) for the full floor/ceiling table — note Lite categorically cannot do 1K/1024²/1792×1024). The bound is on total pixels (W×H), not per-side. The client rejects out-of-range sizes before spending an API call. For common platform/destination sizes (e-commerce mains, social posts, stories, video covers, wallpapers), see the [Common Use-Case Size Reference](references/api-reference.md#common-use-case-size-reference常见场景尺寸指引) in the API reference.
 
 ## Text rendering (Pro)
 
@@ -213,7 +213,7 @@ Every row below is empirically rated. "✅ Production" = reliable with the docum
 | 多语言同屏排版 | ✅ Production | 9-9.5/10 | 3-4 scripts per-panel layout; same-line mixing risks diacritic bleed. [multilingual.md](references/multilingual.md) |
 | 文字鬼画符根治 (garbled text elimination) | ✅ Mostly solved | varies by density | Structured/repeated labels 9-10/10; per-cell-unique content collapses past 30 cells. [text-deep.md](references/text-deep.md) |
 | 结构纠错 (anatomy/architecture/mechanical perspective) | ✅ Production | 8.5-9.5/10 dedicated tests | Dynamic dance pose (5-finger accuracy, correct joint bends) 9.5/10; two-point architectural perspective (converging grid lines, no warping) 9/10; watch-gear mechanical mesh (correct tooth interlock, plausible ratios) 8.5/10. Hands under complex multi-object interaction (chopsticks, group ≥4) remain the softest sub-case. Absolute quality on these three dedicated single-image tests is high. |
-| 超高分辨率 | ✅ Production | verified | Pro max ~4.6MP (总像素 4,624,220); Lite goes to 16MP. See the Size Shortcuts section above and [api-reference.md](references/api-reference.md). |
+| 超高分辨率 | ✅ Production | verified | Pro max ~4.6MP (总像素 4,624,220); Lite goes to 16MP. See [Size Shortcuts](#size-shortcuts) and [api-reference.md](references/api-reference.md). |
 
 **Confirmed gap**: 智能图层分离 (auto transparent-PNG layer separation) exists in ByteDance's marketing/demo UI but **is not exposed on the public Ark API this skill calls**. For every other headline capability (10-person groups, wheel motion blur, defeating the beauty filter for raw skin, character consistency, marker edits, multilingual text, editorial infographics), a working recipe exists using the pattern: **aggressive explicit enumeration + a concrete reference analogy + stacked negations**. When a Seedream output looks like a generic/smoothed default, suspect the prompt before concluding it is a model limit.
 
