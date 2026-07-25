@@ -13,8 +13,9 @@ The approved direction is a roughly two-minute, vertical short. The original sto
 - Target duration: 120 seconds, acceptable final range 115–125 seconds
 - Visual style: polished 2D Japanese animation, bright colors, expressive faces, cinematic light, family-friendly comedy
 - Language: Chinese
-- Dialogue strategy: short dialogue and narration added in post; no long lip-sync passages
-- Audio strategy: original whimsical score, designed sound effects, and consistent post-produced voices; do not reuse the franchise theme song
+- Dialogue strategy: short Chinese dialogue and narration generated together with each Seedance shot; no long lip-sync passages
+- Audio strategy: Seedance native audio supplies voices, original whimsical music, ambience, and effects; Remotion smooths levels and clip boundaries in post
+- Editing tool: Remotion, selected for deterministic trimming, sequencing, subtitle placement, audio fades, and reproducible rendering
 - Delivery: 1080 × 1920 MP4, H.264 video with AAC audio
 - Publication: local deliverables only; no external publication is part of this task
 
@@ -146,7 +147,7 @@ Generate two variants of each high-risk scene. Review character stability, actio
 - Model: `doubao-seedance-2-0-260128` standard
 - Resolution: 1080p
 - Ratio: 9:16
-- Audio generation: disabled; final audio is created in post
+- Audio generation: enabled; each prompt contains the shot’s dialogue, ambience, effects, and a consistent original music descriptor
 - Watermark: disabled
 - Return last frame: enabled for continuity checks when useful
 - Submission: atomic tasks, tracked by shot ID and manifest
@@ -155,19 +156,23 @@ Each prompt specifies one dominant action, one camera movement, the 2D animation
 
 ## Audio Design
 
-- Original score: playful woodwinds, pizzicato strings, toy percussion, and a faster adventure rhythm during the chase; no recognizable franchise melody
-- Character voices: consistent Chinese voices created separately from the video generations
-- Sound effects: pencil scratch, pocket rummaging, gadget beep, electrical overload, magical bloom, rubbery impact, mechanical bark, running steps, ship creak, wave crash, flash contraction, and evening ambience
+- Seedance generates the dialogue, ambience, sound effects, and music together with each final video shot.
+- Every prompt repeats one shared music identity: playful woodwinds, pizzicato strings, toy percussion, and a faster adventure rhythm during the chase; no recognizable franchise melody.
+- Character prompts repeat concise voice descriptors to reduce drift between shots.
+- Sound effects include pencil scratch, pocket rummaging, gadget beep, electrical overload, magical bloom, rubbery impact, mechanical bark, running steps, ship creak, wave crash, flash contraction, and evening ambience.
 - Mix shape: quiet opening, rising wonder, dense chase climax, brief silence before the reset, warm musical release
-- Dialogue remains centered and intelligible; music ducks beneath speech
-- Apply short fades at clip boundaries to avoid model-generated or edit-induced clicks
+- Remotion applies short crossfades or volume envelopes at clip boundaries, keeps dialogue intelligible, and reduces abrupt music changes.
+- Separate TTS and music generation are not part of the default path. They are fallback tools only if the assembled Seedance audio has a clearly unacceptable voice or music discontinuity.
 
 ## Editing Design
 
+- Build the final edit as a Remotion composition at 30 fps with a 1080 × 1920 canvas and duration calculated from the selected shot manifest.
+- Use `@remotion/media` video elements with non-destructive `trimBefore` and `trimAfter` values for every selected Seedance take.
 - Assemble selected takes in narrative order with hard cuts for comedy and motion-matched cuts for action.
 - Use flash cuts for gadget activation and reset, whip-pan cuts during the chase, and an audio bridge from S17 into the sunset epilogue.
 - Trim generated handles to remove unstable first or final frames.
 - Add subtitles in post rather than asking the video model to render Chinese text.
+- Store subtitle cues as `Caption[]` JSON and render them through a dedicated caption component.
 - Subtitle safe area: centered above the bottom interface region, maximum two lines, high-contrast white text with a restrained dark outline.
 - Deliver both a subtitled master and a clean master.
 
@@ -192,12 +197,12 @@ content/inbox/media/2026-07-25-doraemon-small-gadget-adventure/
 ├── seedance/
 │   ├── previews/
 │   └── finals/
-├── audio/
-│   ├── voices/
-│   ├── music/
-│   └── sfx/
 ├── edit/
-│   ├── captions.srt
+│   ├── remotion/
+│   │   ├── package.json
+│   │   ├── src/
+│   │   └── public/
+│   ├── captions.json
 │   ├── edit-manifest.json
 │   └── contact-sheet.jpg
 ├── final/
@@ -218,7 +223,7 @@ Large generated binary assets remain local unless the user explicitly asks to tr
 - Broken anatomy or object penetration: shorten the action, separate it into two shots, or hide the transition behind a whip pan or foreground occlusion.
 - Unreadable group action: split the group into two spatial layers or two adjacent shots.
 - Failed API task: preserve the manifest error, correct the specific parameter or content problem, and resubmit only that shot.
-- Poor audio continuity: keep Seedance audio disabled and rebuild the sound in post.
+- Poor audio continuity: first adjust trims and Remotion volume envelopes; regenerate only the affected Seedance shot if the voice, dialogue, or score remains unusable.
 
 ## Quality Checks
 
@@ -238,12 +243,12 @@ Before calling the film complete:
 - Expanded storyboard and shot list
 - Character bible and prop sheet
 - Eighteen keyframes
-- Selected Seedance source clips and generation manifests
-- Chinese dialogue recordings, original score, and sound effects
+- Selected Seedance source clips with native dialogue, music, effects, and generation manifests
+- Editable Remotion composition, shot manifest, and caption data
 - Clean 1080 × 1920 master
 - Subtitled 1080 × 1920 master
 - Poster frame, contact sheet, captions, prompt files, and production manifest
 
 ## Cost And Review Boundary
 
-Image generation, Seedance preview/final tasks, speech generation, and music generation may invoke paid APIs. Execution begins only after the user reviews this written design and explicitly approves proceeding with those production calls. No publishing or external distribution is authorized.
+Image generation and Seedance preview/final tasks may invoke paid APIs. The user approved the two-minute direction, delegated the editing-tool choice, and requested Seedance-native voice and music on 2026-07-25. No publishing or external distribution is authorized.
