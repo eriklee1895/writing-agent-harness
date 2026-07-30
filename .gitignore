@@ -134,3 +134,5 @@ skills-lock.json
 .edit-annotations/
 .skill-work-seedream/
 seedream-eval-workspace/
+
+.playwright-mcp/
