@@ -2,6 +2,7 @@
 
 **Status:** `erik-seedream-image-gen` skill 独有能力, 非官方 API 字段.
 **文档完整度:** 12 份实测 recipe + threshold 表 + failure modes + annotated preview 自动生成.
+**执行目录:** 先进入 `.agents/skills/seedream-image-gen/`，再运行下文命令；所有 `scripts/...` 路径均相对此目录。
 **核心命令:** `uv run scripts/seedream_image_gen.py edit --marker-rect ...`
 
 ---
@@ -75,7 +76,7 @@ uv run scripts/seedream_image_gen.py edit \
 
 | Flag | 默认 | 说明 |
 |---|---|---|
-| `--marker-rect` | 必填, 可重复 | 矩形坐标: 百分比 `X%,Y%,W%,H%` (推荐) 或像素 `X,Y,W,H`. 多区域时传多次. |
+| `--marker-rect` | marker workflow 必填, 可重复 | 矩形坐标: 百分比 `X%,Y%,W%,H%` (推荐) 或像素 `X,Y,W,H`. 多区域时传多次. |
 | `--marker-color` | `#ff0000` 红 | 矩形颜色. 多区域时按 `--marker-rect` 顺序各传一个 `--marker-color`. |
 | `--marker-alpha` | `80` | 填充透明度 0-255. ⚠️ 浅黄/米色底色上视觉陷阱见下文. |
 | `--marker-stroke` | `3` | 描边宽度 (像素). |
@@ -84,13 +85,14 @@ uv run scripts/seedream_image_gen.py edit \
 
 ### Annotated Preview 工作流 (避免烧 API 试错)
 
-**第 1 步**: 写完命令直接运行. CLI 在**发请求前**会先:
+**第 1 步**: 在命令末尾加 `--dry-run` 先运行一次. CLI 会:
 - 用 Pillow 在参考图上画半透明矩形 → 得到 `*-annotated.png`
 - 保存到 `--out-dir` (默认 `output/seedream-image-gen/`)
+- 打印待发送的请求体，但**不发送 API 请求**
 
 **第 2 步**: 用 Finder / VS Code / 任何图像查看器打开 `*-annotated.png`. 肉眼确认红框 (或蓝框) 是不是罩住了你想改的区域. 位置不对就调整 `--marker-rect` 重跑, 不烧 API.
 
-**第 3 步**: 位置确认 OK 后, 把 annotated PNG 作为 `image` 字段 + 自动追加 cleanup prompt 的 prompt 作为输入, 发请求 → 模型执行 → 输出结果.
+**第 3 步**: 位置确认 OK 后, 去掉 `--dry-run` 并重跑同一条命令. CLI 会把 annotated PNG 作为 `image` 字段，加上自动追加 cleanup prompt 的 prompt 后发请求 → 模型执行 → 输出结果.
 
 ```
 out-dir/
@@ -135,7 +137,7 @@ uv run --with pillow python3 -c "from PIL import Image; print(Image.open('annota
 
 ### Demo 1 — 标题换字 (海报文案改写)
 
-![Demo 1: AI ERA → AI 时代](../assets/marker-edit-protocol-2026-07-12/demos/01-triple.png)
+![Demo 1: AI ERA → AI 时代](../assets/marker-edit-protocol-2026-07-12/demos/01-poster-triple.png)
 
 - `--marker-rect "18%,18%,64%,22%"` (蓝框 #0066ff) — 圈住主标题区
 - prompt: "Replace the title in the blue box with 'AI 时代', keeping the bold sans-serif font, point size, and center alignment; the subtitle below remains unchanged; pixels outside the box stay exactly as-is"
@@ -144,7 +146,7 @@ uv run --with pillow python3 -c "from PIL import Image; print(Image.open('annota
 
 ### Demo 2 — 物体替换 (柠檬 → 橘子)
 
-![Demo 2: lemon → orange](../assets/marker-edit-protocol-2026-07-12/demos/02-triple.png)
+![Demo 2: lemon → orange](../assets/marker-edit-protocol-2026-07-12/demos/02-lemon-triple.png)
 
 - `--marker-rect "38%,18%,28%,55%"` — 圈住柠檬主体
 - prompt: "Replace the yellow lemon ... with a bright orange ... keep the white ceramic plate and wooden table unchanged, perspective and lighting unchanged"
@@ -153,7 +155,7 @@ uv run --with pillow python3 -c "from PIL import Image; print(Image.open('annota
 
 ### Demo 3 — 物体换材质换色 (灰色布艺沙发 → 陶土橙真皮)
 
-![Demo 3: gray fabric sofa → terracotta leather](../assets/marker-edit-protocol-2026-07-12/demos/03-triple.png)
+![Demo 3: gray fabric sofa → terracotta leather](../assets/marker-edit-protocol-2026-07-12/demos/03-sofa-triple.png)
 
 - `--marker-rect "20%,55%,60%,35%"` (蓝框 #0066ff) — 圈住沙发主体
 - prompt: "Recolor the gray three-seater sofa in the blue box to rich terracotta-orange leather with visible natural leather grain, soft sheen highlight on top. Keep the two cushions terracotta too but slightly lighter shade"
@@ -162,7 +164,7 @@ uv run --with pillow python3 -c "from PIL import Image; print(Image.open('annota
 
 ### Demo 4 — 物体换色 (红色光面马克杯 → 深蓝哑光陶瓷)
 
-![Demo 4: red glossy mug → blue matte ceramic](../assets/marker-edit-protocol-2026-07-12/demos/04-triple.png)
+![Demo 4: red glossy mug → blue matte ceramic](../assets/marker-edit-protocol-2026-07-12/demos/04-mug-triple.png)
 
 - `--marker-rect "32%,32%,36%,50%"` (蓝框 #0066ff) — 圈住马克杯
 - prompt: "Recolor the red ceramic mug in the blue box to deep midnight blue matte ceramic, keeping the same shape, handle position, and shadow"
@@ -323,7 +325,7 @@ uv run scripts/seedream_image_gen.py edit \
 | 大块空白中的物体 | ⚠️ 4-6/10 | ⚠️ 6-7/10 |
 | 夜景 + 反光表面 + 霓虹场景中的物体 | ❌ 1-4/10 | ⚠️ 5-7/10 |
 
-详细讨论见 [marker-editing.md](../agents/skills/seedream-image-gen/references/marker-editing.md).
+详细讨论见 [marker-editing.md](../../.agents/skills/seedream-image-gen/references/marker-editing.md).
 
 ---
 
