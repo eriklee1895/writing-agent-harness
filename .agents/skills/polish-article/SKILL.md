@@ -64,6 +64,12 @@ description: "润色和打磨文章写作。Use when the user asks to polish/精
    - conclusion 是否收束，而不是机械 CTA；
    - Markdown links、images、frontmatter、tables 是否没被破坏；
    - 对 current events 或 high-uncertainty facts 是否标明需要查证。
+7. Frontmatter 校验（如果是 Markdown 源稿）：
+   - **`title` / `date` / `register` / `tags`** 必须存在。
+   - **`summary`**：如果缺失，优先用 writing brief 的 `One-line idea`；如果 brief 不可得，从文章首段提炼一句 ≤60 字的 one-liner，并在回复里标注"已补 summary，请确认"供用户修改。`summary` 是公众号/博客/SEO 的摘要来源，不能留空。
+   - **`author`**：永远不写入 frontmatter。作者身份由发布渠道决定（微信公众号走 `.config/wechat.toml` 的 `default_author`，博客走站点配置），Markdown canonical source 不存作者。
+   - **`cover`**：可选。如果文章已有封面图或指定了主图，写相对路径（如 `assets/hero-cover.png`），publisher 会自动上传；没指定则发布时在草稿箱手动设置。
+   - 不写死渠道特定字段（如公众号 appmsgid、博客 URL slug）到 frontmatter——这些是渠道 artifact，不属于 canonical source。
 
 ## Register Guidance
 

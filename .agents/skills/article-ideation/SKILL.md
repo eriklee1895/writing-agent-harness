@@ -138,6 +138,16 @@ For WeChat longform, include reading rhythm: where to add summary card, reader m
 
 确认方向后，下一步就是直接开始写作。agent 在写作前应读取 [docs/reference/format-standards.md](../../docs/reference/format-standards.md) 了解不同输出格式的写作方法论和视觉手段。
 
+### 7. One-line idea → frontmatter `summary`
+
+brief 里的 **`One-line idea`** 是文章 `summary` 的来源。进入 draft 阶段写 Markdown 源稿时，把 one-line idea 直接写入 frontmatter：
+
+```yaml
+summary: <one-line idea，≤60 字>
+```
+
+polish 阶段会再次校验 `summary`，如果写作中 thesis 变化了再更新。不要把 one-line idea 只留在 writing-brief.md 里而忘记同步到 frontmatter——publisher 依赖 frontmatter 里的 `summary` 填写公众号摘要。
+
 ## Output Rules
 
 - 不要在 ideation 阶段直接生成完整正文，除非用户明确要求。
