@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: A vertical mobile data infographic, warm cream paper background, editorial Bloomberg-meets-Notion style. Bold black Chinese title: '11 组实验，谁赢了？' Subtitle: '两个任务 × 多个 critic 架构'. Two horizontal sections with simple bars (pixel-diff% lower is better):\n\nSection '消消乐 (canvas game)':\n- 自评 B: 36%\n- 独立评委 C: 37% (gray, no crown; label '打平但更卡')\n- 工具评委·串行 25ms: 25% (sage green, crown; label '逻辑全绿·最稳')\n- 工具评委·并行 15ms: wavy red bar '15% 但波动大'\n- 错 bar E: rainbow swirl bar '一团糟'\n\nSection '数据图表 (SVG chart)':\n- 自评 B: 17%\n- 独立评委 C: 13.7% (sage green, crown; label '审美判断赢了')\n- 工具评委·串行 25ms: 22% (gray; label '数据对但品味卡壳')\n- 工具评委·并行 15ms: 13.4% (gold; label '赢家其实是一个 holistic agent')\n- 错 bar E: rainbow swirl '一团糟'\n\nGold insight box at bottom: '独立评委强在审美语义，工具评委强在正确性——它俩是分层，不是替代。' Muted cream/charcoal/terracotta/sage/cobalt palette, big readable numbers, clean Chinese typography, no watermark.",
+  "model": "openai/gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1024x1536",
+  "quality": "auto",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-08-10-gauntlet-loop-critic/assets/infographic-results.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-08-09T23:04:58",
+  "dry_run": false
+}
