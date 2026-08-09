@@ -5,7 +5,7 @@ date: 2026-08-10
 topic: gauntlet-loop-critic
 tags: ["ai-agent", "claude-code", "gauntlet-loop", "software-engineering", "developer-tools"]
 register: "agent-ai-essay"
-summary: "我把 Matt Shumer 的 Gauntlet Loop 在两个任务上跑了 11 组对照实验，又用同一套方法迭代了 8 轮做出一款国风消消乐。viral 叙事讲的多智能体只是表层——真正的秘密是持续集成、具体的 bar、和不允许作者给自己 merge PR。"
+summary: "我把 Matt Shumer 的 Gauntlet Loop 在两个任务上跑了 11 组对照实验，又用同一套方法迭代了 10 轮做出一款国风消消乐。viral 叙事讲的多智能体只是表层——真正的秘密是持续集成、具体的 bar、和不允许作者给自己 merge PR。"
 cover: assets/cover.png
 ---
 
@@ -328,7 +328,7 @@ Claude-of-Duty 的 tonemapping/sky/indirect light 共享一个光照模型，所
 
 ### 它本身也是 Gauntlet Loop 的产物
 
-更重要的是，**这个游戏不是一次写完的，它是我用同一套 Gauntlet Loop 方法论迭代了 8 轮的结果**，每一轮都有 Playwright 截图 + logic assert + 帧时 profiler 当 deterministic critic：
+更重要的是，**这个游戏不是一次写完的，它是我用同一套 Gauntlet Loop 方法论迭代了 10 轮的结果**，每一轮都有 Playwright 截图 + logic assert + 帧时 profiler 当 deterministic critic：
 
 1. R1 视觉统一（雕花边框、夕阳庭院、水墨标题、吉祥物动画）
 2. R2 手感（特殊棋子、cascade 音阶级数、连击飘字、提示系统、判官揭晓动画）
@@ -338,14 +338,18 @@ Claude-of-Duty 的 tonemapping/sky/indirect light 共享一个光照模型，所
 6. R6 无障碍（键盘可玩、reduced-motion、90 格 role=grid 读屏、焦点陷阱、四个主题的 ambient 签名）
 7. R7 边界条件加固（快速输入、判官/设置/关卡竞态、死局重洗、localStorage 篡改兜底、音频崩溃兜底、跨进程 byte-identical 确定性审计）
 8. R8 最终打磨 + 出 10 张 gallery 截图
+9. R9 特殊棋子组合系统（横纵消/炸弹/同色清屏/全屏清等 6 种 combo、两段式消除弹跳、连击语音、手机震动、粒子 LOD）
+10. R10 最终 QA + 数值平衡（第一关通关率实测、竞态修复、混音终调、gallery 重出）
 
-每一轮我都让 builder agent 改，然后用 `node tools/capture.mjs` 跑 deterministic critic，logic 从 14 个 assert 涨到 28 个，p99 始终压在 33ms 以下。这个过程本身就是文章论点的一次 self-demonstration。
+每一轮我都让 builder agent 改，然后用 `node tools/capture.mjs` 跑 deterministic critic，logic 从 14 个 assert 涨到 **35 个**，p99 始终压在 33ms 以下（桌面 ~18ms / 手机 ~10ms）。这个过程本身就是文章论点的一次 self-demonstration。
 
 ![森之画境主题，通关解锁的第二个皮肤](assets/ghibli-theme.png)
 
 **R7 抓到一个特别值得讲的 bug**：桌面端的鼠标点击选择棋子是坏的——点一下会"选中又立刻取消"。这个 bug 从 R1 一直存在到 R6，六轮里所有的 deterministic 测试都没抓到，因为 e2e 测试用的是拖拽、无障碍测试用的是方向键，**没有一个测试走鼠标点击路径**。是 R7 我专门做"用脑子想玩家会怎么操作"的边界审计才发现的。
 
 这是对"deterministic critic 比 LLM critic 好"这个结论的一个重要修正：**deterministic critic 只抓它被设计去测的东西。如果你的测试只走拖拽和键盘，鼠标点击坏了六年你都不知道。** Test suite 是一张网，网眼多大由你决定，漏掉的鱼照样游走。这和 E 条件那个"__checkData 全绿但柱子渲染到 160%"是同一个教训的两面——green checkmark 不是质量的证明，它只是"你的测量没量到的地方都可能是坏的"。
+
+R10 又抓到一个类似的竞态 bug：当一步同时满足关卡通关条件和判官触发阈值时，判官会先弹出来，玩家如果在判官里选错就会扣一步——一关明明已经赢了，反而变成输。我加了一个纯函数 `postMoveOutcome()` 让关卡胜利优先于判官，并且写了第 35 个 assertion `levelWinBeforeJudge` 把这个 case 永久钉在测试里。这就是 deterministic critic 的正确用法：不是追求"一次写对"，而是每踩一个坑就把它变成一个以后永远不会再踩的断言。
 
 另外一个工程教训：迭代到 R4 的时候，builder agent 在 final verification 阶段撞上了 fallback 模型的 quota 403 直接死了，但它的代码已经写完落盘了。我重新跑了一遍 capture 确认产物是绿的、手动补了 version string 就收工了。这教会我一件事：**在 critic 跑之前就 checkpoint 你的 artifact，因为 critic / runner 可以独立于 builder 的输出而挂掉。** 你不能因为 agent 的退出状态是 failed 就假设它什么都没做。
 
