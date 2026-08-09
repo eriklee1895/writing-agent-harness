@@ -1,0 +1,32 @@
+{
+  "article": "2026-08-10-gauntlet-loop-critic",
+  "generated_with": "article-illustration skill (gpt-image-2) + in-game Playwright captures",
+  "assets": [
+    {
+      "filename": "cover.png",
+      "role": "cover",
+      "alt": "金色天平两端分别是写代码的橙色 builder 机器人和持放大镜的蓝色独立评委机器人，评委一端更重下沉，底座是发光的 assert(pass);",
+      "prompt": "Editorial magazine cover: a golden justice balance scale on dark indigo background, orange cartoon robot typing on left pan, blue robot with magnifying glass on lower/heavier right pan, glowing green monospace text 'assert(pass);' at base, single warm light from above, scattered candy pieces and a crumbling bar-chart pillar on the floor, minimal composition, no labeled cards, no watermark.",
+      "source_path": "output/article-illustration/20260731-105231-critic-is-the-lever.png",
+      "usage": "正文头图"
+    },
+    {
+      "filename": "judge-panel.png",
+      "role": "body-inset",
+      "alt": "《消长录》游戏内的请君一判盲审面板，左右两个棋盘分别标着甲和乙",
+      "prompt": "In-game deterministic Playwright capture of the match-3 hero game's blind-judge panel (tools/gallery.mjs, frame 200).",
+      "source_path": "content/drafts/2026-07-30-gauntlet-loop/experiments/match3/hero/gallery/03-judge.png",
+      "usage": "第七章：盲审判官机制展示"
+    },
+    {
+      "filename": "ghibli-theme.png",
+      "role": "body-inset",
+      "alt": "森之画境主题：吉卜力风森林背景里的橡果、蘑菇、萤火虫、荷叶等水彩棋子",
+      "prompt": "In-game deterministic Playwright capture of the ghibli theme (tools/gallery.mjs, frame 200), score 3200.",
+      "source_path": "content/drafts/2026-07-30-gauntlet-loop/experiments/match3/hero/gallery/05-ghibli.png",
+      "usage": "第七章：四主题解锁展示"
+    }
+  ],
+  "experiments_repo": "https://github.com/eriklee1895/gauntlet-loop-experiment",
+  "playable_game": "experiments/match3/hero/index.html"
+}
