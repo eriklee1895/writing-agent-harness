@@ -26,7 +26,7 @@ cover: assets/cover.png
 
 所以我做了两件事：第一，把 Shumer 的方法论在两个任务上跑了 11 组对照实验，量每一种 design choice 到底贡献多少；第二，用这个方法论自己做了一个国风消消乐《消长录》，它的核心玩法就是这篇文章的论点（后面详说）。
 
-这篇文章讲三道裂缝在哪里、数据告诉我什么、以及你自己的项目里怎么用。不是 prompt 教学，不是"AI 又赢了"的 hype 文。是一篇工程笔记，有反例，有一个能玩的游戏，有一个公开 repo 让你复现。
+这篇文章讲三道裂缝在哪里、数据告诉我什么、以及你自己的项目里怎么用。不是 prompt 教学，不是"AI 又赢了"的 hype 文。是一篇工程笔记，有反例，有一个能在浏览器里直接玩的游戏，有一个公开 repo 让你复现。**那个游戏我也部署到了线上：[xiaozhanglu.vercel.app](https://xiaozhanglu.vercel.app)，手机和电脑都能玩。**
 
 ## 二、116 个词和一座不在那里的大厦
 
@@ -349,7 +349,7 @@ Claude-of-Duty 的 tonemapping/sky/indirect light 共享一个光照模型，所
 
 另外一个工程教训：迭代到 R4 的时候，builder agent 在 final verification 阶段撞上了 fallback 模型的 quota 403 直接死了，但它的代码已经写完落盘了。我重新跑了一遍 capture 确认产物是绿的、手动补了 version string 就收工了。这教会我一件事：**在 critic 跑之前就 checkpoint 你的 artifact，因为 critic / runner 可以独立于 builder 的输出而挂掉。** 你不能因为 agent 的退出状态是 failed 就假设它什么都没做。
 
-游戏在 repo 里：[github.com/eriklee1895/gauntlet-loop-experiment](https://github.com/eriklee1895/gauntlet-loop-experiment)，浏览器打开 `experiments/match3/hero/index.html` 就能玩，`gallery/` 目录里有 10 张截图。
+游戏已经部署上线，**浏览器或手机直接打开 [xiaozhanglu.vercel.app](https://xiaozhanglu.vercel.app) 就能玩**，不需要安装任何东西。完整代码、11 组对照数据、`gallery/` 目录里的 10 张截图都在 GitHub repo：[github.com/eriklee1895/gauntlet-loop-experiment](https://github.com/eriklee1895/gauntlet-loop-experiment)。
 
 我做这个游戏的部分原因是手痒想玩，部分原因是想让你**身体记忆**这个论点：当你被判官面板问"甲还是乙"的时候，你会发现自己经常选错——你以为你棋盘上那一片粒子海很热闹，但和一个 balanced layout 并列对比才发现你已经审美疲劳了。Blind A/B 是一个你在自己做的项目上**永远对自己做不出来的判断**，因为你看了它太多遍。
 
