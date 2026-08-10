@@ -32,11 +32,24 @@ cover: assets/cover.png
 
 先看那段 viral prompt 长什么样。我把它从 `mshumer/Claude-of-Duty` 的 `prompt.md` 搬过来，全文如下：
 
-> I want you to build a first-person shooter at the level of the most recent Call of Duty games. It should be utterly perfect, visually beautiful, with every single thing done at AAA quality—from textures to physics to anything you could think of.
->
-> Fan out sub-agents and have sub-agents tackle each one individually so that the game is utterly perfect. You should /loop on each item and have a separate sub-agent check it visually to ensure it looks triple A. That separate sub-agent should be a really harsh critic, and if it doesn't look triple A, it should keep going.
->
-> Don't stop until each sub-agent is utterly wowed with the quality when compared with the actual Call of Duty game. It should literally compare them side by side blind and say which one looks better. Do this in ThreeJS. /loop until it's utterly perfect. Fan out sub-agents and ultracode.
+```text
+I want you to build a first-person shooter at the level of the most
+recent Call of Duty games. It should be utterly perfect, visually
+beautiful, with every single thing done at AAA quality—from textures
+to physics to anything you could think of.
+
+Fan out sub-agents and have sub-agents tackle each one individually so
+that the game is utterly perfect. You should /loop on each item and
+have a separate sub-agent check it visually to ensure it looks triple
+A. That separate sub-agent should be a really harsh critic, and if it
+doesn't look triple A, it should keep going.
+
+Don't stop until each sub-agent is utterly wowed with the quality when
+compared with the actual Call of Duty game. It should literally compare
+them side by side blind and say which one looks better. Do this in
+ThreeJS. /loop until it's utterly perfect. Fan out sub-agents and
+ultracode.
+```
 
 数一下：116 个词。没有 system prompt scaffolding，没有 `.claude/` skills 目录，没有 agent 定义文件，没有任何"高级 prompt engineering"的痕迹。"ultracode" 是个关键词，触发 Claude Code 的 dynamic workflow。
 
