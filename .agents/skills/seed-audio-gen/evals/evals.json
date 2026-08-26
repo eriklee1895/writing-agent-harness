@@ -1,0 +1,40 @@
+{
+  "skill_name": "seed-audio-gen",
+  "evals": [
+    {
+      "id": 1,
+      "name": "sfx-voiceover-scene",
+      "prompt": "帮我做一段视频配音：男声旁白说'他推开门走进了昏暗的房间'，同时要有木门吱呀声和皮鞋踩木地板的脚步声，一次出成品不要分开做",
+      "expected_output": "应触发 seed-audio-gen skill，构造 text_prompt 含人声台词+音效描述，用 --speaker 指定男声音色，不分割成 TTS+音效两步",
+      "assertions": [
+        "agent 选择了 seed-audio-gen skill 而非 volcengine-tts",
+        "text_prompt 里同时包含台词和音效描述",
+        "用 --speaker 指定了男声音色",
+        "没有把任务拆成 TTS 出人声 + 单独找音效两步"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "pure-narration-redirect",
+      "prompt": "我这篇技术博客大概800字，帮我朗读成语音，要逐字准确不要改写，成本尽量低",
+      "expected_output": "不应触发 seed-audio-gen，应建议用 volcengine-tts（逐字、便宜、流式）",
+      "assertions": [
+        "agent 没有调用 seed-audio-gen",
+        "agent 建议或使用了 volcengine-tts",
+        "理由提到逐字准确/成本低/流式"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "voice-clone-multi-seg",
+      "prompt": "我有这段参考音频是悬疑解说风格（在 /tmp/ref.mp3），想用这个音色生成三段不同台词的旁白，保持同一个声音",
+      "expected_output": "应触发 seed-audio-gen，用 --ref-audio /tmp/ref.mp3 做克隆，分三次调用生成三段",
+      "assertions": [
+        "agent 选择了 seed-audio-gen skill",
+        "使用了 --ref-audio 参数指向 /tmp/ref.mp3",
+        "没有用 --speaker（因为是用参考音频克隆）",
+        "识别出要生成三段不同内容"
+      ]
+    }
+  ]
+}

@@ -120,6 +120,7 @@ output/
 tmp/
 .backups/
 tts-output/
+seedaudio-output/
 
 # Skill workspaces (eval runs, benchmarks, scratch artifacts — large binaries, regenerable)
 .workspace/
