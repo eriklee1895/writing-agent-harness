@@ -1,0 +1,290 @@
+---
+name: seed-audio-gen
+description: >
+  从一条自然语言场景描述，一次生成「人声 + 音效 + 背景音乐」混合的成品音频（最长 120 秒）。Use this skill whenever the user wants to generate a complete audio scene — voice combined with sound effects, ambient sound, and/or background music — in a single call. 触发场景包括且不限于：有声书/广播剧/播客的场景化音频、影视配音、游戏 NPC 台词 + 战斗氛围、广告配音 + 音乐床、视频片头音频、多角色对话 + 环境音、用参考音频克隆音色生成多段语音、需要时间戳精准控制台词进出时机的配音。关键信号：用户提到「场景音」「环境音」「音效 + 配音」「BGM + 人声」「一次生成成品音频」「多角色对话」「有声书/广播剧升级到剧感」时，必须使用本 skill。本 skill 是 seed-audio-1.0（火山引擎豆包音频生成模型），不是传统 TTS——它把 TTS + 配乐 + 拟音 + 混音的多步流程压成一次调用。不适用场景（用更优工具）：纯旁白/批量朗读用 volcengine-tts（快 11 倍、便宜 14 倍、流式）；纯背景音乐用 volcengine-bigmusic-bgm（时长精确）；实时对话用双向流式 TTS；SSML/拼音注解用 volcengine-tts。
+---
+
+# seed-audio-gen
+
+Generate complete audio scenes from natural language prompts using Volcano Engine's Doubao Audio Generation 1.0 (`seed-audio-1.0`). One API call produces voice + sound effects + BGM — a mixed, mastered audio clip up to 120 seconds.
+
+This is a **generative audio model**, not a traditional TTS. Think of it as "prompt an audio scene" rather than "read this text aloud."
+
+**Project homepage**: https://seed.bytedance.com/seedaudio1_0
+
+## Quick Start
+
+```bash
+# Single scene — outputs MP3 + .meta.json to seedaudio-output/
+uv run scripts/seed-audio-gen.py "一位温柔女声朗读：你好，欢迎使用豆包音频生成模型"
+
+# BGM + voice + sound effects scene
+uv run scripts/seed-audio-gen.py "轻柔的钢琴BGM背景下，一位温柔女声缓缓说道：今晚的月色真美。句尾伴随一声微风拂过的音效。"
+
+# With speaker selection (reuses seed-tts-2.0 voice catalog)
+uv run scripts/seed-audio-gen.py "用深沉的语气朗读：夜幕降临，城市亮起了万家灯火。" --speaker zh_male_dongfanghaoran_uranus_bigtts
+
+# Voice cloning from local reference audio
+uv run scripts/seed-audio-gen.py "用参考音频的音色说：这是克隆后的声音。" --ref-audio ~/reference-speaker.wav
+
+# Remote reference audio URL
+uv run scripts/seed-audio-gen.py "用参考音色说：远程克隆也可以。" --ref-audio-url https://example.com/ref.wav
+
+# Batch mode — concurrent scene generation with cost estimate
+uv run scripts/seed-audio-gen.py --batch '[{"prompt":"女声朗读：这是第一段。"},{"prompt":"男声朗读：这是第二段。"}]'
+
+# List available speakers (local table, no API call)
+uv run scripts/seed-audio-gen.py --list-speakers
+```
+
+## Script
+
+The core implementation is `scripts/seed-audio-gen.py` — a PEP 723 inline-dependency Python script.
+
+**Always run with `uv run`** — it auto-creates an isolated environment from the inline metadata. Never use bare `python` or `pip`.
+
+## Environment Setup
+
+The script reads `VOLC_SPEECH_API_KEY` with three-level fallback:
+
+1. `VOLC_SPEECH_API_KEY` environment variable
+2. `.env` file in the current working directory
+3. `~/.volcengine.env` (user-level config)
+
+To set up permanently:
+
+```bash
+echo 'VOLC_SPEECH_API_KEY=your-key-here' >> ~/.volcengine.env
+```
+
+Note: Unlike `volcengine-tts`, this skill does **not** require `X-Api-Resource-Id` or AK/SK. Only `VOLC_SPEECH_API_KEY` (X-Api-Key) is needed for everyday use. The `--list-speakers` command reads from a local table and does not call the API.
+
+## CLI Reference
+
+### Single Scene Mode (default)
+
+```
+uv run scripts/seed-audio-gen.py <prompt> [options]
+```
+
+Output: JSON to stdout with `audio_file`, `duration`, `original_duration`, `url`, `subtitle`, `log_id`, `model`, `text_prompt`, `estimated_cost_yuan`, and `error` (on failure). Each audio file also gets a `.meta.json` sidecar.
+
+### Batch Mode
+
+```
+uv run scripts/seed-audio-gen.py --batch '<json-array>' [options]
+```
+
+Each item: `{"prompt": "...", "speaker": "...", ...}`. Extra keys override per-item options (speaker, ref-audio-url, speech-rate, etc.).
+
+Output: JSON with `results` array, `total_duration_seconds`, `estimated_cost_yuan`, `success_count`, `fail_count`.
+
+### Prompt Input
+
+| Parameter | Required | Description |
+|---|---|---|
+| `<prompt>` (positional) | Yes | Natural language scene description, max 3000 chars |
+
+If prompt exceeds 3000 characters, the CLI rejects with an error including the exact length, the limit, and a hint to split into multiple calls.
+
+### Reference (voice source, mutually exclusive)
+
+| Flag | Description |
+|---|---|
+| `--speaker <id>` | Speaker ID, reuses the seed-tts-2.0 `_bigtts`/`_tob` voice catalog |
+| `--ref-audio <path>` | Local reference audio path (auto base64-encoded, max 30s, max 10MB) |
+| `--ref-audio-url <url>` | Remote reference audio URL |
+
+`--speaker`, `--ref-audio`, and `--ref-audio-url` are mutually exclusive (API constraint). Reference images (below) cannot be mixed with audio references.
+
+| Flag | Description |
+|---|---|
+| `--ref-image <path>` | Local reference image path (auto base64-encoded, max 10MB) |
+| `--ref-image-url <url>` | Remote reference image URL |
+
+### Audio Config
+
+| Flag | Default | Description |
+|---|---|---|
+| `--model` | `seed-audio-1.0` | Model version; open string, reserved for future 2.0 |
+| `--format` | `mp3` | Audio format: wav, mp3, pcm, ogg_opus |
+| `--sample-rate` | `48000` | Sample rate: 8000, 16000, 24000, 32000, 44100, 48000 |
+| `--speech-rate` | `0` | Speed [-50, 100], 100=2x, -50=0.5x |
+| `--loudness-rate` | `0` | Volume [-50, 100] |
+| `--pitch-rate` | `0` | Pitch [-12, 12] semitones |
+| `--subtitle` | off | Enable sentence + word-level millisecond timestamps |
+
+### Watermark
+
+| Flag | Description |
+|---|---|
+| `--watermark` | AIGC explicit watermark (rhythmic identifier at audio end) |
+| `--watermark-meta` | Implicit metadata watermark (header metadata) |
+
+### General
+
+| Flag | Default | Description |
+|---|---|---|
+| `-o, --output-dir` | `./seedaudio-output/` | Output directory |
+| `--batch <json>` | — | Batch mode, JSON array of scene objects |
+| `--concurrency` | `3` | Max parallel requests in batch mode |
+| `--list-speakers` | — | List speakers from local table (no API call) |
+| `--filter <k=v>` | — | Filter speakers: `scene=视频配音`, `type=bigtts`, `lang=ja` |
+| `--sort heat` | — | Sort speakers by heat (popularity) |
+
+### Deliberately Omitted Flags
+
+The following flags from `volcengine-tts` are intentionally **not** exposed in `seed-audio-gen`, because seed-audio handles everything through the natural language `text_prompt`:
+
+- `--context` / `--ssml` / `--latex` — these are seed-tts-2.0 features. In seed-audio, express tone, pacing, and emotion directly in the prompt.
+- `--no-subtitle` — seed-audio subtitle is off by default (unlike seed-tts-2.0 where it's on by default).
+
+## Output Format
+
+### Success (single)
+
+```json
+{
+  "audio_file": "seedaudio-output/seedaudio_20260826_210000_a1b2c3.mp3",
+  "duration": 9.3,
+  "original_duration": 9.3,
+  "url": "https://lf3-speech-sign.bytednsdoc.com/...",
+  "fetched_at": "2026-08-26T21:00:00+08:00",
+  "url_expires_at": "2026-08-26T23:00:00+08:00",
+  "subtitle": null,
+  "log_id": "202608262100000FACFE6D19421815D605",
+  "model": "seed-audio-1.0",
+  "text_prompt": "一位温柔女声朗读：你好世界",
+  "estimated_cost_yuan": 0.16,
+  "elapsed_s": 12.45,
+  "error": null
+}
+```
+
+### Error (single)
+
+```json
+{
+  "audio_file": null,
+  "error": "45001116: text_prompt length 3600 exceeds maximum of 3000 chars...",
+  "log_id": "",
+  "elapsed_s": 0.01,
+  "text_prompt": "..."
+}
+```
+
+### Batch
+
+```json
+{
+  "results": [
+    {"audio_file": "seedaudio-output/seedaudio_20260826_210000_a1b2c3.mp3", "duration": 9.3, "estimated_cost_yuan": 0.16, ...},
+    {"audio_file": null, "error": "429: quota exceeded", ...}
+  ],
+  "total_duration_seconds": 120.5,
+  "estimated_cost_yuan": 2.01,
+  "success_count": 8,
+  "fail_count": 2
+}
+```
+
+## Metadata Sidecar
+
+Each audio file gets a `.meta.json` sibling with the same base name:
+
+```
+seedaudio-output/
+  seedaudio_20260826_210000_a1b2c3.mp3
+  seedaudio_20260826_210000_a1b2c3.meta.json
+```
+
+The meta file includes all result fields: `audio_file`, `duration`, `original_duration`, `url`, `fetched_at`, `url_expires_at`, `subtitle`, `log_id`, `model`, `text_prompt`, `estimated_cost_yuan`, `elapsed_s`, and `error`.
+
+### CDN URL Expiry
+
+The API returns a temporary CDN URL valid for **2 hours**. The `fetched_at` and `url_expires_at` fields track the validity window. The local `audio_file` is the permanent primary storage; the URL is a convenience copy. Downstream tools should check `url_expires_at` and fall back to the local file when the URL expires.
+
+### Subtitle Timestamps
+
+When `--subtitle` is enabled, the `subtitle` field contains sentence-level and word-level timestamps in milliseconds. Use for: subtitle generation, B-roll alignment, lip-sync hinting, karaoke-style highlighting.
+
+## Voice Selection
+
+For the complete voice catalog, read `references/speakers.md` (444 speakers — 244 bigtts + 200 ICL, as of 2026-08-26). The structured data is in `references/speakers.json`.
+
+Use `--list-speakers` with filters to query:
+
+```bash
+# All speakers
+uv run scripts/seed-audio-gen.py --list-speakers
+
+# Filter by scene type
+uv run scripts/seed-audio-gen.py --list-speakers --filter scene=视频配音
+
+# Filter by language
+uv run scripts/seed-audio-gen.py --list-speakers --filter lang=ja
+
+# Sort by heat (popularity)
+uv run scripts/seed-audio-gen.py --list-speakers --sort heat
+```
+
+To refresh the speaker table (e.g. when new voices are released), run:
+
+```bash
+uv run scripts/refresh-speakers.py
+```
+
+This requires AK/SK (`VOLC_ACCESSKEY`/`VOLC_SECRETKEY`), as the ListSpeakers API uses a different auth system than the everyday synthesis API.
+
+## Prompt Guide
+
+For the full prompt-writing guide — timestamp syntax, scene element structure, `@AudioN` references, voice selection, and complete worked examples — read `references/seedaudio-prompt-guide.md`.
+
+### Scenario quick reference
+
+seed-audio-gen handles **mixed audio scenes** (voice + SFX + BGM together) — not single-element generation. Match your scenario to a worked example in the prompt guide:
+
+| Scenario | Key elements | Example in prompt-guide |
+|---|---|---|
+| 广告/视频片头配音 | 台词 + 产品音效 + BGM + 时间戳 | Example 1: Skincare Ad |
+| 影视/剧情对白 | 多角色对话 + 环境音 + 情绪节奏 | Example 2: Rainy Night Farewell |
+| 游戏 NPC 台词 | 角色音色 + 动作音效 + 氛围 BGM | Example 3: Game Character Voice |
+| 有声书/广播剧 | 旁白 + 多角色 + 场景氛围 | Example 4: Audiobook Scene |
+| 纯音效场景 | 无台词，只有 SFX/环境音 | 无独立示例；prompt 里只写音效描述、不写台词 |
+| 纯 BGM 场景 | 无台词无人声，只有音乐 | **用 `volcengine-bigmusic-bgm` 更优**（时长精确、专用音乐模型） |
+
+The pattern across all examples: describe BGM, define characters (gender/age/timbre/tone), write timestamped dialogue, describe SFX — all in one `text_prompt`. The model orchestrates them onto a single timeline.
+
+## Error Handling
+
+- **Prompt too long**: `PromptTooLongError` — text_prompt exceeds 3000 chars. Rejected with length, limit, and hint to split into multiple calls.
+- **API errors**: HTTP non-200 or missing `audio` field — returned with error code + message + `log_id`.
+- **Network/exception**: Exception type and message returned in `error` field.
+- **Batch mode**: Failed items report error in their result object; other items continue independently.
+- Always include the `log_id` in error output for support escalation.
+
+## Billing
+
+- **1 yuan per minute**, billed by `original_duration` (the model's raw output duration).
+- **Speed (`--speech-rate`) does not affect billing** — the cost is always based on the unadjusted `original_duration`. A 2x speed-up still costs the same as 1x.
+- **Voice cloning is free** — passing `--ref-audio` or `--ref-audio-url` incurs no additional charge.
+- Registered custom voices (`_tob` ICL speakers) are billed by **voice slot**, not per call.
+- Each call generates up to 120s. Batch `estimated_cost_yuan` is the sum of all items.
+
+## When to Use This Skill
+
+- User wants to generate a complete audio scene with voice + BGM + sound effects in one call
+- User mentions 生成式音频, seed-audio, 豆包音频, 有声书, 广播剧, 影视配音, 游戏音效, 广告配音, 视频片头
+- User needs multi-character dialogue, emotional voice acting, or timestamped scene orchestration
+- User needs voice cloning for consistent character voices across scenes
+- User wants to create audio content for audiobooks, radio dramas, video dubbing, game audio, or podcast intros
+- User has a scene description in natural language (not a verbatim script to be read word-for-word)
+
+## When NOT to Use
+
+- **Pure narration / reading text verbatim** — use `volcengine-tts`. seed-audio is ~11x slower and ~14x more expensive for simple TTS. It may also rewrite or embellish the input text (it's a generative model, not a deterministic reader).
+- **Pure background music (BGM)** — use `volcengine-bigmusic-bgm`. seed-audio always generates voice+BGM+effects as a mixed product; it cannot produce clean BGM-only tracks, and the duration is not precisely controllable.
+- **Real-time / streaming conversation** — use a bidirectional streaming TTS. seed-audio is non-streaming and takes 10+ seconds per call.
+- **SSML-precise control** — use `volcengine-tts`. seed-audio does not support SSML; all timing and emotion is expressed in natural language, which is expressive but not deterministic.
+- **Verbatim word-for-word accuracy required** — seed-audio is a generative model and may paraphrase. If you need every character read exactly as written, use `volcengine-tts`.
+- **Long-form content beyond 120s** — split into multiple calls. The model maxes out at 120s per call. For long-form narration, `volcengine-tts` is also faster and cheaper.
