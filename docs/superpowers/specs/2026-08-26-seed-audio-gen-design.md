@@ -99,8 +99,20 @@
 ```
 ERROR 45001116: text_prompt length 3600 exceeds maximum of 3000 chars.
 Hint: split your prompt into multiple calls, or shorten the scene description.
-Each call generates up to 120s of audio.
+Each call generates up to 120s of audio. 人声播报字数建议中文控制在 400 字以内.
 ```
+
+**新增提示**：官方建议人声播报字数中文控制在 400 字以内（虽硬上限 3000，但人声段过长效果下降）。
+
+### 5b. 计费细节（飞书 wiki 补充）
+
+来自官方 ONE PAGE 文档：
+- 按时长精确至秒，折算为**分钟**计费
+- **按模型原始输出时长计费（`original_duration`），倍速不影响计费时长**——即 `speech_rate` 调速不改变计费
+- 接口直接传参考音频**不涉及音色费用**（`audio_data` 克隆免费）
+- 注册固定音色按**音色槽位**计费（`_tob` 复刻音色的费用来源）
+
+这印证了 batch 成本预估用 `original_duration` 而非 `duration` 是对的（倍速后 `duration` 变但 `original_duration` 不变，计费按后者）。
 
 **理由**：seed-audio 生成的是成品音频，静默截断 prompt 会导致内容缺失而不自知——比让用户/agent 显式分段危险。报错信息含明确错误码+数值+可执行 hint+时长预算，让 agent 感知后能自动拆段自愈（对照 [[skill-edits-verify-documented-examples]]：让错误信息承载足够语义让调用方自愈）。
 
@@ -177,9 +189,45 @@ Each call generates up to 120s of audio.
     speakers.md                     # 人类可读音色速查表
 ```
 
+### prompt-guide.md 必须收录的语法
+
+来自官方 ONE PAGE 文档（飞书 wiki）的实测语法：
+
+**时间戳控制**（7.20 升级，100ms 粒度）：
+```
+广告播音员语速慢地说道：[2.7s:5.7s]"美丽的旅程，值得一个璀璨的开始。"
+广告播音员继续介绍：[6.6s:18.9s]"Pocara面霜，专为年轻肌肤定制的第一瓶高端养护..."
+```
+`[开始s:结束s]"台词"` 格式，直接在 prompt 里控制每段语音的起止时间。配合场景音效描述（"句首伴随一声水声流过的特效音"）实现影视级时间编排。
+
+**场景元素结构**：BGM 描述 + 角色定义（性别/年龄/嗓音/语速/语气）+ 时间戳台词 + 音效描述，一条 prompt 统一编排。
+
+## 待核实项（实现前需确认）
+
+**接口端点与参数命名差异**：
+
+两个官方文档参数命名不一致，需在实现前核实当前可用版本：
+
+| 来源 | model 值 | 文本字段 | 配置字段 |
+|---|---|---|---|
+| API 文档 2550782（我实测用） | `seed-audio-1.0` | `text_prompt` | `audio_config` |
+| 飞书 wiki ONE PAGE | `doubao-seed-audio-1-0` | `text` | `audio_setting`/`voice_setting` |
+
+我实测（30 用例）用的是 2550782 版本（`openspeech.bytedance.com/api/v3/tts/create` + `model: seed-audio-1.0` + `text_prompt`），全部成功。wiki 写的可能是方舟端点（`ark.cn-beijing`）的命名。**以实测可用的 openspeech 端点为准，wiki 的命名作为参考记录在 prompt-guide 里**。实现时先按实测版本，若后续方舟端点开放再适配。
+
+**采样率默认值**：API 文档说 wav 默认 40000、mp3 默认 44100；wiki 说默认 40K。我 spec 写的 48000（实测用 48000 成功）。保持 48000 作为 CLI 默认（最高音质），不强行对齐文档默认。
+
+**项目主页**：`https://seed.bytedance.com/seedaudio1_0`（放进 reference）
+
 ## SKILL.md 触发描述
 
-> 生成式音频创作：从自然语言场景描述一次生成「人声+音效+BGM」成品音频（最长120s），支持音色克隆、多角色对话、时间轴控制。适合有声书/广播剧/影视配音/游戏音效/视频片头。不适用纯旁白（用 volcengine-tts，快11倍便宜14倍）或纯BGM（用 volcengine-bigmusic-bgm，时长精确）。
+> 生成式音频创作：从自然语言场景描述一次生成「人声+音效+BGM」成品音频（最长120s），支持时间戳精准控制（100ms粒度）、音色克隆、多角色对话、20语种。适合有声书/广播剧/影视配音/游戏音效/广告/视频片头——把 TTS+BGM+音效+混音的多步流程压成一次调用。不适用纯旁白（用 volcengine-tts，快11倍便宜14倍）或纯BGM（用 volcengine-bigmusic-bgm，时长精确）或实时对话（用双向流式TTS）。
+
+**适用场景洞察**（来自官方 ONE PAGE）：
+- 有声书：把值得升级的 10-20% 场景（章节序幕、战斗、情绪高峰）从朗读升级到剧感
+- 游戏配音：一次 prompt 生成对白+环境音+音乐床，击中 pre-prod/原型/LiveOps 三大节点
+- 创作者平台：参考音色（品牌音/达人音/IP音）是付费墙，seed-audio 的克隆+一致性是关键
+- 视频出海：多语种/跨语种生成匹配多语言诉求
 
 ## 不在本次范围
 
