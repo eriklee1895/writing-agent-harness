@@ -935,7 +935,7 @@ function tableHtml(block) {
   const columnCount = Math.max(block.header.length, ...block.rows.map((row) => row.length));
   let columnWidths = [];
   if (columnCount === 2) {
-columnWidths = ["22%", "78%"];
+    columnWidths = ["22%", "78%"];
   } else if (columnCount === 3) {
     columnWidths = ["30%", "35%", "35%"];
   } else {
