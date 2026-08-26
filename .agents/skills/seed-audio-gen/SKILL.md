@@ -238,7 +238,22 @@ This requires AK/SK (`VOLC_ACCESSKEY`/`VOLC_SECRETKEY`), as the ListSpeakers API
 
 ## Prompt Guide
 
-For the full prompt-writing guide — including timestamp syntax, scene element structure, `@AudioN` references, voice selection, and complete examples — read `references/seedaudio-prompt-guide.md`.
+For the full prompt-writing guide — timestamp syntax, scene element structure, `@AudioN` references, voice selection, and complete worked examples — read `references/seedaudio-prompt-guide.md`.
+
+### Scenario quick reference
+
+seed-audio-gen handles **mixed audio scenes** (voice + SFX + BGM together) — not single-element generation. Match your scenario to a worked example in the prompt guide:
+
+| Scenario | Key elements | Example in prompt-guide |
+|---|---|---|
+| 广告/视频片头配音 | 台词 + 产品音效 + BGM + 时间戳 | Example 1: Skincare Ad |
+| 影视/剧情对白 | 多角色对话 + 环境音 + 情绪节奏 | Example 2: Rainy Night Farewell |
+| 游戏 NPC 台词 | 角色音色 + 动作音效 + 氛围 BGM | Example 3: Game Character Voice |
+| 有声书/广播剧 | 旁白 + 多角色 + 场景氛围 | Example 4: Audiobook Scene |
+| 纯音效场景 | 无台词，只有 SFX/环境音 | 无独立示例；prompt 里只写音效描述、不写台词 |
+| 纯 BGM 场景 | 无台词无人声，只有音乐 | **用 `volcengine-bigmusic-bgm` 更优**（时长精确、专用音乐模型） |
+
+The pattern across all examples: describe BGM, define characters (gender/age/timbre/tone), write timestamped dialogue, describe SFX — all in one `text_prompt`. The model orchestrates them onto a single timeline.
 
 ## Error Handling
 
