@@ -21,3 +21,25 @@ def test_prompt_too_long_raises():
 def test_prompt_at_limit_ok():
     """正好 3000 字符不报错"""
     mod.validate_prompt_length("啊" * 3000)  # 不抛异常即通过
+
+
+def test_build_body_minimal():
+    """最小 body 结构正确"""
+    body = mod.build_body("一位女声朗读：你好", references=None, audio_config=None, watermark=None, model="seed-audio-1.0")
+    assert body["model"] == "seed-audio-1.0"
+    assert body["text_prompt"] == "一位女声朗读：你好"
+    assert "references" not in body or body["references"] is None
+
+
+def test_build_body_with_speaker():
+    """speaker 进 references 列表"""
+    body = mod.build_body("test", references=[{"speaker": "zh_female_vv_uranus_bigtts"}], audio_config={"format":"mp3"}, watermark=None, model="seed-audio-1.0")
+    assert body["references"] == [{"speaker": "zh_female_vv_uranus_bigtts"}]
+    assert body["audio_config"]["format"] == "mp3"
+
+
+def test_build_body_watermark():
+    """watermark flag 展开为 object"""
+    body = mod.build_body("test", references=None, audio_config=None, watermark={"aigc": True, "meta": False}, model="seed-audio-1.0")
+    assert body["watermark"]["aigc_watermark"] is True
+    assert body["watermark"]["aigc_metadata"]["enable"] is False
