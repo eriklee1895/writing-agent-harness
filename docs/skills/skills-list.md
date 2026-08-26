@@ -80,6 +80,12 @@
   - 前置依赖：`uv`、`ARK_API_KEY` 环境变量或 `.env` 文件。
   - 生成的视频素材包包含 `video.mp4`、`manifest.json`、`prompt.md`，可选 `last-frame.jpg`。
 
+- `seed-audio-gen`
+  - 用火山引擎豆包音频生成 1.0（seed-audio-1.0）从自然语言场景描述生成完整音频场景——人声+音效+BGM 一次调用输出成品音频（最长 120s）。
+  - 支持时间戳精准控制（100ms 粒度）、音色克隆、多角色对话、20 语种、批量并发生成、音色表本地查询。
+  - 前置依赖：`uv`、`VOLC_SPEECH_API_KEY` 环境变量或 `.env` / `~/.volcengine.env` 文件。
+  - 不适用于纯旁白/朗读（用 `volcengine-tts`，快 11 倍便宜 14 倍）、纯 BGM（用 `volcengine-bigmusic-bgm`）、实时对话（用双向流式 TTS）、或逐字准确率要求严格的场景（seed-audio 是生成式模型，可能改写原文）。
+
 - `wechat-article-fetcher`
   - 用 Playwright + 本地持久化 Profile 提取微信公众号文章到结构化 Markdown + assets。
   - 输入 URL 输出 `article.md` + `manifest.json` + `sources.md` + `assets/`，支持图片落地和交互式首次登录引导。
