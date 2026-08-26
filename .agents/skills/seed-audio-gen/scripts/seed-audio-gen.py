@@ -280,9 +280,49 @@ def _list_speakers(args):
     print(json.dumps({"total": len(out), "speakers": out}, ensure_ascii=False, indent=2))
 
 
+def build_batch_summary(results: list[dict]) -> dict:
+    total_dur = sum(r.get("original_duration") or 0 for r in results)
+    success = sum(1 for r in results if not r.get("error"))
+    fail = sum(1 for r in results if r.get("error"))
+    return {
+        "results": results,
+        "total_duration_seconds": round(total_dur, 2),
+        "estimated_cost_yuan": estimate_cost(total_dur),
+        "success_count": success,
+        "fail_count": fail,
+    }
+
+
 def _run_batch(args):
-    # Task 5 实现
-    die("--batch not implemented yet", code=2)
+    api_key = load_api_key()
+    try:
+        items = json.loads(args.batch)
+    except json.JSONDecodeError as e:
+        die(f"--batch invalid JSON: {e}")
+    if not isinstance(items, list):
+        die("--batch must be a JSON array")
+
+    def task(i: int, item: dict) -> dict:
+        prompt = item.pop("prompt") or item.pop("text_prompt") or ""
+        if not prompt:
+            return {"error": f"item {i}: missing prompt"}
+        # item 里可 override speaker/format 等
+        refs = list(item.get("references") or [])
+        if not refs and item.get("speaker"):
+            refs = [{"speaker": item["speaker"]}]
+        cfg = {"format": item.get("format", args.format), "sample_rate": item.get("sample_rate", args.sample_rate)}
+        if item.get("speech_rate", 0) != 0: cfg["speech_rate"] = item["speech_rate"]
+        result = synthesize(prompt, api_key=api_key, references=refs or None, audio_config=cfg,
+                            model=args.model, output_dir=Path(args.output_dir),
+                            enable_subtitle=item.get("subtitle", args.subtitle))
+        return result
+
+    results = [None] * len(items)
+    with ThreadPoolExecutor(max_workers=args.concurrency) as ex:
+        futures = {ex.submit(task, i, dict(item)): i for i, item in enumerate(items)}
+        for f in as_completed(futures):
+            results[futures[f]] = f.result()
+    print(json.dumps(build_batch_summary(results), ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":

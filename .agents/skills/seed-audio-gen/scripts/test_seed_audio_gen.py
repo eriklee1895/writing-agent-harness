@@ -73,3 +73,16 @@ def test_query_speakers_no_filter():
     speakers = [{"voice_type":"a","name":"A","type":"bigtts","scene":"s","heat":1}]
     result = mod.query_speakers(speakers, filters=None, sort_by=None)
     assert len(result) == 1
+
+
+def test_batch_summary():
+    results = [
+        {"original_duration": 60.0, "error": None},
+        {"original_duration": 30.0, "error": None},
+        {"original_duration": None, "error": "failed"},
+    ]
+    summary = mod.build_batch_summary(results)
+    assert summary["total_duration_seconds"] == 90.0
+    assert summary["estimated_cost_yuan"] == 1.5  # 90s/60 * 1.0
+    assert summary["success_count"] == 2
+    assert summary["fail_count"] == 1
