@@ -12,6 +12,7 @@
 - repo 内长期 canonical source 放在 `content/origin/`，格式是 Markdown / MDX。飞书文档、Notion 等可以作为上游写作入口；进入 repo 后要同步或转换成可追踪文本。
 - 内容写作、选题构思、文章润色、改稿、标题和风格判断时读取 [SOUL.md](SOUL.md)，对齐 Erik 的作者写作气质、register、anti-style 和审美边界；非写作任务不要默认加载。
 - 图片生成优先使用系统 `$imagegen` skill，不要重建项目重复的 `gpt-image-gen`。
+- 读取火山引擎官方文档（`volcengine.com/docs`）一律先用 `volcengine-doc-fetcher` skill（Playwright 渲染）；WebFetch/curl 只能拿到 JS 空壳。任务中途自行核对 API 参数、字段、限制、错误码时同样适用，不要凭惯性伸手用 WebFetch。
 - 任何最终发布动作都需要 user final review，除非用户明确授权自动发布。
 - 先做 small, practical automation；不要把未跑通的能力写成已可用能力。
 - 遇到可复用的新坑点、新技巧、workflow 改进或 skill 缺陷，随手沉淀到项目 docs，或新增、修改 project-level skills。
