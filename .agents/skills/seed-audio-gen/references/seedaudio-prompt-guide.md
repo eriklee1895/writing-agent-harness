@@ -88,7 +88,7 @@ When passing multiple reference audio files (via `references` array in the API, 
 
 ### From the catalog (--speaker)
 
-Use `--speaker <voice_type>` to select from the 444-voice catalog. See `references/speakers.md` for the full table with descriptions and trial audio URLs.
+Use `--speaker <voice_type>` to select from the 444-voice catalog. See `speakers.md` for the full table with descriptions and trial audio URLs.
 
 Quick picks:
 
