@@ -333,8 +333,8 @@ Draft skill ──→ 跑 benchmark eval ──→ 跑 trigger eval ──→ hu
 
 ## 来源
 
-- [skill-creator SKILL.md](file:///Users/eriklee/.claude/skills/skill-creator/SKILL.md)
-- [run_eval.py](file:///Users/eriklee/.claude/skills/skill-creator/scripts/run_eval.py)
-- [aggregate_benchmark.py](file:///Users/eriklee/.claude/skills/skill-creator/scripts/aggregate_benchmark.py)
-- [grader.md](file:///Users/eriklee/.claude/skills/skill-creator/agents/grader.md)
+- [skill-creator SKILL.md](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md)
+- [run_eval.py](https://github.com/anthropics/skills/blob/main/skills/skill-creator/scripts/run_eval.py)
+- [aggregate_benchmark.py](https://github.com/anthropics/skills/blob/main/skills/skill-creator/scripts/aggregate_benchmark.py)
+- [grader.md](https://github.com/anthropics/skills/blob/main/skills/skill-creator/agents/grader.md)
 - [seedance-video-gen skill](file:///Users/eriklee/code/my_project/writing-agent-harness/.agents/skills/seedance-video-gen/)
