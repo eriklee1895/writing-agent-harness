@@ -185,7 +185,7 @@ def main() -> None:
     parser.add_argument("--ref-audio", action="append", dest="ref_audios", metavar="PATH_OR_URL",
                         help="reference audio: local path or http(s) URL, auto-detected. "
                              "Repeat up to 3 times for multi-character voice cloning; bind in "
-                             "prompt with <<TGT_SPK1>>..<<TGT_SPK3>> in the same order")
+                             "prompt with @音频1..@音频3 in the same upload order")
     parser.add_argument("--ref-audio-url", action="append", dest="ref_audios", help=argparse.SUPPRESS)
     parser.add_argument("--ref-image", help="local reference image path (auto base64, <=10MB)")
     parser.add_argument("--ref-image-url", help="remote reference image URL")
@@ -231,7 +231,7 @@ def _build_references(args) -> list[dict] | None:
         die("--speaker and --ref-audio are mutually exclusive (pick one voice source)")
     if len(ref_audios) > MAX_AUDIO_REFS:
         die(f"too many reference audios: {len(ref_audios)} (max {MAX_AUDIO_REFS}). "
-            f"Bind them in the prompt with <<TGT_SPK1>>..<<TGT_SPK{MAX_AUDIO_REFS}>> in flag order.")
+            f"Bind them in the prompt with @音频1..@音频{MAX_AUDIO_REFS} in upload order.")
     if args.speaker:
         refs.append({"speaker": args.speaker})
     for ref in ref_audios:
@@ -246,13 +246,14 @@ def _build_references(args) -> list[dict] | None:
         p = Path(args.ref_image)
         if not p.exists():
             die(f"--ref-image file not found: {args.ref_image}")
-        if ref_audios:
-            # API 45001001: image reference cannot be mixed with audio or video references
-            die("image reference cannot be mixed with audio references (API 45001001)")
+        if ref_audios or args.speaker:
+            # API 45001001: image reference cannot be mixed with audio or video references;
+            # doc: image_data/image_url 不能与 audio_data、audio_url 或 speaker 同时传入
+            die("image reference cannot be mixed with audio references or --speaker (API 45001001)")
         refs.append({"image_data": base64.b64encode(p.read_bytes()).decode()})
     elif args.ref_image_url:
-        if ref_audios:
-            die("image reference cannot be mixed with audio references (API 45001001)")
+        if ref_audios or args.speaker:
+            die("image reference cannot be mixed with audio references or --speaker (API 45001001)")
         refs.append({"image_url": args.ref_image_url})
     return refs if refs else None
 

@@ -125,3 +125,23 @@ def test_build_references_over_limit():
     args = _refs_args(ref_audios=["https://example.com/%d.wav" % i for i in range(4)])
     with pytest.raises(SystemExit):
         mod._build_references(args)
+
+
+def test_build_references_image_conflicts(tmp_path):
+    """图片参考不能与音频参考或 speaker 混用（API 45001001 / 官方文档约束）"""
+    img = tmp_path / "x.png"
+    img.write_bytes(b"fake")
+    with pytest.raises(SystemExit):
+        mod._build_references(_refs_args(ref_image=str(img),
+                                         ref_audios=["https://example.com/a.wav"]))
+    with pytest.raises(SystemExit):
+        mod._build_references(_refs_args(ref_image=str(img),
+                                         speaker="zh_female_vv_uranus_bigtts"))
+
+
+def test_build_references_image_alone(tmp_path):
+    """单独图片参考正常进 references"""
+    img = tmp_path / "x.png"
+    img.write_bytes(b"fake")
+    refs = mod._build_references(_refs_args(ref_image=str(img)))
+    assert len(refs) == 1 and "image_data" in refs[0]

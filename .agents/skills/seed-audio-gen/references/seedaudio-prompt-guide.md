@@ -6,7 +6,7 @@ How to write effective `text_prompt` for Volcano Engine's Doubao Audio Generatio
 
 seed-audio-1.0 is a **generative audio model** — you describe a scene in natural language, and it produces a mixed audio clip with voice, BGM, and sound effects. The prompt is your director's script: it controls who speaks, what they say, when they say it, what music plays, and what sound effects fire.
 
-The model supports up to 120 seconds of audio per call, 20 languages, and multi-character dialogue.
+The model supports up to 120 seconds of audio per call, 18 languages (API doc 2026-08-20), and multi-character dialogue.
 
 ## Duration Control
 
@@ -100,37 +100,37 @@ You do not need all elements; a minimal prompt can be just a character + dialogu
 
 **Podcast naturalism**: For talk-show realism, lean on fillers and backchannels: 附和声（"对""嗯""是"）、停顿、吞字、口语重复（"是一个…是一个终生的事情"）——模型会还原真人说话的毛边感。
 
-## Multi-Reference Audio (`<<TGT_SPKN>>`)
+## Multi-Reference Audio (`@音频N`)
 
-Pass up to **3 reference audios** per call (repeat `--ref-audio`, local path or URL) for multi-character voice cloning. Reference order maps to the binding token used in the prompt:
+Pass up to **3 reference audios** per call (repeat `--ref-audio`, local path or URL; each ≤30s, ≤10MB, wav/mp3/pcm/ogg_opus) for multi-character voice cloning. Bind references in the prompt with `@音频N` — **numbering strictly follows upload order** (official API contract):
 
-- 1st `--ref-audio` → `<<TGT_SPK1>>`
-- 2nd `--ref-audio` → `<<TGT_SPK2>>`
-- 3rd `--ref-audio` → `<<TGT_SPK3>>`
+- 1st `--ref-audio` → `@音频1`
+- 2nd `--ref-audio` → `@音频2`
+- 3rd `--ref-audio` → `@音频3`
 
-Bind each token to a character inline, using "饰演者为" (played by):
+Place the token at the point where that voice speaks, or in the character definition:
 
 ```
-主播1（中年男性，嗓音低沉，饰演者为 <<TGT_SPK1>>）用沉稳的语气说："大家好，我是一号男主播。"
-主播2（年轻女性，声音甜美，饰演者为 <<TGT_SPK2>>）笑着回应："大家好，我是二号女主播。"
+@音频1的声音（中年男性，低沉）用沉稳的语气说："大家好，我是一号男主播。"
+@音频2的声音（年轻女性，甜美）笑着回应："大家好，我是二号女主播。"
 ```
 
-Verified 2026-08-27: 2 and 3 reference audios are accepted with clean output. The web experience center uses the UI form `@音频1`/`@音频2`, which compiles to `<<TGT_SPK1>>`/`<<TGT_SPK2>>` in the API request; `<<TGT_SPKN>>` is the form to use via API/CLI.
+Verified 2026-08-27: 2 and 3 reference audios are accepted with clean output. The internal backend form `<<TGT_SPK1>>`/`<<TGT_SPK2>>` (seen in official demo prompts as "饰演者为 <<TGT_SPK1>>") also works — the UI's `@音频N` compiles to it — but `@音频N` is the documented public syntax; prefer it.
 
 ### Multi-reference patterns
 
-- **多人多音色**: each reference is a different person — `<<TGT_SPK1>>` plays the male lead, `<<TGT_SPK2>>` the female lead.
+- **多人多音色**: each reference is a different person — `@音频1` plays the male lead, `@音频2` the female lead.
 - **组合参考**: different references supply different dimensions — one for timbre, another for emotion and pacing.
 - **一声多角**: the model decouples timbre from performance — one reference voice can play multiple characters with differentiated expression.
 - **音频延长 (long-form chaining)**: feed the previous segment's output back in as a reference for the next call; the model extends with consistent timbre across segments. For recurring series, register a fixed `_tob` speaker ID instead.
 
 ### Reference images (separate mode)
 
-`--ref-image` generates audio matching a picture's atmosphere/character setup. Images **cannot** be mixed with audio references (API error `45001001`); the CLI pre-validates this.
+`--ref-image` (max 1 image, ≤10MB, jpeg/png/webp) generates audio matching a picture's atmosphere/character setup; with an image, `text_prompt` can be just the lines to speak. Images **cannot** be mixed with audio references or `speaker` (API error `45001001`; official doc: image_data/image_url 不能与 audio_data、audio_url 或 speaker 同时传入). The CLI pre-validates this.
 
 ## Languages
 
-20 supported languages: Chinese, English, Japanese, Korean, Mexican Spanish, Indonesian, Malay, German, Brazilian Portuguese, French, Thai, Vietnamese, Filipino, Italian, Russian, Dutch, Polish, Turkish, Swedish, Spanish.
+18 languages per the API doc (last updated 2026-08-20): Chinese, English, Japanese, Korean, Mexican Spanish, Spanish, German, French, Brazilian Portuguese, Thai, Vietnamese, Malay, Filipino, Italian, Russian, Dutch, Polish, Turkish. (The June official handbook additionally mentioned Indonesian and Swedish — not in the current API doc list; test those two before relying on them.)
 
 - Write the prompt (or at least the dialogue) in the target language — the generated audio follows it: `男性が優しく言う:「すべてうまくいくよ。」`
 - Dialogue and voice description can use different languages — only the quotes need the target language: `A man says warmly: 「Todo estará bien.」`
@@ -162,12 +162,12 @@ Provide reference audio clips (each max 30s, max 10MB; up to 3 per call) and the
 # Single reference
 uv run scripts/seed-audio-gen.py "用参考音色说：这是克隆后的声音。" --ref-audio ~/my-voice.wav
 
-# Multiple references for multi-character cloning (up to 3, bound in flag order)
-uv run scripts/seed-audio-gen.py '男主（饰演者为 <<TGT_SPK1>>）说："…"女主（饰演者为 <<TGT_SPK2>>）回应："…"' \
+# Multiple references for multi-character cloning (up to 3, bound by upload order)
+uv run scripts/seed-audio-gen.py '@音频1的声音（男主，低沉）说："…"@音频2的声音（女主，甜美）回应："…"' \
   --ref-audio ~/male.wav --ref-audio ~/female.wav
 ```
 
-With one reference you can simply write "用参考音色朗读" / "用提供的声音说". With multiple references, bind each character with `<<TGT_SPKN>>` (see the Multi-Reference Audio section).
+With one reference you can simply write "用参考音色朗读" / "用提供的声音说". With multiple references, bind each character with `@音频N` (see the Multi-Reference Audio section).
 
 ### By character description (no reference)
 
