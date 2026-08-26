@@ -348,7 +348,6 @@ Anthropic 的博客暗示了一个长期愿景：
 
 - [Anthropic - Improving skill-creator: Test, measure, and refine Agent Skills](https://claude.com/blog/improving-skill-creator-test-measure-and-refine-agent-skills)（官方博客，2026年3月）
 - [AgentSkills.io - Evaluating skill output quality](https://agentskills.io/skill-creation/evaluating-skills)（官方 Eval 指南，最权威）
-- [skill-creator SKILL.md](file:///Users/eriklee/.claude/skills/skill-creator/SKILL.md)（skill-creator 完整源码，485行）
 - [seedance-video-gen skill](file:///Users/eriklee/code/my_project/writing-agent-harness/.agents/skills/seedance-video-gen/)（本文实战案例的完整技能代码）
 - [seedance-video-gen benchmark 结果](file:///Users/eriklee/code/my_project/writing-agent-harness/.agents/skills/seedance-video-workspace/iteration-3/benchmark.json)（8条 eval 的完整 benchmark 数据）
 - [OpenAI - Testing Agent Skills Systematically with Evals](https://developers.openai.com/blog/eval-skills)（Codex 评测方案，2026年1月）
