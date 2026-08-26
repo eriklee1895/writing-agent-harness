@@ -112,8 +112,7 @@ def synthesize(prompt: str, *, api_key: str,
                audio_config: dict | None = None,
                watermark: dict | None = None,
                model: str = DEFAULT_MODEL,
-               output_dir: Path = Path("./seedaudio-output"),
-               enable_subtitle: bool = False) -> dict[str, Any]:
+               output_dir: Path = Path("./seedaudio-output")) -> dict[str, Any]:
     """Call seed-audio API. Returns dict with audio_file, durations, url, meta fields, error."""
     validate_prompt_length(prompt)
     body = build_body(prompt, references=references, audio_config=audio_config, watermark=watermark, model=model)
@@ -132,7 +131,7 @@ def synthesize(prompt: str, *, api_key: str,
             audio_bytes = base64.b64decode(data["audio"])
             output_dir.mkdir(parents=True, exist_ok=True)
             ts = datetime.now().astimezone().strftime("%Y%m%d_%H%M%S")
-            fname = output_dir / f"seedaudio_{ts}_{uuid.uuid4().hex[:6]}.mp3"
+            fname = output_dir / f"seedaudio_{ts}_{uuid.uuid4().hex[:6]}.{audio_config.get('format', 'mp3') if audio_config else 'mp3'}"
             fname.write_bytes(audio_bytes)
             dur = float(data.get("duration") or 0)
             orig_dur = float(data.get("original_duration") or dur)
@@ -217,7 +216,7 @@ def main() -> None:
     watermark = {"aigc": args.watermark, "meta": args.watermark_meta} if (args.watermark or args.watermark_meta) else None
     result = synthesize(args.prompt, api_key=api_key, references=references,
                         audio_config=audio_config, watermark=watermark, model=args.model,
-                        output_dir=Path(args.output_dir), enable_subtitle=args.subtitle)
+                        output_dir=Path(args.output_dir))
     print(json.dumps(result, ensure_ascii=False))
 
 
@@ -303,7 +302,7 @@ def _run_batch(args):
         die("--batch must be a JSON array")
 
     def task(i: int, item: dict) -> dict:
-        prompt = item.pop("prompt") or item.pop("text_prompt") or ""
+        prompt = item.pop("prompt", None) or item.pop("text_prompt", None) or ""
         if not prompt:
             return {"error": f"item {i}: missing prompt"}
         # item 里可 override speaker/format 等
@@ -312,9 +311,9 @@ def _run_batch(args):
             refs = [{"speaker": item["speaker"]}]
         cfg = {"format": item.get("format", args.format), "sample_rate": item.get("sample_rate", args.sample_rate)}
         if item.get("speech_rate", 0) != 0: cfg["speech_rate"] = item["speech_rate"]
+        if item.get("subtitle", args.subtitle): cfg["enable_subtitle"] = True
         result = synthesize(prompt, api_key=api_key, references=refs or None, audio_config=cfg,
-                            model=args.model, output_dir=Path(args.output_dir),
-                            enable_subtitle=item.get("subtitle", args.subtitle))
+                            model=args.model, output_dir=Path(args.output_dir))
         return result
 
     results = [None] * len(items)
