@@ -202,20 +202,29 @@ Each call generates up to 120s of audio. 人声播报字数建议中文控制在
 
 **场景元素结构**：BGM 描述 + 角色定义（性别/年龄/嗓音/语速/语气）+ 时间戳台词 + 音效描述，一条 prompt 统一编排。
 
-## 待核实项（实现前需确认）
+## 已核实项（实测确认，2026-08-26）
 
-**接口端点与参数命名差异**：
+**接口端点与参数命名**（实测 V2 确认）：
 
-两个官方文档参数命名不一致，需在实现前核实当前可用版本：
+openspeech 端点（`openspeech.bytedance.com/api/v3/tts/create`）只接受以下命名，官方文档 写的方舟命名在此端点会报 `unmapped key audio_setting` 错误：
 
-| 来源 | model 值 | 文本字段 | 配置字段 |
-|---|---|---|---|
-| API 文档 2550782（我实测用） | `seed-audio-1.0` | `text_prompt` | `audio_config` |
-| 飞书 官方文档 | `doubao-seed-audio-1-0` | `text` | `audio_setting`/`voice_setting` |
+| 参数 | openspeech 端点（实测可用） | 官方公开文档 写的（此端点不可用） |
+|---|---|---|
+| model | `seed-audio-1.0` | `doubao-seed-audio-1-0` |
+| 文本 | `text_prompt` | `text` |
+| 配置 | `audio_config` | `audio_setting`/`voice_setting` |
 
-我实测（30 用例）用的是 2550782 版本（`openspeech.bytedance.com/api/v3/tts/create` + `model: seed-audio-1.0` + `text_prompt`），全部成功。wiki 写的可能是方舟端点（`ark.cn-beijing`）的命名。**以实测可用的 openspeech 端点为准，wiki 的命名作为参考记录在 prompt-guide 里**。实现时先按实测版本，若后续方舟端点开放再适配。
+**以 openspeech 端点实测版本为准**。官方文档的方舟命名可能对应 `ark.cn-beijing` 端点，未测，后续若方舟端点开放再适配。
 
-**采样率默认值**：API 文档说 wav 默认 40000、mp3 默认 44100；wiki 说默认 40K。我 spec 写的 48000（实测用 48000 成功）。保持 48000 作为 CLI 默认（最高音质），不强行对齐文档默认。
+**时间戳控制语法**（实测 V1 确认）：
+
+`[开始s:结束s]"台词"` 格式真实生效，100ms 粒度。V1 实测 prompt：
+```
+一位女声朗读：[1.0s:3.0s]"你好，这是时间戳测试。"[5.0s:7.0s]"第二句在五秒开始。"
+```
+生成 7.0s 音频，字幕含两句台词，按时间戳编排。**prompt-guide.md 必须收录此语法**。
+
+**采样率**（实测 V3/V4 确认）：48000 / 44100 / 40000 均可用，CLI 默认 48000（最高音质）。
 
 **项目主页**：`https://seed.bytedance.com/seedaudio1_0`（放进 reference）
 
