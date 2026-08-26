@@ -217,7 +217,10 @@ def synthesize(
     if pitch != 0:
         additions["post_process"] = {"pitch": pitch}
     if additions:
-        body["req_params"]["additions"] = additions
+        # API expects `additions` as a JSON-encoded string, not an object.
+        # Passing a dict triggers: "json: cannot unmarshal object into Go
+        # struct field TTSReqParams.req_params.additions of type string"
+        body["req_params"]["additions"] = json.dumps(additions)
 
     last_error: Optional[str] = None
     log_id: str = ""

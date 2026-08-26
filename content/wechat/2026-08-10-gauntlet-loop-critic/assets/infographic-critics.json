@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: A vertical mobile infographic showing a three-layer pyramid/stack, warm cream paper background, editorial style. Bold black Chinese title: '三层评委，顺序不能反'. Three stacked layers from bottom to top:\nBottom layer (largest, sage green, solid foundation): icon of a test tube/checkmark. Label: '第一层：确定性检查'. Sub: '脚本、assert、像素 diff、帧时——你已经想到的坑。'\nMiddle layer (cobalt blue): icon of two screenshots side by side. Label: '第二层：截图回归'. Sub: '和上一轮的自己比，diff 飙高就是改坏了。'\nTop layer (terracotta, smallest): icon of a fresh eye / magnifying glass. Label: '第三层：新鲜眼睛的 LLM 评委'. Sub: '只管审美和语义，可以驳回——它不是裁判，是品味顾问。'\nA big red arrow on the side pointing UP labeled '门槛 → 建议'. At bottom a warning box: '只让 LLM 当裁判 = 灾难。它会让你一路冲到局部最优。'\nClean flat illustration, readable Chinese PingFang/Source Han Sans, gold accents, generous whitespace, no watermark.",
+  "model": "openai/gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1024x1536",
+  "quality": "auto",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-08-10-gauntlet-loop-critic/assets/infographic-critics.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-08-09T23:01:40",
+  "dry_run": false
+}

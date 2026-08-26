@@ -1,0 +1,58 @@
+{
+  "article": "2026-08-20-agent-evidence",
+  "generated_with": "system imagegen built-in tool",
+  "generated_at": "2026-08-18",
+  "archive_path": ".local-archive/2026-08-20-agent-evidence/",
+  "archive_status": "published; local closeout archive complete",
+  "assets": [
+    {
+      "file": "00-cover-agent-evidence.png",
+      "alt": "一个 Agent 站在由日志、产物和验证结果组成的证据轨道旁",
+      "role": "cover",
+      "section": "opening",
+      "prompt": "Cinematic warm editorial illustration of an abstract AI agent working at a desk, with a glowing trail of evidence cards, timestamps, receipts and verification marks; wide landscape, negative space on the left, no text or logos."
+    },
+    {
+      "file": "01-done-is-not-proof.png",
+      "alt": "Agent 展示一份漂亮的结果，但桌面上缺少真正能证明过程的回执和原始材料",
+      "role": "body",
+      "section": "我们把聪明误认成了可靠",
+      "prompt": "Editorial illustration of an abstract software agent presenting a polished sealed package to a human reviewer while missing receipts, unfinished cables and an unverified checklist remain visible; warm paper and navy palette, no readable text."
+    },
+    {
+      "file": "03-trace-and-replay.png",
+      "alt": "工具调用、上下文注入和子任务调度被保存成可以回放的事件帧",
+      "role": "body",
+      "section": "DeepSeek Harness",
+      "prompt": "Transparent glass runtime corridor with an abstract luminous agent moving through sequential event rooms, preserved event cards and artifacts, with a loop-back path for replay and fork; dark navy, amber and teal editorial style, no text."
+    },
+    {
+      "file": "04-provenance-watermark.png",
+      "alt": "生成文字流中的隐藏统计信号可以提示来源，但不能替代作者身份和事实核验",
+      "role": "body",
+      "section": "Claude 文本水印",
+      "prompt": "Close-up editorial illustration of flowing abstract paper strips containing a subtle repeating statistical signal, inspected through a magnifying lens; forensic curiosity, ivory, graphite, amber and restrained cyan, no legible language."
+    },
+    {
+      "file": "05-boundary-and-egress.png",
+      "alt": "封闭的 Agent 沙箱出现通往网络和凭证的意外通道",
+      "role": "body",
+      "section": "安全边界",
+      "prompt": "Defensive systems metaphor: an abstract agent inside a transparent sandbox with a thin unintended cable escaping through a service hatch toward distant network buildings and locked keys; analytical blue atmosphere with one warm warning line, no logos or text."
+    },
+    {
+      "file": "06-agent-handoff.png",
+      "alt": "多个专业 Agent 通过开放协议桥交换带有授权、来源和验证结果的工作包",
+      "role": "body",
+      "section": "A2A 与跨 Agent 交接",
+      "prompt": "Elegant editorial illustration of specialized abstract agents passing work packets with authorization seals, source marks and verification glows across an architectural bridge; warm collaborative morning light, no readable text or brands."
+    },
+    {
+      "file": "07-autonomy-evidence.png",
+      "alt": "人类通过调节自主性旋钮，决定 Agent 能走多远；每一步都有证据支撑",
+      "role": "body",
+      "section": "自主性应该和证据成正比",
+      "prompt": "Warm editorial illustration of a human adjusting an autonomy dial while an abstract agent walks across a path of stacked receipts, tests and checkpoints toward a calm horizon; measured optimism, no text or logos."
+    }
+  ]
+}
