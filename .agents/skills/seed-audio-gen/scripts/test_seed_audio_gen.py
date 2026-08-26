@@ -43,3 +43,33 @@ def test_build_body_watermark():
     body = mod.build_body("test", references=None, audio_config=None, watermark={"aigc": True, "meta": False}, model="seed-audio-1.0")
     assert body["watermark"]["aigc_watermark"] is True
     assert body["watermark"]["aigc_metadata"]["enable"] is False
+
+
+def test_query_speakers_filter_scene():
+    """按 scene 过滤并按 heat 降序排序"""
+    speakers = [
+        {"voice_type":"a","name":"A","type":"bigtts","scene":"视频配音","heat":50},
+        {"voice_type":"b","name":"B","type":"bigtts","scene":"通用场景","heat":100},
+        {"voice_type":"c","name":"C","type":"icl","scene":"视频配音","heat":80},
+    ]
+    result = mod.query_speakers(speakers, filters={"scene":"视频配音"}, sort_by="heat")
+    assert len(result) == 2
+    assert result[0]["name"] == "C"  # heat 80 > 50
+
+
+def test_query_speakers_filter_type():
+    """按 type 过滤，不排序"""
+    speakers = [
+        {"voice_type":"a","name":"A","type":"bigtts","scene":"通用场景","heat":50},
+        {"voice_type":"b","name":"B","type":"icl","scene":"通用场景","heat":100},
+    ]
+    result = mod.query_speakers(speakers, filters={"type":"icl"}, sort_by=None)
+    assert len(result) == 1
+    assert result[0]["type"] == "icl"
+
+
+def test_query_speakers_no_filter():
+    """无过滤无排序，原样返回"""
+    speakers = [{"voice_type":"a","name":"A","type":"bigtts","scene":"s","heat":1}]
+    result = mod.query_speakers(speakers, filters=None, sort_by=None)
+    assert len(result) == 1

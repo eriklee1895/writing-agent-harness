@@ -198,6 +198,8 @@ def main() -> None:
     parser.add_argument("--batch", help="batch JSON array")
     parser.add_argument("--concurrency", type=int, default=DEFAULT_CONCURRENCY)
     parser.add_argument("--list-speakers", action="store_true", help="list speakers from local table")
+    parser.add_argument("--filter", action="append", help="filter: scene=视频配音 / type=bigtts / lang=ja")
+    parser.add_argument("--sort", choices=["heat"], help="sort by field")
     args = parser.parse_args()
 
     if args.list_speakers:
@@ -249,9 +251,33 @@ def _build_audio_config(args) -> dict:
     return cfg
 
 
+def query_speakers(speakers: list[dict], *, filters: dict | None = None, sort_by: str | None = None) -> list[dict]:
+    result = list(speakers)
+    if filters:
+        for k, v in filters.items():
+            if k == "lang":
+                result = [s for s in result if v in s.get("languages", [])]
+            else:
+                result = [s for s in result if s.get(k) == v]
+    if sort_by == "heat":
+        result = sorted(result, key=lambda s: -s.get("heat", 0))
+    return result
+
+
 def _list_speakers(args):
-    # Task 4 实现
-    die("--list-speakers not implemented yet", code=2)
+    if not SPEAKERS_JSON.exists():
+        die(f"speakers.json not found: {SPEAKERS_JSON}")
+    speakers = json.loads(SPEAKERS_JSON.read_text())
+    filters = {}
+    if args.filter:
+        for f in args.filter:
+            k, _, v = f.partition("=")
+            filters[k] = v
+    result = query_speakers(speakers, filters=filters or None, sort_by=args.sort)
+    out = [{"name": s["name"], "voice_type": s["voice_type"], "type": s["type"],
+            "gender": s.get("gender",""), "scene": s.get("scene",""),
+            "description": s.get("description","")[:40], "heat": s.get("heat",0)} for s in result]
+    print(json.dumps({"total": len(out), "speakers": out}, ensure_ascii=False, indent=2))
 
 
 def _run_batch(args):
