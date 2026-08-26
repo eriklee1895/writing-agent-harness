@@ -1,7 +1,7 @@
 ---
 name: seed-audio-gen
 description: >
-  生成式音频创作：从自然语言场景描述一次生成「人声+音效+BGM」成品音频（最长120s），支持时间戳精准控制（100ms粒度）、音色克隆、多角色对话、20语种。适合有声书/广播剧/影视配音/游戏音效/广告/视频片头——把 TTS+BGM+音效+混音的多步流程压成一次调用。不适用纯旁白（用 volcengine-tts，快11倍便宜14倍）或纯BGM（用 volcengine-bigmusic-bgm，时长精确）或实时对话（用双向流式TTS）。
+  从一条自然语言场景描述，一次生成「人声 + 音效 + 背景音乐」混合的成品音频（最长 120 秒）。Use this skill whenever the user wants to generate a complete audio scene — voice combined with sound effects, ambient sound, and/or background music — in a single call. 触发场景包括且不限于：有声书/广播剧/播客的场景化音频、影视配音、游戏 NPC 台词 + 战斗氛围、广告配音 + 音乐床、视频片头音频、多角色对话 + 环境音、用参考音频克隆音色生成多段语音、需要时间戳精准控制台词进出时机的配音。关键信号：用户提到「场景音」「环境音」「音效 + 配音」「BGM + 人声」「一次生成成品音频」「多角色对话」「有声书/广播剧升级到剧感」时，必须使用本 skill。本 skill 是 seed-audio-1.0（火山引擎豆包音频生成模型），不是传统 TTS——它把 TTS + 配乐 + 拟音 + 混音的多步流程压成一次调用。不适用场景（用更优工具）：纯旁白/批量朗读用 volcengine-tts（快 11 倍、便宜 14 倍、流式）；纯背景音乐用 volcengine-bigmusic-bgm（时长精确）；实时对话用双向流式 TTS；SSML/拼音注解用 volcengine-tts。
 ---
 
 # seed-audio-gen
