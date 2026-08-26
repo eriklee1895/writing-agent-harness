@@ -1,0 +1,17 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Primary request: A vertical mobile infographic poster, warm cream paper background (#f7f2e8), editorial magazine style. Title at top in bold black Chinese: '三道裂缝' with English subtitle 'Three cracks in the viral story'. Three numbered cards stacked vertically, each with a simple flat icon and a short Chinese headline + one-line takeaway:\nCard 1 (red accent): icon of a judge gavel. Headline: '评委不是 AI'. Takeaway: '真正在打分的是像素 diff 和测试，不是另一个大模型。'\nCard 2 (blue accent): icon of parallel arrows colliding. Headline: '并行会翻车'. Takeaway: '18 个合并冲突，缺陷分 13→39→14，从没回到起点。'\nCard 3 (gold accent): icon of an unreachable mountain peak. Headline: '游戏从没赢过'. Takeaway: '每一轮评委都选了真的 CoD，渐近线不是终点线。'\nClean modern flat illustration, generous whitespace, thin gold dividers, highly readable Chinese typography (use Source Han Sans / PingFang style), no watermark, no photorealism.",
+  "model": "openai/gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1024x1536",
+  "quality": "auto",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/wechat/2026-08-10-gauntlet-loop-critic/assets/infographic-cracks.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-08-09T23:01:46",
+  "dry_run": false
+}
