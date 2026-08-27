@@ -13,17 +13,107 @@
 volcenginesdkcore / volcenginesdkspeechsaasprod 为内部 SDK 包，需预先从内部 registry 安装。
 
 用法:
-    python3 scripts/refresh-speakers.py
+    uv run scripts/refresh-speakers.py
 """
 from __future__ import annotations
 
 import json
 import os
 import sys
+from datetime import date
 from pathlib import Path
 from typing import Any
 
 from dotenv import load_dotenv
+
+# Per-scene cap in the curated speakers.md quick reference. The full catalog
+# lives in speakers.json and is queried via `--list-speakers`; the md file is a
+# short-listing aid, not a complete dump.
+TOP_VOICES_PER_SCENE = 5
+
+# seed-audio is a creative (voice-acting / scene-audio) skill, so the default
+# and most-used voices come first — unlike volcengine-tts, which leads with
+# 客服/教学 service voices. 其他 (uncategorized) sorts last.
+_SCENE_ORDER = [
+    "通用场景",   # default narration / warm旁白 (Vivi 2.0 lives here)
+    "角色扮演",   # multi-character / radio drama / game NPC (156 voices)
+    "视频配音",   # film / ad dubbing
+    "有声阅读",   # audiobook narration
+    "趣味口音",   # accented / character voices
+    "多语种",     # non-Chinese
+    "教学场景",   # pure-TTS service scenes, lower priority for this skill
+    "客服场景",
+]
+
+
+def _scene_sort_key(scene: str) -> tuple[int, str]:
+    """Creative-first scene ordering for seed-audio; unknown scenes sorted
+    after the known ones, with 其他 pinned last."""
+    if scene in _SCENE_ORDER:
+        return (_SCENE_ORDER.index(scene), scene)
+    if scene == "其他":
+        return (999, scene)
+    return (900, scene)
+
+
+def build_speakers_md(speakers: list[dict[str, Any]]) -> str:
+    """Build a CURATED speakers.md quick reference: Top-N voices per scene.
+
+    This is intentionally not a full dump of speakers.json — it is a short,
+    low-context shortlist with trial links. The full 444-voice catalog is
+    queried via `--list-speakers`; agents should not read speakers.json into
+    context (it is ~220KB)."""
+    bigtts_count = sum(1 for s in speakers if s["type"] == "bigtts")
+    icl_count = sum(1 for s in speakers if s["type"] == "icl")
+    total = len(speakers)
+    today = date.today().isoformat()
+
+    lines: list[str] = [
+        "# seed-audio-1.0 音色速查（精选）",
+        "",
+        f"> 本表为**精选速查**：每场景按热度列 Top {TOP_VOICES_PER_SCENE}，带试听链接。"
+        f"全量 {total} 个音色（{bigtts_count} bigtts + {icl_count} ICL，截至 {today}）在 `speakers.json`，"
+        f"请勿把 speakers.json 读进上下文（约 220KB）；用下列命令查询。",
+        "",
+        "```bash",
+        "uv run scripts/seed-audio-gen.py --list-speakers                          # 全量",
+        "uv run scripts/seed-audio-gen.py --list-speakers --filter scene=视频配音   # 按场景",
+        "uv run scripts/seed-audio-gen.py --list-speakers --filter lang=ja --sort heat",
+        "```",
+        "",
+        "需要某个场景的全量音色（如全部 156 个角色扮演音）时，跑 `--list-speakers --filter scene=<场景>`。",
+        "",
+    ]
+
+    # Group by scene
+    by_scene: dict[str, list[dict[str, Any]]] = {}
+    for s in speakers:
+        scene = s.get("scene", "其他")
+        by_scene.setdefault(scene, []).append(s)
+
+    for scene in sorted(by_scene.keys(), key=_scene_sort_key):
+        items = sorted(by_scene[scene], key=lambda s: -s.get("heat", 0))
+        shown = items[:TOP_VOICES_PER_SCENE]
+        lines.append(
+            f"## {scene}（本场景共 {len(items)} 个，列 Top {len(shown)}；全量用 "
+            f"`--list-speakers --filter scene={scene}`）"
+        )
+        lines.append("")
+        lines.append("| 名称 | voice_type | 性别 | 描述 | 试听 | 热度 |")
+        lines.append("|---|---|---|---|---|---|")
+        for item in shown:
+            emoji = item.get("emoji", "")
+            name = f"{emoji} {item['name']}" if emoji else item["name"]
+            vt = f"`{item['voice_type']}`"
+            gender = item.get("gender", "")
+            desc = item.get("description", "")
+            trial = item.get("trial_url", "")
+            trial_link = f"[试听]({trial})" if trial else ""
+            heat = item.get("heat", 0)
+            lines.append(f"| {name} | {vt} | {gender} | {desc} | {trial_link} | {heat} |")
+        lines.append("")
+
+    return "\n".join(lines)
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -197,62 +287,6 @@ def write_speakers_json(speakers: list[dict[str, Any]], path: Path) -> None:
         json.dumps(speakers, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
-
-
-def _scene_sort_key(scene: str) -> tuple[int, str]:
-    """Stable scene ordering: 客服 first, then 教学, 通用 last, alphabetical in between."""
-    if scene == "客服场景":
-        return (0, scene)
-    if scene == "教学场景":
-        return (1, scene)
-    if scene == "通用场景":
-        return (99, scene)
-    return (2, scene)
-
-
-def build_speakers_md(speakers: list[dict[str, Any]]) -> str:
-    """Build speakers.md markdown content grouped by scene."""
-    bigtts_count = sum(1 for s in speakers if s["type"] == "bigtts")
-    icl_count = sum(1 for s in speakers if s["type"] == "icl")
-    total = len(speakers)
-
-    lines: list[str] = [
-        "# seed-audio-1.0 音色速查表",
-        "",
-        f"> 共 {total} 个音色（{bigtts_count} bigtts + {icl_count} ICL），截至 2026-08-26。",
-        "",
-        "用 `uv run scripts/seed-audio-gen.py --list-speakers` 查询完整结构化数据。",
-        "",
-    ]
-
-    # Group by scene
-    by_scene: dict[str, list[dict[str, Any]]] = {}
-    for s in speakers:
-        scene = s.get("scene", "其他")
-        by_scene.setdefault(scene, []).append(s)
-
-    # Sort scenes
-    sorted_scenes = sorted(by_scene.keys(), key=_scene_sort_key)
-
-    for scene in sorted_scenes:
-        items = sorted(by_scene[scene], key=lambda s: -s.get("heat", 0))
-        lines.append(f"## {scene}")
-        lines.append("")
-        lines.append("| 名称 | voice_type | 性别 | 描述 | 试听 | 热度 |")
-        lines.append("|---|---|---|---|---|---|")
-        for item in items:
-            emoji = item.get("emoji", "")
-            name = f"{emoji} {item['name']}" if emoji else item["name"]
-            vt = f"`{item['voice_type']}`"
-            gender = item.get("gender", "")
-            desc = item.get("description", "")
-            trial = item.get("trial_url", "")
-            trial_link = f"[试听]({trial})" if trial else ""
-            heat = item.get("heat", 0)
-            lines.append(f"| {name} | {vt} | {gender} | {desc} | {trial_link} | {heat} |")
-        lines.append("")
-
-    return "\n".join(lines)
 
 
 def main() -> None:
