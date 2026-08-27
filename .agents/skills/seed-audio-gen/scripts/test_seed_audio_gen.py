@@ -1,5 +1,6 @@
 # .agents/skills/seed-audio-gen/scripts/test_seed_audio_gen.py
 import importlib.util
+from types import SimpleNamespace
 import pytest
 from pathlib import Path
 
@@ -86,3 +87,61 @@ def test_batch_summary():
     assert summary["estimated_cost_yuan"] == 1.5  # 90s/60 * 1.0
     assert summary["success_count"] == 2
     assert summary["fail_count"] == 1
+
+
+def _refs_args(**kw):
+    defaults = dict(speaker=None, ref_audios=None, ref_image=None, ref_image_url=None)
+    defaults.update(kw)
+    return SimpleNamespace(**defaults)
+
+
+def test_build_references_remote_url():
+    """http(s) 值进 audio_url，不读本地文件"""
+    args = _refs_args(ref_audios=["https://example.com/a.wav"])
+    refs = mod._build_references(args)
+    assert refs == [{"audio_url": "https://example.com/a.wav"}]
+
+
+def test_build_references_multi_order_preserved():
+    """多条参考按 flag 顺序映射 <<TGT_SPK1>>..N：远程在前、本地在后"""
+    local = Path(__file__).parent / "seed-audio-gen.py"  # 任意存在的文件即可
+    args = _refs_args(ref_audios=["https://example.com/a.wav", str(local)])
+    refs = mod._build_references(args)
+    assert len(refs) == 2
+    assert refs[0] == {"audio_url": "https://example.com/a.wav"}
+    assert "audio_data" in refs[1]
+
+
+def test_build_references_speaker_and_audio_conflict():
+    """speaker 与参考音频互斥"""
+    args = _refs_args(speaker="zh_female_vv_uranus_bigtts",
+                      ref_audios=["https://example.com/a.wav"])
+    with pytest.raises(SystemExit):
+        mod._build_references(args)
+
+
+def test_build_references_over_limit():
+    """超过 3 条参考音频直接报错，不调 API"""
+    args = _refs_args(ref_audios=["https://example.com/%d.wav" % i for i in range(4)])
+    with pytest.raises(SystemExit):
+        mod._build_references(args)
+
+
+def test_build_references_image_conflicts(tmp_path):
+    """图片参考不能与音频参考或 speaker 混用（API 45001001 / 官方文档约束）"""
+    img = tmp_path / "x.png"
+    img.write_bytes(b"fake")
+    with pytest.raises(SystemExit):
+        mod._build_references(_refs_args(ref_image=str(img),
+                                         ref_audios=["https://example.com/a.wav"]))
+    with pytest.raises(SystemExit):
+        mod._build_references(_refs_args(ref_image=str(img),
+                                         speaker="zh_female_vv_uranus_bigtts"))
+
+
+def test_build_references_image_alone(tmp_path):
+    """单独图片参考正常进 references"""
+    img = tmp_path / "x.png"
+    img.write_bytes(b"fake")
+    refs = mod._build_references(_refs_args(ref_image=str(img)))
+    assert len(refs) == 1 and "image_data" in refs[0]
