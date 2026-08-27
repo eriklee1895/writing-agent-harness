@@ -27,12 +27,13 @@ uv run scripts/seed-audio-gen.py "用深沉的语气朗读：夜幕降临，城�
 # Voice cloning from local reference audio
 uv run scripts/seed-audio-gen.py "用参考音频的音色说：这是克隆后的声音。" --ref-audio ~/reference-speaker.wav
 
-# Remote reference audio URL (local paths and http(s) URLs are auto-detected)
-uv run scripts/seed-audio-gen.py "用参考音色说：远程克隆也可以。" --ref-audio https://example.com/ref.wav
+# Remote reference audio URL
+uv run scripts/seed-audio-gen.py "用参考音色说：远程克隆也可以。" --ref-audio-url https://example.com/ref.wav
 
-# Multi-character cloning: up to 3 reference audios, bound in upload order
+# Multi-character cloning: up to 3 reference audios, bound in CLI order
+# (mix --ref-audio local paths and --ref-audio-url URLs; @音频N follows the flags left to right)
 uv run scripts/seed-audio-gen.py '@音频1的声音（中年男性，低沉）用沉稳的语气说："大家好，我是一号男主播。"@音频2的声音（年轻女性，甜美）笑着回应："大家好，我是二号女主播。"' \
-  --ref-audio ~/voice-male.wav --ref-audio ~/voice-female.wav
+  --ref-audio ~/voice-male.wav --ref-audio-url https://example.com/voice-female.wav
 
 # Batch mode — concurrent scene generation with cost estimate
 uv run scripts/seed-audio-gen.py --batch '[{"prompt":"女声朗读：这是第一段。"},{"prompt":"男声朗读：这是第二段。"}]'
@@ -79,7 +80,16 @@ Output: JSON to stdout with `audio_file`, `duration`, `original_duration`, `url`
 uv run scripts/seed-audio-gen.py --batch '<json-array>' [options]
 ```
 
-Each item: `{"prompt": "...", "speaker": "...", ...}`. Extra keys override per-item options (speaker, ref-audio-url, speech-rate, etc.).
+Each item is an object with `prompt` (or `text_prompt`) plus optional per-item overrides: `speaker`, `references`, `format`, `sample_rate`, `speech_rate`, `subtitle`. To clone voices in batch, pass the full API `references` array per item — the `--ref-audio` / `--ref-audio-url` CLI flags are **not** read from batch items and are **not** shared into items:
+
+```json
+[
+  {"prompt": "@音频1的声音说：第一段。", "references": [{"audio_url": "https://example.com/a.wav"}]},
+  {"prompt": "用这个音色说：第二段。", "references": [{"audio_data": "<base64>"}]}
+]
+```
+
+Items without `references` use no voice cloning unless `speaker` is set. A failed item reports its own `error`; other items continue.
 
 Output: JSON with `results` array, `total_duration_seconds`, `estimated_cost_yuan`, `success_count`, `fail_count`.
 
@@ -96,9 +106,12 @@ If prompt exceeds 3000 characters, the CLI rejects with an error including the e
 | Flag | Description |
 |---|---|
 | `--speaker <id>` | Speaker ID, reuses the seed-tts-2.0 `_bigtts`/`_tob` voice catalog |
-| `--ref-audio <path-or-url>` | Reference audio for voice cloning: local path or `http(s)` URL (auto-detected). **Repeat up to 3 times** for multi-character cloning. Each clip ≤30s, ≤10MB, wav/mp3/pcm/ogg_opus. Bind in the prompt with `@音频1`..`@音频3` — numbering strictly follows upload order |
+| `--ref-audio <path>` | Local reference audio file (auto base64-encoded). Each clip ≤30s, ≤10MB, wav/mp3/pcm/ogg_opus. **Repeat up to 3 times** for multi-character cloning |
+| `--ref-audio-url <url>` | Remote reference audio URL (`http(s)`). Same repeat/ordering rules as `--ref-audio` |
 
-`--speaker` and `--ref-audio` are mutually exclusive (pick one voice source). Multiple `--ref-audio` flags are allowed (max 3).
+`--speaker` is mutually exclusive with the reference-audio flags (pick one voice source). Up to 3 reference audios total; `--ref-audio` and `--ref-audio-url` may be mixed, and the `@音频1`..`@音频3` numbering follows the flags left-to-right in CLI order. Putting a URL in `--ref-audio` or a local path in `--ref-audio-url` is rejected with a hint before any API call.
+
+**Local media is validated pre-flight** (before base64/encode/upload): a local `--ref-audio` must be ≤10MB and ≤30s (duration read via `mutagen`; raw `.pcm` skips the duration check since it has no header), a local `--ref-image` ≤10MB — over-limit files fail fast with the measured size/duration and a fix hint. Remote URLs cannot be validated locally (the server downloads them), so those limits are enforced by the API.
 
 | Flag | Description |
 |---|---|
@@ -215,31 +228,43 @@ When `--subtitle` is enabled, the `subtitle` field contains sentence-level and w
 
 ## Voice Selection
 
-For the complete voice catalog, read `references/speakers.md` (444 speakers — 244 bigtts + 200 ICL, as of 2026-08-26). The structured data is in `references/speakers.json`.
+**Query the catalog with `--list-speakers`** (reads a local table, no API call). Do **not** read `references/speakers.json` into context — it is ~220KB / 444 voices. `references/speakers.md` is a short curated shortlist (Top 5 per scene, with trial links), not the full list.
 
-Use `--list-speakers` with filters to query:
+### Common-scene quick picks
+
+For the usual scenes, reach for these defaults first; otherwise browse `references/speakers.md` or `--list-speakers`:
+
+| Scenario | Voice | voice_type |
+|---|---|---|
+| General narration / podcast intro (default female) | Vivi 2.0 · warm, calm (heat 100) | `zh_female_vv_uranus_bigtts` |
+| Ad / brand read (warm female) | 咪仔 2.0 · steady, elegant | `zh_female_mizai_uranus_bigtts` |
+| Suspense / dramatic narration (male) | 悬疑解说 2.0 · dramatic | `zh_male_xuanyijieshuo_uranus_bigtts` |
+| Authoritative narrative / drama male lead | 东方浩然 2.0 · deep, heroic | `zh_male_dongfanghaoran_uranus_bigtts` |
+| Audiobook / late-night emotional (male) | 深夜播客 · soft, atmospheric | `zh_male_shenyeboke_uranus_bigtts` |
+| Children / picture book | 小雪 2.0 · sweet, patient | `zh_female_xiaoxue_uranus_bigtts` |
+| English content | Michael (m) / Dacey (f) | `ICL_uranus_en_male_michael_tob` / `en_female_dacey_uranus_bigtts` |
+| Multi-character / niche roles | describe the character, or clone with `--ref-audio` | `--list-speakers --filter scene=角色扮演` (156 voices) |
+
+Browse by scene/heat:
 
 ```bash
-# All speakers
+# Full catalog
 uv run scripts/seed-audio-gen.py --list-speakers
 
 # Filter by scene type
 uv run scripts/seed-audio-gen.py --list-speakers --filter scene=视频配音
 
-# Filter by language
-uv run scripts/seed-audio-gen.py --list-speakers --filter lang=ja
-
-# Sort by heat (popularity)
-uv run scripts/seed-audio-gen.py --list-speakers --sort heat
+# Filter by language, sorted by heat
+uv run scripts/seed-audio-gen.py --list-speakers --filter lang=ja --sort heat
 ```
 
-To refresh the speaker table (e.g. when new voices are released), run:
+To refresh the speaker table when new voices are released, run:
 
 ```bash
 uv run scripts/refresh-speakers.py
 ```
 
-This requires AK/SK (`VOLC_ACCESSKEY`/`VOLC_SECRETKEY`), as the ListSpeakers API uses a different auth system than the everyday synthesis API.
+This requires AK/SK (`VOLC_ACCESSKEY`/`VOLC_SECRETKEY`) and the internal Volcano SDK preinstalled; the ListSpeakers API uses a different auth system than everyday synthesis.
 
 ## Prompt Guide
 
@@ -258,7 +283,7 @@ seed-audio-gen handles **mixed audio scenes** (voice + SFX + BGM together) — n
 | 多角色音色克隆 | 2-3 条参考音频 + `@音频N` 绑定 | Multi-Reference section |
 | 超过 120s 长内容 | 分段生成 + 末段音频回灌做参考延长 | Long-form section below |
 | 纯音效场景 | 无台词，只有 SFX/环境音 | 无独立示例；prompt 里只写音效描述、不写台词 |
-| 纯 BGM 场景 | 无台词无人声，只有音乐 | **用 `volcengine-bigmusic-bgm` 更优**（时长精确、专用音乐模型） |
+| 纯 BGM 场景 | 无台词无人声，只有音乐 | 能出粗氛围底垫，但时长不精确、非专用音乐模型；**要精确秒数/干净配乐用 `volcengine-bigmusic-bgm` 更优** |
 
 The pattern across all examples: describe BGM, define characters (gender/age/timbre/tone), write timestamped dialogue, describe SFX — all in one `text_prompt`. The model orchestrates them onto a single timeline.
 
@@ -277,9 +302,10 @@ For a recurring long-running series (fixed cast across many episodes), prefer re
 ## Error Handling
 
 - **Prompt too long**: `PromptTooLongError` — text_prompt exceeds 3000 chars. Rejected with length, limit, and hint to split into multiple calls.
+- **Retries on transient failures**: HTTP 429/500/502/503/504, service-internal code `55000000`, and network/timeout errors retry up to 3 times with exponential backoff (1s → 2s → 4s). Deterministic 4xx client errors (bad auth, bad params, prompt too long) fail fast with no retry. The result includes `attempts` (the try count).
 - **API errors**: HTTP non-200 or missing `audio` field — returned with error code + message + `log_id`.
-- **Network/exception**: Exception type and message returned in `error` field.
-- **Batch mode**: Failed items report error in their result object; other items continue independently.
+- **Network/exception**: Exception type and message returned in the `error` field.
+- **Batch mode**: Each item retries independently; a failed item reports its error in its result object while other items continue.
 - Always include the `log_id` in error output for support escalation.
 
 ## Billing
@@ -302,7 +328,7 @@ For a recurring long-running series (fixed cast across many episodes), prefer re
 ## When NOT to Use
 
 - **Pure narration / reading text verbatim** — use `volcengine-tts`. seed-audio is ~11x slower and ~14x more expensive for simple TTS. It may also rewrite or embellish the input text (it's a generative model, not a deterministic reader).
-- **Pure background music (BGM)** — use `volcengine-bigmusic-bgm`. seed-audio always generates voice+BGM+effects as a mixed product; it cannot produce clean BGM-only tracks, and the duration is not precisely controllable.
+- **Precise, clean BGM tracks** — use `volcengine-bigmusic-bgm`. seed-audio *can* emit a rough music-only / ambient bed when you omit dialogue (verified), but it is not a dedicated music model: track duration is not precisely controllable and music quality trails BigMusic. Reach for BigMusic when you need an exact-length, standalone music track; seed-audio's BGM is best as part of a mixed voice+SFX+music scene.
 - **Real-time / streaming conversation** — use a bidirectional streaming TTS. seed-audio is non-streaming and takes 10+ seconds per call.
 - **SSML-precise control** — use `volcengine-tts`. seed-audio does not support SSML; all timing and emotion is expressed in natural language, which is expressive but not deterministic.
 - **Verbatim word-for-word accuracy required** — seed-audio is a generative model and may paraphrase. If you need every character read exactly as written, use `volcengine-tts`.

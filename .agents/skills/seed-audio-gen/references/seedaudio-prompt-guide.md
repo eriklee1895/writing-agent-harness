@@ -102,11 +102,11 @@ You do not need all elements; a minimal prompt can be just a character + dialogu
 
 ## Multi-Reference Audio (`@音频N`)
 
-Pass up to **3 reference audios** per call (repeat `--ref-audio`, local path or URL; each ≤30s, ≤10MB, wav/mp3/pcm/ogg_opus) for multi-character voice cloning. Bind references in the prompt with `@音频N` — **numbering strictly follows upload order** (official API contract):
+Pass up to **3 reference audios** per call for multi-character voice cloning. Use `--ref-audio <path>` for local files or `--ref-audio-url <url>` for remote audio (repeat either; they can be mixed; each ≤30s, ≤10MB, wav/mp3/pcm/ogg_opus). Bind references in the prompt with `@音频N` — **numbering strictly follows the flags left-to-right in CLI order** (official API contract):
 
-- 1st `--ref-audio` → `@音频1`
-- 2nd `--ref-audio` → `@音频2`
-- 3rd `--ref-audio` → `@音频3`
+- 1st reference flag → `@音频1`
+- 2nd reference flag → `@音频2`
+- 3rd reference flag → `@音频3`
 
 Place the token at the point where that voice speaks, or in the character definition:
 
@@ -139,39 +139,40 @@ Verified 2026-08-27: 2 and 3 reference audios are accepted with clean output. A 
 
 ### From the catalog (--speaker)
 
-Use `--speaker <voice_type>` to select from the 444-voice catalog. See `speakers.md` for the full table with descriptions and trial audio URLs.
+Use `--speaker <voice_type>` to select from the 444-voice catalog. For the default picks by scenario (general narration, suspense, audiobook, children, English, etc.), see the **Common-scene quick picks** table in `SKILL.md`; for a curated shortlist with trial links, read `references/speakers.md` (Top 5 per scene).
 
-Quick picks:
+Browse or filter the full catalog without loading it into context:
 
-| Scenario | Voice Type | Description |
-|---|---|---|
-| 通用旁白 | `zh_female_vv_uranus_bigtts` | Vivi 2.0 — warm, versatile female |
-| 深沉男声 | `zh_male_dongfanghaoran_uranus_bigtts` | 东方浩然 2.0 — heroic, powerful male |
-| 温柔妈妈 | `zh_female_wenroumama_uranus_bigtts` | 温柔妈妈 2.0 — warm, gentle |
-| 悬疑解说 | `zh_male_xuanyijieshuo_uranus_bigtts` | 悬疑解说 2.0 — dramatic male |
-| English female | `en_female_dacey_uranus_bigtts` | Dacey — natural American female |
-| English male | `en_male_tim_uranus_bigtts` | Tim — natural American male |
+```bash
+uv run scripts/seed-audio-gen.py --list-speakers --filter scene=角色扮演 --sort heat
+uv run scripts/seed-audio-gen.py --list-speakers --filter lang=ja
+```
+
+Do **not** read `references/speakers.json` directly — it is ~220KB; query it with `--list-speakers`.
 
 The `_tob` (ICL) voices are pre-registered character voices ideal for audiobooks and radio dramas — they have distinct personalities (e.g. "恐怖小丑", "温柔知性的辅导员", "帅气少年感的青年教师").
 
-### By cloning (--ref-audio)
+### By cloning (--ref-audio / --ref-audio-url)
 
-Provide reference audio clips (each max 30s, max 10MB; up to 3 per call) and the model clones the timbre(s). No additional charge.
+Provide reference audio clips (each max 30s, max 10MB; up to 3 per call) and the model clones the timbre(s). No additional charge. Use `--ref-audio` for local files, `--ref-audio-url` for remote URLs.
 
 ```bash
-# Single reference
+# Single local reference
 uv run scripts/seed-audio-gen.py "用参考音色说：这是克隆后的声音。" --ref-audio ~/my-voice.wav
 
-# Multiple references for multi-character cloning (up to 3, bound by upload order)
+# Single remote reference
+uv run scripts/seed-audio-gen.py "用参考音色说：远程克隆。" --ref-audio-url https://example.com/my-voice.wav
+
+# Multiple references for multi-character cloning (up to 3, bound by CLI order; flags may mix)
 uv run scripts/seed-audio-gen.py '@音频1的声音（男主，低沉）说："…"@音频2的声音（女主，甜美）回应："…"' \
-  --ref-audio ~/male.wav --ref-audio ~/female.wav
+  --ref-audio ~/male.wav --ref-audio-url https://example.com/female.wav
 ```
 
 With one reference you can simply write "用参考音色朗读" / "用提供的声音说". With multiple references, bind each character with `@音频N` (see the Multi-Reference Audio section).
 
 ### By character description (no reference)
 
-If no `--speaker` or `--ref-audio` is provided, the model generates a voice from the character description in the prompt. This is the most flexible approach: just describe the voice you want ("一位声音沙哑的老船长", "一个活泼可爱的少女", "一位严肃的新闻播音员").
+If no `--speaker` / `--ref-audio` / `--ref-audio-url` is provided, the model generates a voice from the character description in the prompt. This is the most flexible approach: just describe the voice you want ("一位声音沙哑的老船长", "一个活泼可爱的少女", "一位严肃的新闻播音员").
 
 ## Prompt Length
 

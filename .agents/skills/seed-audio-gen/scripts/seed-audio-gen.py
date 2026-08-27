@@ -30,6 +30,7 @@ from typing import Any, Optional
 
 import httpx
 from dotenv import load_dotenv
+from mutagen import File as _mutagen_File
 
 API_BASE = "https://openspeech.bytedance.com"
 ENDPOINT = f"{API_BASE}/api/v3/tts/create"
@@ -39,6 +40,16 @@ DEFAULT_SAMPLE_RATE = 48000
 DEFAULT_CONCURRENCY = 3
 MAX_PROMPT_CHARS = 3000
 MAX_AUDIO_REFS = 3  # API accepts 1-3 reference audios per call (official API doc limit)
+MAX_RETRIES = 3  # exponential backoff for transient failures: 1s, 2s, 4s
+RETRY_BACKOFF_BASE = 1.0  # seconds, delay = base * 2^attempt
+RETRYABLE_HTTP_STATUS = {429, 500, 502, 503, 504}  # rate-limited / gateway / service
+RETRYABLE_VOLCANO_CODES = {"55000000"}  # service internal errors (shared with seed-tts-2.0)
+# Reference media limits (official API doc 2550782). Enforced locally, before any
+# base64 encode / upload, so an oversized reference fails fast with an actionable
+# error instead of a remote API rejection after uploading.
+MAX_REF_AUDIO_SECONDS = 30
+MAX_REF_AUDIO_BYTES = 10 * 1024 * 1024   # 10MB per reference audio
+MAX_REF_IMAGE_BYTES = 10 * 1024 * 1024   # 10MB per reference image
 COST_PER_MINUTE_YUAN = 1.0  # 后付费 1 元/分钟
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -83,6 +94,33 @@ def die(msg: str, code: int = 1) -> None:
     sys.exit(code)
 
 
+def _check_local_ref_audio(path: Path) -> None:
+    """Pre-flight a local reference audio file before base64/encode/upload:
+    size <= 10MB and (when mutagen can read the header) duration <= 30s.
+    Raises SystemExit via die() with measured values so the agent can fix it."""
+    size = path.stat().st_size
+    if size > MAX_REF_AUDIO_BYTES:
+        die(f"--ref-audio too large: {path.name} is {size/1024/1024:.1f}MB, "
+            f"limit {MAX_REF_AUDIO_BYTES/1024/1024:.0f}MB. Trim the clip or host it remotely "
+            f"and use --ref-audio-url.")
+    audio = _mutagen_File(path)
+    if audio is not None and getattr(getattr(audio, "info", None), "length", None) is not None:
+        dur = float(audio.info.length)
+        if dur > MAX_REF_AUDIO_SECONDS:
+            die(f"--ref-audio too long: {path.name} is {dur:.1f}s, limit {MAX_REF_AUDIO_SECONDS}s. "
+                f"Trim to a <= {MAX_REF_AUDIO_SECONDS}s clip (a clean sample of the voice is enough), "
+                f"or host remotely and use --ref-audio-url.")
+
+
+def _check_local_ref_image(path: Path) -> None:
+    """Pre-flight a local reference image: size <= 10MB."""
+    size = path.stat().st_size
+    if size > MAX_REF_IMAGE_BYTES:
+        die(f"--ref-image too large: {path.name} is {size/1024/1024:.1f}MB, "
+            f"limit {MAX_REF_IMAGE_BYTES/1024/1024:.0f}MB. Shrink/compress the image "
+            f"(jpeg/png/webp) or host it and use --ref-image-url.")
+
+
 def now_iso() -> str:
     return datetime.now(timezone.utc).astimezone().strftime("%Y-%m-%dT%H:%M:%S%z")
 
@@ -108,59 +146,114 @@ def build_body(prompt: str, *, references: list[dict] | None, audio_config: dict
     return body
 
 
+def is_retryable(status_code: Optional[int], volcano_code: Any) -> bool:
+    """A failure is worth retrying only if it is transient: rate-limiting,
+    gateway/service errors, or a Volcano service-internal code. Client errors
+    (4xx other than 429 — bad auth, bad prompt, unsupported params) are
+    deterministic and fail fast with no retry."""
+    if status_code in RETRYABLE_HTTP_STATUS:
+        return True
+    if volcano_code is not None and str(volcano_code) in RETRYABLE_VOLCANO_CODES:
+        return True
+    return False
+
+
+def _post_once(client: httpx.Client, headers: dict, body: dict) -> dict:
+    """One create-API POST. Returns a status dict without raising:
+    {"ok": True, "data": <json>} or {"ok": False, "status", "code", "message",
+    "log_id"} / {"ok": False, "exc": <Exception>, ...}."""
+    try:
+        r = client.post(ENDPOINT, headers=headers, json=body)
+        log_id = r.headers.get("X-Tt-Logid", "")
+        try:
+            data = r.json()
+        except Exception:
+            data = {}
+        if r.status_code == 200 and "audio" in data:
+            return {"ok": True, "data": data, "log_id": log_id}
+        return {"ok": False, "status": r.status_code, "log_id": log_id,
+                "code": data.get("code"), "message": data.get("message") or r.text[:200]}
+    except Exception as e:
+        # network-level transient errors (connect/timeout/reset) are retryable
+        return {"ok": False, "status": None, "code": None, "message": f"{type(e).__name__}: {e}",
+                "exc": e, "retryable": True}
+
+
 def synthesize(prompt: str, *, api_key: str,
                references: list[dict] | None = None,
                audio_config: dict | None = None,
                watermark: dict | None = None,
                model: str = DEFAULT_MODEL,
                output_dir: Path = Path("./seedaudio-output")) -> dict[str, Any]:
-    """Call seed-audio API. Returns dict with audio_file, durations, url, meta fields, error."""
+    """Call seed-audio API with exponential backoff on transient failures.
+    Returns dict with audio_file, durations, url, meta fields, error."""
     validate_prompt_length(prompt)
     body = build_body(prompt, references=references, audio_config=audio_config, watermark=watermark, model=model)
-    headers = {"X-Api-Key": api_key, "X-Api-Request-Id": str(uuid.uuid4()), "Content-Type": "application/json"}
-    log_id = ""
     t0 = time.perf_counter()
+    last = {"code": None, "message": "no response", "log_id": "", "retryable": True}
+    attempts = 0
     try:
         with httpx.Client(timeout=httpx.Timeout(300.0, connect=10.0)) as c:
-            r = c.post(ENDPOINT, headers=headers, json=body)
-            log_id = r.headers.get("X-Tt-Logid", "")
+            for attempt in range(MAX_RETRIES + 1):
+                attempts = attempt + 1
+                # fresh request id per try; keep a stable body
+                headers = {"X-Api-Key": api_key, "X-Api-Request-Id": str(uuid.uuid4()),
+                           "Content-Type": "application/json"}
+                out = _post_once(c, headers, body)
+                elapsed = time.perf_counter() - t0
+                if out.get("ok"):
+                    data = out["data"]
+                    log_id = out.get("log_id", "")
+                    audio_bytes = base64.b64decode(data["audio"])
+                    output_dir.mkdir(parents=True, exist_ok=True)
+                    ts = datetime.now().astimezone().strftime("%Y%m%d_%H%M%S")
+                    ext = audio_config.get("format", "mp3") if audio_config else "mp3"
+                    fname = output_dir / f"seedaudio_{ts}_{uuid.uuid4().hex[:6]}.{ext}"
+                    fname.write_bytes(audio_bytes)
+                    dur = float(data.get("duration") or 0)
+                    orig_dur = float(data.get("original_duration") or dur)
+                    fetched = now_iso()
+                    result = {
+                        "audio_file": str(fname),
+                        "duration": round(dur, 2),
+                        "original_duration": round(orig_dur, 2),
+                        "url": data.get("url", ""),
+                        "fetched_at": fetched,
+                        "url_expires_at": _expires_at(fetched, hours=2),
+                        "subtitle": data.get("subtitle"),
+                        "log_id": log_id,
+                        "model": model,
+                        "text_prompt": prompt,
+                        "estimated_cost_yuan": estimate_cost(orig_dur),
+                        "elapsed_s": round(elapsed, 2),
+                        "attempts": attempts,
+                        "error": None,
+                    }
+                    meta_path = fname.with_suffix(".meta.json")
+                    meta_path.write_text(json.dumps(result, ensure_ascii=False, indent=2))
+                    return result
+                # failure: decide retry
+                last = out
+                last.setdefault("retryable", False)
+                if not is_retryable(out.get("status"), out.get("code")) and not out.get("retryable"):
+                    break  # deterministic client error — fail fast, no retry
+                if attempt < MAX_RETRIES:
+                    time.sleep(RETRY_BACKOFF_BASE * (2 ** attempt))
+            # exhausted retries (or deterministic failure)
             elapsed = time.perf_counter() - t0
-            data = r.json()
-            if r.status_code != 200 or "audio" not in data:
-                return {"audio_file": None, "error": f"{data.get('code','')}: {data.get('message', r.text[:200])}",
-                        "log_id": log_id, "elapsed_s": round(elapsed, 2), "text_prompt": prompt}
-            audio_bytes = base64.b64decode(data["audio"])
-            output_dir.mkdir(parents=True, exist_ok=True)
-            ts = datetime.now().astimezone().strftime("%Y%m%d_%H%M%S")
-            fname = output_dir / f"seedaudio_{ts}_{uuid.uuid4().hex[:6]}.{audio_config.get('format', 'mp3') if audio_config else 'mp3'}"
-            fname.write_bytes(audio_bytes)
-            dur = float(data.get("duration") or 0)
-            orig_dur = float(data.get("original_duration") or dur)
-            url = data.get("url", "")
-            sub = data.get("subtitle")
-            fetched = now_iso()
-            result = {
-                "audio_file": str(fname),
-                "duration": round(dur, 2),
-                "original_duration": round(orig_dur, 2),
-                "url": url,
-                "fetched_at": fetched,
-                "url_expires_at": _expires_at(fetched, hours=2),
-                "subtitle": sub,
-                "log_id": log_id,
-                "model": model,
-                "text_prompt": prompt,
-                "estimated_cost_yuan": estimate_cost(orig_dur),
-                "elapsed_s": round(elapsed, 2),
-                "error": None,
-            }
-            # write meta sidecar
-            meta_path = fname.with_suffix(".meta.json")
-            meta_path.write_text(json.dumps(result, ensure_ascii=False, indent=2))
-            return result
+            code = last.get("code")
+            msg = last.get("message") or last.get("exc") or "request failed"
+            return {"audio_file": None,
+                    "error": f"{f'{code}: ' if code is not None else ''}{msg}",
+                    "log_id": last.get("log_id", ""),
+                    "elapsed_s": round(elapsed, 2),
+                    "attempts": attempts,
+                    "text_prompt": prompt}
     except Exception as e:
-        return {"audio_file": None, "error": f"{type(e).__name__}: {e}", "log_id": log_id,
-                "elapsed_s": round(time.perf_counter() - t0, 2), "text_prompt": prompt}
+        return {"audio_file": None, "error": f"{type(e).__name__}: {e}",
+                "log_id": last.get("log_id", ""),
+                "elapsed_s": round(time.perf_counter() - t0, 2),
+                "attempts": attempts, "text_prompt": prompt}
 
 
 def _expires_at(fetched_iso: str, *, hours: int = 2) -> str:
@@ -177,16 +270,34 @@ def _timedelta(*, hours: int = 0):
     return timedelta(hours=hours)
 
 
+class _AppendRef(argparse.Action):
+    """Append a (kind, value) tuple to a shared dest, preserving CLI order
+    across --ref-audio (local path) and --ref-audio-url (remote URL). The
+    kind is decided by which flag was used — not by sniffing the value — so
+    mixed calls like `--ref-audio a.wav --ref-audio-url https://.../b.wav`
+    keep their @音频N order."""
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        items = getattr(namespace, self.dest, None)
+        if items is None:
+            items = []
+        kind = "url" if option_string and option_string.endswith("-url") else "path"
+        items.append((kind, values))
+        setattr(namespace, self.dest, items)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Volcengine seed-audio-1.0 audio generation")
     parser.add_argument("prompt", nargs="?", help="text_prompt (natural language scene description, max 3000 chars)")
     parser.add_argument("-o", "--output-dir", default="./seedaudio-output/", help="output directory")
     parser.add_argument("--speaker", help="speaker ID (reuse seed-tts-2.0 voices or cloned voices)")
-    parser.add_argument("--ref-audio", action="append", dest="ref_audios", metavar="PATH_OR_URL",
-                        help="reference audio: local path or http(s) URL, auto-detected. "
+    parser.add_argument("--ref-audio", action=_AppendRef, dest="ref_audios", metavar="PATH",
+                        help="local reference audio path (auto base64, each <=30s, <=10MB). "
                              "Repeat up to 3 times for multi-character voice cloning; bind in "
-                             "prompt with @音频1..@音频3 in the same upload order")
-    parser.add_argument("--ref-audio-url", action="append", dest="ref_audios", help=argparse.SUPPRESS)
+                             "prompt with @音频1..@音频3 in CLI order")
+    parser.add_argument("--ref-audio-url", action=_AppendRef, dest="ref_audios", metavar="URL",
+                        help="remote reference audio URL. Same repeat/@音频N ordering as --ref-audio; "
+                             "the two flags can be mixed and order is preserved")
     parser.add_argument("--ref-image", help="local reference image path (auto base64, <=10MB)")
     parser.add_argument("--ref-image-url", help="remote reference image URL")
     parser.add_argument("--model", default=DEFAULT_MODEL, help="model version (default: seed-audio-1.0)")
@@ -226,21 +337,28 @@ def main() -> None:
 
 def _build_references(args) -> list[dict] | None:
     refs: list[dict] = []
-    ref_audios: list[str] = getattr(args, "ref_audios", None) or []
+    ref_audios: list[tuple[str, str]] = getattr(args, "ref_audios", None) or []
     if args.speaker and ref_audios:
         die("--speaker and --ref-audio are mutually exclusive (pick one voice source)")
     if len(ref_audios) > MAX_AUDIO_REFS:
         die(f"too many reference audios: {len(ref_audios)} (max {MAX_AUDIO_REFS}). "
-            f"Bind them in the prompt with @音频1..@音频{MAX_AUDIO_REFS} in upload order.")
+            f"Bind them in the prompt with @音频1..@音频{MAX_AUDIO_REFS} in CLI order.")
     if args.speaker:
         refs.append({"speaker": args.speaker})
-    for ref in ref_audios:
-        if ref.startswith(("http://", "https://")):
+    for kind, ref in ref_audios:
+        if kind == "url":
+            if not ref.startswith(("http://", "https://")):
+                die(f"--ref-audio-url expects an http(s) URL, got: {ref} "
+                    f"(for a local file use --ref-audio)")
             refs.append({"audio_url": ref})
         else:
+            if ref.startswith(("http://", "https://")):
+                die(f"--ref-audio expects a local file path, got a URL: {ref} "
+                    f"(use --ref-audio-url for remote audio)")
             p = Path(ref)
             if not p.exists():
                 die(f"--ref-audio file not found: {ref}")
+            _check_local_ref_audio(p)
             refs.append({"audio_data": base64.b64encode(p.read_bytes()).decode()})
     if args.ref_image:
         p = Path(args.ref_image)
@@ -250,6 +368,7 @@ def _build_references(args) -> list[dict] | None:
             # API 45001001: image reference cannot be mixed with audio or video references;
             # doc: image_data/image_url 不能与 audio_data、audio_url 或 speaker 同时传入
             die("image reference cannot be mixed with audio references or --speaker (API 45001001)")
+        _check_local_ref_image(p)
         refs.append({"image_data": base64.b64encode(p.read_bytes()).decode()})
     elif args.ref_image_url:
         if ref_audios or args.speaker:
