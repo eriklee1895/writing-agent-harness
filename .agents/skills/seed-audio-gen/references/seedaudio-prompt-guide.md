@@ -115,7 +115,7 @@ Place the token at the point where that voice speaks, or in the character defini
 @音频2的声音（年轻女性，甜美）笑着回应："大家好，我是二号女主播。"
 ```
 
-Verified 2026-08-27: 2 and 3 reference audios are accepted with clean output. The alternative form `<<TGT_SPK1>>`/`<<TGT_SPK2>>` (e.g. "饰演者为 <<TGT_SPK1>>", seen in demo prompts) also works in practice, but `@音频N` is the documented public syntax — prefer it.
+Verified 2026-08-27: 2 and 3 reference audios are accepted with clean output. A listening test confirmed both forms bind references in upload order (1st reference → first speaker, etc.) and produce identical results — `<<TGT_SPK1>>`/`<<TGT_SPK2>>` (e.g. "饰演者为 <<TGT_SPK1>>", seen in demo prompts) works equivalently to `@音频N`, but `@音频N` is the documented public syntax, so prefer it.
 
 ### Multi-reference patterns
 
