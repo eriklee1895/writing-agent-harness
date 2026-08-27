@@ -27,8 +27,12 @@ uv run scripts/seed-audio-gen.py "用深沉的语气朗读：夜幕降临，城�
 # Voice cloning from local reference audio
 uv run scripts/seed-audio-gen.py "用参考音频的音色说：这是克隆后的声音。" --ref-audio ~/reference-speaker.wav
 
-# Remote reference audio URL
-uv run scripts/seed-audio-gen.py "用参考音色说：远程克隆也可以。" --ref-audio-url https://example.com/ref.wav
+# Remote reference audio URL (local paths and http(s) URLs are auto-detected)
+uv run scripts/seed-audio-gen.py "用参考音色说：远程克隆也可以。" --ref-audio https://example.com/ref.wav
+
+# Multi-character cloning: up to 3 reference audios, bound in upload order
+uv run scripts/seed-audio-gen.py '@音频1的声音（中年男性，低沉）用沉稳的语气说："大家好，我是一号男主播。"@音频2的声音（年轻女性，甜美）笑着回应："大家好，我是二号女主播。"' \
+  --ref-audio ~/voice-male.wav --ref-audio ~/voice-female.wav
 
 # Batch mode — concurrent scene generation with cost estimate
 uv run scripts/seed-audio-gen.py --batch '[{"prompt":"女声朗读：这是第一段。"},{"prompt":"男声朗读：这是第二段。"}]'
@@ -87,20 +91,21 @@ Output: JSON with `results` array, `total_duration_seconds`, `estimated_cost_yua
 
 If prompt exceeds 3000 characters, the CLI rejects with an error including the exact length, the limit, and a hint to split into multiple calls.
 
-### Reference (voice source, mutually exclusive)
+### Reference (voice / image source)
 
 | Flag | Description |
 |---|---|
 | `--speaker <id>` | Speaker ID, reuses the seed-tts-2.0 `_bigtts`/`_tob` voice catalog |
-| `--ref-audio <path>` | Local reference audio path (auto base64-encoded, max 30s, max 10MB) |
-| `--ref-audio-url <url>` | Remote reference audio URL |
+| `--ref-audio <path-or-url>` | Reference audio for voice cloning: local path or `http(s)` URL (auto-detected). **Repeat up to 3 times** for multi-character cloning. Each clip ≤30s, ≤10MB, wav/mp3/pcm/ogg_opus. Bind in the prompt with `@音频1`..`@音频3` — numbering strictly follows upload order |
 
-`--speaker`, `--ref-audio`, and `--ref-audio-url` are mutually exclusive (API constraint). Reference images (below) cannot be mixed with audio references.
+`--speaker` and `--ref-audio` are mutually exclusive (pick one voice source). Multiple `--ref-audio` flags are allowed (max 3).
 
 | Flag | Description |
 |---|---|
-| `--ref-image <path>` | Local reference image path (auto base64-encoded, max 10MB) |
+| `--ref-image <path>` | Local reference image path (auto base64-encoded, max 10MB, jpeg/png/webp, max 1 image) — generates audio matching the picture's atmosphere/character setup; with an image, `text_prompt` can be just the lines to speak. API support verified 2026-08-27 |
 | `--ref-image-url <url>` | Remote reference image URL |
+
+Image references **cannot be mixed with audio references or `--speaker`** (API error `45001001: image reference cannot be mixed with audio or video references`; official doc: image_data/image_url 不能与 audio_data、audio_url 或 speaker 同时传入；the CLI pre-validates this).
 
 ### Audio Config
 
@@ -238,7 +243,7 @@ This requires AK/SK (`VOLC_ACCESSKEY`/`VOLC_SECRETKEY`), as the ListSpeakers API
 
 ## Prompt Guide
 
-For the full prompt-writing guide — timestamp syntax, scene element structure, `@AudioN` references, voice selection, and complete worked examples — read `references/seedaudio-prompt-guide.md`.
+For the full prompt-writing guide — timestamp syntax, total-duration declaration, scene element structure, `@音频N` multi-voice binding, directing vocabulary, voice selection, and complete worked examples — read `references/seedaudio-prompt-guide.md`.
 
 ### Scenario quick reference
 
@@ -250,10 +255,24 @@ seed-audio-gen handles **mixed audio scenes** (voice + SFX + BGM together) — n
 | 影视/剧情对白 | 多角色对话 + 环境音 + 情绪节奏 | Example 2: Rainy Night Farewell |
 | 游戏 NPC 台词 | 角色音色 + 动作音效 + 氛围 BGM | Example 3: Game Character Voice |
 | 有声书/广播剧 | 旁白 + 多角色 + 场景氛围 | Example 4: Audiobook Scene |
+| 多角色音色克隆 | 2-3 条参考音频 + `@音频N` 绑定 | Multi-Reference section |
+| 超过 120s 长内容 | 分段生成 + 末段音频回灌做参考延长 | Long-form section below |
 | 纯音效场景 | 无台词，只有 SFX/环境音 | 无独立示例；prompt 里只写音效描述、不写台词 |
 | 纯 BGM 场景 | 无台词无人声，只有音乐 | **用 `volcengine-bigmusic-bgm` 更优**（时长精确、专用音乐模型） |
 
 The pattern across all examples: describe BGM, define characters (gender/age/timbre/tone), write timestamped dialogue, describe SFX — all in one `text_prompt`. The model orchestrates them onto a single timeline.
+
+## Long-form Content (>120s): Audio Extension
+
+Each call generates at most 120s. For longer scenes (audiobook chapters, multi-scene podcasts), chain calls while keeping voices consistent:
+
+1. Generate segment 1 (≤120s).
+2. Generate segment 2 with `--ref-audio segment1.mp3` (or the tail few seconds of it) — the model treats the previous output as a voice reference and extends with the same timbre. For multi-character scenes, pass each character's reference audio again in the same order, keeping the `@音频N` bindings identical.
+3. Repeat, always referencing the most recent segment.
+
+This is the official "音频延长" workflow — chaining references keeps multi-character voices consistent across extensions ("在多次音频延长中保持音色的高度一致").
+
+For a recurring long-running series (fixed cast across many episodes), prefer registering a fixed speaker ID (`_tob` ICL voice) over ad-hoc cloning — see the Voice Selection section.
 
 ## Error Handling
 
@@ -287,4 +306,4 @@ The pattern across all examples: describe BGM, define characters (gender/age/tim
 - **Real-time / streaming conversation** — use a bidirectional streaming TTS. seed-audio is non-streaming and takes 10+ seconds per call.
 - **SSML-precise control** — use `volcengine-tts`. seed-audio does not support SSML; all timing and emotion is expressed in natural language, which is expressive but not deterministic.
 - **Verbatim word-for-word accuracy required** — seed-audio is a generative model and may paraphrase. If you need every character read exactly as written, use `volcengine-tts`.
-- **Long-form content beyond 120s** — split into multiple calls. The model maxes out at 120s per call. For long-form narration, `volcengine-tts` is also faster and cheaper.
+- **Long-form content beyond 120s** — the model maxes out at 120s per call. Use the audio-extension chaining workflow above for scene content longer than 120s; for plain long-form narration, `volcengine-tts` is also faster and cheaper.
