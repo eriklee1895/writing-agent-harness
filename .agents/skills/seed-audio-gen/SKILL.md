@@ -216,7 +216,11 @@ seedaudio-output/
   seedaudio_20260826_210000_a1b2c3.meta.json
 ```
 
-The meta file includes all result fields: `audio_file`, `duration`, `original_duration`, `url`, `fetched_at`, `url_expires_at`, `subtitle`, `log_id`, `model`, `text_prompt`, `estimated_cost_yuan`, `elapsed_s`, and `error`.
+The meta file includes all result fields: `audio_file`, `duration`, `original_duration`, `url`, `fetched_at`, `url_expires_at`, `subtitle`, `log_id`, `model`, `text_prompt`, `estimated_cost_yuan`, `elapsed_s`, `attempts`, and `error`.
+
+### Where outputs go
+
+The default `./seedaudio-output/` is **relative to your current working directory** — run from your project/working dir (or pass `-o`) so audio doesn't land inside the skill package folder. It is disposable scratch (gitignored). For content you want to keep or hand to a downstream step, pass an explicit destination, e.g. `--output-dir content/origin/<article>/assets/` (tracked content) or a `.skill-work/` scratch dir.
 
 ### CDN URL Expiry
 
