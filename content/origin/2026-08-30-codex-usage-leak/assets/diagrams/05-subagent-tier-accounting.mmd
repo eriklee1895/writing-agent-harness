@@ -1,0 +1,8 @@
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#f3e7dc","primaryTextColor":"#1f252c","primaryBorderColor":"#d97757","lineColor":"#6f777d","secondaryColor":"#e7efe8","tertiaryColor":"#e9eff3","fontFamily":"PingFang SC, Arial"}}}%%
+flowchart TB
+    R[Root thread] --> P[Root-owned service tier]
+    P --> A[Subagent A]
+    P --> B[Subagent B]
+    A --> C[Grandchild]
+    A & B & C --> U[Descendant token usage]
+    U --> G[(Root goal accounting)]

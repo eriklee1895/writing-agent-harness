@@ -1,0 +1,13 @@
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#f3e7dc","primaryTextColor":"#1f252c","primaryBorderColor":"#d97757","lineColor":"#6f777d","secondaryColor":"#e7efe8","tertiaryColor":"#e9eff3","fontFamily":"PingFang SC, Arial"}}}%%
+flowchart TD
+    A[Goal Active] --> B[执行一轮]
+    B --> C{终态或用量上限?}
+    C -->|完成| D[Complete]
+    C -->|用量上限| E[Usage Limited]
+    C -->|继续| F{成功工具调用?}
+    F -->|是| G[失败计数归零]
+    F -->|否且 exec 失败| H[连续失败 +1]
+    G --> B
+    H --> I{达到 3 轮?}
+    I -->|否| B
+    I -->|是| J[Blocked: execution unavailable]

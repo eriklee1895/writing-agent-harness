@@ -1,0 +1,20 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Correct image 1 into a complete eight-branch process infographic. Preserve the OpenAI Blossom, exact \"OpenAI\" wordmark, exact \"CODEX\" product label, warm pencil-and-watercolor style, exact title \"一次请求，背后是一座 Agent 工厂\", left \"用户请求\", center \"Agent 主循环\", right \"订阅用量\", and the existing arrows.\n\nCritical correction: the current image has only six background workstations and is missing two. Replace the workstation area with an exact 2-row by 4-column grid containing exactly EIGHT boxes. Do not omit, merge, rename or duplicate any box.\n\nTop row, left to right, exact labels:\n1. \"Compaction\"\n2. \"Memory\"\n3. \"Goals\"\n4. \"Automations\"\n\nBottom row, left to right, exact labels:\n5. \"Subagents\"\n6. \"Computer History\"\n7. \"Rolling Summaries\"\n8. \"MCP\"\n\nCount the grid before finalizing: four boxes on the top row and four boxes on the bottom row, eight total. Draw arrows from \"Agent 主循环\" to all eight boxes and from all eight boxes to \"订阅用量\". Keep every label large, horizontal and fully legible. Use no extra words, fake letters or decorative paragraphs. Do not change the official black OpenAI logo proportions.",
+  "model": "openai/gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "2048x1152",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/origin/2026-08-30-codex-usage-leak/assets/01-agent-factory-flow-branded-v2.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [
+    "content/origin/2026-08-30-codex-usage-leak/assets/01-agent-factory-flow-branded.png"
+  ],
+  "mask": null,
+  "created_at": "2026-08-31T00:26:45",
+  "dry_run": false
+}

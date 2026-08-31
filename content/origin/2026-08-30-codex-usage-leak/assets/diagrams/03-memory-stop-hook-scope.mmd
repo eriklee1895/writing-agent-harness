@@ -1,0 +1,9 @@
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#f3e7dc","primaryTextColor":"#1f252c","primaryBorderColor":"#d97757","lineColor":"#6f777d","secondaryColor":"#e7efe8","tertiaryColor":"#e9eff3","fontFamily":"PingFang SC, Arial"}}}%%
+flowchart TB
+    W[Memory worker] --> S[MemoryConsolidation Stop dispatcher]
+    S -.排除.-> P[Project / User hooks 与通知]
+    S --> M[Managed policy]
+    S --> E[Executor cleanup]
+    M --> O[Allow / Block]
+    E --> O
+    O --> W

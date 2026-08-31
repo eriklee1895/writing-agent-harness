@@ -1,0 +1,17 @@
+{
+  "title": "job-3",
+  "prompt": "Use case: illustration-story\nPrimary request: A refined hand-drawn editorial illustration of an AI agent runtime cost control room. A human engineer and a small thoughtful robot monitor a central system made of several pipes and circuit branches. Each branch has a clear analog meter, a valve, a circuit breaker, a boundary gate and a small ownership tag shape with no text. The system conveys attribution, bounded retries, parent-child budgets, single representation and observability through visual objects rather than labels. Calm, precise and optimistic, with lots of breathing room.\nStyle/medium: hand-drawn engineering notebook, graphite and ink line art, subtle watercolor, warm editorial sketch\nComposition/framing: landscape isometric-ish control room, central meter panel, branching pipes and circuit breakers, balanced negative space\nLighting/mood: soft diffuse daylight, delicate paper texture, no heavy shadows\nColor palette: warm off-white, graphite gray, terracotta orange, sage green, muted blue\nConstraints: no readable text, no letters, no logos, no watermark, elegant and technically credible\nAvoid: photorealism, dark background, neon cyberpunk, glossy 3D, childish cartoon, dense labels",
+  "model": "openai/gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/origin/2026-08-30-codex-usage-leak/assets/02-cost-ownership-control-room.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-08-31T00:00:21",
+  "dry_run": false
+}

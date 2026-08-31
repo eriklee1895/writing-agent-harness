@@ -1,0 +1,10 @@
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#f3e7dc","primaryTextColor":"#1f252c","primaryBorderColor":"#d97757","lineColor":"#6f777d","secondaryColor":"#e7efe8","tertiaryColor":"#e9eff3","fontFamily":"PingFang SC, Arial"}}}%%
+flowchart TB
+    M[MCP CallToolResult] --> O{旧 / 新路径}
+    O -->|旧：整段 content array| J[JSON 文本]
+    J --> K[再次包装与截断]
+    O -->|新：按 content type| T[Text / Image / Audio / Encrypted]
+    T --> P[Typed function output items]
+    P --> L[Per-tool token limit]
+    K --> C[(Model context)]
+    L --> C

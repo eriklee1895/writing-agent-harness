@@ -1,0 +1,112 @@
+{
+  "article": "2026-08-30-codex-usage-leak",
+  "visual_style": "warm editorial engineering sketch",
+  "archive": {
+    "path": ".local-archive/2026-08-30-codex-usage-leak/",
+    "closeout_date": "2026-08-31",
+    "policy": "copied-preserve-working-copy"
+  },
+  "source_images": [
+    {
+      "file": "tibo-reset-x-post.png",
+      "source": "user-provided Typora image copied from local scratch",
+      "alt": "Tibo 在 X 上宣布为 Codex 和 ChatGPT Work 付费用户重置用量",
+      "status": "selected",
+      "archive_path": ".local-archive/2026-08-30-codex-usage-leak/images/tibo-reset-x-post.png"
+    }
+  ],
+  "generated_images": [
+    {
+      "file": "00-cover-agent-runtime-leaks.png",
+      "metadata": "00-cover-agent-runtime-leaks.json",
+      "provider": "OpenAI Image API",
+      "model": "gpt-image-2",
+      "size": "1792x768",
+      "alt": "原始无文字管路场景图",
+      "usage": [],
+      "status": "superseded-by-text-rich-branded-version"
+    },
+    {
+      "file": "01-hidden-background-workers.png",
+      "metadata": "01-hidden-background-workers.json",
+      "provider": "OpenAI Image API",
+      "model": "gpt-image-2",
+      "size": "1536x1024",
+      "alt": "原始无文字后台 worker 场景图",
+      "usage": [],
+      "status": "superseded-by-text-rich-branded-version"
+    },
+    {
+      "file": "02-cost-ownership-control-room.png",
+      "metadata": "02-cost-ownership-control-room.json",
+      "provider": "OpenAI Image API",
+      "model": "gpt-image-2",
+      "size": "1536x1024",
+      "alt": "原始无文字成本控制室场景图",
+      "usage": [],
+      "status": "superseded-by-text-rich-branded-version"
+    },
+    {
+      "file": "00-cover-agent-runtime-leaks-branded.png",
+      "metadata": "00-cover-agent-runtime-leaks-branded.json",
+      "provider": "OpenAI Image API",
+      "model": "gpt-image-2",
+      "size": "1792x768",
+      "alt": "OpenAI Codex 的四类隐形用量泄漏：上下文、生命周期、编排路由与重复表示",
+      "usage": ["origin-cover", "blog-cover", "wechat-cover"],
+      "status": "selected",
+      "archive_path": ".local-archive/2026-08-30-codex-usage-leak/images/00-cover-agent-runtime-leaks-branded.png"
+    },
+    {
+      "file": "01-agent-factory-flow-branded.png",
+      "metadata": "01-agent-factory-flow-branded.json",
+      "provider": "OpenAI Image API",
+      "model": "gpt-image-2",
+      "size": "2048x1152",
+      "alt": "第一次文字信息图尝试",
+      "usage": [],
+      "status": "rejected-missing-automations-and-mcp"
+    },
+    {
+      "file": "01-agent-factory-flow-branded-v2.png",
+      "metadata": "01-agent-factory-flow-branded-v2.json",
+      "provider": "OpenAI Image API",
+      "model": "gpt-image-2",
+      "size": "2048x1152",
+      "alt": "一次用户请求经过 Codex Agent 主循环，扇出为八类后台工作并汇入订阅用量",
+      "usage": ["origin-body", "blog-body", "wechat-body"],
+      "status": "selected-after-label-correction",
+      "archive_path": ".local-archive/2026-08-30-codex-usage-leak/images/01-agent-factory-flow-branded-v2.png"
+    },
+    {
+      "file": "02-cost-governance-principles-branded.png",
+      "metadata": "02-cost-governance-principles-branded.json",
+      "provider": "OpenAI Image API",
+      "model": "gpt-image-2",
+      "size": "2048x1152",
+      "alt": "OpenAI Codex Agent Runtime Cost Governance：六条成本治理原则",
+      "usage": ["origin-body", "blog-body", "wechat-body"],
+      "status": "selected",
+      "archive_path": ".local-archive/2026-08-30-codex-usage-leak/images/02-cost-governance-principles-branded.png"
+    },
+    {
+      "file": "03-reset-engineering-receipt-conclusion.png",
+      "metadata": "03-reset-engineering-receipt-conclusion.prompt.md",
+      "provider": "built-in imagegen",
+      "model": "built-in image generation",
+      "size": "1672x941",
+      "alt": "OpenAI Codex 从隐形消耗到可控 Runtime：这次 Reset 是一份 Agent 工程优化回执",
+      "usage": ["origin-conclusion", "blog-conclusion", "wechat-conclusion"],
+      "status": "selected",
+      "archive_path": ".local-archive/2026-08-30-codex-usage-leak/images/03-reset-engineering-receipt-conclusion.png"
+    }
+  ],
+  "diagrams": [
+    {"source": "diagrams/01-agent-cost-graph.mmd", "wechat_render": "diagrams/01-agent-cost-graph.png", "archive_path": ".local-archive/2026-08-30-codex-usage-leak/images/diagrams/01-agent-cost-graph.png"},
+    {"source": "diagrams/02-compaction-before-after.mmd", "wechat_render": "diagrams/02-compaction-before-after.png", "archive_path": ".local-archive/2026-08-30-codex-usage-leak/images/diagrams/02-compaction-before-after.png"},
+    {"source": "diagrams/03-memory-stop-hook-scope.mmd", "wechat_render": "diagrams/03-memory-stop-hook-scope.png", "archive_path": ".local-archive/2026-08-30-codex-usage-leak/images/diagrams/03-memory-stop-hook-scope.png"},
+    {"source": "diagrams/04-goal-lifecycle.mmd", "wechat_render": "diagrams/04-goal-lifecycle.png", "archive_path": ".local-archive/2026-08-30-codex-usage-leak/images/diagrams/04-goal-lifecycle.png"},
+    {"source": "diagrams/05-subagent-tier-accounting.mmd", "wechat_render": "diagrams/05-subagent-tier-accounting.png", "archive_path": ".local-archive/2026-08-30-codex-usage-leak/images/diagrams/05-subagent-tier-accounting.png"},
+    {"source": "diagrams/06-mcp-output-path.mmd", "wechat_render": "diagrams/06-mcp-output-path.png", "archive_path": ".local-archive/2026-08-30-codex-usage-leak/images/diagrams/06-mcp-output-path.png"}
+  ]
+}

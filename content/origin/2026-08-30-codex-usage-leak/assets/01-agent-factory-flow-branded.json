@@ -1,0 +1,20 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Use image 1 only as a style reference. Rebuild the scene as a rigorous Chinese process infographic that explains where Codex subscription usage goes. Preserve the warm editorial pencil-and-watercolor character, but prioritize arrows, labels and flow clarity over atmosphere.\n\nBrand header: in a clean top-left white space, place the official black OpenAI Blossom symbol with prescribed clear space, followed by the exact wordmark \"OpenAI\" and the product label \"CODEX\". Do not distort or decorate the logo.\n\nExact title: \"一次请求，背后是一座 Agent 工厂\"\n\nFlow from left to right:\n- Left entry label: \"用户请求\"\n- Center large label: \"Agent 主循环\"\n- Eight clearly separated background workstations with exact labels:\n  \"Compaction\"\n  \"Memory\"\n  \"Goals\"\n  \"Automations\"\n  \"Subagents\"\n  \"Computer History\"\n  \"Rolling Summaries\"\n  \"MCP\"\n- Right destination label: \"订阅用量\"\n\nUse clear arrows from the user request into the Agent loop, then fan out to the eight workstations, then converge into subscription usage. Each station should have a simple meaningful icon, but the labels are primary. All text must be exact, large, horizontal and legible. No extra words, fake letters, tiny annotations or decorative paragraphs.",
+  "model": "openai/gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "2048x1152",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/origin/2026-08-30-codex-usage-leak/assets/01-agent-factory-flow-branded.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [
+    "content/origin/2026-08-30-codex-usage-leak/assets/01-hidden-background-workers.png"
+  ],
+  "mask": null,
+  "created_at": "2026-08-31T00:23:59",
+  "dry_run": false
+}
