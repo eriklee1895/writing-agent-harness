@@ -73,7 +73,7 @@ flowchart TD
 - 查证 facts，尤其是 current events、company/product facts、pricing、laws、fast-moving tech topics。
 - 形成 thesis、outline 和 full draft。
 - 调用 `polish-article` 强化逻辑、register、表达质感、专业深度和作者气质。
-- 判断是否需要 visuals，并用系统 `$imagegen` 或其他合适工具生成。
+- 判断是否需要 visuals，并用 `article-illustration`（项目 skill）或 user-level media skills（`gpt-image-2` / `seedream-image-gen`，由 erik-agent-skills 维护）生成。
 - 按渠道生成 packaging：个人博客、微信公众号、未来平台。
 - 发布前做 rendered preview 和 checklist verification。
 - 发布后沉淀复盘、坑点和 reusable skills。
@@ -86,7 +86,7 @@ flowchart TD
 - 不把未跑通的自动化写成已可用能力。
 - 不为了目录整洁移动历史文章，除非用户明确同意。
 - 不依赖 paid `md2wechat` API。
-- 不重建项目重复的 `gpt-image-gen`；图片生成优先使用系统 `$imagegen`。
+- 不在本 repo 重建 AIGC 媒体生成 skill；图片/视频/语音/配乐生成使用 erik-agent-skills 维护的 user-level skills（`gpt-image-2` / `seedream-image-gen` / `seedance-video-gen` / `volcengine-tts` / `seed-audio-gen` / `volcengine-bigmusic-bgm`）。
 
 ## Primary Interfaces
 

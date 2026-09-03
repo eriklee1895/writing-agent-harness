@@ -1,0 +1,17 @@
+{
+  "title": "job-1",
+  "prompt": "Use case: illustration-story\nPrimary request: A hand-drawn editorial illustration of an AI agent runtime as a carefully engineered plumbing system. One foreground coding task sits at the center while small background branches lead to context compaction, memory, goals, subagents, summaries, automation and tool calls. Several tiny leaks are being repaired with valves and usage meters. No readable text anywhere. Warm off-white paper, graphite line work, muted terracotta, sage green and soft blue watercolor washes, airy and intelligent, generous negative space.\nStyle/medium: hand-drawn pencil sketch, ink line art, light watercolor washes, warm editorial engineering notebook\nComposition/framing: very wide left-to-right system cutaway, central agent loop, small background branches, 55 percent negative space, important elements kept away from extreme edges\nLighting/mood: soft even daylight on paper, no vignette\nColor palette: warm off-white paper, graphite gray, terracotta orange, sage green, soft blue\nConstraints: no readable text, no letters, no logos, no watermark, no photorealism, no 3D render\nAvoid: dark background, neon, glossy 3D, dense labels, typography, brand marks",
+  "model": "openai/gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1792x768",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/origin/2026-08-30-codex-usage-leak/assets/00-cover-agent-runtime-leaks.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-08-30T23:59:42",
+  "dry_run": false
+}

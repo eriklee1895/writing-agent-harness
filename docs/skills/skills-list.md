@@ -8,7 +8,7 @@
 .agents/skills/ -> ./claude/skills/
 ```
 
-它们随 repo 提交，是 `writing-agent-harness` 的稳定能力边界。部分任务还会使用本机 user-level skills，例如 `tavily-search`、`imagegen`、`openai-docs`；这些 skills 通常安装在 `~/.agents/skills/` 或 `~/.codex/skills/`，不属于本 repo。新环境准备见 [../project/prepare-environment.md](../project/prepare-environment.md)。
+它们随 repo 提交，是 `writing-agent-harness` 的稳定能力边界。部分任务使用本机 user-level skills，不属于本 repo：例如 `tavily-search`、`openai-docs`，安装在 `~/.agents/skills/` 或 `~/.codex/skills/`。**通用 / AIGC 类 skills 统一由 erik-agent-skills repo 维护并安装为 user-level skills**：媒体生成 `gpt-image-2` / `seedream-image-gen` / `seedance-video-gen` / `volcengine-tts` / `seed-audio-gen` / `volcengine-bigmusic-bgm`，渠道与工具 `markdown-article-to-feishu-doc` / `volcengine-doc-fetcher` / `volcengine-web-search`（安装方式：`npx skills add eriklee1895/erik-agent-skills --skill <name> -g`）。新环境准备见 [../project/prepare-environment.md](../project/prepare-environment.md)。
 
 ## Current Core Skills
 
@@ -68,24 +68,6 @@
   - 默认支持 `--style-profile auto`，但正式文章出图时应优先明确指定风格。
   - Guide 和历史优质生图案例见 [article-illustration/README.md](article-illustration/README.md)。
 
-- `gpt-image-2`
-  - 用 OpenAI 的 gpt-image-2 生成、编辑和批量生成位图。
-  - 支持文生图、参考图编辑（背景替换、物体移除、文字替换、风格迁移）、最多 16 张参考图、批量提示词变体。
-  - gpt-image-2 是 2026-06 时点的 SOTA，擅长文字精准渲染、照片级真实感和身份敏感编辑。
-  - 不用于 SVG/矢量图标、代码原生图示、确定性布局工作或需要干净透明背景的场景（gpt-image-2 的透明背景建议先生成不透明再用下游 rembg 处理）。
-
-- `seedance-video-gen`
-  - 用火山引擎 Seedance 2.0 生成视频。
-  - 支持文生视频、图生视频（首帧/首尾帧）、多模态参考、批量镜头、提示词优化和首帧图生成。
-  - 前置依赖：`uv`、`ARK_API_KEY` 环境变量或 `.env` 文件。
-  - 生成的视频素材包包含 `video.mp4`、`manifest.json`、`prompt.md`，可选 `last-frame.jpg`。
-
-- `seed-audio-gen`
-  - 用火山引擎豆包音频生成 1.0（seed-audio-1.0）从自然语言场景描述生成完整音频场景——人声+音效+BGM 一次调用输出成品音频（最长 120s）。
-  - 支持时间戳精准控制（100ms 粒度）、音色克隆、多角色对话、20 语种、批量并发生成、音色表本地查询。
-  - 前置依赖：`uv`、`VOLC_SPEECH_API_KEY` 环境变量或 `.env` / `~/.volcengine.env` 文件。
-  - 不适用于纯旁白/朗读（用 `volcengine-tts`，快 11 倍便宜 14 倍）、纯 BGM（用 `volcengine-bigmusic-bgm`）、实时对话（用双向流式 TTS）、或逐字准确率要求严格的场景（seed-audio 是生成式模型，可能改写原文）。
-
 - `wechat-article-fetcher`
   - 用 Playwright + 本地持久化 Profile 提取微信公众号文章到结构化 Markdown + assets。
   - 输入 URL 输出 `article.md` + `manifest.json` + `sources.md` + `assets/`，支持图片落地和交互式首次登录引导。
@@ -96,13 +78,6 @@
   - Playwright 微信公众号发布器。
   - 输入 origin `.md`（`content/origin/&lt;slug&gt;/`，frontmatter 元数据权威源）+ renderer HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 `appmsgid`。
   - 仅创建草稿，不点发布/群发。不负责排版风格（由 `wechat-article-renderer` 负责）。
-
-- `markdown-article-to-feishu-doc`
-  - 把本地 Markdown 文章转写为飞书云文档（docx）。
-  - 解析 frontmatter，保留标题层级、列表、代码块、表格、引用块；本地图片按原始尺寸上传，` ```mermaid ` 代码块自动渲染为飞书画板，`==高亮文本==` 转换为黄色 callout。
-  - 会清洗 `<video>` / `<source>` / HTML 注释等飞书 markdown 模式不支持的标签；缺失的本地图片降级为 `[图片缺失]` 提示，不阻塞整篇转换。
-  - 默认新建飞书文档；若用户提供已有 docx URL，会先 fetch 探测并确认后再 overwrite。
-  - 底层依赖 `lark-cli` 和 `lark-doc` / `lark-whiteboard` / `lark-shared` skills，本 skill 只负责预处理和编排。
 
 - `article-to-notion`
   - 将任意网页文章（微信公众号、技术博客、论文页面等）抓取、清洗并转写到用户指定的 Notion page 或 database row。

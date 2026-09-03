@@ -11,7 +11,7 @@
 - Current events、company/product facts、pricing、laws、fast-moving tech topics 必须查证，并写清具体日期。
 - repo 内长期 canonical source 放在 `content/origin/`，格式是 Markdown / MDX。飞书文档、Notion 等可以作为上游写作入口；进入 repo 后要同步或转换成可追踪文本。
 - 内容写作、选题构思、文章润色、改稿、标题和风格判断时读取 [SOUL.md](SOUL.md)，对齐 Erik 的作者写作气质、register、anti-style 和审美边界；非写作任务不要默认加载。
-- 图片生成优先使用系统 `$imagegen` skill，不要重建项目重复的 `gpt-image-gen`。
+- 位图 / 视频 / 语音 / 配乐生成使用本机 user-level media skills（由 erik-agent-skills repo 统一维护，不在本 repo 内）：图片 `gpt-image-2` / `seedream-image-gen`，视频 `seedance-video-gen`，语音合成 `volcengine-tts`，生成式音频 `seed-audio-gen`，BGM `volcengine-bigmusic-bgm`；不要在本 repo `.agents/skills/` 重建这些 skill 的副本。文章配图仍走项目 skill `article-illustration`。
 - 任何最终发布动作都需要 user final review，除非用户明确授权自动发布。
 - 先做 small, practical automation；不要把未跑通的能力写成已可用能力。
 - 遇到可复用的新坑点、新技巧、workflow 改进或 skill 缺陷，随手沉淀到项目 docs，或新增、修改 project-level skills。
@@ -92,7 +92,7 @@
 - 微信公众号文章提取使用 project skill：`wechat-article-fetcher`；输入 URL 提取正文、元数据和图片到结构化素材包，支持 `--output-dir content/inbox/articles/` 直接入库。
 - 微信公众号发布流程使用 project skill：`wechat-publish-workflow`；底层上传器默认用 `wechat-article-publisher`（Playwright，已验证文章流程 + 标题/作者/摘要 + 串行正文图片上传 + 草稿保存；封面通常在草稿箱 final review 时手动设置）。迁移背景见 [docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。
 - Erik Lee 个人博客发布流程使用 project skill：`erik-blog-publish-workflow`；负责把 `content/origin/` 正式稿同步到 `/Users/eriklee/code/my_project/eriklee-blog`，检查 assets / taxonomy / build，并按 Cloudflare Pages 自动部署边界处理 git handoff。`git push main` 等价于公开发布，默认需要明确确认。
-- 本地 Markdown 转写飞书云文档使用 project skill：`markdown-article-to-feishu-doc`；解析 frontmatter、保留完整 block 结构、本地图片按原始尺寸上传、` ```mermaid ` 自动渲染为画板、`==高亮文本==` 转 callout。
+- 本地 Markdown 转写飞书云文档使用 user-level skill `markdown-article-to-feishu-doc`（由 erik-agent-skills 维护，不在本 repo）；解析 frontmatter、保留完整 block 结构、本地图片按原始尺寸上传、` ```mermaid ` 自动渲染为画板、`==高亮文本==` 转 callout。火山引擎文档抓取 / 联网搜索同理走 user-level `volcengine-doc-fetcher` / `volcengine-web-search`。
 - 剪藏网页文章（微信公众号、技术博客、arXiv 等）到 Notion 使用 project skill：`article-to-notion`；微信公众号走 Playwright 抓取含懒加载图，通用站点走 firecrawl/tavily，图片本地上传到 Notion 解决防盗链；底层依赖 `notion-cli` skill 封装的官方 `ntn` CLI，认证走 `ntn login` OAuth（无需 integration token 或 share connection）。
 - 直接读写 Notion 页面、上传文件、设 cover/properties/icon 一律通过 `notion-cli` skill 的 `scripts/ntn_cli.py` helper 调用，不要手写 `ntn api` 或 REST 调用（已知坑点全部集中规避）。
 - 发布或交付后的写作任务收尾使用 project skill：`writing-task-closeout`。

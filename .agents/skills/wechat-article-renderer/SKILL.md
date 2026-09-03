@@ -83,7 +83,7 @@ Shared renderer rules:
 
 ## Cover Images
 
-When a WeChat article needs a new cover image, prefer the system `$imagegen` skill first. If the built-in image tool is unavailable and CLI fallback is needed, load credentials from the project `.env` without printing secret values. Do not recreate the removed duplicate project-local `gpt-image-gen` skill unless the user explicitly requests a project-specific fork.
+When a WeChat article needs a new cover image, use the project `article-illustration` skill (or the user-level `gpt-image-2` / `seedream-image-gen` media skills, maintained by erik-agent-skills) and load credentials from the project `.env` without printing secret values. Do not recreate media-generation skills inside this repo.
 
 ## Publishing Boundary
 

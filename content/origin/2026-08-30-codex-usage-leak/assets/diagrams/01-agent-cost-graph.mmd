@@ -1,0 +1,8 @@
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#f3e7dc","primaryTextColor":"#1f252c","primaryBorderColor":"#d97757","lineColor":"#6f777d","secondaryColor":"#e7efe8","tertiaryColor":"#e9eff3","fontFamily":"PingFang SC, Arial"}}}%%
+flowchart TB
+    U[用户请求] --> R[Agent 主循环]
+    R --> F[前台：模型推理 + 工具调用]
+    R --> C[Context compaction]
+    R --> B[后台：Memory / 摘要 / Automation]
+    R --> S[Subagents]
+    F & C & B & S --> Q[(订阅用量)]

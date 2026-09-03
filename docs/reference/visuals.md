@@ -76,6 +76,7 @@ OPENAI_BASE_URL
 
 - 只在图片能帮助理解、传播或渠道呈现时加入。
 - 技术文章优先使用简洁信息图、结构图、流程图或有明确语义的插图。
+- 流程、架构、状态和对比图必须在图内保留可读的节点标签、关系或关键数据；无文字的装饰性图不能代替解释性配图。
 - 散文/随笔不要默认钉死水彩；优先按文章气质选择 `editorial-atmospheric`、`modern-guochao-editorial`、`cinematic-editorial`、`watercolor-illustration` 等风格。
 - 移动端优先，避免信息密度过高或文字过多。
 - 微信公众号正文图片保存后应上传为 `mmbiz.qpic.cn` URL。

@@ -1,0 +1,20 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Use image 1 only as the visual style reference. Transform the control-room concept into a structured bilingual engineering infographic for Agent runtime cost governance. Keep the warm paper, graphite engineering sketch and restrained watercolor palette. The information labels must be the visual focus.\n\nBrand header: place the official black OpenAI Blossom symbol in a quiet white-paper area with proper proportions and clear space, followed by the exact wordmark \"OpenAI\" and product label \"CODEX\". Do not modify or texture the logo.\n\nExact title: \"Agent Runtime Cost Governance\"\nExact Chinese subtitle: \"六条成本治理原则\"\n\nArrange six equal control modules around a central usage meter. Each module has exactly one label:\n1. \"Token 有 Owner\"\n2. \"后台 Worker 有 Lifecycle\"\n3. \"Retry 有上限\"\n4. \"Root 持有成本策略\"\n5. \"Typed Canonical Representation\"\n6. \"Background Cost 可观测\"\n\nConnect every module to the central meter with clean pipes or circuit lines. Use a small valve, circuit breaker, hierarchy tree or typed-data icon to reinforce meaning. All text must be exact, dark, large and readable. Use no other labels or fake technical text. The final image should function as a summary diagram that readers can study, not as a mood illustration.",
+  "model": "openai/gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "2048x1152",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/origin/2026-08-30-codex-usage-leak/assets/02-cost-governance-principles-branded.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [
+    "content/origin/2026-08-30-codex-usage-leak/assets/02-cost-ownership-control-room.png"
+  ],
+  "mask": null,
+  "created_at": "2026-08-31T00:24:03",
+  "dry_run": false
+}

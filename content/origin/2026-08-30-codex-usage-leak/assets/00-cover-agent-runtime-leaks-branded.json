@@ -1,0 +1,20 @@
+{
+  "title": "gpt-image-2",
+  "prompt": "Use image 1 only as the visual style and subject-matter reference. Redesign it into a clean, text-rich Chinese editorial infographic. Keep the warm off-white paper, graphite line work, terracotta, sage green and muted blue watercolor palette, but replace the decorative plumbing scene with a clear information hierarchy.\n\nBrand header: reserve a quiet white-paper band at the top-left. Show the official black OpenAI Blossom symbol at normal proportions with generous clear space, followed by the exact wordmark \"OpenAI\". Near it, show the product label \"CODEX\" in bold uppercase sans-serif. Do not alter, texture or recolor the OpenAI logo.\n\nMain title, exact Chinese text: \"CODEX 的额度都漏到哪儿了？\"\nSubtitle, exact Chinese text: \"8 个隐形用量泄漏点\"\n\nMain diagram: a central Codex Agent runtime vessel with four clearly separated branches. Each branch has one exact label and a small visual metaphor:\n1. \"上下文膨胀\" — old images and repeated history filling a pipe.\n2. \"生命周期失控\" — a worker and retry loop that cannot stop.\n3. \"编排与路由失配\" — schedules and child agents taking the wrong route.\n4. \"表示重复\" — the same tool result wrapped twice.\n\nKeep all Chinese characters large, dark, exact and fully legible. Use no other text. The visual should work as an article cover and as a compact explanation, not as decorative art. Maintain wide 2.33:1 composition and keep important text inside safe margins.",
+  "model": "openai/gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1792x768",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/origin/2026-08-30-codex-usage-leak/assets/00-cover-agent-runtime-leaks-branded.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [
+    "content/origin/2026-08-30-codex-usage-leak/assets/00-cover-agent-runtime-leaks.png"
+  ],
+  "mask": null,
+  "created_at": "2026-08-31T00:23:43",
+  "dry_run": false
+}

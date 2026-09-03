@@ -76,8 +76,8 @@ npx skills add eriklee1895/writing-agent-harness --skill article-ideation
 常见例子：
 
 - `tavily-search` / `tavily-research`: web research、current facts 查证。
-- `imagegen`: 系统级图片生成能力。
 - `openai-docs`: OpenAI API / Codex / ChatGPT 相关官方文档查询。
+- AIGC 媒体生成（图片/视频/语音/配乐）统一来自 erik-agent-skills：`gpt-image-2`、`seedream-image-gen`、`seedance-video-gen`、`volcengine-tts`、`seed-audio-gen`、`volcengine-bigmusic-bgm`；安装：`npx skills add eriklee1895/erik-agent-skills --skill <name> -g`。
 
 这些 user-level skills 不随 repo 提交。README 和 runbooks 不应假设 clone 本 repo 后自动拥有这些能力；如果某个任务需要它们，agent 应先检查本机是否存在，缺失时说明 fallback。
 

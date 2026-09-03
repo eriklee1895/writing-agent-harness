@@ -1,0 +1,10 @@
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#f3e7dc","primaryTextColor":"#1f252c","primaryBorderColor":"#d97757","lineColor":"#6f777d","secondaryColor":"#e7efe8","tertiaryColor":"#e9eff3","fontFamily":"PingFang SC, Arial"}}}%%
+flowchart TB
+    A[长会话含旧图片] --> B[触发 compaction]
+    B --> C{图片计入 retained budget?}
+    C -->|旧路径：否| D[图片继续留在 replacement history]
+    D --> E[上下文仍过大]
+    E --> B
+    C -->|新路径：是| F[图片与标签作为原子组计费]
+    F --> G[保留最新且装得下的边界]
+    G --> H[继续执行]

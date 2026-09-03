@@ -1,0 +1,17 @@
+{
+  "title": "job-2",
+  "prompt": "Use case: illustration-story\nPrimary request: A warm hand-drawn editorial cutaway of an AI agent workshop at night. In the foreground, one calm user request arrives at a tidy desk. Behind a glass wall, several small friendly mechanical workers quietly handle image compaction, memory filing, recurring schedules, short summaries, subagent delegation and tool results. A few workers accidentally repeat the same stack of papers or keep working after the main desk is finished. The visual metaphor should explain invisible background computation without any words or labels. Pencil and ink on warm paper with restrained watercolor.\nStyle/medium: graphite pencil sketch, fine ink line art, light watercolor washes, sophisticated editorial illustration\nComposition/framing: landscape cutaway with foreground user desk and layered background night shift, clear visual hierarchy, uncluttered\nLighting/mood: soft warm task lamps with ample white paper background, no dramatic darkness\nColor palette: warm ivory, graphite, terracotta, sage green, dusty blue, small honey yellow accents\nConstraints: no readable text, no letters, no logos, no watermark, friendly but not childish\nAvoid: photorealism, vector flat art, glossy 3D, dark cinematic background, neon, busy infographic labels",
+  "model": "openai/gpt-image-2",
+  "base_url": "https://api.ofox.io/v1",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": null,
+  "output_format": "png",
+  "n": 1,
+  "image_path": "content/origin/2026-08-30-codex-usage-leak/assets/01-hidden-background-workers.png",
+  "downscale_path": null,
+  "downscale_max_dim": null,
+  "reference_images": [],
+  "created_at": "2026-08-31T00:00:23",
+  "dry_run": false
+}
