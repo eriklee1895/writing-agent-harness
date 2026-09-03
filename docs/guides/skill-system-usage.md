@@ -214,6 +214,8 @@ ln -s /path/to/project/.agents/skills/shared-skill shared-skill
 | `gpt-image-2` / `seedream-image-gen` | AIGC 位图生成（gpt-image-2 文字渲染 SOTA；seedream 中文/东亚场景） | eriklee1895/erik-agent-skills |
 | `seedance-video-gen` | Seedance 2.0 视频生成 | eriklee1895/erik-agent-skills |
 | `volcengine-tts` / `seed-audio-gen` / `volcengine-bigmusic-bgm` | 语音合成 / 生成式音频场景 / 无人声配乐 | eriklee1895/erik-agent-skills |
+| `markdown-article-to-feishu-doc` | Markdown 转写飞书云文档 | eriklee1895/erik-agent-skills |
+| `volcengine-doc-fetcher` / `volcengine-web-search` | 火山引擎文档抓取 / 联网搜索 | eriklee1895/erik-agent-skills |
 | `lark-doc` | 飞书文档操作 | larksuite/cli |
 | `lark-markdown` | 飞书 Markdown 处理 | larksuite/cli |
 | `skill-creator` | 创建新 skills | 内置 |
@@ -672,7 +674,6 @@ uv run scripts/main.py --help
 | `article-illustration` | 生成文章封面、正文插图 |
 | `article-to-notion` | 网页文章（微信/博客/arXiv）抓取、清洗并剪藏到 Notion page/database |
 | `notion-cli` | 封装官方 ntn CLI 的 Notion 读写基础 skill（create/read/upload/set-properties 等） |
-| `markdown-article-to-feishu-doc` | 把 Markdown 转写成飞书云文档 |
 
 ### B. 目录速查表
 

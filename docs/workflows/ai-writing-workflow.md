@@ -96,7 +96,7 @@ content/origin/YYYY-MM-DD-<slug>/index.md
 | 发布草稿 | `wechat-publish-workflow` → `wechat-article-publisher` | HTML + 元数据 | 草稿箱 (appmsgid) |
 | 最终发布 | 👤 人工 review | 草稿箱 | 群发 |
 
-> **侧路输入/收藏**：`article-to-notion`（依赖 `notion-cli` 封装的官方 ntn CLI）用于把外部网页（微信公众号/博客/arXiv 等）抓取、清洗后剪藏到 Notion page 或 database row，作为资料沉淀入口；它不是主写作链路的一环，但为 `article-ideation` / 研究阶段提供素材。Markdown → 飞书云文档的输出方向走 `markdown-article-to-feishu-doc`。
+> **侧路输入/收藏**：`article-to-notion`（依赖 `notion-cli` 封装的官方 ntn CLI）用于把外部网页（微信公众号/博客/arXiv 等）抓取、清洗后剪藏到 Notion page 或 database row，作为资料沉淀入口；它不是主写作链路的一环，但为 `article-ideation` / 研究阶段提供素材。Markdown → 飞书云文档的输出方向走 user-level skill `markdown-article-to-feishu-doc`（erik-agent-skills 维护，不在本 repo）。
 
 ## 渲染器风格
 

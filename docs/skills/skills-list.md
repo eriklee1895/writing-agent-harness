@@ -8,7 +8,7 @@
 .agents/skills/ -> ./claude/skills/
 ```
 
-它们随 repo 提交，是 `writing-agent-harness` 的稳定能力边界。部分任务使用本机 user-level skills，不属于本 repo：例如 `tavily-search`、`openai-docs`，安装在 `~/.agents/skills/` 或 `~/.codex/skills/`。**AIGC 媒体生成 skills 统一由 erik-agent-skills repo 维护并安装为 user-level skills**：图片 `gpt-image-2` / `seedream-image-gen`，视频 `seedance-video-gen`，语音合成 `volcengine-tts`，生成式音频场景 `seed-audio-gen`，无人声配乐 `volcengine-bigmusic-bgm`（安装方式：`npx skills add eriklee1895/erik-agent-skills --skill <name> -g`）。新环境准备见 [../project/prepare-environment.md](../project/prepare-environment.md)。
+它们随 repo 提交，是 `writing-agent-harness` 的稳定能力边界。部分任务使用本机 user-level skills，不属于本 repo：例如 `tavily-search`、`openai-docs`，安装在 `~/.agents/skills/` 或 `~/.codex/skills/`。**通用 / AIGC 类 skills 统一由 erik-agent-skills repo 维护并安装为 user-level skills**：媒体生成 `gpt-image-2` / `seedream-image-gen` / `seedance-video-gen` / `volcengine-tts` / `seed-audio-gen` / `volcengine-bigmusic-bgm`，渠道与工具 `markdown-article-to-feishu-doc` / `volcengine-doc-fetcher` / `volcengine-web-search`（安装方式：`npx skills add eriklee1895/erik-agent-skills --skill <name> -g`）。新环境准备见 [../project/prepare-environment.md](../project/prepare-environment.md)。
 
 ## Current Core Skills
 
@@ -78,13 +78,6 @@
   - Playwright 微信公众号发布器。
   - 输入 origin `.md`（`content/origin/&lt;slug&gt;/`，frontmatter 元数据权威源）+ renderer HTML preview，自动登录态复用、注入正文、上传正文图片到微信 CDN、写标题/作者/摘要、保存草稿并报告 `appmsgid`。
   - 仅创建草稿，不点发布/群发。不负责排版风格（由 `wechat-article-renderer` 负责）。
-
-- `markdown-article-to-feishu-doc`
-  - 把本地 Markdown 文章转写为飞书云文档（docx）。
-  - 解析 frontmatter，保留标题层级、列表、代码块、表格、引用块；本地图片按原始尺寸上传，` ```mermaid ` 代码块自动渲染为飞书画板，`==高亮文本==` 转换为黄色 callout。
-  - 会清洗 `<video>` / `<source>` / HTML 注释等飞书 markdown 模式不支持的标签；缺失的本地图片降级为 `[图片缺失]` 提示，不阻塞整篇转换。
-  - 默认新建飞书文档；若用户提供已有 docx URL，会先 fetch 探测并确认后再 overwrite。
-  - 底层依赖 `lark-cli` 和 `lark-doc` / `lark-whiteboard` / `lark-shared` skills，本 skill 只负责预处理和编排。
 
 - `article-to-notion`
   - 将任意网页文章（微信公众号、技术博客、论文页面等）抓取、清洗并转写到用户指定的 Notion page 或 database row。
