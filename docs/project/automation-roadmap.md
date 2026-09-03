@@ -63,6 +63,8 @@ cron / scheduled run
 
 ## Media Generation Boundary
 
+> **2026-09 更新**：TTS / BGM / 视频 / 音频生成能力已通过 erik-agent-skills 的 user-level skills 可用（`volcengine-tts`、`volcengine-bigmusic-bgm`、`seedance-video-gen`、`seed-audio-gen`，见 AGENTS.md），本 repo 不再自建生成类 skill。本节"不在缺少真实调用点时先做大工程"的边界判断对 ASR / transcript 集成仍然成立。
+
 ASR/TTS 是未来 HyperFrames 视频生成和文章动态摘要的重要底层能力，但不应在缺少真实 workflow 调用点时先做成独立大工程。
 
 推荐顺序：

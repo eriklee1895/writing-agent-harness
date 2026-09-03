@@ -120,6 +120,8 @@ Feishu / Notion / etc.
 
 ## Media Intelligence Todos
 
+> **2026-09 更新**：TTS、BGM、视频生成、生成式音频场景已由 erik-agent-skills 的 user-level skills 提供（`volcengine-tts`、`volcengine-bigmusic-bgm`、`seedance-video-gen`、`seed-audio-gen`），本 repo 不自建；下方 TTS 待办视为已由外部 skill 满足。剩余开放问题收窄为 ASR / transcript（provider-neutral artifact 仍待定义）。
+
 - [x] 设计并落地第一版视频高光选择 workflow：
   - [x] 明确 `video-highlight-select` 的输入输出：本地素材包、文章主题/段落意图、候选高光片段清单。
   - [x] 第一版保持 human-in-the-loop，只推荐候选片段，不自动决定最终剪辑。
