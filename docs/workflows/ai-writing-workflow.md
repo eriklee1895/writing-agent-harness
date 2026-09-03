@@ -87,8 +87,8 @@ content/origin/YYYY-MM-DD-<slug>/index.md
 |------|-------|------|------|
 | 灵感脑暴 | `article-ideation` | 灵感碎片、链接、截图 | writing brief + outline |
 | 写作打磨 | `polish-article` | Markdown 草稿 | 打磨后 Markdown |
-| 插图生成 | `article-illustration` / `gpt-image-2` | 风格/尺寸描述 | 插画/封面/信息图 |
-| 视频生成 | `seedance-video-gen` | 文字/首帧图/提示词 | 视频素材 |
+| 插图生成 | `article-illustration` | 风格/尺寸描述 | 插画/封面/信息图 |
+| AIGC 媒体生成 | `gpt-image-2` / `seedream-image-gen` / `seedance-video-gen` / `volcengine-tts` / `seed-audio-gen` / `volcengine-bigmusic-bgm`（均为 user-level skills，由 erik-agent-skills 维护） | 文字/参考图/提示词 | 图片/视频/旁白/音频素材 |
 | 视频素材摄取 | `video-material-ingest` | 已知视频 URL | `assets/media/` 素材包 |
 | 视频高光选择 | `video-highlight-select` | 本地素材包 + 文章意图 | contact sheet + 候选片段表 |
 | 文章视频剪辑 | `article-video-clip` | 已确认片段 + preset | `assets/video-clips/<clip-name>/final.mp4` |

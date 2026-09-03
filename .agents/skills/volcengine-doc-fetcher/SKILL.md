@@ -169,5 +169,5 @@ Fetched pages are cached at `~/.cache/volcengine-docs/` with a configurable TTL 
 
 - General web search about Volcano Engine — use `volcengine-web-search` or `byted-web-search`
 - Non-Volcano Engine URLs — use `firecrawl-scrape` or `WebFetch`
-- Volcano Engine TTS voice generation — use `volcengine-tts`
-- Volcano Engine image/video generation — use `seedream-image-gen` or `seedance-video-gen`
+- Volcano Engine TTS / speech synthesis — use the `volcengine-tts` user-level skill (maintained in erik-agent-skills, not this repo)
+- Volcano Engine image/video generation — use the `seedream-image-gen` / `gpt-image-2` (images) or `seedance-video-gen` (video) user-level skills (erik-agent-skills); generative audio scenes use `seed-audio-gen`, BGM uses `volcengine-bigmusic-bgm`

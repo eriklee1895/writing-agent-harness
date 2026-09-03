@@ -137,7 +137,7 @@ description: "润色和打磨文章写作。Use when the user asks to polish/精
 
 - 需要微信公众号排版：打磨完成后交给 `wechat-article-renderer`。
 - 需要微信公众号草稿/发布：交给 `wechat-publish-workflow`。
-- 需要生成封面或插图：优先用系统 `$imagegen`。
+- 需要生成封面或插图：用项目 skill `article-illustration`（底层媒体生成走 user-level `gpt-image-2` / `seedream-image-gen`，由 erik-agent-skills 维护，不在本 repo）。
 
 ## Output Rules
 

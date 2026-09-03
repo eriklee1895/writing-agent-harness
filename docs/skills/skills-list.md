@@ -8,7 +8,7 @@
 .agents/skills/ -> ./claude/skills/
 ```
 
-它们随 repo 提交，是 `writing-agent-harness` 的稳定能力边界。部分任务还会使用本机 user-level skills，例如 `tavily-search`、`imagegen`、`openai-docs`；这些 skills 通常安装在 `~/.agents/skills/` 或 `~/.codex/skills/`，不属于本 repo。新环境准备见 [../project/prepare-environment.md](../project/prepare-environment.md)。
+它们随 repo 提交，是 `writing-agent-harness` 的稳定能力边界。部分任务使用本机 user-level skills，不属于本 repo：例如 `tavily-search`、`openai-docs`，安装在 `~/.agents/skills/` 或 `~/.codex/skills/`。**AIGC 媒体生成 skills 统一由 erik-agent-skills repo 维护并安装为 user-level skills**：图片 `gpt-image-2` / `seedream-image-gen`，视频 `seedance-video-gen`，语音合成 `volcengine-tts`，生成式音频场景 `seed-audio-gen`，无人声配乐 `volcengine-bigmusic-bgm`（安装方式：`npx skills add eriklee1895/erik-agent-skills --skill <name> -g`）。新环境准备见 [../project/prepare-environment.md](../project/prepare-environment.md)。
 
 ## Current Core Skills
 
@@ -67,24 +67,6 @@
   - 生成文章封面、正文插图、章节视觉分隔图和技术图示。
   - 默认支持 `--style-profile auto`，但正式文章出图时应优先明确指定风格。
   - Guide 和历史优质生图案例见 [article-illustration/README.md](article-illustration/README.md)。
-
-- `gpt-image-2`
-  - 用 OpenAI 的 gpt-image-2 生成、编辑和批量生成位图。
-  - 支持文生图、参考图编辑（背景替换、物体移除、文字替换、风格迁移）、最多 16 张参考图、批量提示词变体。
-  - gpt-image-2 是 2026-06 时点的 SOTA，擅长文字精准渲染、照片级真实感和身份敏感编辑。
-  - 不用于 SVG/矢量图标、代码原生图示、确定性布局工作或需要干净透明背景的场景（gpt-image-2 的透明背景建议先生成不透明再用下游 rembg 处理）。
-
-- `seedance-video-gen`
-  - 用火山引擎 Seedance 2.0 生成视频。
-  - 支持文生视频、图生视频（首帧/首尾帧）、多模态参考、批量镜头、提示词优化和首帧图生成。
-  - 前置依赖：`uv`、`ARK_API_KEY` 环境变量或 `.env` 文件。
-  - 生成的视频素材包包含 `video.mp4`、`manifest.json`、`prompt.md`，可选 `last-frame.jpg`。
-
-- `seed-audio-gen`
-  - 用火山引擎豆包音频生成 1.0（seed-audio-1.0）从自然语言场景描述生成完整音频场景——人声+音效+BGM 一次调用输出成品音频（最长 120s）。
-  - 支持时间戳精准控制（100ms 粒度）、音色克隆、多角色对话、20 语种、批量并发生成、音色表本地查询。
-  - 前置依赖：`uv`、`VOLC_SPEECH_API_KEY` 环境变量或 `.env` / `~/.volcengine.env` 文件。
-  - 不适用于纯旁白/朗读（用 `volcengine-tts`，快 11 倍便宜 14 倍）、纯 BGM（用 `volcengine-bigmusic-bgm`）、实时对话（用双向流式 TTS）、或逐字准确率要求严格的场景（seed-audio 是生成式模型，可能改写原文）。
 
 - `wechat-article-fetcher`
   - 用 Playwright + 本地持久化 Profile 提取微信公众号文章到结构化 Markdown + assets。
