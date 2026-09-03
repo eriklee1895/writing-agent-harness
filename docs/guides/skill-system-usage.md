@@ -215,7 +215,7 @@ ln -s /path/to/project/.agents/skills/shared-skill shared-skill
 | `seedance-video-gen` | Seedance 2.0 视频生成 | eriklee1895/erik-agent-skills |
 | `volcengine-tts` / `seed-audio-gen` / `volcengine-bigmusic-bgm` | 语音合成 / 生成式音频场景 / 无人声配乐 | eriklee1895/erik-agent-skills |
 | `markdown-article-to-feishu-doc` | Markdown 转写飞书云文档 | eriklee1895/erik-agent-skills |
-| `volcengine-doc-fetcher` / `volcengine-web-search` | 火山引擎文档抓取 / 联网搜索 | eriklee1895/erik-agent-skills |
+| `volcengine-doc-fetcher` | 火山引擎文档抓取 | eriklee1895/erik-agent-skills |
 | `lark-doc` | 飞书文档操作 | larksuite/cli |
 | `lark-markdown` | 飞书 Markdown 处理 | larksuite/cli |
 | `skill-creator` | 创建新 skills | 内置 |
@@ -674,6 +674,7 @@ uv run scripts/main.py --help
 | `article-illustration` | 生成文章封面、正文插图 |
 | `article-to-notion` | 网页文章（微信/博客/arXiv）抓取、清洗并剪藏到 Notion page/database |
 | `notion-cli` | 封装官方 ntn CLI 的 Notion 读写基础 skill（create/read/upload/set-properties 等） |
+| `volcengine-web-search` | 火山引擎联网搜索（网页/图片），中文内容与国内信息研究查证 |
 
 ### B. 目录速查表
 
