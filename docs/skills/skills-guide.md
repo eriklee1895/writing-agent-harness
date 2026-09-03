@@ -45,8 +45,8 @@ See [the reference guide](references/setup.md) for details.
 
 - ✅ `scripts/search.py`
 - ✅ `references/xxx.md`
-- ❌ `~/.claude/skills/volcengine-web-search/scripts/search.py`（依赖本机 symlink 结构）
-- ❌ `.agents/skills/volcengine-web-search/scripts/search.py`（绑定安装层级）
+- ❌ `~/.claude/skills/wechat-article-fetcher/scripts/fetch.py`（依赖本机 symlink 结构）
+- ❌ `.agents/skills/wechat-article-fetcher/scripts/fetch.py`（绑定安装层级）
 - ❌ `/absolute/path/to/scripts/search.py`（不可移植）
 - ❌ `${CLAUDE_SKILL_DIR}/scripts/search.py`（绑定特定 runtime）
 
