@@ -8,7 +8,7 @@
 .agents/skills/ -> ./claude/skills/
 ```
 
-它们随 repo 提交，是 `writing-agent-harness` 的稳定能力边界。部分任务使用本机 user-level skills，不属于本 repo：例如 `tavily-search`、`openai-docs`，安装在 `~/.agents/skills/` 或 `~/.codex/skills/`。**通用 / AIGC 类 skills 统一由 erik-agent-skills repo 维护并安装为 user-level skills**：媒体生成 `gpt-image-2` / `seedream-image-gen` / `seedance-video-gen` / `volcengine-tts` / `seed-audio-gen` / `volcengine-bigmusic-bgm`，渠道与工具 `markdown-article-to-feishu-doc` / `volcengine-doc-fetcher`（安装方式：`npx skills add eriklee1895/erik-agent-skills --skill <name> -g`）。新环境准备见 [../project/prepare-environment.md](../project/prepare-environment.md)。
+它们随 repo 提交，是 `writing-agent-harness` 的稳定能力边界。部分任务使用本机 user-level skills，不属于本 repo：例如 `tavily-search`、`openai-docs`，安装在 `~/.agents/skills/` 或 `~/.codex/skills/`。**通用 / AIGC 类 skills 统一由 erik-agent-skills repo 维护并安装为 user-level skills**：媒体生成 `gpt-image-2` / `seedream-image-gen` / `seedance-video-gen` / `volcengine-tts` / `seed-audio-gen` / `volcengine-bigmusic-bgm`，渠道与工具 `markdown-article-to-feishu-doc` / `volcengine-doc-fetcher` / `volcengine-web-search`（安装方式：`npx skills add eriklee1895/erik-agent-skills --skill <name> -g`）。新环境准备见 [../project/prepare-environment.md](../project/prepare-environment.md)。
 
 ## Current Core Skills
 
@@ -84,10 +84,6 @@
   - 微信公众号走 Playwright（复用 `wechat-article-fetcher`，含 data-src 懒加载正文图），通用站点走 firecrawl/tavily fallback；本地图片 single_part 上传到 Notion 解决防盗链问题。
   - 正文前自动加 single-quote 文章卡片（`<br>` 连接多行，规避 ntn CLI 多行 `>` 拆成独立 quote block 的坑）；上传前自动 merge quote、剥开头重复 H1、尾部公众号引流段落（"推荐阅读"/专辑链接/"本公众号..."等）。
   - 依赖底层 `notion-cli` skill；认证走 `ntn login` OAuth，无需 integration token 或 share connection。
-
-- `volcengine-web-search`
-  - 火山引擎联网搜索（网页 + 图片），中文内容覆盖和时效性优于通用搜索引擎；研究查证、找文章、搜图片、国内信息优先使用。
-  - 前置依赖：`uv`、火山"搜索无限" API key（`.env`）。
 
 - `notion-cli`
   - 封装官方 `ntn` CLI（`curl -fsSL https://ntn.dev | bash`）的项目级基础 skill，所有需要读写 Notion 的 skill 应通过本 skill 的 `scripts/ntn_cli.py` helper 完成，不手写 `ntn api` 或 REST 调用。
