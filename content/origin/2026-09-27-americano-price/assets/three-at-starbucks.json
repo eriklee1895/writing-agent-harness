@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: Body inset illustration for a Chinese personal essay. Landscape orientation.\n\nPrimary request: A wide, pulled-back view of a café interior in the afternoon, seen from behind and slightly to one side of the group. Three men sit around a round wooden table in the middle distance, in the middle of a lively, animated conversation — they are clearly enjoying it, and their faces are visible and expressive.\n\nThe mood is the point: these are three engineers talking shop, relaxed and absorbed, not sitting stiffly. One leans forward on his elbows toward the others, mid-sentence. One has turned his chair sideways to face the group and is gesturing with a raised hand, talking. The third sits back with an arm over the chair back, grinning and listening. Shoulders open toward each other, heads tilted in toward the centre of the table. Nothing about the posture is formal or upright.\n\nThe three figures are fictional characters, not portraits of real people. On the far side of the table, an older white American man with grey hair and a light complexion, in a plain t-shirt, leaning in. Beside him, a younger East Asian man in a dark t-shirt. On the near side, facing the camera at a three-quarter angle, a middle-aged East Asian man in an open hoodie, the narrator. All three dress like programmers, not office workers: plain t-shirts and a hoodie, jeans, sneakers, a backpack slung over the back of a chair.\n\nOn the table between them, clearly visible: a tall clear plastic cup of blended Frappuccino topped with a high swirl of whipped cream and a green straw; and TWO tall clear plastic cups of iced black americano, each with a straw, the dark coffee visible through the clear plastic. Scattered among the drinks: an open laptop, a notebook, a phone. The drinks are the visual anchor of the scene.\n\nComposition: Generous depth and space. Around the table, more of the café is visible — several other empty round tables with wooden chairs, a wooden floor, a large window wall with soft afternoon light. Outside the window, a modern Chinese city street. The room feels quiet and mostly empty, which makes the one animated table stand out.\n\nStyle and medium: Contemporary editorial illustration, flat gouache-like rendering with subtle paper grain. Warm and observant — this is an essay illustration, not a product advertisement.\n\nLighting and color: Soft afternoon window light from the far side. Muted warm paper palette — cream #faf9f5, terracotta, deep brown, muted blue.\n\nText (exact): none anywhere in the image.\n\nAvoid: stiff or formal posture, business suits, close-up framing, recognizable likenesses of specific real individuals, text, lettering, watermarks, photographic realism, cluttered detail.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 566,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 566,
+        "cached_tokens": 0
+      },
+      "output_tokens": 178,
+      "total_tokens": 744,
+      "output_tokens_details": {
+        "image_tokens": 178,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "d2eb6d2e-e911-45dc-80b9-19b09feb691e"
+  },
+  "elapsed_seconds": 31.058,
+  "attempts": 1,
+  "output": "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/maria-educa-o-temporal-case-study-3baf84/content/drafts/2026-09-27-americano-price/assets/three-at-starbucks.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-27T15:47:33+00:00"
+}

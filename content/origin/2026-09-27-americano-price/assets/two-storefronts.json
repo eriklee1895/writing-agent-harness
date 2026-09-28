@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: Body inset illustration for a Chinese personal essay, landscape orientation.\n\nPrimary request: Two coffee shops side by side, split evenly left and right by a clean vertical line. The contrast is about floor space and seating only — both shops are modern, clean and well run.\n\nLeft half: a spacious sit-down café inside a mall, seen through a wide glass frontage — tables, chairs, a sofa, warm pendant lamps, a long service counter. Comfortable but ordinary.\n\nRight half: a compact takeaway coffee window on a city street, about twenty square metres, bright and tidy — a proper counter, a wide open service window, a plain illuminated fascia panel above it, one small potted plant. Clean and new. It simply has no seating and no floor space to spare.\n\nStyle and medium: Contemporary editorial illustration, flat gouache-like rendering with subtle paper grain. Both halves must be drawn in exactly the same illustration style, the same brush treatment, the same level of detail and the same warm palette — the only difference between the two halves should be the size and type of the shop, never the rendering.\n\nLighting and color: Warm lamps on the left, cooler daylight on the right. Both well lit, neither gloomy. Muted palette — cream #faf9f5, terracotta, deep brown, muted slate blue.\n\nText (exact): none anywhere in the image.\n\nAvoid: shabby or run-down appearance, boarded windows, grime, dim lighting, people, hands, logos, lettering, watermarks, photographic realism, cluttered detail.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 312,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 312,
+        "cached_tokens": 0
+      },
+      "output_tokens": 178,
+      "total_tokens": 490,
+      "output_tokens_details": {
+        "image_tokens": 178,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "a5362280-6547-4cfc-abb8-d96008f98481"
+  },
+  "elapsed_seconds": 28.813,
+  "attempts": 1,
+  "output": "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/maria-educa-o-temporal-case-study-3baf84/content/drafts/2026-09-27-americano-price/assets/two-storefronts.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-27T16:14:29+00:00"
+}

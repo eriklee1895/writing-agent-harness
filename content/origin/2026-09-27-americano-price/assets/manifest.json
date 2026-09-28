@@ -1,0 +1,98 @@
+{
+  "article": "2026-09-27-americano-price",
+  "title": "一杯美式引发的思考",
+  "generated_at": "2026-09-27",
+  "updated_at": "2026-09-28",
+  "tool": "gpt-image-api skill (gpt_image_api.py)",
+  "model": "gpt-image-2.5-sunburst",
+  "provider": "custom endpoint (CUSTOM_OPENAI_BASE_URL)",
+  "palette": "warm paper #faf9f5 / terracotta / deep brown — 与 warm-editorial 微信 style 对齐",
+  "assets": [
+    {
+      "file": "hero-cover.png",
+      "alt": "傍晚街边的木台上并排立着三只纸杯——库迪、瑞幸、星巴克，里面的黑咖啡一模一样",
+      "role": "wechat headline cover",
+      "section": "(顶部)",
+      "size": "1792x768",
+      "aspect": "2.35:1",
+      "prompt_file": "prompt-hero-cover.txt",
+      "status": "in use",
+      "notes": "三杯咖啡液颜色刻意保持一致，对应正文「我喝得出来区别吗？喝不出来」。背景为中国居民区街景。库迪标识为「@」符号，酒红 #7B2D3B（2024 年品牌升级后的官方核心色）。"
+    },
+    {
+      "file": "starbucks-orders.png",
+      "alt": "星巴克的桌上，一杯顶着奶油的星冰乐和一杯纯黑美式并排",
+      "role": "body inset",
+      "section": "第 2 节（二〇一八年，我第一次喝美式）",
+      "size": "1536x1024",
+      "prompt_file": "prompt-starbucks-orders.txt",
+      "status": "in use",
+      "notes": "特写，把「一个点了甜品、一个点了苦药」的错配做成一眼可辨。杯身有星巴克塞壬标识，无文字。"
+    },
+    {
+      "file": "office-coffee-machine.png",
+      "alt": "办公室茶水间的咖啡机，深色咖啡和白色牛奶同时流进纸杯",
+      "role": "body inset",
+      "section": "第 3 节（那八年，我换的不是咖啡）",
+      "size": "1536x1024",
+      "prompt_file": "prompt-office-coffee-machine.txt",
+      "status": "in use",
+      "notes": "对应正文「都是一半咖啡一半奶」。无任何品牌标识与文字。"
+    },
+    {
+      "file": "cost-breakdown.png",
+      "alt": "库迪拿铁 9.9 元与星巴克拿铁 4.8 美元的成本构成对比",
+      "role": "body inset infographic",
+      "section": "第 4 节（一杯咖啡的成本，分成四份）",
+      "size": "1536x1024",
+      "prompt_file": "prompt-cost-breakdown.txt",
+      "status": "in use",
+      "notes": "两块面板同为「拿铁」，口径可比（用户指出 v1 的「美式 vs 拿铁」对比逻辑不成立）。左：库迪 2023 年官方口径。右：星巴克 2012 年《华尔街日报》拆解。13 处文字已逐字核对无误。⚠️ 左侧只有三格，比正文「四样东西」粗一档——库迪官方未把房租与人工拆开披露，凑四格需编造数字，故不做。"
+    },
+    {
+      "file": "two-storefronts.png",
+      "alt": "左边是商场里宽敞的咖啡店，右边是街边干净的取餐窗口",
+      "role": "body inset",
+      "section": "第 6 节（卖不动产的，和卖产能的）",
+      "size": "1536x1024",
+      "prompt_file": "prompt-two-storefronts.txt",
+      "status": "in use",
+      "notes": "左右对半分屏。用户指出 v1 右侧过于寒碜（像废弃铺面），已改为干净亮堂、有柜台有灯箱的新店——对比只落在「面积与座位」，不落在新旧或体面。v3 额外统一了两半的画风。"
+    },
+    {
+      "file": "closing-home.png",
+      "alt": "夜里家里的木桌，一杯喝到一半的美式，旁边是刚买菜回来的布袋、钥匙和手机，窗外已经黑透",
+      "role": "closing inset",
+      "section": "第 8 节（回到那杯苦咖啡）",
+      "size": "1536x1024",
+      "prompt_file": "prompt-closing-home.txt",
+      "status": "in use",
+      "notes": "用户否掉了原定的「浓缩被热水冲开」方案（dilution.png）——太取巧，把比喻直接画成物理现象，且玻璃杯特写读起来像产品图。改为呼应开头买菜那条线的收束场景：回到家、菜在桌上、咖啡喝了一半、天黑了。"
+    }
+  ],
+  "unused": [
+    {
+      "file": "three-at-starbucks.png",
+      "prompt_file": "prompt-three-at-starbucks.txt",
+      "status": "UNUSED — 用户否决（迭代 5 轮）",
+      "notes": "三人咖啡馆交谈场景。6 项约束（族裔／性别／年龄／姿态／气氛／道具）互相漂移，5 轮仍未收敛，用户判定构图不成立，撤出正文。另存 4 个中间版本 v1–v4。"
+    },
+    {
+      "file": "dilution.png",
+      "prompt_file": "prompt-dilution.txt",
+      "status": "UNUSED — 用户否决",
+      "notes": "浓缩在热水里散开的特写。概念过于取巧，且构图像产品图。由 closing-home.png 取代。"
+    }
+  ],
+  "superseded": [
+    { "file": "hero-cover-v1.png", "notes": "背景误渲染为欧洲街景；库迪标识误渲染为橙红「C」而非「@」。" },
+    { "file": "hero-cover-v2.png", "notes": "街景与 @ 符号已正确，但库迪标识为正红而非官方酒红。" },
+    { "file": "cost-breakdown-v1.png", "notes": "左侧面板误标为「库迪美式」，与右侧「星巴克拿铁」构成美式 vs 拿铁的错误对比。" },
+    { "file": "two-storefronts-v1.png", "notes": "右侧过于寒碜，像灰墙上的洞／废弃铺面，与库迪瑞幸真实门店形象不符。" },
+    { "file": "two-storefronts-v2.png", "notes": "右侧已改好，但左右两半画风不一致（左暖调厚涂、右偏平偏冷）。" },
+    { "file": "three-at-starbucks-v1.png", "notes": "叙述者被画成女性；画面过近；三人肤色均偏亚洲。" },
+    { "file": "three-at-starbucks-v2.png", "notes": "已改为三位男性，但 Phil 仍为亚洲面孔，构图仍过近。" },
+    { "file": "three-at-starbucks-v3.png", "notes": "中远景与 Phil 族裔已正确，但姿态拘谨、纸杯未改为透明冰杯。" },
+    { "file": "three-at-starbucks-v4.png", "notes": "姿态、装束、透明冰杯均已正确，但三人背对镜头无表情，「相谈甚欢」不足。" }
+  ]
+}

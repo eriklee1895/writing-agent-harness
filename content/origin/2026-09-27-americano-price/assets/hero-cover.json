@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: Wide headline cover for a Chinese personal essay about why budget coffee chains sell an americano for 9.9 yuan while Starbucks charges 30. Final use is a WeChat Official Account article cover, 2.35:1.\n\nPrimary request: Three takeaway paper coffee cups stand in a row on a dark walnut counter, seen from a slightly low three-quarter angle. Each cup is printed with one coffee brand's own logo and Chinese wordmark. The left cup carries Cotti Coffee's \"@\" symbol above the words \"库迪咖啡\", printed in a deep burgundy wine-red, approximately #7B2D3B — a dark, muted, mature red, definitely not a bright or orange red. The centre cup carries Luckin Coffee's blue deer mark above the words \"瑞幸咖啡\". The right cup carries Starbucks' green circular siren logo above the words \"星巴克\". The liquid visible inside all three cups is the same dark brown-black americano — there is no visible difference between the three drinks.\n\nComposition: The three cups sit centred in the lower half of a wide horizontal frame, evenly spaced, equal in size and height. Generous empty space above them. Behind them, softly out of focus, a contemporary Chinese neighbourhood street at dusk: low-rise residential buildings with air-conditioner units, a small supermarket entrance with stacked produce crates, parked electric scooters, street trees, warm streetlights just coming on.\n\nStyle and medium: Contemporary editorial illustration, flat gouache-like rendering with subtle paper grain. Restrained and quiet — this is an essay illustration, not a product advertisement. Do not render European architecture, awnings, or cobblestone streets.\n\nLighting and color: Warm dusk light from the right, soft long shadows to the left. Muted warm paper palette — cream #faf9f5, terracotta and deep brown — with each brand's own accent colour appearing only on its own cup.\n\nText (exact): \"库迪咖啡\" on the left cup, \"瑞幸咖啡\" on the centre cup, \"星巴克\" on the right cup. No other text anywhere in the image, and no shop signage in the background.\n\nAvoid: people, hands, price tags, invented slogans, extra lettering, background signage, watermarks, photographic realism, cluttered detail.\n",
+    "n": 1,
+    "size": "1792x768",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 476,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 476,
+        "cached_tokens": 0
+      },
+      "output_tokens": 175,
+      "total_tokens": 651,
+      "output_tokens_details": {
+        "image_tokens": 175,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "46cd8df9-a85c-470a-a5c0-fd630db6d170"
+  },
+  "elapsed_seconds": 27.782,
+  "attempts": 1,
+  "output": "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/maria-educa-o-temporal-case-study-3baf84/content/drafts/2026-09-27-americano-price/assets/hero-cover.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-27T15:36:57+00:00"
+}

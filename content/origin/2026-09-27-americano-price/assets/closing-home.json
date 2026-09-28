@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: Closing body illustration for a Chinese personal essay. Landscape orientation.\n\nPrimary request: A quiet still life on a plain wooden table at home, in the evening. The scene is the quiet after an ordinary day. On the table: a half-drunk takeaway paper cup of black americano, no branding, lid off, the dark coffee visible inside. Beside it, a cloth tote bag that has just come back from the supermarket, with a few vegetables spilling out of it — a tomato, a bunch of leafy greens, a couple of onions. A set of keys. A phone lying face down. Through a window in the background it is fully dark outside, and a warm lamp inside the room lights the table from the left.\n\nComposition: The table fills the lower half of the frame, the cup and the groceries sit together in the lower third and are the subject. The dark window occupies the upper background, softly out of focus, with the faint warm reflection of the room in the glass. Generous quiet space.\n\nStyle and medium: Contemporary editorial illustration, flat gouache-like rendering with subtle paper grain. Restrained and domestic, quiet, a little tired. This is an essay illustration, not a product advertisement.\n\nLighting and color: A single warm indoor lamp from the left, soft shadows to the right. Muted warm paper palette — cream #faf9f5, terracotta, deep brown, with the window a soft dark blue-grey.\n\nText (exact): none anywhere in the image.\n\nAvoid: people, hands, brand logos, lettering, price tags, glasses of water, coffee beans, watermarks, photographic realism, cluttered detail.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 334,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 334,
+        "cached_tokens": 0
+      },
+      "output_tokens": 161,
+      "total_tokens": 495,
+      "output_tokens_details": {
+        "image_tokens": 161,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "11540bf0-3278-4e28-acad-4ade347c6594"
+  },
+  "elapsed_seconds": 32.17,
+  "attempts": 1,
+  "output": "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/maria-educa-o-temporal-case-study-3baf84/content/drafts/2026-09-27-americano-price/assets/closing-home.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-27T16:00:27+00:00"
+}

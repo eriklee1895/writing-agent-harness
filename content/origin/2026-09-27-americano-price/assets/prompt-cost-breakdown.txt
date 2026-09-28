@@ -1,0 +1,29 @@
+Deliverable: A restrained editorial infographic for a Chinese WeChat article, landscape orientation.
+
+Primary request: Two side-by-side labelled panels comparing what is inside the price of the same kind of drink — a milk coffee (拿铁) — bought from a budget chain and from a premium chain. Each panel has a heading and a set of horizontal bars with a value printed at the end of each bar. Both panels are about the same drink type, so the two panels are directly comparable.
+
+Left panel heading (exact): "库迪拿铁 9.9 元"
+Left panel bars, top to bottom (exact labels):
+"咖啡豆 2–2.5 元"
+"牛奶、糖浆、包装 约 3 元"
+"房租、人工、水电 约 3.5 元"
+Left panel caption below the bars (exact): "单杯成本不超过 9 元"
+Left panel small note at the bottom (exact): "2023 年，库迪官方口径"
+
+Right panel heading (exact): "星巴克拿铁 4.8 美元"
+Right panel bars, top to bottom (exact labels):
+"房租 26%"
+"其他 约 19%"
+"利润 18%"
+"店铺运营 15%"
+"原材料 13%"
+"人力 8.5%"
+Right panel small note at the bottom (exact): "2012 年，《华尔街日报》拆解"
+
+Style and medium: Clean editorial data graphic, flat vector look, generous white space, thin hairline rules, no 3D, no gradients, no drop shadows, no rounded cartoon shapes.
+
+Lighting and color: Flat, even, no lighting. Warm paper background #faf9f5. Bars in terracotta #c1613c, with the single largest bar in each panel in deep brown #4a3b32. All labels in near-black.
+
+Text (exact): only the strings listed above. No other text anywhere in the image.
+
+Avoid: logos, brand marks, photographs, drawings of coffee cups, legends, footnotes, watermarks, English text, extra numbers.

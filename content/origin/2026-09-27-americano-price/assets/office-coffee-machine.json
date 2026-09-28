@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: Body inset illustration for a Chinese personal essay. Landscape orientation.\n\nPrimary request: An office pantry coffee machine, the kind found in a company break room. A white paper cup sits under the dispenser spout, and two streams are falling into it at once — one dark coffee, one pale milk — so the cup is filling half coffee, half milk. A short stack of paper cups stands beside the machine, and a few used cups sit nearby. The machine is plain and utilitarian, no branding.\n\nComposition: The machine occupies the left and centre of the frame, the cup and the two falling streams are the focal point. A plain office wall and countertop behind, softly out of focus. Generous space above.\n\nStyle and medium: Contemporary editorial illustration, flat gouache-like rendering with subtle paper grain. Quiet, a little melancholy, everyday.\n\nLighting and color: Cool overhead break-room light, but rendered in a warm muted palette — cream #faf9f5, terracotta, deep brown, off-white.\n\nText (exact): none anywhere in the image.\n\nAvoid: people, hands, logos, buttons with lettering, watermarks, photographic realism, cluttered detail.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 238,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 238,
+        "cached_tokens": 0
+      },
+      "output_tokens": 169,
+      "total_tokens": 407,
+      "output_tokens_details": {
+        "image_tokens": 169,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "9cf49dc9-9270-45b1-b53d-032a3ff19d35"
+  },
+  "elapsed_seconds": 35.056,
+  "attempts": 1,
+  "output": "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/maria-educa-o-temporal-case-study-3baf84/content/drafts/2026-09-27-americano-price/assets/office-coffee-machine.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-27T15:38:02+00:00"
+}
