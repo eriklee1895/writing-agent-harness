@@ -10,9 +10,9 @@
 
 1. Rendered `report.zh.md` → WeChat HTML, found 2 of 8 images leaking as raw markdown.
 2. Root-caused + fixed a renderer bug (see below), re-rendered → 8/8 images.
-3. Created WeChat draft via `baoyu-post-to-wechat` CDP browser path (impact-rational). appmsgid 100000193.
+3. Created WeChat draft via `baoyu-post-to-wechat` CDP browser path (impact-rational). appmsgid <见 .local-archive 发布态>.
 4. User feedback: card + tinted background looks too bright under phone night/dark mode; switch default WeChat style to white/flat.
-5. Switched renderer default style to `agent-flow` (white, flat, no cards); re-rendered + re-published. appmsgid 100000195.
+5. Switched renderer default style to `agent-flow` (white, flat, no cards); re-rendered + re-published. appmsgid <见 .local-archive 发布态>.
 
 ## Renderer bug fixed (wechat-article-renderer)
 
@@ -27,7 +27,7 @@ Fix: capture the backtick run on the opener and close on any line that is a bare
 
 ## Follow-ups
 
-- User: final review + publish/群发 of appmsgid 100000195; delete superseded 100000193.
+- User: final review + publish/群发 of appmsgid <见 .local-archive 发布态>; delete superseded 100000193.
 - Images live in `.local-archive/2026-06-11-steer-analysis-report/images/` (not in git).
 
 ## Cleanup (2026-06-12)
@@ -40,4 +40,4 @@ After the user marked the draft as "写好，归档", I finished the closeout pa
 
 ## Remaining follow-ups (unchanged)
 
-- User: final review + publish/群发 of appmsgid 100000195; delete superseded 100000193.
+- User: final review + publish/群发 of appmsgid <见 .local-archive 发布态>; delete superseded 100000193.

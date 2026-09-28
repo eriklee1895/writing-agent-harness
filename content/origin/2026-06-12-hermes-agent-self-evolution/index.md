@@ -4,7 +4,6 @@ date: 2026-06-12
 status: draft-created
 tags: [agent, self-evolution, memory, skill-learning, GEPA, hermes]
 register: agent-technical-essay
-appmsgid: "100000313"
 coverImage: assets/20260612-130013-hermes-agent-self-evolution-cover-v2-cropped.png
 ---
 

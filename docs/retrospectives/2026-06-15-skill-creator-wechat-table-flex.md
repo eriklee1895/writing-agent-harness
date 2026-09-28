@@ -2,7 +2,7 @@
 
 - **日期**: 2026-06-15
 - **Slug**: `2026-06-14-skill-creator-eval-framework`
-- **状态**: draft-created（微信草稿箱 appmsgid=100000376，未发布）
+- **状态**: draft-created（微信草稿箱 appmsgid=<见 .local-archive 发布态>，未发布）
 - **Skills used**: `wechat-article-renderer`, `wechat-article-publisher`, `article-illustration`, `writing-task-closeout`
 
 ## Timeline

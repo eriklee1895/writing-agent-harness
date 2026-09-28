@@ -5,7 +5,7 @@
 - Status: `draft-created`，微信公众号尚未正式发布。
 - Canonical: `content/origin/2026-08-30-codex-usage-leak/index.md`。
 - Blog channel: `content/blog/ai-agents/2026-08-30-codex-usage-leak/article.md`，未同步到个人 Blog repo，未发布。
-- WeChat draft: `appmsgid=100001211`；标题、作者、摘要、封面和 11 张正文图已写入草稿。
+- WeChat draft: `appmsgid=<见 .local-archive 发布态>`；标题、作者、摘要、封面和 11 张正文图已写入草稿。
 - Feishu docx: [Tibo 再次“赛博回血”](https://bytedance.my.larkoffice.com/docx/YkwYdF4ecoI50zxYPPkmyaqWyCc)，revision 18。
 - Local archive: `.local-archive/2026-08-30-codex-usage-leak/`。
 

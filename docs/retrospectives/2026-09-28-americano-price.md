@@ -8,7 +8,7 @@
 - 发现并修掉一处自造矛盾：开头写"不是为了喝咖啡"、结尾写"是因为我下午会困"——两句都是我编的，用户澄清是纯粹好奇，遂把结尾改成"好奇它到底有多苦"。
 - `polish-article`：register 定为 literary-essay 主 + industry-analysis 次。删一处真冗余（第 6 节答案说了两遍）、修 3 处准确度、4 处 AI 味/网感、统一称呼（老先生/老爷子混用 6 处）、破折号 13→10。
 - 配图：6 张静物/空间图基本 1–2 轮过；唯一的多人场景 `three-at-starbucks` **迭代 5 轮后被用户否掉**，撤出正文。
-- `wechat-article-renderer --style warm-editorial` → 移动端 390px 校验通过 → `wechat-article-publisher` 建草稿，appmsgid=100001388，6 张图全部上传微信 CDN，`--try-cover` 成功。
+- `wechat-article-renderer --style warm-editorial` → 移动端 390px 校验通过 → `wechat-article-publisher` 建草稿，appmsgid=<见 .local-archive 发布态>，6 张图全部上传微信 CDN，`--try-cover` 成功。
 - 用户群发。
 - `erik-blog-publish-workflow` → 同步到 `eriklee-blog` → 构建 → 推 `main` → Cloudflare Pages 上线。
 - 用户追问"最新几篇 blog 没有缩略图"，牵出同步脚本的 4 个缺陷，连带修了 10 篇旧文的重复封面、给 10 篇更早的文章补了封面、恢复了 3 篇丢失的源稿、修了一个从未跑过的 CI。
@@ -16,7 +16,7 @@
 ## 最终状态
 
 - **Status**：published（微信 + 博客双渠道）
-- **微信 appmsgid**：100001388（用户已群发）
+- **微信**：已群发。`appmsgid` 按 Publish Boundary 不写入 git，见 `.local-archive/2026-09-27-americano-price/publish-status.md`
 - **博客 URL**：https://eriklee-blog.pages.dev/posts/2026-09-27-americano-price/
 - **作者**：李玉恒（`.config/wechat.toml` default_author）
 - **正文**：3037 中文字，6 张插图
