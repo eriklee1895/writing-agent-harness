@@ -285,6 +285,51 @@ def materialize_local_image_refs(
     return re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", rewrite_markdown_image, body)
 
 
+# `<callout emoji="…">…</callout>` is the block syntax used by the upstream /
+# forum export of some origin sources. The blog has no <callout> component, and
+# MDX treats an unknown lowercase tag as a literal HTML element, so it renders
+# unstyled. rehype-callouts IS configured, so translate to the GitHub alert
+# syntax it understands. The canonical source keeps its own markup untouched.
+_CALLOUT_BLOCK_RE = re.compile(
+    r"^[ \t]*<callout\b[^>]*?emoji=\"([^\"]*)\"[^>]*>\s*(.*?)\s*</callout>[ \t]*$",
+    re.S | re.M,
+)
+_EMOJI_TO_ALERT = {
+    "🎁": "note", "📌": "note", "📝": "note",
+    "💡": "tip", "✅": "tip",
+    "⚠️": "warning", "⚠": "warning",
+    "❗": "important", "‼️": "important",
+    "🚨": "caution",
+}
+
+
+def convert_callouts_to_alerts(body: str) -> str:
+    """Rewrite `<callout emoji="…">…</callout>` blocks into `> [!type]` alerts."""
+
+    def inner_to_markdown(inner: str) -> list[str]:
+        paragraphs = re.findall(r"<p>(.*?)</p>", inner, re.S) or [inner]
+        lines: list[str] = []
+        for para in paragraphs:
+            text = para.strip()
+            text = re.sub(r"</?b>", "**", text)
+            text = re.sub(r"<code>(.*?)</code>", r"`\1`", text, flags=re.S)
+            text = re.sub(r"<[^>]+>", "", text)
+            if text:
+                lines.append(text)
+        return lines
+
+    def replace(match: re.Match[str]) -> str:
+        kind = _EMOJI_TO_ALERT.get(match.group(1).strip(), "note")
+        lines = inner_to_markdown(match.group(2))
+        if not lines:
+            return ""
+        out = [f"> [!{kind}]"]
+        out.extend(f"> {line}" if line else ">" for line in lines)
+        return "\n".join(out)
+
+    return _CALLOUT_BLOCK_RE.sub(replace, body)
+
+
 def escape_mdx_text(body: str) -> str:
     """Escape Markdown prose that MDX would otherwise parse as JSX."""
 
@@ -314,6 +359,17 @@ def escape_mdx_text(body: str) -> str:
     return "".join(escaped_blocks)
 
 
+# Canonical-source `register` → (blog category, article type) defaults.
+# Kept in sync with SOUL.md's register list; registers not listed here (e.g.
+# technical-blog, industry-analysis, agent-ai-essay) fall through to the
+# existing heuristics.
+_REGISTER_TAXONOMY = {
+    "literary-essay": ("Culture & Media", "文化随笔"),
+    "cultural-essay": ("Culture & Media", "文化随笔"),
+    "personal-essay": ("Culture & Media", "随笔"),
+}
+
+
 def infer_taxonomy(source_meta: dict[str, object], slug: str) -> tuple[str, str | None, list[str]]:
     title = str(source_meta.get("title") or "")
     raw_tags = source_meta.get("tags") or []
@@ -323,6 +379,15 @@ def infer_taxonomy(source_meta: dict[str, object], slug: str) -> tuple[str, str 
     category = "AI Engineering"
     series: str | None = None
 
+    # `register` in the canonical source is a reliable genre signal. Without
+    # it, any new non-technical essay falls through to the AI Engineering
+    # default below and has to be fixed by hand after every sync.
+    register = str(source_meta.get("register") or "").strip().lower()
+    if register in _REGISTER_TAXONOMY:
+        category = _REGISTER_TAXONOMY[register][0]
+
+    # Token heuristics: specific past articles and topic keywords. These stay
+    # last-wins so existing articles re-sync to the same category as before.
     if any(token in haystack for token in ("spacex", "ipo", "narrative", "poniai", "openmontage")):
         category = "AI Frontier"
     if any(token in haystack for token in ("banshengxue", "luolebai", "handanxuebu", "左手指月")):
@@ -331,6 +396,11 @@ def infer_taxonomy(source_meta: dict[str, object], slug: str) -> tuple[str, str 
         category = "Writing System"
     if any(token in haystack for token in ("cloudflare", "astro", "vite", "tanstack", "copilotkit", "langchain")):
         category = "Web & AI Tooling"
+
+    # An explicit `category:` in the canonical source always wins.
+    declared = str(source_meta.get("category") or "").strip()
+    if declared:
+        category = declared
 
     if "claude-code" in haystack or "claude code" in haystack:
         series = "Claude Code Notes"
@@ -359,6 +429,11 @@ def build_blog_frontmatter(
         args.description
         or source_meta.get("description")
         or source_meta.get("subtitle")
+        # `summary` is the canonical one-liner in origin frontmatter and is what
+        # the published posts already use as their description. Without it here
+        # a re-sync silently replaces a hand-written summary with the article's
+        # opening paragraph.
+        or source_meta.get("summary")
         or first_paragraph_excerpt(body)
         or str(title)
     )
@@ -371,7 +446,9 @@ def build_blog_frontmatter(
         or date_from_slug(source_path.parent.name)
     )
     category, series, tags = infer_taxonomy(source_meta, source_path.parent.name)
-    article_type = source_meta.get("type") or "技术笔记"
+    register = str(source_meta.get("register") or "").strip().lower()
+    default_type = _REGISTER_TAXONOMY.get(register, ("", "技术笔记"))[1]
+    article_type = source_meta.get("type") or default_type
     cover = (
         source_meta.get("ogImage")
         or source_meta.get("coverImage")
@@ -393,6 +470,11 @@ def build_blog_frontmatter(
         f"type: {yaml_scalar(article_type)}",
         f"canonicalURL: {yaml_scalar(args.canonical_url)}" if args.canonical_url else "",
         f"ogImage: {normalize_asset_path(cover, source_path.parent.name)}" if cover else "",
+        # heroImage — not ogImage — is what the blog's post-list thumbnail and
+        # the in-article hero render from (src/pages/posts/index.astro:18 and
+        # [...slug].astro:74). ogImage only feeds <meta og:image>. Without this
+        # line every synced post shows a text placeholder instead of a thumbnail.
+        f"heroImage: {normalize_asset_path(cover, source_path.parent.name)}" if cover else "",
         *yaml_list(tags),
         f"source: {yaml_scalar(source_ref)}",
         "---",
@@ -456,6 +538,53 @@ def choose_article_file(article_dir: Path) -> Path | None:
     return None
 
 
+_IMAGE_URL_RE = re.compile(r"!\[[^\]]*\]\(([^)\s]+)")
+_EXTERNAL_URL_RE = re.compile(r"^(https?:|mailto:|data:|#)")
+
+
+def referenced_asset_names(body: str, meta: dict[str, object]) -> set[str]:
+    """Basenames of the assets an article actually references.
+
+    The sync only needs these in the blog repo. Without this filter the whole
+    assets/ directory is copied verbatim, which drags generation-time leftovers
+    into a public repo: superseded image drafts (hero-cover-v1.png, …), prompt
+    files, and per-image metadata JSON.
+    """
+    names: set[str] = set()
+    for url in _IMAGE_URL_RE.findall(body):
+        if _EXTERNAL_URL_RE.match(url):
+            continue
+        names.add(Path(url.removeprefix("./")).name)
+    for key in ("cover", "ogImage", "coverImage"):
+        value = str(meta.get(key) or "").strip()
+        if value and not _EXTERNAL_URL_RE.match(value):
+            names.add(Path(value).name)
+    return names
+
+
+def strip_leading_cover_image(body: str, cover: object, source_dir: Path) -> str:
+    """Drop a leading body image that is the same file as the frontmatter cover.
+
+    The blog renders the cover as `heroImage` above the body, so keeping the
+    identical markdown image at the top of the body renders it twice (the bug
+    visible on the lanhua and meta-muse posts). Only strips when the cover
+    actually resolves to a local asset, so a broken cover reference can never
+    delete the only copy of an image.
+    """
+    cover_ref = str(cover or "").strip()
+    if not cover_ref or _EXTERNAL_URL_RE.match(cover_ref):
+        return body
+    if not source_asset_exists(source_dir, cover_ref):
+        return body
+    stripped = body.lstrip("\n")
+    match = re.match(r"!\[[^\]]*\]\(([^)\s]+)\)[ \t]*\n+", stripped)
+    if not match:
+        return body
+    if Path(match.group(1).removeprefix("./")).name != Path(cover_ref).name:
+        return body
+    return stripped[match.end():]
+
+
 def sync_article(args: argparse.Namespace) -> Path:
     source_path = resolve_source_path(args.source)
 
@@ -463,6 +592,11 @@ def sync_article(args: argparse.Namespace) -> Path:
     meta, body = split_frontmatter(source_text)
     if not args.keep_title_heading:
         body = strip_duplicate_title_heading(body, meta.get("title"))
+    body = strip_leading_cover_image(
+        body,
+        meta.get("ogImage") or meta.get("coverImage") or meta.get("cover"),
+        source_path.parent,
+    )
 
     slug = args.slug or source_path.parent.name
     destination = resolve_destination(args, slug).resolve()
@@ -475,29 +609,49 @@ def sync_article(args: argparse.Namespace) -> Path:
 
     destination.parent.mkdir(parents=True, exist_ok=True)
     assets_dir = source_path.parent / "assets"
-    if destination_assets_dir.exists():
-        shutil.rmtree(destination_assets_dir)
+    # Deliberately additive: never rmtree the destination first. Image binaries
+    # are gitignored, so an origin assets/ dir restored from git can be missing
+    # files the blog still needs — wiping first would delete them from a public
+    # repo with no way to recover. Stale leftovers are the lesser evil.
     if assets_dir.exists():
+        referenced = referenced_asset_names(body, meta)
+        pattern_ignore = shutil.ignore_patterns(
+            "*.md",
+            "*.mdx",
+            "*.mjs",
+            "*.js",
+            "*.ts",
+            "*.html",
+            ".gitignore",
+            "html-build",
+            "package*.json",
+        )
+
+        def asset_ignore(dirname: str, names: list[str]) -> set[str]:
+            """Skip code/doc files, and any asset the article never references."""
+            ignored = set(pattern_ignore(dirname, names))
+            for name in names:
+                if (Path(dirname) / name).is_file() and name not in referenced:
+                    ignored.add(name)
+            return ignored
+
+        missing = sorted(n for n in referenced if not (assets_dir / n).exists())
+        if missing:
+            print(f"[sync] ⚠ 源 assets/ 缺 {len(missing)} 个正文引用的文件，"
+                  f"博客侧保留原文件不删: {', '.join(missing[:3])}"
+                  f"{' …' if len(missing) > 3 else ''}")
+
         shutil.copytree(
             assets_dir,
             destination_assets_dir,
             dirs_exist_ok=True,
-            ignore=shutil.ignore_patterns(
-                "*.md",
-                "*.mdx",
-                "*.mjs",
-                "*.js",
-                "*.ts",
-                "*.html",
-                ".gitignore",
-                "html-build",
-                "package*.json",
-            ),
+            ignore=asset_ignore,
         )
 
     body = rewrite_asset_links(body, slug)
     body = materialize_local_image_refs(body, source_path.parent, destination_assets_dir, slug)
     body = replace_missing_asset_refs(body, source_path.parent, destination_assets_dir, slug)
+    body = convert_callouts_to_alerts(body)
     if args.extension == "mdx":
         body = escape_mdx_text(body)
     output = build_blog_frontmatter(meta, body, source_path, args) + body.rstrip() + "\n"
