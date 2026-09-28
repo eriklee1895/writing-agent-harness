@@ -1,0 +1,27 @@
+{
+  "prompt": "扁平矢量信息图海报，暖白色手工纸背景，主色陶土橙配暖灰，克制、专业，像财经杂志的图表页。顶部左侧大号粗黑无衬线中文标题「三种调用形状」，下方一行小号灰色中文副标题。主体是横向并排的三栏，每栏上方一个简笔线框示意图、下方一段中文说明。第一栏示意图：左侧一个圆角矩形框内写「材料」，向右用四条橙色曲线扇形展开连到右侧四个堆叠的圆角矩形框，四个框里分别写「问题 1」「问题 2」「问题 3」「问题 4」，示意图右侧一个橙色对勾符号。第一栏下方标题「多问题 × 单份材料」。第二栏示意图：左侧四个堆叠的圆角矩形框分别写「材料 A」「材料 B」「材料 C」「材料 D」，向右用四条橙色曲线汇聚连到中间一个橙色描边的圆角矩形框内写「同一个问题」，示意图右侧一个橙色对勾符号。第二栏下方标题「单问题 × 多份材料」。第三栏示意图：三个圆角矩形框排成三角形，分别写「输入」「动作」「判断」，三个框之间用三条带箭头的橙色曲线首尾相连形成闭环。第三栏下方标题「塞进高频循环」。三栏之间用极细的浅灰色竖线分隔",
+  "model": "doubao-seedream-5-0-pro-260628",
+  "model_label": "Seedream 5.0 Pro (2026-06-28 build)",
+  "size": "1792x1024",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": false,
+  "optimize_prompt": "standard",
+  "reference_images_count": 0,
+  "reference_images_are_data_urls": null,
+  "negative_prompt": "错别字, 字顺序错乱, 多笔画, 缺笔画, 字符乱码, typo, 3D, 照片, 复杂阴影, 高饱和, 霓虹色, 多余文字",
+  "marker_rects": [],
+  "outpaint": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/private/tmp/jev-illus/job-002-扁平矢量信息图海报-暖白色手工纸背景-主色陶土橙配暖灰-克制-1.png",
+  "created_at": "2026-09-21T16:17:32",
+  "dry_run": false,
+  "reported_size": "1792x1024",
+  "elapsed_ms": 48874,
+  "usage": {
+    "input_images": 0,
+    "generated_images": 1,
+    "output_tokens": 7168,
+    "total_tokens": 7168
+  }
+}

@@ -1,3 +1,7 @@
+---
+cover: assets/cover.jpg
+---
+
 # Claude Fable 5 & Mythos 5：前沿模型深度调研报告
 
 > **发布日期**：2026年6月10日  

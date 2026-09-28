@@ -5,6 +5,7 @@ description: "把 Claude Code 的命令按初始化、干活、并行、发布�
 style: agent-flow
 source: "Anthropic Claude Code official reference"
 version: "2026.06"
+cover: assets/cover.jpg
 ---
 
 # Claude Code 典型工作流常用命令速查

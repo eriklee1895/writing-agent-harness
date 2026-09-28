@@ -1,0 +1,22 @@
+{
+  "title": "Hermes Bot Cover",
+  "brief": "Editorial cover illustration for a deep-dive tech article about an AI agent that grows like an asset. Scene: a warm night desk with a glowing terminal window; beside it a neat row of distinct small robot characters with different colored faces, like a contact roster in an address book; thin luminous lines connect them; behind them a filing cabinet drawer slightly open with glowing folders (skills as assets). Muted warm palette: cream paper, terracotta orange accent, deep ink blue. Clean, sophisticated, generous negative space at left for nothing (no text at all). No text, no letters, no words.",
+  "content_type": "WeChat article cover",
+  "content_category": "cover",
+  "mode": "text-only",
+  "style_profile": "editorial-atmospheric",
+  "resolved_style_profile": "editorial-atmospheric",
+  "size": "wechat-cover-hd",
+  "resolved_size": "1792x1024",
+  "quality": "auto",
+  "language": "zh",
+  "model": "openai/gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'Hermes Bot Cover'. Style: contemporary editorial illustration, layered composition, subtle texture, restrained color palette, atmospheric but concrete, article-friendly visual metaphor, no text labels, no diagrams, no arrows. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a WeChat Official Account headline cover image (公众号头条封面). Compose for a 2.35:1 ultra-wide crop (1080x460). Keep key subjects centered or in the bottom third — top area will be cropped. Design for readability as a small thumbnail in WeChat's subscription feed. Title text will be overlaid by the editor, so leave ample negative space. Language/region: zh. Target aspect ratio: wechat-cover-hd. Mode: text-only. Brief:\nEditorial cover illustration for a deep-dive tech article about an AI agent that grows like an asset. Scene: a warm night desk with a glowing terminal window; beside it a neat row of distinct small robot characters with different colored faces, like a contact roster in an address book; thin luminous lines connect them; behind them a filing cabinet drawer slightly open with glowing folders (skills as assets). Muted warm palette: cream paper, terracotta orange accent, deep ink blue. Clean, sophisticated, generous negative space at left for nothing (no text at all). No text, no letters, no words.",
+  "created_at": "2026-09-18T23:12:10",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/maria-educa-o-temporal-case-study-3baf84/content/origin/2026-09-18-hermes-bot-architecture/assets/20260918-231132-hermes-bot-cover-cropped.png"
+  ],
+  "crop_hint": "1080x460 (2.35:1)",
+  "dry_run": false
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Bot Mode Topology",
+  "brief": "Clean technical architecture diagram, light cream background. Left column: a folder drawer titled '~/.hermes/profiles/' containing three labeled profile folders: 'researcher', 'writer', 'ops', each showing tiny icons for memory / skills / credentials. Middle: an arrow labeled 'Bot = profile' leading to a roster panel with three named bot cards each with a distinct simple avatar face, titled 'Bot 花名册 · canonical Bot Chat（永不分叉）'. From the roster, two labeled arrows: 'message_agent 私信' into a DM bubble, and '群聊房间 2-6 bots' into a group chat room box with a note 'durable driver：关掉桌面仍在运行'. Right: a dashed boundary labeled '跨机器 relay（Desktop 作信使）' containing a second machine with one bot, note '@name-device'. Bottom strip: a terminal line 'hermes -p <bot> chat' with caption 'CLI 等价入口'. Flat vector infographic style, thin lines, terracotta orange and ink blue accents, bilingual Chinese labels with English technical terms.",
+  "content_type": "knowledge card",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "repo-architecture-clean",
+  "resolved_style_profile": "repo-architecture-clean",
+  "size": "doc-2k",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "openai/gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Bot Mode Topology'. Diagram type: knowledge card. Use a clean repository architecture diagram, crisp blocks, restrained decoration, clear ownership and dependency labels. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-2k. Mode: text-only. Content brief:\nClean technical architecture diagram, light cream background. Left column: a folder drawer titled '~/.hermes/profiles/' containing three labeled profile folders: 'researcher', 'writer', 'ops', each showing tiny icons for memory / skills / credentials. Middle: an arrow labeled 'Bot = profile' leading to a roster panel with three named bot cards each with a distinct simple avatar face, titled 'Bot 花名册 · canonical Bot Chat（永不分叉）'. From the roster, two labeled arrows: 'message_agent 私信' into a DM bubble, and '群聊房间 2-6 bots' into a group chat room box with a note 'durable driver：关掉桌面仍在运行'. Right: a dashed boundary labeled '跨机器 relay（Desktop 作信使）' containing a second machine with one bot, note '@name-device'. Bottom strip: a terminal line 'hermes -p <bot> chat' with caption 'CLI 等价入口'. Flat vector infographic style, thin lines, terracotta orange and ink blue accents, bilingual Chinese labels with English technical terms.",
+  "created_at": "2026-09-18T23:13:56",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/maria-educa-o-temporal-case-study-3baf84/content/origin/2026-09-18-hermes-bot-architecture/assets/20260918-231300-bot-mode-topology.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

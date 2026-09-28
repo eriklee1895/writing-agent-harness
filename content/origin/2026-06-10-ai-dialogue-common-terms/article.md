@@ -4,6 +4,7 @@ date: 2026-06-10
 author: Erik Lee
 style: tech-blog
 description: "普适所有 Coding Agent 的极简对话语言，覆盖 Proceed / Continue / Agreed / LGTM / Approved 等高频词"
+cover: assets/cover.jpg
 ---
 
 # 与AI对话常用词⭐️

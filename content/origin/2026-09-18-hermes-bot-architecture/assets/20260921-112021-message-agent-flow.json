@@ -1,0 +1,22 @@
+{
+  "title": "Message Agent Flow",
+  "brief": "Clean technical flowchart, cream background, three horizontal swimlanes labeled 发送方 Bot / 目标后端 / 目标 Bot. Numbered flow: ① 发送方调用 message_agent(target, message) → ② 消息写入目标后端的持久 ingress，由通知轮询器接管 → 分支：空闲则立即受理 / 正在运行 turn 则等当前 turn 与已排队的人类消息完成 → ③ 回执徽章一：queued（已持久受理，不代表有回复），投递 ID 存于 runtime/bot_live_delivery/ → ④ 目标 Bot 执行 turn → ⑤ 回执徽章二：settled（完成）→ ⑥ 回复以「后台完成通知」形式回到发送方. 底部一个框 titled 失败与重试：失败带机器可读 reason 码（provider_auth / quota / rate_limit / context_overflow / target_busy / runtime_offline）；最多重试一次；仅瞬时故障与 context_overflow 重跑（超限先自动压缩）；认证、配额、配置错误不重试，直接上报. Thin numbered arrows, terracotta orange and ink blue accents, bilingual labels (Chinese explanation + English technical terms), precise and uncluttered.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-2k",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "openai/gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Message Agent Flow'. Diagram type: article illustration. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-2k. Mode: text-only. Content brief:\nClean technical flowchart, cream background, three horizontal swimlanes labeled 发送方 Bot / 目标后端 / 目标 Bot. Numbered flow: ① 发送方调用 message_agent(target, message) → ② 消息写入目标后端的持久 ingress，由通知轮询器接管 → 分支：空闲则立即受理 / 正在运行 turn 则等当前 turn 与已排队的人类消息完成 → ③ 回执徽章一：queued（已持久受理，不代表有回复），投递 ID 存于 runtime/bot_live_delivery/ → ④ 目标 Bot 执行 turn → ⑤ 回执徽章二：settled（完成）→ ⑥ 回复以「后台完成通知」形式回到发送方. 底部一个框 titled 失败与重试：失败带机器可读 reason 码（provider_auth / quota / rate_limit / context_overflow / target_busy / runtime_offline）；最多重试一次；仅瞬时故障与 context_overflow 重跑（超限先自动压缩）；认证、配额、配置错误不重试，直接上报. Thin numbered arrows, terracotta orange and ink blue accents, bilingual labels (Chinese explanation + English technical terms), precise and uncluttered.",
+  "created_at": "2026-09-21T11:21:25",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/maria-educa-o-temporal-case-study-3baf84/content/origin/2026-09-18-hermes-bot-architecture/assets/20260921-112021-message-agent-flow.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

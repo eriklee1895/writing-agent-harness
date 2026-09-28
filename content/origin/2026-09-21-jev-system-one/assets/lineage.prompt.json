@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "一张横向技术信息图，内容是一个自上而下的三层树状分叉图。图内文字用中文，专有名词保留英文缩写。\n\n第一层：顶部居中一张圆角矩形卡片，卡内两行文字，上行「预训练语言模型」，下行较小字号「pretrained language model」。\n\n第二层：从第一层卡片底部引出一条竖线，向下分叉成三条支线，分别指向并排的三张圆角卡片，从左到右依次标注「RLHF」「RLVR」「RLCD」。\n\n第三层：第二层三张卡片各自向下引一个短箭头，指向并排的三张卡片，从左到右依次标注「Chat」「Reasoning」「System One」。\n\n视觉重心在最右侧那一路：RLCD 与 System One 这两张卡片用陶土橙色描边、浅橙色底填充，连接它们的箭头加粗并着陶土橙色。左边两路（RLHF 到 Chat、RLVR 到 Reasoning）用灰色细线和浅灰描边，明显弱化，形成对比。\n\n整张图只有一个主标题，位于图的最顶部：「官方给出的技术谱系」。\n\n图内不出现任何其他文字：没有副标题，没有说明文字，没有注释，没有日期，没有年份，没有图例，没有页码。\n\n配色：浅暖纸张底色 #faf9f5，陶土橙 #c2703a 作唯一强调色，灰色 #8a8578 作弱化色，文字深灰 #2b2620。风格是技术杂志里的示意图，线条细而克制，留白充足，整体干净。\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 1407,
+      "input_tokens_details": {
+        "text_tokens": 1407,
+        "cached_tokens": 0
+      },
+      "output_tokens": 1372,
+      "total_tokens": 2779,
+      "output_tokens_details": {
+        "image_tokens": 1372,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "reasoning_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "cached_tokens": 0
+      }
+    },
+    "request_id": "6f3a6e35-58f1-4a03-947d-ce0e559640ef"
+  },
+  "elapsed_seconds": 163.463,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-system-one/assets/lineage.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-21T14:44:28+00:00"
+}

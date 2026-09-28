@@ -1,0 +1,27 @@
+{
+  "prompt": "编辑风格的静物摄影，暖白色手工纸背景，画面中偏左排列着一组高度不一的哑光几何柱体，形态是一段概率分布的轮廓：左右两侧很矮、中偏左有一根明显最高的柱子。柱体材质是哑光陶土橙、米灰、暖灰三色，边缘干净，有细微的纸面颗粒感。柔和的方向光从左上方照入，在纸面投下克制的淡影。构图右侧留出大面积空白，整体安静、克制、有杂志排版质感。无任何文字、无数字、无logo、无标签",
+  "model": "doubao-seedream-5-0-pro-260628",
+  "model_label": "Seedream 5.0 Pro (2026-06-28 build)",
+  "size": "1792x762",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": false,
+  "optimize_prompt": "standard",
+  "reference_images_count": 0,
+  "reference_images_are_data_urls": null,
+  "negative_prompt": null,
+  "marker_rects": [],
+  "outpaint": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/private/tmp/jev-illus/cover.png",
+  "created_at": "2026-09-21T14:53:20",
+  "dry_run": false,
+  "reported_size": "1792x762",
+  "elapsed_ms": 32375,
+  "usage": {
+    "input_images": 0,
+    "generated_images": 1,
+    "output_tokens": 5334,
+    "total_tokens": 5334
+  }
+}

@@ -4,6 +4,7 @@ subtitle: "面向 agent 工程师的可执行源码阅读路线：主循环 / �
 date: "2026-07-05"
 description: "基于 Hermes Agent 当前代码仓，制定一份可实施的一周核心源码学习计划。覆盖主循环、上下文压缩、Memory 管理、Skills 机制、Tool dispatch、MoA、Prompt Caching 与 Mid-turn Steering，提供每日阅读文件、关键函数/类、动手任务与输出要求。"
 tags: ["Hermes Agent", "agent engineering", "source code", "learning plan", "context compression", "memory", "skills"]
+cover: assets/cover.jpg
 ---
 
 # Hermes Agent 核心精华代码 · 一周学习计划

@@ -48,7 +48,8 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
    - frontmatter 中 **没有 `author` 字段**。作者永远从 `.config/wechat.toml` 的 `default_author` 读取，不写入 Markdown canonical source；
    - `cover` 可选：有则传给 `--try-cover` 自动上传封面；没有则提示用户草稿箱 final review 时手动设置封面。
 6. 在触碰微信公众号编辑器前，先让用户确认 preview。
-6. **渠道产物约定：`content/wechat/YYYY-MM-DD-<slug>/` 是微信渠道派生 artifact 的 canonical 目录，与 `appmsgid`/发布 URL 一一对应。**
+6. **渠道产物约定：`content/wechat/YYYY-MM-DD-<slug>/` 是微信渠道派生 artifact 的 canonical 目录，但只放可进 git 的排版产物（`index.wechat-preview.html`）。**
+   - **发布态不进 git**：`appmsgid`、草稿 URL、群发状态属于渠道运营状态，不是文章内容。publisher 把 `publish-status.md` 写到 `.local-archive/YYYY-MM-DD-<slug>/`（`.gitignore` 已覆盖该目录），**不要**写进 `content/wechat/`。理由：appmsgid 可构造微信后台编辑链接，属于账号态敏感信息；且草稿会删会重发、值会变，写进 git history 只会留下 stale data。
    - **publisher 会自动兜底**：如果 `--html` 指向 `content/origin/.../`，`publish.py` 会自动拷贝（或快照后再覆盖，见下）到 `content/wechat/.../index.wechat-preview.html`，并在保存草稿成功后自动写 `publish-status.md`。所以即使忘了这一步，归档不会丢。
    - **仍然推荐手动 cp 一次**（命令见下），因为这是你在点击发送按钮前最后一次在 repo 里确认"就是这份 HTML 要被送到微信"的机会，也让 `content/wechat/` 目录在调用 publisher 前就是完整可 review 的状态：
 
@@ -61,7 +62,7 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
      # 共用图片保持相对路径指回 ../../origin/.../assets/，不要重复复制二进制。
      ```
 
-   - **重发安全网**：如果检测到 `content/wechat/.../publish-status.md` 里已有非空 `appmsgid`（意味着这份 HTML 对应一个已存在的草稿），publisher 会在覆盖前把旧 HTML 快照为 `index.wechat-preview.appmsgid-<id>.html`，避免之前草稿对应的 artifact 丢失。草稿箱里旧草稿还在，traceability 不丢。
+   - **重发安全网**：如果检测到 `.local-archive/.../publish-status.md` 里已有非空 `appmsgid`（意味着这份 HTML 对应一个已存在的草稿），publisher 会在覆盖前把旧 HTML 快照为 `.local-archive/YYYY-MM-DD-<slug>/index.wechat-preview.appmsgid-<id>.html`。快照文件名带 appmsgid，所以同样只能落在 gitignored 目录。草稿箱里旧草稿还在，traceability 不丢。
 7. **渠道产物**：按上面的约定把 HTML 拷贝到 `content/wechat/YYYY-MM-DD-<slug>/`（如果 publisher 没自动兜底的话）。
 8. 用 `wechat-article-publisher` 把归档副本 HTML 填入微信公众号编辑器并创建草稿。默认偏向创建草稿，不直接发布。
 
@@ -87,9 +88,9 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
    - 正文图片已上传到 WeChat CDN；
    - 如含视频，视频卡片/播放器在编辑器中可见，插入位置正确；
    - editor body 中 external links 数量为 `0`；
-   - 保存后 URL 出现 `appmsgid=...`（publisher 会自动写入 `publish-status.md` 的 frontmatter 和 Draft History，无需手动回填）。
+   - 保存后 URL 出现 `appmsgid=...`（publisher 会自动写入 `.local-archive/YYYY-MM-DD-<slug>/publish-status.md` 的 frontmatter 和 Draft History，无需手动回填）。
 10. 向用户报告草稿状态和 `appmsgid`。除非用户明确确认 live publish，否则停在 final human review。
-11. 用户完成 final review 并群发/发布后，把正式发布 URL 追加到 `publish-status.md`（或把 `status` 改成 `published`），再调用 `writing-task-closeout` 做归档、复盘和素材清理。
+11. 用户完成 final review 并群发/发布后，把正式发布 URL 追加到 `.local-archive/YYYY-MM-DD-<slug>/publish-status.md`（或把 `status` 改成 `published`）。该文件在 gitignored 目录，**不要**为了"留痕"把它挪进 `content/`。再调用 `writing-task-closeout` 做归档、复盘和素材清理。
 
 ## 微信公众号限制坑点
 

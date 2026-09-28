@@ -1,0 +1,19 @@
+{
+  "article": "content/origin/2026-09-18-hermes-bot-architecture/index.md",
+  "generator": "article-illustration (gpt-image-2)",
+  "archive": ".local-archive/2026-09-18-hermes-bot-architecture/images/",
+  "note": "图片二进制不入 git（.gitignore *.png）；本目录保留 prompt metadata JSON 作为入库 provenance。cover.png 为微信 2.35:1 裁剪版，blog-cover.png 为 16:9 博客版（og:image）。",
+  "images": [
+    { "file": "cover.png", "role": "wechat-cover (2.35:1)", "style": "editorial-atmospheric", "prompt_meta": "20260918-231132-hermes-bot-cover.json", "used": true },
+    { "file": "cover-full.png", "role": "unused variant（未裁剪原图，保留为工作副本）", "style": "editorial-atmospheric", "prompt_meta": "20260918-231132-hermes-bot-cover.json", "used": false },
+    { "file": "blog-cover.png", "role": "blog-hero / og:image (16:9)", "style": "editorial-atmospheric", "prompt_meta": "20260921-140404-blog-cover.json", "used": true },
+    { "file": "profile-anatomy.png", "role": "body", "style": "flat-tech-infographic", "prompt_meta": "20260920-101550-profile-anatomy.json", "used": true },
+    { "file": "bot-mode-ui.png", "role": "body（官方截图）", "source": "NousResearch/Hermes-Bot-Mode README", "used": true },
+    { "file": "new-agent-dialog.png", "role": "body（官方截图）", "source": "NousResearch/Hermes-Bot-Mode README", "used": true },
+    { "file": "message-agent-flow.png", "role": "body", "style": "flat-tech-infographic", "prompt_meta": "20260921-112021-message-agent-flow.json", "used": true },
+    { "file": "install-pipeline.png", "role": "body", "style": "flat-tech-infographic", "prompt_meta": "20260921-112219-install-pipeline.json", "used": true },
+    { "file": "multiplex-routing.png", "role": "body", "style": "flat-tech-infographic", "prompt_meta": "20260921-112127-multiplex-routing.json", "used": true },
+    { "file": "bot-mode-topology.png", "role": "body", "style": "repo-architecture-clean", "prompt_meta": "20260918-231300-bot-mode-topology.json", "used": true },
+    { "file": "epilogue.png", "role": "body / 尾声插图", "style": "editorial-atmospheric", "prompt_meta": "20260921-115543-epilogue.json", "used": true }
+  ]
+}

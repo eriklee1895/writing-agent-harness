@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: Body inset illustration for a Chinese personal essay. Landscape orientation.\n\nPrimary request: Two drinks stand side by side on a café table beside a window. On the left, a tall glass of blended Frappuccino topped with a high swirl of whipped cream and a green straw. On the right, a plain white paper cup of black americano — no milk, no foam, no cream, just dark coffee. The two drinks could not look more different: one is a dessert, the other is a bitter medicine. Both belong to the same table.\n\nComposition: The two drinks sit side by side, filling the lower two thirds of the frame, the contrast between them is the subject. A café window with soft afternoon light behind them, out of focus. Generous space above.\n\nStyle and medium: Contemporary editorial illustration, flat gouache-like rendering with subtle paper grain. Quiet and slightly wry, not a product advertisement.\n\nLighting and color: Soft afternoon window light from the left. Muted warm paper palette — cream #faf9f5, terracotta, deep brown, pale cream for the whipped cream.\n\nText (exact): none. The white cup may carry a small green circular siren logo, but no lettering.\n\nAvoid: people, hands, price tags, lettering, watermarks, photographic realism, cluttered detail.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 268,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 268,
+        "cached_tokens": 0
+      },
+      "output_tokens": 172,
+      "total_tokens": 440,
+      "output_tokens_details": {
+        "image_tokens": 172,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "0ec4539a-c611-4b43-8c54-16f515b53989"
+  },
+  "elapsed_seconds": 26.255,
+  "attempts": 1,
+  "output": "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/maria-educa-o-temporal-case-study-3baf84/content/drafts/2026-09-27-americano-price/assets/starbucks-orders.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-27T15:37:25+00:00"
+}
