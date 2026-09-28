@@ -4,6 +4,7 @@ date: 2026-06-08
 status: draft
 channel: wechat
 style: literary-essay
+cover: assets/cover.jpg
 ---
 
 # 我只是听了首〈落了白〉，怎么就掉进了邯郸学步宇宙？

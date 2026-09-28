@@ -11,6 +11,7 @@ tags:
   - Agent 架构
 draft: false
 wechatStyle: agent-flow
+cover: assets/cover.jpg
 ---
 
 # 一句话怎么塞进正在跑的 agent:Hermes steer 机制全解

@@ -4,6 +4,7 @@ date: 2026-09-21
 register: engineering-share
 tags: [Jev, TypeSafe, SystemOne, Agent, 重排, 校准]
 summary: 一个不生成文字、只返回带概率判断的模型。本机实测了调用方式、置信度、封闭世界陷阱和重排表现，英文与专用模型打平，中文明显更差。
+cover: assets/cover.jpg
 ---
 
 # Jev 决策模型初探

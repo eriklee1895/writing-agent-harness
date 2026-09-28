@@ -10,6 +10,7 @@ tags:
   - 开源基建
   - 开发者工具
 draft: false
+cover: assets/cover.jpg
 ---
 
 # 一颗深水炸弹：尤大「上岸」，Vite换旗

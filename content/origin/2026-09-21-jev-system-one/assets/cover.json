@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: Wide blog hero cover for a technical essay about a decision model that returns probability judgments instead of text. Landscape, 2.35:1.\n\nPrimary request: A minimal still life of small wooden blocks arranged on a plain surface. The blocks are laid out in a closed ring — a neat circle or square fence of terracotta and sand-coloured wooden blocks, sitting flat on the surface. The area inside the ring is completely empty. Outside the ring, one single identical wooden block lies apart, separated from the group by a clear gap.\n\nThe image should read as a quiet visual argument: a world that only contains what has been placed inside it, and one thing that falls outside it.\n\nComposition: The ring sits slightly left of centre; the lone block sits to the right with clear empty space between. Generous negative space around the whole arrangement. Shot from a low three-quarter angle so the blocks cast long soft shadows across the surface.\n\nStyle and medium: Soft photographic still life with a hand-made architectural-model feel. Matte, slightly rough wooden blocks. No text, no numbers, no charts, no labels.\n\nLighting and color: Warm directional daylight from the upper left, casting long soft diagonal shadows to the lower right, exactly like raking afternoon light through a window. Muted warm palette — cream #faf9f5 paper surface, terracotta #c1613c, sand, and pale grey-beige blocks.\n\nAvoid: text, letters, numbers, charts, graphs, arrows, human figures, hands, screens, logos, watermarks, cluttered detail, harsh contrast.\n",
+    "n": 1,
+    "size": "1696x720",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "jpeg",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 322,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 322,
+        "cached_tokens": 0
+      },
+      "output_tokens": 159,
+      "total_tokens": 481,
+      "output_tokens_details": {
+        "image_tokens": 159,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "ea3bd3b7-16fe-4e68-b2ca-dab2d37ca35f"
+  },
+  "elapsed_seconds": 26.909,
+  "attempts": 1,
+  "output": "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/maria-educa-o-temporal-case-study-3baf84/content/origin/2026-09-21-jev-system-one/assets/cover.jpeg",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-28T02:56:24+00:00"
+}
