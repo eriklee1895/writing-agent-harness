@@ -32,6 +32,17 @@ Default behavior:
 
 1. Identify the origin article.
    - Prefer `content/origin/YYYY-MM-DD-<slug>/index.md`.
+   - **Assert the source actually exists in this checkout before doing anything else.** An origin directory can exist with only `assets/` while its `index.md` sits on a branch that was never merged — in which case the blog's `source:` field is a dead link and nothing downstream can be re-run:
+
+     ```bash
+     test -f content/origin/<slug>/index.md || {
+       echo "⚠ 源稿不在当前分支，先找回再发布："
+       git log --all --oneline -- content/origin/<slug>/index.md
+       git branch -a --contains "$(git log --all --format=%H -1 -- content/origin/<slug>/index.md)"
+     }
+     ```
+
+     找回后从该分支恢复 `index.md`（连同 `assets/` 里 git 能追踪的 metadata），图片二进制若 git 里没有，从博客仓库 `src/content/posts/assets/<slug>/` 反向拷回。
    - If the user asks to publish all completed origin articles, run batch sync only after confirming that all selected origin directories are formal finished稿件.
 2. Check both repos before editing:
 

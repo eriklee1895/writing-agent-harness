@@ -27,7 +27,8 @@ description: "写作任务发布后 closeout。Use after WeChat/blog draft creat
    - video material packages / clips；
    - publish URL、`appmsgid`、blog URL 或其他平台 ID。
 3. **渠道产物校验（关键）**：在开始归档前，核对每个交付过的渠道都有对应派生 artifact。常见缺漏：
-   - **微信公众号**：`content/wechat/YYYY-MM-DD-<slug>/index.wechat-preview.html` 必须存在（publisher 自动归档，但 closeout 仍需校验）；同级 `publish-status.md` 必须登记 `appmsgid`、`status: draft-created`（或 `published`）。若缺失，立即补建：把 origin 下最新的 `*.wechat-preview.html` 拷过去，并手写 `publish-status.md`。
+   - **微信公众号**：`content/wechat/YYYY-MM-DD-<slug>/index.wechat-preview.html` 必须存在（publisher 自动归档，但 closeout 仍需校验）。若缺失，立即补建：把 origin 下最新的 `*.wechat-preview.html` 拷过去。
+   - **发布态不在渠道目录**：`publish-status.md` 需登记 `appmsgid`、`status: draft-created`（或 `published`），但它属于**渠道运营状态而非文章内容**，按 AGENTS.md 的 Publish Boundary 写在 `.local-archive/YYYY-MM-DD-<slug>/publish-status.md`（`.gitignore` 已覆盖），**不在 `content/wechat/` 下**。缺失时手写补建。`content/wechat/` 只放可进 git 的排版产物。
    - **Blog / 其他渠道**：按对应 workflow 的渠道目录约定校验。
    - 如果发现归档缺失属于**流程/脚本 bug 而非本次失误**（例如脚本没做、skill 没写），先在本次 closeout 里把产物补全，再通过 Skill Staleness Check 机制登记为 staleness flag，必要时修 skill/脚本。
 4. 按 `YYYY-MM-DD-<slug>` 创建或使用本机归档目录（`<slug>` 为裸 topic）：
