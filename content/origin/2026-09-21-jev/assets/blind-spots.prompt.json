@@ -1,0 +1,27 @@
+{
+  "prompt": "扁平矢量信息图海报，暖白色手工纸背景，主色陶土橙配暖灰与墨绿，克制、专业、像财经杂志的对照表。顶部左侧大号粗黑无衬线中文标题「两种不确定性，两个模型各瞎一只眼」，下方一行小号灰色中文副标题「同一批材料、同一批问题，把不确定拆成两类之后，强弱正好反过来」。主体是一张两行两列的对照矩阵，表头两列分别是「计算难度」和「信息缺失」，两列的小字说明分别是「这题我可能会算错」和「我根本没这个信息」。第一行行首粗体写「Jev」，它下面小字写 '0.9 秒 / $0.000077'；第一行第一格画一个墨绿色实心圆点加粗体中文「知道」，下面两行小字分别写 '计数题 0.702' 和 '其余题 0.813'；第一行第二格画一个砖红色空心圆点加粗体中文「不知道」，下面小字写 '24 道无解题里 8 道给出 0.90 以上的断言'。第二行行首粗体写「DeepSeek-V4.1-Flash」，它下面小字写 '28.0 秒 / $0.005467'；第二行第一格画砖红色空心圆点加粗体中文「不知道」，下面两行小字分别写 '计数题 0.969' 和 '其余题 0.965'；第二行第二格画墨绿色实心圆点加粗体中文「知道」，下面小字写 '24 道题里有 22 道给出精确的 0.50'。矩阵用极细的浅灰边框分隔，行与行之间浅灰底纹交替。整体留白充足",
+  "model": "doubao-seedream-5-0-pro-260628",
+  "model_label": "Seedream 5.0 Pro (2026-06-28 build)",
+  "size": "1792x1024",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": false,
+  "optimize_prompt": "standard",
+  "reference_images_count": 0,
+  "reference_images_are_data_urls": null,
+  "negative_prompt": "错别字, 字顺序错乱, 多笔画, 缺笔画, 字符乱码, typo, 数字错误, 3D, 照片, 复杂阴影, 高饱和, 霓虹色",
+  "marker_rects": [],
+  "outpaint": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/private/tmp/jev-illus/job-001-扁平矢量信息图海报-暖白色手工纸背景-主色陶土橙配暖灰与墨绿-1.png",
+  "created_at": "2026-09-21T16:18:43",
+  "dry_run": false,
+  "reported_size": "1792x1024",
+  "elapsed_ms": 42775,
+  "usage": {
+    "input_images": 0,
+    "generated_images": 1,
+    "output_tokens": 7168,
+    "total_tokens": 7168
+  }
+}

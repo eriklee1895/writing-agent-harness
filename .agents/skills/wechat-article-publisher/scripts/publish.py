@@ -1294,6 +1294,27 @@ def _find_project_root(start: Path) -> Path | None:
     return None
 
 
+# Publish state (appmsgid, draft URL, 群发 status) is channel-operator state, not
+# article content. It must NEVER enter git: an appmsgid reconstructs a link into
+# the WeChat backend, and drafts can be deleted or re-saved so a committed value
+# only goes stale. content/wechat/ is git-tracked, so the status file lives under
+# .local-archive/ instead, which .gitignore already covers.
+LOCAL_STATE_ROOT = ".local-archive"
+
+
+def status_dir_for(wechat_dir: Path) -> Path:
+    """Resolve the gitignored publish-state directory for a channel dir.
+
+    content/wechat/YYYY-MM-DD-<slug>/  →  <repo>/.local-archive/YYYY-MM-DD-<slug>/
+    """
+    root = _find_project_root(wechat_dir)
+    if root is None:
+        # Not inside a recognisable project — keep it out of the tracked tree
+        # anyway by falling back to the gitignored dir beside content/.
+        root = wechat_dir.parent.parent
+    return root / LOCAL_STATE_ROOT / wechat_dir.name
+
+
 def ensure_wechat_archive(html_path: Path, article_path: Path | None) -> Path:
     """Ensure a channel-archive copy of the rendered HTML exists under content/wechat/.
 
@@ -1336,7 +1357,8 @@ def ensure_wechat_archive(html_path: Path, article_path: Path | None) -> Path:
         # (publish-status.md with a filled appmsgid), don't silently clobber
         # the HTML that corresponds to that WeChat draft. Old drafts remain
         # in WeChat's 草稿箱; overwriting would lose the traceable artifact.
-        existing_status = wechat_dir / "publish-status.md"
+        state_dir = status_dir_for(wechat_dir)
+        existing_status = state_dir / "publish-status.md"
         existing_appmsgid = None
         if existing_status.exists():
             existing_appmsgid = _read_appmsgid(existing_status)
@@ -1344,9 +1366,10 @@ def ensure_wechat_archive(html_path: Path, article_path: Path | None) -> Path:
                 or html_resolved.stat().st_mtime > archive_html.stat().st_mtime):
             if existing_appmsgid:
                 # Preserve the previously-published HTML as a historical
-                # snapshot before overwriting. Git is the ultimate history,
-                # but an explicit local file is friendlier when iterating.
-                snapshot = wechat_dir / f"index.wechat-preview.appmsgid-{existing_appmsgid}.html"
+                # snapshot before overwriting. It goes into the gitignored
+                # state dir because its filename carries the appmsgid.
+                state_dir.mkdir(parents=True, exist_ok=True)
+                snapshot = state_dir / f"index.wechat-preview.appmsgid-{existing_appmsgid}.html"
                 if not snapshot.exists():
                     shutil.copy2(archive_html, snapshot)
                     print(f"[publish] ⚠ 检测到已有草稿 appmsgid={existing_appmsgid}，"
@@ -1381,7 +1404,10 @@ def write_publish_status(archive_html: Path, *, appmsgid: str | None,
                          title: str, author: str, summary: str | None,
                          body_html_len: int, image_count: int,
                          cover_path: Path | None, status: str) -> Path | None:
-    """Write content/wechat/YYYY-MM-DD-<slug>/publish-status.md after save.
+    """Write .local-archive/YYYY-MM-DD-<slug>/publish-status.md after save.
+
+    Deliberately NOT written into content/wechat/, which is git-tracked: the
+    appmsgid is channel-operator state and must stay out of git history.
 
     Returns the path written, or None if we can't locate the wechat dir.
     The directory name is the full date+slug (matching AGENTS.md convention),
@@ -1394,7 +1420,8 @@ def write_publish_status(archive_html: Path, *, appmsgid: str | None,
         return None
     date_str = m.group(1)
     bare_slug = m.group(2)
-    status_path = wechat_dir / "publish-status.md"
+    status_path = status_dir_for(wechat_dir) / "publish-status.md"
+    status_path.parent.mkdir(parents=True, exist_ok=True)
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     summary_line = (summary[:60] + "…") if summary and len(summary) > 60 else (summary or "")
     cover_rel = cover_path.name if cover_path else ""
@@ -1762,7 +1789,8 @@ def publish(article_path: Path | None, html_path: Path | None,
                     print(f"[publish] ✓ 草稿已保存  {label}")
                     print("[publish] → 去微信后台「草稿箱」做最终 human review：核对标题/正文/图片，"
                           "（必要时）设置封面，再决定是否发布。")
-                    # Write channel publish-status.md next to the archive HTML
+                    # Write publish-status.md into the gitignored state dir
+                    # (.local-archive/), never into git-tracked content/wechat/
                     if archive_html is not None:
                         try:
                             sp = write_publish_status(

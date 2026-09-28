@@ -1,0 +1,22 @@
+{
+  "title": "Install Pipeline",
+  "brief": "Clean vertical step-by-step flowchart, cream background, two columns labeled 安装 install（左）and 更新 update（右）. Left column numbered steps connected by thin arrows: ① git clone 到临时目录 → ② 读 distribution.yaml（name / version / env_requires）→ ③ 环境变量预检：对照 shell 与现有 .env，逐个标 ✓ set 或 待设置 → ④ 安装侧再执行一遍硬排除清单（auth.json / .env / memories / sessions / state.db …）→ ⑤ 文件装入 ~/.hermes/profiles/<name>/ → ⑥ 写 .env.EXAMPLE → ⑦ 建命令别名（--alias）→ ⑧ 剥掉 .git/（从机制上杜绝把 .env 提交进分发历史）. Right column shorter flow: fetch 新版本 → 替换作者文件（SOUL、skills/、cron/ 按条目逐个合并）→ 保留你改过的 config.yaml（--force-config 才覆盖）→ 永不触碰 memories/、sessions/、auth.json、.env. Bottom divider band: '作者负责的（被替换） vs 安装者自有的（永不触碰）'. Flat vector infographic, thin numbered arrows, terracotta orange and ink blue accents, bilingual labels with English technical terms, tidy.",
+  "content_type": "atmospheric divider",
+  "content_category": "divider",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-2k",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "openai/gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Install Pipeline'. Diagram type: atmospheric divider. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-2k. Mode: text-only. Content brief:\nClean vertical step-by-step flowchart, cream background, two columns labeled 安装 install（左）and 更新 update（右）. Left column numbered steps connected by thin arrows: ① git clone 到临时目录 → ② 读 distribution.yaml（name / version / env_requires）→ ③ 环境变量预检：对照 shell 与现有 .env，逐个标 ✓ set 或 待设置 → ④ 安装侧再执行一遍硬排除清单（auth.json / .env / memories / sessions / state.db …）→ ⑤ 文件装入 ~/.hermes/profiles/<name>/ → ⑥ 写 .env.EXAMPLE → ⑦ 建命令别名（--alias）→ ⑧ 剥掉 .git/（从机制上杜绝把 .env 提交进分发历史）. Right column shorter flow: fetch 新版本 → 替换作者文件（SOUL、skills/、cron/ 按条目逐个合并）→ 保留你改过的 config.yaml（--force-config 才覆盖）→ 永不触碰 memories/、sessions/、auth.json、.env. Bottom divider band: '作者负责的（被替换） vs 安装者自有的（永不触碰）'. Flat vector infographic, thin numbered arrows, terracotta orange and ink blue accents, bilingual labels with English technical terms, tidy.",
+  "created_at": "2026-09-21T11:23:09",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/maria-educa-o-temporal-case-study-3baf84/content/origin/2026-09-18-hermes-bot-architecture/assets/20260921-112219-install-pipeline.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

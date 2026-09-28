@@ -1,0 +1,27 @@
+{
+  "prompt": "扁平矢量数据图表海报，暖白色手工纸背景，主色陶土橙配暖灰，克制、专业、留白充足，像 Bloomberg 数据新闻的图表。顶部左侧大号粗黑无衬线中文标题「自报的把握，和实际的正确率」，标题下方一行小号灰色中文副标题「54 道可真值判定的题，按自报置信度分五档」。主体是一个散点图：横轴刻度从左到右标 '0.60' '0.70' '0.80' '0.90' '1.00'，横轴标题「模型自报的置信度」；纵轴刻度从下到上标 '0.55' '0.65' '0.75' '0.85' '1.00'，纵轴标题「实际正确率」。一条浅灰色虚线从绘图区左下角延伸到右上角，虚线旁小字标注「完美校准」。图中有五个陶土橙色实心圆点、白色描边，圆点大小随题量变化：最小的点(n=3)位于横轴 0.64 纵轴 1.00 处；中等的点(n=6)位于横轴 0.74 纵轴 0.67 处；中等的点(n=7)位于横轴 0.86 纵轴 0.86 处；较大的点(n=14)位于横轴 0.95 纵轴 1.00 处；最大的点(n=24)位于横轴 1.00 纵轴 1.00 处。图表右下方小字标注「整体 ECE 0.048」。浅灰色细网格线",
+  "model": "doubao-seedream-5-0-pro-260628",
+  "model_label": "Seedream 5.0 Pro (2026-06-28 build)",
+  "size": "1792x1024",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": false,
+  "optimize_prompt": "standard",
+  "reference_images_count": 0,
+  "reference_images_are_data_urls": null,
+  "negative_prompt": "错别字, 字顺序错乱, 多笔画, 缺笔画, 字符乱码, typo, 数字错误, 3D, 照片, 阴影, 杂乱, 高饱和, 霓虹色",
+  "marker_rects": [],
+  "outpaint": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/private/tmp/jev-illus/job-001-扁平矢量数据图表海报-暖白色手工纸背景-主色陶土橙配暖灰-克-1.png",
+  "created_at": "2026-09-21T16:17:31",
+  "dry_run": false,
+  "reported_size": "1792x1024",
+  "elapsed_ms": 48375,
+  "usage": {
+    "input_images": 0,
+    "generated_images": 1,
+    "output_tokens": 7168,
+    "total_tokens": 7168
+  }
+}

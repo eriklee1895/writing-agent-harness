@@ -1,0 +1,22 @@
+{
+  "title": "Multiplex Routing",
+  "brief": "Clean system architecture diagram, cream background. Left: three inbound arrows labeled Telegram bot token / Discord bot token / /p/<profile>/ URL 前缀, converging into a routing box titled 'profile_routes 路由表（按 user / guild / chat / thread 匹配）'. Center: one large box '单一网关进程（multiplexer）' containing a vertical stack of per-turn scope items: 凭据（auth.json + .env）/ 模型 / 技能 / 记忆 / SOUL / 终端设置 / 命令白名单 / 代理 / 日志; two highlighted callouts beside the stack: 'ContextVar home 覆盖（set_hermes_home_override，不用 os.environ）' and '会话命名空间 agent:<profile>:*'. Right: three profile folders side by side, each with its own state.db badge, labeled profiles/coder/ · profiles/research/ · profiles/personal/. A small red badge top-right: '同名 bot token → 重复适配器 park（fatal / duplicate_credential）'. Bottom band across: '共享的只有：进程、PID / lock、一个 HTTP listener、profile_routes 表'. Flat vector infographic style, thin connectors, terracotta orange and ink blue accents, bilingual Chinese/English labels, tidy and precise.",
+  "content_type": "architecture diagram",
+  "content_category": "diagram",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-2k",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh-en",
+  "model": "openai/gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Multiplex Routing'. Diagram type: architecture diagram. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh-en. Target aspect ratio preset: doc-2k. Mode: text-only. Content brief:\nClean system architecture diagram, cream background. Left: three inbound arrows labeled Telegram bot token / Discord bot token / /p/<profile>/ URL 前缀, converging into a routing box titled 'profile_routes 路由表（按 user / guild / chat / thread 匹配）'. Center: one large box '单一网关进程（multiplexer）' containing a vertical stack of per-turn scope items: 凭据（auth.json + .env）/ 模型 / 技能 / 记忆 / SOUL / 终端设置 / 命令白名单 / 代理 / 日志; two highlighted callouts beside the stack: 'ContextVar home 覆盖（set_hermes_home_override，不用 os.environ）' and '会话命名空间 agent:<profile>:*'. Right: three profile folders side by side, each with its own state.db badge, labeled profiles/coder/ · profiles/research/ · profiles/personal/. A small red badge top-right: '同名 bot token → 重复适配器 park（fatal / duplicate_credential）'. Bottom band across: '共享的只有：进程、PID / lock、一个 HTTP listener、profile_routes 表'. Flat vector infographic style, thin connectors, terracotta orange and ink blue accents, bilingual Chinese/English labels, tidy and precise.",
+  "created_at": "2026-09-21T11:22:18",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/maria-educa-o-temporal-case-study-3baf84/content/origin/2026-09-18-hermes-bot-architecture/assets/20260921-112127-multiplex-routing.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

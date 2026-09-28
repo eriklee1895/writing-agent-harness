@@ -1,0 +1,27 @@
+{
+  "prompt": "扁平矢量 API 展示图，深墨蓝色背景（近黑的深蓝灰），前景用浅灰白色等宽字体，主色点缀陶土橙与天蓝，极简、克制、像终端截图或 API 文档配图。顶部居中一行浅灰小字大写 'STATE · 程序状态'，下方一行浅灰等宽字体中文「我的 Stripe 账户连了三天都失败，一直在丢单，请尽快处理。」。主体是横向并排的三个深色卡片，每张卡片顶部一个天蓝色简笔线框图标，下方大号白色粗体英文名称，各卡片内容如下。第一张卡片图标是三条带圆点的横线清单，名称 'Choice'，下方浅灰小字「这单该归哪个团队处理？」，再下方三条横向条形图：第一条最长、陶土橙色、右侧等宽字体写 'technical 0.540'；第二条稍短、深灰色、右侧写 'billing 0.460'；第三条几乎看不见、极短、右侧写 'sales 0.000'；最底部一行浅灰小字 'confidence 0.310'。第二张卡片图标是两条带圆点的水平刻度线，名称 'Score'，下方浅灰小字「客户有多生气？」，再下方一条水平刻度轴、轴上三个点、刻度下方标注「平静」「烦躁」「非常愤怒」、轴上一个陶土橙色游标停在靠右位置，再下方大号白色等宽字体 '1.230' 与浅灰小字「分值落在两级之间」，最底部浅灰小字 'confidence 0.660'。第三张卡片图标是圆圈内一个问号，名称 'Noul'，下方浅灰小字「这条消息表达了紧迫性吗？」，再下方超大号白色等宽字体 '0.960' 与浅灰小字「是「是」的概率」，最底部浅灰小字「没有独立的 confidence 字段」",
+  "model": "doubao-seedream-5-0-pro-260628",
+  "model_label": "Seedream 5.0 Pro (2026-06-28 build)",
+  "size": "1792x1024",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": false,
+  "optimize_prompt": "standard",
+  "reference_images_count": 0,
+  "reference_images_are_data_urls": null,
+  "negative_prompt": "错别字, 字顺序错乱, 多笔画, 缺笔画, 字符乱码, typo, 数字错误, 3D 渲染, 照片, 反光, 高饱和, 霓虹色, 手机边框, 浏览器窗口",
+  "marker_rects": [],
+  "outpaint": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/private/tmp/jev-illus/job-002-扁平矢量-api-展示图-深墨蓝色背景-近黑的深蓝灰-前景用-1.png",
+  "created_at": "2026-09-21T16:18:53",
+  "dry_run": false,
+  "reported_size": "1792x1024",
+  "elapsed_ms": 52166,
+  "usage": {
+    "input_images": 0,
+    "generated_images": 1,
+    "output_tokens": 7168,
+    "total_tokens": 7168
+  }
+}

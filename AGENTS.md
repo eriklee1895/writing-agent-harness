@@ -114,3 +114,5 @@
 ## Publish Boundary
 
 Agent 可以创建草稿、检查图片、检查封面、检查链接，并报告草稿创建结果（如微信公众号编辑页 URL 中的 `appmsgid`）。不要未经用户明确确认点击最终发布 / 群发。
+
+**发布态信息不进 git。** `appmsgid`、草稿 URL、群发状态属于渠道运营状态，不是文章内容。`content/wechat/` 只放可进 git 的排版产物（`index.wechat-preview.html`）；发布态写到 `.local-archive/YYYY-MM-DD-<slug>/publish-status.md`（`.gitignore` 已覆盖）。理由：`appmsgid` 可构造微信后台编辑链接，属于账号态敏感信息；且草稿会删会重发、值会变，写进 git history 只会留下 stale data。

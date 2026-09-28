@@ -1,0 +1,22 @@
+{
+  "title": "Blog Cover",
+  "brief": "Warm editorial illustration, 16:9 landscape composition, night desk scene. A row of seven small distinct robot characters with differently colored round chat-avatar faces (orange, blue, purple, green, yellow, teal, red) stands neatly lined up on a wooden desk like contacts in an address book; thin glowing light lines rise from them and connect to an open filing-cabinet drawer full of softly glowing paper folders above; behind them a terminal window glows with faint lines of text-like light (no readable text, abstract glow only); a plant and mug at the edges; city night lights through the window in the distance. Cream paper tones, terracotta orange accent, deep ink blue, warm lamplight. Sophisticated editorial style, clean composition, generous negative space at top. No text, no letters, no words, no logos.",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "editorial-atmospheric",
+  "resolved_style_profile": "editorial-atmospheric",
+  "size": "doc-2k",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh",
+  "model": "openai/gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'Blog Cover'. Style: contemporary editorial illustration, layered composition, subtle texture, restrained color palette, atmospheric but concrete, article-friendly visual metaphor, no text labels, no diagrams, no arrows. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a body illustration inside a WeChat article read on mobile phones (~390px wide). Compose for narrow-width readability. Use generous negative space. Language/region: zh. Target aspect ratio: doc-2k. Mode: text-only. Brief:\nWarm editorial illustration, 16:9 landscape composition, night desk scene. A row of seven small distinct robot characters with differently colored round chat-avatar faces (orange, blue, purple, green, yellow, teal, red) stands neatly lined up on a wooden desk like contacts in an address book; thin glowing light lines rise from them and connect to an open filing-cabinet drawer full of softly glowing paper folders above; behind them a terminal window glows with faint lines of text-like light (no readable text, abstract glow only); a plant and mug at the edges; city night lights through the window in the distance. Cream paper tones, terracotta orange accent, deep ink blue, warm lamplight. Sophisticated editorial style, clean composition, generous negative space at top. No text, no letters, no words, no logos.",
+  "created_at": "2026-09-21T14:04:40",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/maria-educa-o-temporal-case-study-3baf84/content/origin/2026-09-18-hermes-bot-architecture/assets/20260921-140404-blog-cover.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

@@ -60,6 +60,12 @@ content/inbox/**
 content/drafts/**
 !content/drafts/.gitkeep
 
+# Publish state (appmsgid, draft URLs) is channel-operator state, not article
+# content. The publisher writes it to .local-archive/ instead; this rule is a
+# safety net so a stray copy can never be committed. See AGENTS.md.
+content/wechat/**/publish-status.md
+content/wechat/**/index.wechat-preview.appmsgid-*.html
+
 # Media and design binaries are kept in .local-archive/ or external storage, not git
 *.png
 *.jpg

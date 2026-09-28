@@ -1,0 +1,22 @@
+{
+  "title": "Epilogue",
+  "brief": "Warm editorial illustration in the same palette as the article's cover: cream paper tones, terracotta orange accent, deep ink blue, soft night light. Scene: a small friendly robot with a simple round chat-avatar face (two dot eyes, one orange circle face like a messaging app contact) sits calmly on top of an open archive box packed with glowing paper folders and files; a small luggage tag hangs from the box; beside the box stands a rolled blueprint. Behind, a wooden shelf holds several other little robots with distinctly colored round faces (blue, purple, green, warm yellow), arranged in a tidy row like a contact roster in an address book. Thin warm light lines drift softly between the robots and the folders. Cozy, quiet, sophisticated editorial mood, clean composition with generous negative space. No text, no letters, no words, no logos.",
+  "content_type": "WeChat article cover",
+  "content_category": "cover",
+  "mode": "text-only",
+  "style_profile": "editorial-atmospheric",
+  "resolved_style_profile": "editorial-atmospheric",
+  "size": "doc-2k",
+  "resolved_size": "2048x1152",
+  "quality": "auto",
+  "language": "zh",
+  "model": "openai/gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create an illustration titled 'Epilogue'. Style: contemporary editorial illustration, layered composition, subtle texture, restrained color palette, atmospheric but concrete, article-friendly visual metaphor, no text labels, no diagrams, no arrows. This is for an article or essay — not a technical document. Do NOT add any diagrams, arrows, labels, callouts, or text. Focus on a concrete visual idea with atmosphere, restraint, and editorial clarity. This is a WeChat Official Account headline cover image (公众号头条封面). Compose for a 2.35:1 ultra-wide crop (1080x460). Keep key subjects centered or in the bottom third — top area will be cropped. Design for readability as a small thumbnail in WeChat's subscription feed. Title text will be overlaid by the editor, so leave ample negative space. Language/region: zh. Target aspect ratio: doc-2k. Mode: text-only. Brief:\nWarm editorial illustration in the same palette as the article's cover: cream paper tones, terracotta orange accent, deep ink blue, soft night light. Scene: a small friendly robot with a simple round chat-avatar face (two dot eyes, one orange circle face like a messaging app contact) sits calmly on top of an open archive box packed with glowing paper folders and files; a small luggage tag hangs from the box; beside the box stands a rolled blueprint. Behind, a wooden shelf holds several other little robots with distinctly colored round faces (blue, purple, green, warm yellow), arranged in a tidy row like a contact roster in an address book. Thin warm light lines drift softly between the robots and the folders. Cozy, quiet, sophisticated editorial mood, clean composition with generous negative space. No text, no letters, no words, no logos.",
+  "created_at": "2026-09-21T11:56:15",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/maria-educa-o-temporal-case-study-3baf84/content/origin/2026-09-18-hermes-bot-architecture/assets/20260921-115543-epilogue.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

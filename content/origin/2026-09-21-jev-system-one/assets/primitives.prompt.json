@@ -1,0 +1,22 @@
+{
+  "title": "Jev 的三种决策原语",
+  "brief": "一张横向技术信息图，说明一个不生成文字的决策模型的三种输出原语。左侧一个输入端，标注「程序状态 state」与「类型化问题 questions」，两者汇成一个中等粗细的箭头指向右侧。右侧三张并排的圆角卡片：第一张标题「Noul · 二分类」，正文两行「一个 0 到 1 的概率」「没有 confidence 字段」，右下角一个大号数值 0.98；第二张标题「Choice · 多分类，最多 255 项」，正文两行「选中项 + 每项概率 + confidence」「标签在推理时用自然语言给出」，右下角数值 1.00；第三张标题「Score · 序数回归，2 到 10 级」，正文两行「加权期望，可落在两级之间」「附分布与 legend」，右下角数值 1.95。整张图只有一个主标题，位于顶部。配色：浅暖纸张底 #faf9f5，陶土橙 #c2703a 作唯一强调色，文字深灰 #2b2620，线条细而克制。风格像技术杂志的示意图，干净、留白充足。",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "high",
+  "language": "zh",
+  "model": "openai/gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled 'Jev 的三种决策原语'. Diagram type: article illustration. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\n一张横向技术信息图，说明一个不生成文字的决策模型的三种输出原语。左侧一个输入端，标注「程序状态 state」与「类型化问题 questions」，两者汇成一个中等粗细的箭头指向右侧。右侧三张并排的圆角卡片：第一张标题「Noul · 二分类」，正文两行「一个 0 到 1 的概率」「没有 confidence 字段」，右下角一个大号数值 0.98；第二张标题「Choice · 多分类，最多 255 项」，正文两行「选中项 + 每项概率 + confidence」「标签在推理时用自然语言给出」，右下角数值 1.00；第三张标题「Score · 序数回归，2 到 10 级」，正文两行「加权期望，可落在两级之间」「附分布与 legend」，右下角数值 1.95。整张图只有一个主标题，位于顶部。配色：浅暖纸张底 #faf9f5，陶土橙 #c2703a 作唯一强调色，文字深灰 #2b2620，线条细而克制。风格像技术杂志的示意图，干净、留白充足。",
+  "created_at": "2026-09-21T21:36:21",
+  "output_files": [
+    "/Users/eriklee/code/my_project/writing-agent-harness/.claude/worktrees/minimax-m3-tps-test-7c35bf/content/origin/2026-09-21-jev-system-one/assets/20260921-213450-jev.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}

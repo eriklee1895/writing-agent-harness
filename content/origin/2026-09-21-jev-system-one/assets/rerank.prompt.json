@@ -1,0 +1,22 @@
+{
+  "title": "重排对照：英文打平，中文落后",
+  "brief": "一张横向技术信息图，上下两组对照。上面一组标题「英文语料」，中间一根水平条，左端一个陶土橙色圆点标注「Jev」，右端一个石灰灰色圆点标注「专用精排模型」，两者之间画一个等号，条下方一行小字「nDCG@10 打平，单次调用快 8.9 倍」。下面一组标题「中文语料」，中间一根水平条，左端陶土橙色圆点标注「Jev」，右端石灰灰色圆点标注「专用精排模型」，一个向左的箭头从右指向左表示 Jev 落后，条下方一行小字「nDCG@10 落后 0.027 至 0.052，置信区间排除零」。两组之间一条细横线分隔。整张图只有一个主标题，位于顶部。配色：浅暖纸张底 #faf9f5，陶土橙 #c2703a，石灰色 #8a8578，文字深灰 #2b2620。风格像技术杂志的对照示意图，干净克制。",
+  "content_type": "article illustration",
+  "content_category": "inset",
+  "mode": "text-only",
+  "style_profile": "flat-tech-infographic",
+  "resolved_style_profile": "flat-tech-infographic",
+  "size": "doc-hd",
+  "resolved_size": "1536x1024",
+  "quality": "high",
+  "language": "zh",
+  "model": "openai/gpt-image-2",
+  "reference_images": [],
+  "prompt": "Create a polished article illustration titled '重排对照：英文打平，中文落后'. Diagram type: article illustration. Use a flat technical infographic illustration, clean grouped modules, clear arrows, soft professional palette, concise bilingual labels, document-friendly composition. Make it suitable for insertion into engineering notes or a design document. Prefer a clear information hierarchy with section titles, concise Chinese/English labels, short notes, arrows, grouped modules, and strong readability. Avoid dense paragraph blocks. Language mode: zh. Target aspect ratio preset: doc-hd. Mode: text-only. Content brief:\n一张横向技术信息图，上下两组对照。上面一组标题「英文语料」，中间一根水平条，左端一个陶土橙色圆点标注「Jev」，右端一个石灰灰色圆点标注「专用精排模型」，两者之间画一个等号，条下方一行小字「nDCG@10 打平，单次调用快 8.9 倍」。下面一组标题「中文语料」，中间一根水平条，左端陶土橙色圆点标注「Jev」，右端石灰灰色圆点标注「专用精排模型」，一个向左的箭头从右指向左表示 Jev 落后，条下方一行小字「nDCG@10 落后 0.027 至 0.052，置信区间排除零」。两组之间一条细横线分隔。整张图只有一个主标题，位于顶部。配色：浅暖纸张底 #faf9f5，陶土橙 #c2703a，石灰色 #8a8578，文字深灰 #2b2620。风格像技术杂志的对照示意图，干净克制。",
+  "created_at": "2026-09-21T21:39:22",
+  "output_files": [
+    "/private/tmp/jev-rerank-img/20260921-213756-article-illustration.png"
+  ],
+  "crop_hint": null,
+  "dry_run": false
+}
