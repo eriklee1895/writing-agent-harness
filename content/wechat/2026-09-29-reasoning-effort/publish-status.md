@@ -24,6 +24,11 @@ saved_at: 2026-09-29 16:47
   - 正文：33262 chars，3 张正文图
   - 封面：reasoning-effort-cover-imagegen.png（已设置）
 
+## Related Deliveries
+
+- Blog：<https://eriklee-blog.pages.dev/posts/2026-09-29-reasoning-effort/>
+- 飞书文档：<https://bytedance.my.larkoffice.com/docx/BibxdSJjXoUWREx7YsvmSsNLyJf>
+
 ## Verification Notes
 
 - 微信编辑器截图显示 `已保存`，Draft History 有 09-29 16:47 的手动保存记录；编辑器标题为完整标题。

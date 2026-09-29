@@ -5,6 +5,7 @@
 - 状态：`draft-created`，尚未群发。
 - 公众号草稿：appmsgid `100001431`。
 - Blog：<https://eriklee-blog.pages.dev/posts/2026-09-29-reasoning-effort/>。
+- 飞书文档：<https://bytedance.my.larkoffice.com/docx/BibxdSJjXoUWREx7YsvmSsNLyJf>（回读确认标题、8 个标题层级与 3 张正文图）。
 - 微信 preview：`content/wechat/2026-09-29-reasoning-effort/index.wechat-preview.html`。
 - 正文 3 张图均已上传至微信 CDN，封面上传状态为 `cover-set`。
 
