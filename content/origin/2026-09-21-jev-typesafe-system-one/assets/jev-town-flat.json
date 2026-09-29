@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: landscape flat technical infographic for a case study about Jev Town.\nPrimary request: explain local state and partial visibility as a software system. Show a simplified flat town map with five zones, a central square, one red package, twelve small resident markers, and translucent sight boundaries that differ by resident. The main idea is that different state produces different decisions.\nComposition: clean top-down map with five labeled zones arranged around the central square. Use simple buildings, paths, docks, and one dark hidden alley. Add a small right-side observation panel with three horizontal probability bars and a tiny decision tree. Use arrows sparingly and keep the visual hierarchy clear.\nStyle and medium: flat-tech infographic with editorial map language, crisp vector blocks, limited colors, subtle paper texture, no painterly realism, no game HUD.\nText (exact): Render \"Jev Town\" exactly once as the main title on the top-left. Render \"LOCAL STATE\" exactly once above the sight-boundary map. Render \"PARTIAL VIEW\" exactly once above the right-side observation panel. Render \"PACKAGE\" exactly once beside the red package. No other readable words, numbers, letters, shop signs, or logos anywhere else.\nColor: warm off-white background, graphite outlines, muted blue, olive green, vermilion package, pale yellow sight boundaries.\nAvoid: fantasy postcard, realistic people, cute mascots, excessive tiny details, duplicated labels, misspellings, watermark.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 293,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 293,
+        "cached_tokens": 0
+      },
+      "output_tokens": 172,
+      "total_tokens": 465,
+      "output_tokens_details": {
+        "image_tokens": 172,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "c115a5c6-0ca2-4644-87be-a3e537a75934"
+  },
+  "elapsed_seconds": 50.295,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-town-flat.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T02:41:51+00:00"
+}

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Software Factory：AI Native 软件开发流程的新范式</title>
+  <desc id="desc">从 Work Item、Task Control Plane、隔离运行、验证、人工 Gate 到交付和反馈的完整流程。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#6f777d"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#233145" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="#f8f5ef"/>
+  <circle cx="1450" cy="80" r="210" fill="#315ea8" opacity="0.06"/>
+  <circle cx="90" cy="790" r="250" fill="#d97a58" opacity="0.07"/>
+
+  <text x="100" y="118" font-family="PingFang SC, Arial, sans-serif" font-size="62" font-weight="700" fill="#1f252c">Software Factory</text>
+  <text x="100" y="178" font-family="PingFang SC, Arial, sans-serif" font-size="34" font-weight="500" fill="#3f4a55">AI Native 软件开发流程的新范式</text>
+  <text x="100" y="226" font-family="PingFang SC, Arial, sans-serif" font-size="23" fill="#6a737c">任务成为持久状态，Agent Run 只是可替换的执行尝试</text>
+
+  <g filter="url(#shadow)">
+    <rect x="55" y="320" width="220" height="165" rx="22" fill="#ffffff" stroke="#315ea8" stroke-width="3"/>
+    <rect x="305" y="320" width="220" height="165" rx="22" fill="#f2ece3" stroke="#315ea8" stroke-width="3"/>
+    <rect x="555" y="320" width="220" height="165" rx="22" fill="#ffffff" stroke="#315ea8" stroke-width="3"/>
+    <rect x="805" y="320" width="220" height="165" rx="22" fill="#ffffff" stroke="#557a5c" stroke-width="3"/>
+    <rect x="1055" y="320" width="220" height="165" rx="22" fill="#e8efe8" stroke="#557a5c" stroke-width="3"/>
+    <rect x="1305" y="320" width="220" height="165" rx="22" fill="#ffffff" stroke="#315ea8" stroke-width="3"/>
+  </g>
+
+  <g font-family="PingFang SC, Arial, sans-serif" text-anchor="middle" fill="#1f252c">
+    <text x="165" y="374" font-size="27" font-weight="700">Work Item</text>
+    <text x="165" y="419" font-size="18">Issue / Intent / Alert</text>
+    <text x="165" y="456" font-size="18" fill="#6a737c">目标进入系统</text>
+
+    <text x="415" y="374" font-size="23" font-weight="700">Task Control Plane</text>
+    <text x="415" y="419" font-size="18">状态 · Policy · 依赖</text>
+    <text x="415" y="456" font-size="18" fill="#6a737c">领取、调度、恢复</text>
+
+    <text x="665" y="374" font-size="26" font-weight="700">Isolated Run</text>
+    <text x="665" y="419" font-size="18">Workspace / Sandbox</text>
+    <text x="665" y="456" font-size="18" fill="#6a737c">执行与副作用隔离</text>
+
+    <text x="915" y="374" font-size="25" font-weight="700">Verification</text>
+    <text x="915" y="419" font-size="18">Tests · Diff · Runtime</text>
+    <text x="915" y="456" font-size="18" fill="#6a737c">读取实际结果</text>
+
+    <text x="1165" y="374" font-size="25" font-weight="700">Human Gate</text>
+    <text x="1165" y="419" font-size="18">Review / Approval</text>
+    <text x="1165" y="456" font-size="18" fill="#6a737c">保留关键判断</text>
+
+    <text x="1415" y="374" font-size="27" font-weight="700">Deliver</text>
+    <text x="1415" y="419" font-size="20">PR / Deploy</text>
+    <text x="1415" y="456" font-size="18" fill="#6a737c">交付与回写</text>
+  </g>
+
+  <g stroke="#6f777d" stroke-width="4" fill="none" marker-end="url(#arrow)">
+    <path d="M281 402 H292"/>
+    <path d="M531 402 H542"/>
+    <path d="M781 402 H792"/>
+    <path d="M1031 402 H1042"/>
+    <path d="M1281 402 H1292"/>
+  </g>
+
+  <path d="M1415 495 C1415 625 415 650 415 505" stroke="#d97a58" stroke-width="4" stroke-dasharray="10 10" fill="none" marker-end="url(#arrow)"/>
+  <text x="915" y="635" font-family="PingFang SC, Arial, sans-serif" font-size="22" fill="#a4573d" text-anchor="middle">监控、人工反馈与 Eval 回到下一轮任务</text>
+
+  <g font-family="PingFang SC, Arial, sans-serif">
+    <rect x="105" y="710" width="1390" height="100" rx="20" fill="#1f252c"/>
+    <text x="800" y="754" text-anchor="middle" font-size="24" font-weight="600" fill="#ffffff">Task 持续存在　·　Run 可以替换　·　Artifact 可追踪　·　Gate 明确　·　失败可恢复</text>
+    <text x="800" y="789" text-anchor="middle" font-size="18" fill="#cfd5db">Anthropic · Vercel · Warp · OpenAI 工程实践拆解</text>
+  </g>
+</svg>

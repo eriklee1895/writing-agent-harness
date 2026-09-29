@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1840" viewBox="0 0 1080 1840" role="img" aria-labelledby="title desc">
+  <title id="title">一条任务如何穿过 Software Factory</title>
+  <desc id="desc">从 Work Item 到 Triage、Spec、隔离执行、验证、人工 Gate、交付和反馈。</desc>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#6f777d"/></marker></defs>
+  <rect width="1080" height="1840" fill="#faf9f5"/>
+  <text x="70" y="92" font-family="PingFang SC, Arial" font-size="48" font-weight="700" fill="#141413">一条任务如何穿过 Factory</text>
+  <text x="70" y="142" font-family="PingFang SC, Arial" font-size="24" fill="#66645f">每一步都有输入、Artifact、状态和退出条件</text>
+
+  <g font-family="PingFang SC, Arial" text-anchor="middle">
+    <rect x="160" y="215" width="760" height="130" rx="24" fill="#fff" stroke="#315ea8" stroke-width="4"/>
+    <text x="540" y="270" font-size="31" font-weight="700" fill="#141413">Work Item</text>
+    <text x="540" y="315" font-size="23" fill="#66645f">Issue / Intent / Alert</text>
+
+    <polygon points="540,405 820,535 540,665 260,535" fill="#e8efe8" stroke="#557a5c" stroke-width="4"/>
+    <text x="540" y="520" font-size="32" font-weight="700" fill="#3f6847">Triage</text>
+    <text x="540" y="565" font-size="23" fill="#141413">澄清 · 拒绝前提 · 路由</text>
+
+    <rect x="160" y="730" width="760" height="130" rx="24" fill="#fff" stroke="#315ea8" stroke-width="4"/>
+    <text x="540" y="785" font-size="31" font-weight="700" fill="#141413">Spec + Acceptance Criteria</text>
+    <text x="540" y="830" font-size="23" fill="#66645f">目标、边界、风险与证明方法</text>
+
+    <rect x="160" y="925" width="760" height="145" rx="24" fill="#f3f1ea" stroke="#d97757" stroke-width="4"/>
+    <text x="540" y="985" font-size="31" font-weight="700" fill="#d15f3f">Isolated Workspace / Run Attempt</text>
+    <text x="540" y="1030" font-size="23" fill="#66645f">checkout、进程、网络、凭据与副作用隔离</text>
+
+    <rect x="160" y="1135" width="760" height="130" rx="24" fill="#fff" stroke="#315ea8" stroke-width="4"/>
+    <text x="540" y="1190" font-size="31" font-weight="700" fill="#141413">Implementation</text>
+    <text x="540" y="1235" font-size="23" fill="#66645f">代码、工具调用与实际变更</text>
+
+    <rect x="160" y="1330" width="760" height="130" rx="24" fill="#fff" stroke="#557a5c" stroke-width="4"/>
+    <text x="540" y="1385" font-size="31" font-weight="700" fill="#3f6847">Verification</text>
+    <text x="540" y="1430" font-size="23" fill="#66645f">Tests · Diff · Runtime · Independent Review</text>
+
+    <rect x="160" y="1525" width="360" height="130" rx="24" fill="#e8efe8" stroke="#557a5c" stroke-width="4"/>
+    <text x="340" y="1580" font-size="29" font-weight="700" fill="#3f6847">Human / Policy Gate</text>
+    <text x="340" y="1625" font-size="22" fill="#66645f">批准、修改或暂停</text>
+
+    <rect x="560" y="1525" width="360" height="130" rx="24" fill="#fff" stroke="#315ea8" stroke-width="4"/>
+    <text x="740" y="1580" font-size="29" font-weight="700" fill="#141413">Deliver</text>
+    <text x="740" y="1625" font-size="22" fill="#66645f">PR / Deploy / Handoff</text>
+  </g>
+
+  <g stroke="#6f777d" stroke-width="5" marker-end="url(#a)">
+    <line x1="540" y1="350" x2="540" y2="392"/>
+    <line x1="540" y1="675" x2="540" y2="718"/>
+    <line x1="540" y1="865" x2="540" y2="913"/>
+    <line x1="540" y1="1075" x2="540" y2="1123"/>
+    <line x1="540" y1="1270" x2="540" y2="1318"/>
+    <path d="M540 1465 C540 1495 340 1495 340 1513" fill="none"/>
+    <line x1="525" y1="1590" x2="548" y2="1590"/>
+  </g>
+
+  <path d="M740 1665 C740 1765 970 1765 970 535 C970 430 840 395 725 445" fill="none" stroke="#d97757" stroke-width="5" stroke-dasharray="12 12" marker-end="url(#a)"/>
+  <text x="540" y="1750" text-anchor="middle" font-family="PingFang SC, Arial" font-size="24" fill="#d15f3f">监控、人工反馈与 Eval 回到下一轮任务</text>
+</svg>

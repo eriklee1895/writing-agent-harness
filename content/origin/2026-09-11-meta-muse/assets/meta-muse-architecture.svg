@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1050" viewBox="0 0 1600 1050" role="img" aria-labelledby="title desc">
+  <title id="title">Meta Muse public architecture reconstruction</title>
+  <desc id="desc">A diagram of Muse clients, a per-user Muse Secure VM, the Hatch runtime cell, host-side security services including Sentinel and authd, and external connectors.</desc>
+  <defs>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#25313d" flood-opacity="0.12"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#465462"/></marker>
+    <marker id="arrowOrange" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#d97757"/></marker>
+    <style>
+      .sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif; }
+      .title { font-size: 34px; font-weight: 760; fill: #17212b; }
+      .subtitle { font-size: 17px; fill: #607080; }
+      .zone { font-size: 24px; font-weight: 720; fill: #17212b; }
+      .zoneSmall { font-size: 16px; fill: #5f6f7f; }
+      .head { font-size: 20px; font-weight: 720; fill: #17212b; }
+      .label { font-size: 17px; font-weight: 650; fill: #22303c; }
+      .note { font-size: 14px; fill: #607080; }
+      .tiny { font-size: 13px; fill: #6b7785; }
+    </style>
+  </defs>
+  <rect width="1600" height="1050" fill="#faf9f5"/>
+  <text x="70" y="70" class="sans title">Meta Muse：从公开资料反推的运行时与安全边界</text>
+  <text x="70" y="103" class="sans subtitle">这是对 Meta 公开技术说明的结构化重绘，不是 Muse 内部源码或未公开部署图。</text>
+
+  <rect x="70" y="145" width="1460" height="115" rx="22" fill="#f3eee6" stroke="#e4d8ca" stroke-width="2" filter="url(#softShadow)"/>
+  <text x="100" y="183" class="sans head">用户入口 / Client layer</text>
+  <text x="100" y="218" class="sans label">Muse App（iOS / Android）</text>
+  <text x="430" y="218" class="sans label">Web UI（muse.ai）</text>
+  <text x="730" y="218" class="sans label">WhatsApp</text>
+  <text x="945" y="218" class="sans label">未来：AI glasses</text>
+  <text x="1260" y="218" class="sans note">通过 secure transport 连接每个用户的 VM</text>
+
+  <rect x="70" y="300" width="955" height="610" rx="28" fill="#eef4f5" stroke="#b9d1d5" stroke-width="3"/>
+  <text x="100" y="345" class="sans zone">Muse Secure VM</text>
+  <text x="100" y="375" class="sans zoneSmall">每个用户一台专用云端电脑：Agent、个人数据、浏览器、凭据与持久状态在同一用户边界内协作。</text>
+
+  <rect x="100" y="410" width="450" height="430" rx="22" fill="#fffdf9" stroke="#d8c8b7" stroke-width="2" filter="url(#softShadow)"/>
+  <text x="130" y="450" class="sans head">Runtime cell / Hatch</text>
+  <text x="130" y="480" class="sans note">systemd-nspawn；cell root ≠ host root</text>
+  <rect x="130" y="510" width="390" height="64" rx="14" fill="#f8e6dc"/>
+  <text x="150" y="548" class="sans label">Planner + main agent</text>
+  <rect x="130" y="590" width="185" height="64" rx="14" fill="#e9eef7"/>
+  <rect x="335" y="590" width="185" height="64" rx="14" fill="#e9eef7"/>
+  <text x="149" y="628" class="sans label">Sub-agents</text>
+  <text x="350" y="628" class="sans label">Crons / schedule</text>
+  <rect x="130" y="670" width="390" height="64" rx="14" fill="#e7f0e4"/>
+  <text x="150" y="708" class="sans label">Filesystem · terminal · memory · artifacts</text>
+  <rect x="130" y="750" width="390" height="64" rx="14" fill="#e8edf0"/>
+  <text x="150" y="788" class="sans label">Browser sub-agent（受控接口）</text>
+
+  <rect x="585" y="410" width="405" height="430" rx="22" fill="#f7fbfb" stroke="#9ec2c8" stroke-width="2" filter="url(#softShadow)"/>
+  <text x="615" y="450" class="sans head">Host-side guardrails</text>
+  <text x="615" y="480" class="sans note">与 runtime cell 分离；Agent 不能覆盖</text>
+  <rect x="615" y="510" width="345" height="64" rx="14" fill="#d8eef0"/>
+  <text x="635" y="548" class="sans label">Sentinel：唯一 action / egress authority</text>
+  <rect x="615" y="590" width="165" height="64" rx="14" fill="#e8edf5"/>
+  <rect x="795" y="590" width="165" height="64" rx="14" fill="#e8edf5"/>
+  <text x="635" y="628" class="sans label">authd</text>
+  <text x="815" y="628" class="sans label">privsep</text>
+  <text x="635" y="649" class="sans tiny">credential store</text>
+  <text x="815" y="649" class="sans tiny">scoped workers</text>
+  <rect x="615" y="670" width="345" height="64" rx="14" fill="#f5e8c9"/>
+  <text x="635" y="708" class="sans label">hatch-safety：独立模型 / classifiers</text>
+  <rect x="615" y="750" width="165" height="64" rx="14" fill="#eee7f6"/>
+  <rect x="795" y="750" width="165" height="64" rx="14" fill="#eee7f6"/>
+  <text x="635" y="788" class="sans label">Postgres</text>
+  <text x="815" y="788" class="sans label">egress proxy</text>
+  <text x="635" y="809" class="sans tiny">durable state</text>
+  <text x="815" y="809" class="sans tiny">eBPF / L4-L7 checks</text>
+
+  <rect x="1095" y="300" width="435" height="610" rx="28" fill="#fff7f1" stroke="#e8b69d" stroke-width="3"/>
+  <text x="1125" y="345" class="sans zone">External systems</text>
+  <text x="1125" y="375" class="sans zoneSmall">连接器或 Browser 触达真实世界，但所有外发动作受政策控制。</text>
+  <rect x="1125" y="420" width="375" height="70" rx="16" fill="#f8e1d5"/>
+  <text x="1150" y="462" class="sans label">Email · Calendar · Meta apps</text>
+  <rect x="1125" y="515" width="375" height="70" rx="16" fill="#f8e1d5"/>
+  <text x="1150" y="557" class="sans label">Shopping · tickets · dining</text>
+  <rect x="1125" y="610" width="375" height="70" rx="16" fill="#f8e1d5"/>
+  <text x="1150" y="652" class="sans label">Health · smart home · other APIs</text>
+  <rect x="1125" y="705" width="375" height="70" rx="16" fill="#f2ead7"/>
+  <text x="1150" y="747" class="sans label">Browser / Chromium · checkout</text>
+  <rect x="1125" y="800" width="375" height="70" rx="16" fill="#e8edf0"/>
+  <text x="1150" y="842" class="sans label">User approval / audit trail</text>
+
+  <path d="M800 260 V390" fill="none" stroke="#465462" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M550 655 H585" fill="none" stroke="#d97757" stroke-width="4" marker-end="url(#arrowOrange)"/>
+  <path d="M990 542 H1095" fill="none" stroke="#d97757" stroke-width="4" marker-end="url(#arrowOrange)"/>
+  <path d="M1095 835 H1000 V542 H990" fill="none" stroke="#d97757" stroke-width="3" stroke-dasharray="9 10" marker-end="url(#arrowOrange)"/>
+  <path d="M960 705 H1045 V735 H1125" fill="none" stroke="#465462" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M785 840 V955 H1400 V910" fill="none" stroke="#8998a4" stroke-width="2" stroke-dasharray="8 10" marker-end="url(#arrow)"/>
+
+  <rect x="70" y="950" width="1460" height="54" rx="15" fill="#1d2731"/>
+  <text x="100" y="984" class="sans" font-size="16" fill="#f3f1ea">关键判断：Muse 不是“LLM 拿到 root”，而是把 Agent、权限、凭据、外网与持久状态拆成不同边界。</text>
+  <g class="sans" font-size="15">
+    <line x1="1165" y1="984" x2="1205" y2="984" stroke="#d97757" stroke-width="4"/>
+    <text x="1215" y="989" fill="#f3f1ea">action / approval</text>
+    <line x1="1360" y1="984" x2="1400" y2="984" stroke="#a8b6bf" stroke-width="3" stroke-dasharray="8 8"/>
+    <text x="1410" y="989" fill="#f3f1ea">state / telemetry</text>
+  </g>
+</svg>

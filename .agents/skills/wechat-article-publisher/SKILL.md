@@ -93,6 +93,10 @@ uv run scripts/publish.py \
 
 ## 已知限制 / 坑点
 
+- **双栏／嵌套图片不能直接套用逐图占位符上传**：微信可能把新图片 block 拆到列外，造成零宽高或后图覆盖前图。已验证的处理顺序是先在独立段落上传并记录逐图 CDN 映射，再整体注入含 CDN 图片的完整排版。当前脚本尚未自动实现该路径；遇到双栏需按[实测记录](../../../docs/retrospectives/2026-09-29-wechat-two-column-image-upload.md)处理。
+- **保存成功与请求图片数不能代替媒体验收**：逐图确认 CDN 地址、非零显示尺寸、左右位置，并在保存重新打开后复核。当前发布状态里的 `image_count` 可能来自请求数量，需要与实际插入数量对照。
+- **读取编辑器 HTML 后重新注入**：先移除无 `src` / `data-src` 的编辑器辅助图片和 `ProseMirror-separator`，保留实际图片及用户文字；否则辅助节点可能变成空正文图片。
+
 - **封面图：`--try-cover` 已稳定（2026-06-29 起）**。走 WebUploader 隐藏 `<input type=file>` 的 `set_input_files`（不点透明 label overlay，overlay 会拦截）→ 等 `mmbiz.qpic.cn` URL 出现 → JS 定位「下一步」可见主按钮 → 完成。建议把封面预裁为 2.35:1（公众号封面标准比例），跳过编辑器内裁剪步骤更稳。`--try-cover` 仍为 opt-in（不强制每篇都需要封面），失败时 `cover-set-failed` 不阻塞草稿保存。
 - **标题字段是隐藏 textarea + 独立 ProseMirror**：直接设 `#title.value` 不显示（隐藏镜像），必须键入可见的 `#js_title_main .ProseMirror`。
 - **正文图片串行上传**：每张等 CDN 完成再传下一张，多图文章更慢但可靠。大图慢网络下单张可能逼近 60s 超时；脚本如实打印「请求 N / 已插入 M」，M<N 时清理残留占位符并提示人工补图。不自动重传。

@@ -6,11 +6,11 @@
 
 尽量把 Markdown / MDX 作为 repo 内可追踪 canonical article。
 
-飞书文档可以作为原始写作入口，但进入 repo 后应同步/转换为 Markdown / MDX，方便 diff、review、render 和 publish automation。`content/drafts/` 当前是 gitignored 本地工作区；需要长期追踪的稿子应 promote 到 `content/origin/`，再派生到 `content/wechat/` 或 `content/blog/`。
+飞书文档、Notion 页面和 Blog 文章都可以作为原始输入，也可以接收从 canonical article 派生的内容。文章进入 repo 后以 Markdown / MDX 作为可追踪 source，方便 diff、review、render 和 publish automation。`content/drafts/` 当前是 gitignored 本地工作区；需要长期追踪的稿子应 promote 到 `content/origin/`，再同步到飞书 / Notion，或派生到 `content/wechat/`、`content/blog/`。
 
 ## Workflow
 
-1. 捕捉 idea / inspiration。用户可以先给灵感、素材、判断、链接或几段粗糙想法。
+1. 捕捉 idea / inspiration。用户可以先给灵感、素材、判断、链接或几段粗糙想法，也可以从飞书、Notion、Blog 文档导入已有内容。
 2. 进入 `article-ideation`，通过脑暴校准 central question、target reader、thesis、angle、tone、anti-goals 和 distribution channel。
 3. 产出 `writing brief`、`research questions` 和初版 outline。不要在没理解清楚前急着写正文。
 4. brief 确认后直接进入 research 或 draft。agent 在写作前读取 [docs/reference/format-standards.md](../reference/format-standards.md) 了解格式偏好。如果任务涉及多轮 agent 执行，建议将 brief 落盘到 `content/drafts/YYYY-MM-DD-<slug>/writing-brief.md` 防止 context 丢失。
@@ -67,5 +67,7 @@ Erik 提供主题、灵感、素材、判断和雏形；agent 先用 `article-id
 ## Channel Router
 
 - 微信公众号：读 [wechat-writing-publishing.md](wechat-writing-publishing.md)。
-- 个人博客：尚未创建。未来补 [../project/automation-roadmap.md](../project/automation-roadmap.md) 中的 blog publishing skill。
-- 其他平台：视为 downstream repackaging targets。保持一个 canonical Markdown / MDX source，再派生不同平台版本。
+- 个人博客：使用 `erik-blog-publish-workflow` 同步 canonical source 到 Astro 博客；既有博客文章也可读入作为写作素材。
+- 飞书：Markdown / MDX 与飞书文档可双向同步；输出使用 user-level skill `markdown-article-to-feishu-doc`。
+- Notion：Notion 页面 / 数据库与 Markdown / MDX 可双向接入；网页资料剪藏使用 `article-to-notion`，Notion 读写按对应连接流程执行。
+- 其他平台：保持一个 canonical Markdown / MDX source，再派生不同平台版本。

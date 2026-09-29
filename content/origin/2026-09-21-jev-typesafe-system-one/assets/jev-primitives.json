@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: landscape flat educational infographic for a Chinese AI engineering article.\nPrimary request: explain Jev's three atomic question primitives and what each returns.\nComposition: large title at top, three equal cards below. Card one coral: \"Choice — 选项\", with a small probability bar chart and an icon for selecting one option. Card two teal: \"Score — 评分\", with a horizontal ordered scale and one marker. Card three orange: \"Noul — 布尔\", with a yes/no probability gauge. A full-width footer card reads \"统一返回：decision + probability + confidence\".\nStyle and medium: flat technical editorial infographic, warm paper background, crisp ink outlines, hand-drawn small accents, coral / teal / orange palette, clean spacing, no photorealism.\nText (exact): Allowed readable text only: \"三个原子原语：Choice / Score / Noul\", \"Choice — 选项\", \"Score — 评分\", \"Noul — 布尔\", \"概率分布\", \"有序刻度\", \"真假概率\", and \"统一返回：decision + probability + confidence\". Render each exactly once. All JSON, numbers, axes, code, and secondary annotations must be blank abstract placeholders.\nAvoid: extra words, duplicated labels, misspellings, crowded layout, watermark.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 270,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 270,
+        "cached_tokens": 0
+      },
+      "output_tokens": 178,
+      "total_tokens": 448,
+      "output_tokens_details": {
+        "image_tokens": 178,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "6f376ed9-d189-4132-b7d6-a0eb2a8e4696"
+  },
+  "elapsed_seconds": 37.638,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-primitives.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T04:02:15+00:00"
+}

@@ -2,9 +2,9 @@
 
 ## 流程全景
 
-![AI 写作 Workflow + Skills 全景](../assets/ai-writing-skills-workflow-overview.png)
+![AI 写作 Workflow + Skills 全景](../assets/ai-writing-skills-workflow-overview-gpt-image-2.5.png)
 
-这张图是面向真实写作任务的执行层视图：从灵感碎片进入 `content/inbox/` 和 `content/drafts/`，经过 Skills Orchestration，沉淀到 `content/origin/`，再派生到微信、博客和未来渠道。图片生成 metadata 归档在 [docs/assets/ai-writing-skills-workflow-overview.json](../assets/ai-writing-skills-workflow-overview.json)，方便后续用同一 prompt 和 reference 继续迭代。
+这张图是面向真实写作任务的执行层视图：飞书、Notion 和 Blog 都可以作为输入，也都能接收从 `content/origin/YYYY-MM-DD-<slug>/` 派生或同步的内容。进入 repo 后以 Markdown / MDX canonical source 连接构思、写作、审核与各渠道交付。配图由 GPT Image 2.5 Sunburst 生成；流程摘要见 [metadata](../assets/ai-writing-skills-workflow-overview.json)，完整 prompt 和模型请求记录见 [生成记录](../assets/ai-writing-skills-workflow-overview-gpt-image-2.5.json)。
 
 下面的 Mermaid 只作为维护用 compact map，不承担视觉展示职责，因此默认折叠。
 
@@ -26,19 +26,23 @@ config:
     tertiaryColor: "#fff7ed"
 ---
 flowchart LR
-    Input["Ideas / Feishu / Notion / Web"] --> Scratch["inbox + drafts"]
-    Scratch --> Ideation["article-ideation"]
-    Ideation --> Origin["content/origin/{slug}"]
-    Origin --> Skills["Skills Orchestration"]
-    Skills --> Origin
-    Origin --> Channels["WeChat / Blog / future"]
-    Channels --> Review["Human final review"]
+    Input["灵感 / 飞书 / Notion / Blog / 网页 / 素材"] --> Scratch["content/inbox + drafts"]
+    Input -. 剪藏 .-> Notion["article-to-notion + notion-cli"]
+    Notion -. 研究资料 .-> Ideation["article-ideation → brief + outline"]
+    Scratch --> Ideation
+    Ideation --> Draft["研究与写稿"]
+    Draft --> Origin["content/origin/YYYY-MM-DD-{slug}/"]
+    Origin --> Polish["polish-article"]
+    Polish --> Visuals["可选：插图 / 视频素材 / 剪辑"]
+    Polish --> Ready["article-readiness-check"]
+    Visuals -. 素材 .-> Ready
+    Ready --> Channels["微信 / Blog / 飞书 / Notion 渠道同步"]
+    Channels --> Review["用户最终审核与发布"]
     Review --> Closeout["writing-task-closeout"]
-    Closeout --> Evolution["retrospectives / memory / project docs / skills"]
-    Evolution -. improves .-> Ideation
+    Closeout --> Evolution["复盘 / local memory / docs / skills"]
+    Evolution -. 经验反馈 .-> Ideation
 
-    Router["AGENTS.md + docs runbooks"] -. guides .-> Ideation
-    Soul["SOUL.md writing taste + register guardrails"] -. guides .-> Skills
+    Router["AGENTS.md + SOUL.md + docs runbooks"] -. 贯穿全程 .-> Ideation
 ```
 
 </details>
@@ -46,9 +50,9 @@ flowchart LR
 这份 Mermaid 刻意保持简单：
 
 - **Router 层**：`AGENTS.md` 只保留高频规则和 docs 路由；低频细节通过 `docs/` progressive disclosure 加载。
-- **Origin 层**：`content/origin/YYYY-MM-DD-<slug>/` 是 repo 内长期 canonical article；`content/drafts/` 和 `content/inbox/` 是本地 scratch，不默认提交。Notion 现在主要作为历史笔记、灵感池和资料管理入口，不再是发布 source of truth。
+- **Origin 层**：`content/origin/YYYY-MM-DD-<slug>/` 是 repo 内长期 canonical article；`content/drafts/` 和 `content/inbox/` 是本地 scratch，不默认提交。飞书、Notion、Blog 均可导入内容或接收回写；进入 harness 管理的文章仍以 origin 为 source of truth。
 - **Skill 层**：`.agents/skills/*` 负责可重复执行的写作、配图、视频、排版、发布和 closeout 能力。
-- **Channel 层**：`content/wechat/`、`content/blog/` 和未来渠道都从同一个 origin slug 派生，渠道稿 frontmatter 用 `source:` 指回 canonical article。Astro 博客 repo 只承担博客展示层/renderer，优先通过 one-way adapter 从 `content/origin/` 生成发布副本。
+- **Channel 层**：`content/wechat/`、`content/blog/`、`content/feishu/` 和未来渠道都关联到同一个 origin slug，渠道稿 frontmatter 用 `source:` 指回 canonical article。已存在的 Blog 文章也可作为写作输入；harness 管理的文章由 origin 确定性派生到 Astro 博客。
 - **Evolution 层**：真实任务结束后用 `writing-task-closeout` 把坑点、复盘、memory、docs 和 skill 改进回填到 harness。
 
 ## 目录约定
@@ -60,13 +64,14 @@ flowchart LR
 | `content/origin/` | 可追踪 canonical Markdown / MDX article package，跨渠道共用 |
 | `content/wechat/` | 可追踪微信公众号文章、HTML preview、notes 和 metadata |
 | `content/blog/` | 可追踪博客 Markdown / MDX 渠道副本；Astro blog repo 中的 `src/content/posts/` 也应视为从 origin 派生的发布副本 |
+| `content/feishu/` | 飞书文档同步记录、远端链接与交付状态 |
 | `content/assets/` | 跨文章复用 prompt、metadata、manifest 和 reference material；不要放单篇文章的一次性素材 |
 
 > `content/origin/YYYY-MM-DD-<slug>/assets/` 是 article-local assets。`docs/assets/` 是文档图片目录，应该进入 Git；写作任务产生的大体积二进制图片、视频素材和剪辑产物默认留在 `.local-archive/` 或外部资产库，只提交可复现的 prompt、metadata、manifest、sources 和 notes。
 
 ## Blog Renderer Boundary
 
-个人博客的推荐实现是独立 Astro repo，由 Cloudflare Pages 部署。`writing-agent-harness` 仍然是写作中枢和 canonical source；博客 repo 只消费发布副本，不反向成为写作源头。
+个人博客的推荐实现是独立 Astro repo，由 Cloudflare Pages 部署。既有 Blog 文章可以导入作为写作输入；对进入 harness 管理的文章，`content/origin/` 仍是 canonical source，博客 repo 消费从中派生的发布副本。
 
 第一版同步策略：
 
@@ -77,7 +82,7 @@ content/origin/YYYY-MM-DD-<slug>/index.md
 -> <astro-blog-repo>/src/content/posts/assets/YYYY-MM-DD-<slug>/
 ```
 
-同步脚本只做确定性转换：补齐 Astro blog frontmatter、输出博客渠道 `.mdx`、复制 article-local `assets/` 中的非 Markdown 素材、重写图片路径、移除与 frontmatter `title` 重复的正文 H1，并处理 MDX 对 `<`、HTML void tag、缺失本地图片等更严格的解析要求。博客 repo 会把 posts 目录下的 Markdown/MDX 当作文章，因此 prompt、notes 等 `.md`/`.mdx` 资料不应复制进博客 posts 子目录。Notion 同步属于下游/旁路能力，只有在文章已经进入 `content/origin/` 后才考虑写回或派发。
+同步脚本只做确定性转换：补齐 Astro blog frontmatter、输出博客渠道 `.mdx`、复制 article-local `assets/` 中的非 Markdown 素材、重写图片路径、移除与 frontmatter `title` 重复的正文 H1，并处理 MDX 对 `<`、HTML void tag、缺失本地图片等更严格的解析要求。博客 repo 会把 posts 目录下的 Markdown/MDX 当作文章，因此 prompt、notes 等 `.md`/`.mdx` 资料不应复制进博客 posts 子目录。Notion 既可作为写作输入，也支持从 Markdown/MDX 接收内容；网页剪藏仍走 `article-to-notion`。
 
 博客分类采用虚拟分层：`src/content/posts/` 保持扁平，`category` / `series` / `tags` 写入 frontmatter。`category` 用少量稳定大类，`series` 用于 Claude Code Notes、Codex Notes、Hermes Notes 等连续专题，`tags` 保持多对多自由增长。不要把主题目录写进文章 URL。
 
@@ -94,9 +99,10 @@ content/origin/YYYY-MM-DD-<slug>/index.md
 | 文章视频剪辑 | `article-video-clip` | 已确认片段 + preset | `assets/video-clips/<clip-name>/final.mp4` |
 | 排版渲染 | `wechat-article-renderer` | article.md + assets | `.wechat-preview.html` |
 | 发布草稿 | `wechat-publish-workflow` → `wechat-article-publisher` | HTML + 元数据 | 草稿箱 (appmsgid) |
+| 双向平台同步 | `erik-blog-publish-workflow` / `markdown-article-to-feishu-doc` / Notion connectors | 平台文章或 canonical Markdown / MDX | Blog / 飞书文档 / Notion 页面与数据库 |
 | 最终发布 | 👤 人工 review | 草稿箱 | 群发 |
 
-> **侧路输入/收藏**：`article-to-notion`（依赖 `notion-cli` 封装的官方 ntn CLI）用于把外部网页（微信公众号/博客/arXiv 等）抓取、清洗后剪藏到 Notion page 或 database row，作为资料沉淀入口；它不是主写作链路的一环，但为 `article-ideation` / 研究阶段提供素材。Markdown → 飞书云文档的输出方向走 user-level skill `markdown-article-to-feishu-doc`（erik-agent-skills 维护，不在本 repo）。
+> **平台连接**：飞书、Notion、Blog 的读入与回写链路均已打通。飞书文档与 Markdown/MDX 双向同步可调用 user-level skill `markdown-article-to-feishu-doc`；Notion 页面与数据库由 `notion-cli` 等入口读写，网页剪藏走 `article-to-notion`；个人博客文章可读入作为素材，正式稿由 `erik-blog-publish-workflow` 从 canonical source 派生发布。外部公众号文章可用 `wechat-article-fetcher` 提取。渠道连接不会改变 `content/origin/` 的 canonical source 约定。
 
 ## 渲染器风格
 

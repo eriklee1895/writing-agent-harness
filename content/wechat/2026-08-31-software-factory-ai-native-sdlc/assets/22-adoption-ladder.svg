@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1380" viewBox="0 0 1080 1380" role="img" aria-labelledby="title desc">
+  <title id="title">普通团队建设 Software Factory 的五步路径</title>
+  <desc id="desc">先让仓库可读，再选择可验证流程，保存 Artifact，补上恢复，最后建立 Eval 和指标。</desc>
+  <rect width="1080" height="1380" fill="#faf9f5"/>
+  <text x="70" y="90" font-family="PingFang SC, Arial" font-size="48" font-weight="700" fill="#141413">普通团队的五步落地路径</text>
+  <text x="70" y="140" font-family="PingFang SC, Arial" font-size="24" fill="#66645f">不要先建平台，再寻找问题</text>
+
+  <g font-family="PingFang SC, Arial">
+    <g transform="translate(70,220)">
+      <circle cx="58" cy="58" r="58" fill="#315ea8"/>
+      <text x="58" y="72" text-anchor="middle" font-size="40" font-weight="700" fill="#fff">1</text>
+      <rect x="145" width="825" height="160" rx="22" fill="#fff" stroke="#315ea8" stroke-width="3"/>
+      <text x="180" y="55" font-size="30" font-weight="700" fill="#141413">先让仓库对 Agent 可读</text>
+      <text x="180" y="103" font-size="23" fill="#66645f">真实 build / test / lint、架构地图、可启动环境、日志与浏览器</text>
+    </g>
+
+    <g transform="translate(70,420)">
+      <circle cx="58" cy="58" r="58" fill="#315ea8"/>
+      <text x="58" y="72" text-anchor="middle" font-size="40" font-weight="700" fill="#fff">2</text>
+      <rect x="145" width="825" height="160" rx="22" fill="#f3f1ea" stroke="#d97757" stroke-width="3"/>
+      <text x="180" y="55" font-size="30" font-weight="700" fill="#141413">只选一个低风险、可验证流程</text>
+      <text x="180" y="103" font-size="23" fill="#66645f">Backport、依赖升级、文档同步、issue triage、稳定测试覆盖的 bug</text>
+    </g>
+
+    <g transform="translate(70,620)">
+      <circle cx="58" cy="58" r="58" fill="#315ea8"/>
+      <text x="58" y="72" text-anchor="middle" font-size="40" font-weight="700" fill="#fff">3</text>
+      <rect x="145" width="825" height="160" rx="22" fill="#fff" stroke="#315ea8" stroke-width="3"/>
+      <text x="180" y="55" font-size="30" font-weight="700" fill="#141413">先保存 Artifact，再自动 Handoff</text>
+      <text x="180" y="103" font-size="23" fill="#66645f">Spec、Plan、diff、测试、未解决事项先能减少人工 Review 成本</text>
+    </g>
+
+    <g transform="translate(70,820)">
+      <circle cx="58" cy="58" r="58" fill="#315ea8"/>
+      <text x="58" y="72" text-anchor="middle" font-size="40" font-weight="700" fill="#fff">4</text>
+      <rect x="145" width="825" height="160" rx="22" fill="#e8efe8" stroke="#557a5c" stroke-width="3"/>
+      <text x="180" y="55" font-size="30" font-weight="700" fill="#141413">补上失败与恢复语义</text>
+      <text x="180" y="103" font-size="23" fill="#66645f">Task / Run / Workspace、claim、timeout、取消、重试、幂等与回执</text>
+    </g>
+
+    <g transform="translate(70,1020)">
+      <circle cx="58" cy="58" r="58" fill="#d97757"/>
+      <text x="58" y="72" text-anchor="middle" font-size="40" font-weight="700" fill="#fff">5</text>
+      <rect x="145" width="825" height="160" rx="22" fill="#141413"/>
+      <text x="180" y="55" font-size="30" font-weight="700" fill="#faf9f5">用真实任务建立 Eval 与指标</text>
+      <text x="180" y="103" font-size="23" fill="#c8c5bd">接受率、人工介入、成本、重试、返工、回滚、escaped defect</text>
+    </g>
+  </g>
+
+  <text x="540" y="1285" text-anchor="middle" font-family="PingFang SC, Arial" font-size="25" font-weight="600" fill="#d15f3f">先跑通一条线，再逐步扩大自动化边界</text>
+  <text x="540" y="1330" text-anchor="middle" font-family="PingFang SC, Arial" font-size="21" fill="#66645f">“更多 Agent”不是第一步，可靠的输入、验证和恢复才是</text>
+</svg>

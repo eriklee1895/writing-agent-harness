@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: landscape body infographic for a technical article explaining Jev to software engineers.\nPrimary request: show the new decision-model interface as a readable visual system: evidence enters, typed questions evaluate it in parallel, probability distributions come back, and ordinary code chooses whether to act, review, or escalate to a reasoning model.\nComposition: four horizontal zones with clear left-to-right flow. Zone 1 has an evidence card stack. Zone 2 has three clean question cards. Zone 3 has probability curves and confidence gauges. Zone 4 has three code branches. Put a prominent small header at the top-left: \"Jev\". Put a short header above the question zone: \"SYSTEM ONE\". Put exactly three question labels, one each: \"Noul\", \"Choice\", \"Score\". Put one short label above the final branch zone: \"CODE\". Use arrows only between adjacent zones, no crossing arrows.\nStyle and medium: premium technical editorial infographic, clean white and warm paper background, graphite lines, cobalt blue and vermilion accents, polished print texture, high legibility, not a software screenshot.\nText (exact): The only readable text allowed is \"Jev\", \"SYSTEM ONE\", \"Noul\", \"Choice\", \"Score\", and \"CODE\". Render each allowed string exactly once in the specified location. Every other card, gauge, button, number, and annotation must be blank or an abstract non-readable placeholder.\nAvoid: extra words, invented labels, fake API response text, misspellings, duplicated labels, clutter, generic neural-network brain, watermark.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 316,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 316,
+        "cached_tokens": 0
+      },
+      "output_tokens": 163,
+      "total_tokens": 479,
+      "output_tokens_details": {
+        "image_tokens": 163,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "78d68e68-dffc-4e63-b343-efe797335ba2"
+  },
+  "elapsed_seconds": 40.229,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-system-one-v2.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T02:03:38+00:00"
+}

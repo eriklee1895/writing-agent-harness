@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: landscape flat decision-routing infographic for a Chinese AI engineering article.\nPrimary request: show how a Jev decision and confidence can be routed into automation, model review, or human review. Make clear that the thresholds are an example design, not an official default.\nComposition: left card \"Jev 决策 + 置信度\" feeds three horizontal threshold lanes. Top green lane: \">0.90 直接执行\" leading to \"自动化\". Middle beige lane: \"0.70–0.90 大模型复核\" leading to \"复核\". Bottom coral lane: \"<0.70 转人工\" leading to \"人工\". A large bottom card reads \"可审计边界：机器决定 vs 需人看\" and a small note reads \"示例阈值，需用业务数据标定\".\nStyle and medium: flat technical editorial infographic, warm paper background, teal green / beige / coral lanes, dark hand-drawn arrows, clear hierarchy, no 3D, no photorealism.\nText (exact): Allowed readable text only: \"置信度分级路由：90 / 70 / 阈值分流\", \"Jev 决策 + 置信度\", \">0.90 直接执行\", \"自动化\", \"0.70–0.90 大模型复核\", \"复核\", \"<0.70 转人工\", \"人工\", \"可审计边界：机器决定 vs 需人看\", and \"示例阈值，需用业务数据标定\". Render each exactly once. No other readable text.\nAvoid: extra words, duplicated labels, misspellings, implying these thresholds are official, watermark.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 353,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 353,
+        "cached_tokens": 0
+      },
+      "output_tokens": 164,
+      "total_tokens": 517,
+      "output_tokens_details": {
+        "image_tokens": 164,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "f01beff9-fa47-4df0-b2d8-4090d4b0a077"
+  },
+  "elapsed_seconds": 55.929,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-routing.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T04:04:58+00:00"
+}

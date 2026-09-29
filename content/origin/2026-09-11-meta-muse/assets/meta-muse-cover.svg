@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="680" viewBox="0 0 1600 680" role="img" aria-labelledby="title desc">
+  <title id="title">A persistent cloud computer for a personal AI agent</title>
+  <desc id="desc">An editorial technical illustration of a user connected to a glowing cloud computer, with a separate shield representing approval and safety controls.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111821"/>
+      <stop offset="1" stop-color="#222833"/>
+    </linearGradient>
+    <linearGradient id="cloud" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffd6b8"/>
+      <stop offset="0.5" stop-color="#e98c61"/>
+      <stop offset="1" stop-color="#af4b45"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffb07a" stop-opacity="0.44"/>
+      <stop offset="1" stop-color="#ffb07a" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="680" fill="url(#bg)"/>
+  <circle cx="1000" cy="310" r="310" fill="url(#glow)"/>
+  <g opacity="0.18" stroke="#9fb5c8" stroke-width="1">
+    <path d="M0 90H1600M0 180H1600M0 270H1600M0 360H1600M0 450H1600M0 540H1600M0 630H1600"/>
+    <path d="M100 0V680M250 0V680M400 0V680M550 0V680M700 0V680M850 0V680M1000 0V680M1150 0V680M1300 0V680M1450 0V680"/>
+  </g>
+  <g fill="none" stroke-linecap="round">
+    <path d="M265 455 C450 455, 500 360, 665 360" stroke="#d4a48a" stroke-width="5" stroke-dasharray="8 16" opacity="0.85"/>
+    <path d="M1215 310 C1330 310, 1375 250, 1480 250" stroke="#e89b70" stroke-width="5" stroke-dasharray="8 16" opacity="0.75"/>
+    <path d="M1190 430 C1310 430, 1370 510, 1490 510" stroke="#87b1bf" stroke-width="4" stroke-dasharray="6 14" opacity="0.75"/>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="625" y="155" width="605" height="330" rx="32" fill="url(#cloud)" stroke="#ffe0c8" stroke-width="2"/>
+    <rect x="670" y="200" width="515" height="235" rx="20" fill="#19212b" opacity="0.94"/>
+    <path d="M720 350 C775 295, 830 370, 884 315 S995 280, 1044 330 S1110 270, 1140 315" fill="none" stroke="#ffb47f" stroke-width="7"/>
+    <circle cx="720" cy="350" r="9" fill="#ffb47f"/>
+    <circle cx="1140" cy="315" r="9" fill="#ffb47f"/>
+    <circle cx="955" cy="305" r="16" fill="#e9f3f5" opacity="0.9"/>
+    <path d="M950 295 L962 305 L950 317 L938 305 Z" fill="#d97757"/>
+  </g>
+  <g transform="translate(1180 90)" filter="url(#shadow)">
+    <path d="M85 0 L165 30 V98 C165 160 125 205 85 224 C45 205 5 160 5 98 V30 Z" fill="#d9edf0" stroke="#ffffff" stroke-width="3"/>
+    <path d="M85 52 L116 88 L99 140 H70 L53 88 Z" fill="#6aa5ad"/>
+    <path d="M85 71 V123" stroke="#f7fbfb" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(175 348)">
+    <rect x="0" y="0" width="90" height="140" rx="14" fill="#dce7eb" opacity="0.95"/>
+    <rect x="10" y="18" width="70" height="96" rx="8" fill="#1c2731"/>
+    <circle cx="45" cy="126" r="4" fill="#b8705a"/>
+    <circle cx="112" cy="54" r="30" fill="#d97757" opacity="0.9"/>
+    <path d="M104 54 L112 62 L126 46" fill="none" stroke="#fff4ea" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g fill="#eef3f5" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+    <text x="690" y="240" font-size="22" letter-spacing="4" fill="#ffd6b8">PERSONAL AGENT</text>
+    <text x="698" y="405" font-size="20" letter-spacing="3" fill="#b8c9d2">PERSISTENT CLOUD COMPUTER</text>
+    <text x="1205" y="355" font-size="18" letter-spacing="3" fill="#d4edf0">APPROVAL</text>
+    <text x="1205" y="385" font-size="18" letter-spacing="3" fill="#d4edf0">BOUNDARY</text>
+  </g>
+  <g fill="#aebdca" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="17" letter-spacing="2">
+    <text x="155" y="570">GOAL</text>
+    <text x="720" y="540">MEMORY</text>
+    <text x="905" y="540">BROWSER</text>
+    <text x="1090" y="540">ARTIFACTS</text>
+    <text x="1380" y="220">SAFE EGRESS</text>
+  </g>
+</svg>

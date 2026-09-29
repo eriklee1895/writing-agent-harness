@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: landscape flat system architecture infographic for a Chinese AI engineering article.\nPrimary request: show a customer-service system where the conversational LLM remains responsible for dialogue, while Jev handles key business decisions and calls business tools.\nComposition: left title area and a right-to-left or top-to-bottom flow. A yellow box at top says \"客户聊天\" and flows into a teal \"LLM\" box. The LLM sends decision work to a coral \"Jev (LDM)\" box. Jev connects to a purple \"订单系统\" box and a dotted group of three tool cards: \"售后工具\", \"业务代码\", and \"规则校验\". The result flows back to a yellow box \"LLM 回复客户\". Arrows must be logically correct and readable.\nStyle and medium: flat-tech infographic inspired by Chinese architecture diagrams, warm off-white background, thick dark outlines, teal / coral / yellow modules, small hand-drawn star accents, no 3D, no photorealism.\nText (exact): Allowed readable text only: \"客服机器人仍用 LLM\", \"关键决策点交给 Jev\", \"客户聊天\", \"LLM\", \"理解意图 · 对话生成\", \"Jev (LDM)\", \"决策 · 规划 · 调用工具\", \"订单系统\", \"售后工具\", \"业务代码\", \"规则校验\", \"LLM 回复客户\", and \"查询 / 更新\". Render each exactly once. All other fields, order data, and UI text must be blank abstract placeholders.\nAvoid: extra words, invented product names, duplicated labels, misspellings, watermark.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 336,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 336,
+        "cached_tokens": 0
+      },
+      "output_tokens": 173,
+      "total_tokens": 509,
+      "output_tokens_details": {
+        "image_tokens": 173,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "f7e14914-4f91-4d6e-a841-2af58474f99b"
+  },
+  "elapsed_seconds": 53.191,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-architecture.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T04:02:30+00:00"
+}

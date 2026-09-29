@@ -1,0 +1,24 @@
+%% Conceptual Linux/KVM dependency stacks; not a security guarantee or vendor deployment diagram.
+%% Ordinary containers share the host kernel; VM/microVM guests have their own kernel.
+flowchart TB
+    subgraph ordinary["普通容器路径"]
+        C["应用与用户态依赖<br/>namespaces 隔离<br/>cgroups 配额"]
+    end
+    subgraph general["通用 VM 路径"]
+        V["应用与用户态依赖"] --> VK["独立 Guest 内核"]
+        VK --> VV["通用设备模型 / VMM"]
+    end
+    subgraph micro["microVM 路径"]
+        M["应用与用户态依赖"] --> MK["独立 Guest 内核"]
+        MK --> MV["精简设备模型 / VMM"]
+    end
+    C ---->|"共享内核"| H["宿主机 Linux 内核<br/>KVM 虚拟化支持"]
+    VV --> H
+    MV --> H
+    H --> HW["物理 CPU · 内存 · 存储"]
+    classDef app fill:#f3eee6,stroke:#a87f5b,color:#252525;
+    classDef guest fill:#eaf1f5,stroke:#577b92,color:#252525;
+    classDef host fill:#e7eae5,stroke:#6d7d65,color:#252525;
+    class C,V,M app;
+    class VK,VV,MK,MV guest;
+    class H,HW host;

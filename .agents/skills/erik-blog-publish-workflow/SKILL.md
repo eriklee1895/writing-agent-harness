@@ -54,9 +54,11 @@ Default behavior:
    Preserve unrelated user changes. Do not stage unrelated files, especially untracked origin articles.
 3. Sync one article to the blog repo:
 
+   The adapter is the [repository-root script](../../../scripts/sync_origin_to_blog.py), not a `scripts/` directory inside this skill. The following sync commands run from this skill directory.
+
    ```bash
-   uv run scripts/sync_origin_to_blog.py \
-     content/origin/YYYY-MM-DD-<slug> \
+   uv run ../../../scripts/sync_origin_to_blog.py \
+     ../../../content/origin/YYYY-MM-DD-<slug> \
      --blog-root /Users/eriklee/code/my_project/eriklee-blog \
      --extension mdx \
      --published
@@ -65,8 +67,8 @@ Default behavior:
    For batch sync, use `--all` only when the user explicitly wants a full import/resync:
 
    ```bash
-   uv run scripts/sync_origin_to_blog.py \
-     content/origin \
+   uv run ../../../scripts/sync_origin_to_blog.py \
+     ../../../content/origin \
      --blog-root /Users/eriklee/code/my_project/eriklee-blog \
      --extension mdx \
      --published \
@@ -79,11 +81,13 @@ Default behavior:
    - No `Image pending` remains.
    - Referenced local assets exist under `src/content/posts/assets/<slug>/`.
    - Do not overwrite manually edited blog files without checking the diff.
+   - Check channel-specific syntax explicitly: the adapter currently does not convert WeChat `::compare` blocks. Convert these to native Astro/MDX image layouts with visible captions and optimized images before publishing.
+   - Compare generated description, category and type with the approved source: `summary` may fall back to the first paragraph, and inferred taxonomy may label a personal essay as technical or AI frontier content. Preserve the approved summary and choose the intended taxonomy.
 5. Build the blog:
 
    ```bash
    cd /Users/eriklee/code/my_project/eriklee-blog
-   npm run build
+   pnpm build
    ```
 
 6. Verify key local routes from `dist/` or a dev server:
@@ -134,7 +138,7 @@ Do not physically categorize files into folders. Keep blog posts flat under `src
 
 ## Gotchas
 
-- Use `scripts/sync_origin_to_blog.py` as the current `origin -> eriklee-blog` adapter. Ignore older notes or shells that mention the historical `sync_origin_to_astropaper.py` name.
+- Use [the root sync adapter](../../../scripts/sync_origin_to_blog.py) for `origin -> eriklee-blog`. From the repository root, invoke `uv run scripts/sync_origin_to_blog.py`; from this skill directory, use the relative path shown above. Ignore the historical `sync_origin_to_astropaper.py` name.
 - Do not run `git add .` in either repo. It can accidentally stage unrelated origin drafts, local assets, or generated files.
 - Do not delete user edits in `eriklee-blog` while syncing. Read diffs first.
 - Cloudflare Pages previews may build feature branches, but production uses `main`.

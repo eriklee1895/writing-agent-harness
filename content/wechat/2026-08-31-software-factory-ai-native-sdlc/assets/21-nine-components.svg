@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1440" viewBox="0 0 1080 1440" role="img" aria-labelledby="title desc">
+  <title id="title">Software Factory 九个组件</title>
+  <desc id="desc">入口、任务控制面、流程策略、路由、Agent Runtime、Workspace、Artifact、验证 Gate 与评测改进。</desc>
+  <rect width="1080" height="1440" fill="#faf9f5"/>
+  <text x="70" y="90" font-family="PingFang SC, Arial" font-size="48" font-weight="700" fill="#141413">一套 Factory，至少九个组件</text>
+  <text x="70" y="138" font-family="PingFang SC, Arial" font-size="24" fill="#66645f">模型只是其中一个执行部件</text>
+
+  <g font-family="PingFang SC, Arial">
+    <g transform="translate(70,200)">
+      <rect width="445" height="185" rx="22" fill="#ffffff" stroke="#315ea8" stroke-width="3"/>
+      <text x="32" y="52" font-size="26" font-weight="700" fill="#315ea8">01 · Intake Adapter</text>
+      <text x="32" y="98" font-size="22" fill="#141413">GitHub · Linear · Slack · Alert</text>
+      <text x="32" y="140" font-size="20" fill="#66645f">把输入变成可领取的 Work Item</text>
+    </g>
+    <g transform="translate(565,200)">
+      <rect width="445" height="185" rx="22" fill="#f3f1ea" stroke="#d97757" stroke-width="3"/>
+      <text x="32" y="52" font-size="26" font-weight="700" fill="#d15f3f">02 · Task Control Plane</text>
+      <text x="32" y="98" font-size="22" fill="#141413">状态 · claim · 依赖 · handoff</text>
+      <text x="32" y="140" font-size="20" fill="#66645f">Session 退出后任务仍然存在</text>
+    </g>
+
+    <g transform="translate(70,425)">
+      <rect width="445" height="185" rx="22" fill="#eef2f7" stroke="#315ea8" stroke-width="3"/>
+      <text x="32" y="52" font-size="26" font-weight="700" fill="#315ea8">03 · Workflow / Policy</text>
+      <text x="32" y="98" font-size="22" fill="#141413">阶段 · 权限 · 模型 · Trigger</text>
+      <text x="32" y="140" font-size="20" fill="#66645f">由代码和运行时强制，不靠口头提醒</text>
+    </g>
+    <g transform="translate(565,425)">
+      <rect width="445" height="185" rx="22" fill="#ffffff" stroke="#315ea8" stroke-width="3"/>
+      <text x="32" y="52" font-size="26" font-weight="700" fill="#315ea8">04 · Planner / Router</text>
+      <text x="32" y="98" font-size="22" fill="#141413">澄清 · 拒绝 · 分诊 · 拆解</text>
+      <text x="32" y="140" font-size="20" fill="#66645f">允许“没有代码变更”成为正确结果</text>
+    </g>
+
+    <g transform="translate(70,650)">
+      <rect width="445" height="185" rx="22" fill="#ffffff" stroke="#315ea8" stroke-width="3"/>
+      <text x="32" y="52" font-size="26" font-weight="700" fill="#315ea8">05 · Agent Runtime</text>
+      <text x="32" y="98" font-size="22" fill="#141413">Claude Code · Codex · Warp Agent</text>
+      <text x="32" y="140" font-size="20" fill="#66645f">运行模型、工具与上下文循环</text>
+    </g>
+    <g transform="translate(565,650)">
+      <rect width="445" height="185" rx="22" fill="#f3f1ea" stroke="#d97757" stroke-width="3"/>
+      <text x="32" y="52" font-size="26" font-weight="700" fill="#d15f3f">06 · Workspace / Sandbox</text>
+      <text x="32" y="98" font-size="22" fill="#141413">checkout · 进程 · 网络 · 凭据</text>
+      <text x="32" y="140" font-size="20" fill="#66645f">隔离一次 Run 的全部副作用</text>
+    </g>
+
+    <g transform="translate(70,875)">
+      <rect width="445" height="185" rx="22" fill="#eef2f7" stroke="#315ea8" stroke-width="3"/>
+      <text x="32" y="52" font-size="26" font-weight="700" fill="#315ea8">07 · Artifact Store</text>
+      <text x="32" y="98" font-size="22" fill="#141413">Spec · Plan · Diff · 测试 · 回执</text>
+      <text x="32" y="140" font-size="20" fill="#66645f">让阶段之间不依赖同一段对话</text>
+    </g>
+    <g transform="translate(565,875)">
+      <rect width="445" height="185" rx="22" fill="#e8efe8" stroke="#557a5c" stroke-width="3"/>
+      <text x="32" y="52" font-size="26" font-weight="700" fill="#3f6847">08 · Verification / Gate</text>
+      <text x="32" y="98" font-size="22" fill="#141413">Tests · Runtime · Review · Approval</text>
+      <text x="32" y="140" font-size="20" fill="#66645f">读取实际结果，决定是否继续</text>
+    </g>
+
+    <g transform="translate(70,1100)">
+      <rect width="940" height="190" rx="22" fill="#141413"/>
+      <text x="35" y="58" font-size="28" font-weight="700" fill="#faf9f5">09 · Observability / Eval / Improvement</text>
+      <text x="35" y="108" font-size="23" fill="#faf9f5">成本 · 成功率 · 重试 · 人工介入 · 缺陷 · 回归任务集</text>
+      <text x="35" y="150" font-size="20" fill="#c8c5bd">失败进入恢复或流程改进，而不是消失在一段总结里</text>
+    </g>
+  </g>
+
+  <text x="540" y="1365" text-anchor="middle" font-family="PingFang SC, Arial" font-size="24" fill="#66645f">Software Factory = Lifecycle + Control + Execution + Evidence</text>
+</svg>
+

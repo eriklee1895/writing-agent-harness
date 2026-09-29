@@ -2,22 +2,21 @@
 
 记录 Erik 对 `writing-agent-harness` 的当前建设想法和待办。本文是活文档：先保存方向，再逐步拆成 specs、plans、skills 和可运行脚本。
 
-更新日期：2026-07-07
+更新日期：2026-09-29
 
 ## North Star
 
 终极愿景：
 
 ```text
-Feishu / Notion / etc.
--> Markdown / MDX
+Feishu / Notion / Blog / etc. ⇄ Markdown / MDX
 -> Blog as primary home base
    Astro + Cloudflare + GitHub Actions
 -> downstream distribution
    WeChat Official Account / 掘金 / others
 ```
 
-这个项目不强迫原文写作发生在 Markdown 里。飞书文档和 Notion 可以继续作为主力写作、笔记和早期沉淀入口；进入 repo 后，再转换成 Markdown / MDX，获得 diff、review、自动化渲染、博客发布和多渠道派生能力。
+这个项目不强迫原文写作发生在 Markdown 里。飞书文档、Notion 和 Blog 文章可以继续作为写作输入；Markdown / MDX 源稿也能同步回这些平台。进入 repo 后，以 `content/origin/` 获得 diff、review、自动化渲染、博客发布和多渠道派生能力。
 
 ## Current Preference
 
@@ -26,8 +25,9 @@ Feishu / Notion / etc.
 - 笔记沉淀主力：Notion。
 - repo 内长期 canonical article：`content/origin/` 中的 Markdown / MDX。
 - 博客（primary home base）已上线：`/Users/eriklee/code/my_project/eriklee-blog`，Cloudflare Pages 部署 `https://eriklee-blog.pages.dev/`。
-- 飞书文档 `<->` Markdown：当前已通过 `lark-cli` 跑得比较顺手，优先继续固化。
-- Notion `<->` Markdown：**写入方向（Markdown / 网页 → Notion）已落地**——`article-to-notion` 支持把任意网页（微信/博客/arXiv）抓取清洗后写入 Notion page 或 database row，底层由 `notion-cli` skill 封装官方 `ntn` CLI（OAuth 登录，坑点集中规避）；见 [retrospectives/2026-06-28-article-to-notion-ntn-cli-refactor.md](../retrospectives/2026-06-28-article-to-notion-ntn-cli-refactor.md)。**读取方向（Notion → Markdown / MDX）尚未打通**，这是 North Star 里"飞书/Notion 作为写作入口"的另一半，仍待调研。
+- 飞书文档 `<->` Markdown / MDX：双向链路已打通；标准 runbook 仍待整理。
+- Notion `<->` Markdown / MDX：双向链路已打通（2026-09-29 用户确认）；网页剪藏继续由 `article-to-notion` + `notion-cli` 支持。
+- Blog `<->` Markdown / MDX：文章可作为输入，正式稿由 `erik-blog-publish-workflow` 从 canonical source 同步和发布。
 
 ## Source Sync Todos
 
@@ -37,11 +37,7 @@ Feishu / Notion / etc.
   - [ ] 验证图片、表格、代码块、标题层级、引用块和链接的转换质量。
   - [ ] 判断是否值得项目级 skill 化为 `feishu-to-markdown` 或合并进 writing workflow。
 - [x] **Notion 写入方向已完成**（2026-06-28）：文章剪藏/网页收藏 → Notion 已通过 `article-to-notion` + `notion-cli` 两个 skills 落地，支持 OAuth、图片本地上传、database property 自动填充、normalize 防御层。
-- [ ] 调研 Notion → Markdown / MDX 的读取路线：
-  - [ ] Notion MCP：确认是否适合 agent 直接读取 page / database / block（现有 MCP 主要用于交互式探索，headless 批处理还需评估）。
-  - [ ] `ntn pages get`（输出 markdown + YAML frontmatter）：小样本测试其保真度，覆盖 callout / toggle / database relation / 同步块 / 嵌套页面。
-  - [ ] `notion-to-md`（社区 JS 库）：做对照实验，检查 frontmatter、嵌套 block、callout、toggle、database relation、media 的保真度。
-  - [ ] 决定 Notion 读取的首个最小可用范围：单 page 导出、database 批量导出，还是指定 collection 增量同步。
+- [x] Notion → Markdown / MDX 读入链路已打通（2026-09-29 用户确认）；Notion 页面 / 数据库与 Markdown 内容可以双向接入。
 - [ ] 定义统一 origin package：
   - [x] 使用 `content/origin/YYYY-MM-DD-topic/` 作为可追踪 canonical Markdown / MDX 目录。
   - [x] 回填第一批现有文章到 `content/origin/`，形成 origin package 样例。
@@ -142,14 +138,20 @@ Feishu / Notion / etc.
 3. 博客首页打磨（精选、个人简介区）。
 4. Astro 7 升级（布局稳定后独立分支做）。
 5. 把飞书文档 `<->` Markdown 的现有成功经验写成 runbook。
-6. 用一个真实 Notion page 做 `Notion -> Markdown / MDX` 读取方向小实验。
+6. 把已跑通的飞书、Notion、Blog 双向内容链路整理成可复用 runbook，并记录各自的格式边界。
 7. 定义统一 frontmatter 和 article folder contract。
 8. 同步脚本加固（增量同步 + 校验）。
 9. 继续验证视频素材链路：用真实文章测试 `video-highlight-select`，再决定 ASR/TTS 是否进入实现。
 
+## 2026-09-29 写作渠道适配加固
+
+- [ ] 微信 publisher 支持嵌套双栏图片的两阶段上传，并记录每张图的 CDN 映射；保存状态使用实际验证的图片数，加入非零尺寸和保存后回读。依据：[星舰双栏上传复盘](../retrospectives/2026-09-29-wechat-two-column-image-upload.md)。
+- [ ] Blog 同步器保留 canonical summary / category / type，并明确转换或拒绝未支持的 `::compare` 等渠道指令，避免原样发布标记和缺失图注。
+- [ ] Renderer 支持文章级表格列宽配置；百分比列的横向 padding 放在内层，避免微信 sanitizer 去除 box-sizing 后影响比例。
+
 ## Open Questions
 
-- Notion 写入方向（网页/Markdown → Notion 剪藏）已落地（`article-to-notion` + `notion-cli`）；读取方向（Notion → Markdown / MDX 回 repo）尚未实现。
+- 飞书、Notion、Blog 与 Markdown / MDX 的内容读入和回写链路已打通；各平台的标准 runbook 与格式边界仍可继续补齐。
 - Notion database 的哪些字段应该成为博客 / 微信共同 metadata？
 - Blog production publish 是否需要人工确认，还是只要 GitHub PR review 即可？（当前：`git push main` = 公开发布，需要明确确认）
 - 掘金等其他渠道是否需要登录态浏览器自动化，还是先手动复制粘贴更稳？（当前结论：手动先）

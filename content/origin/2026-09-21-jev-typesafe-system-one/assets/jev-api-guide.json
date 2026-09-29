@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: landscape flat API guide infographic for software engineers.\nPrimary request: explain the TypeSafe official API request and response shape in one visual.\nComposition: left column is a large card \"State\" with three blank subcards for order, customer message, and policy. Middle column is a card \"Questions\" with three colored cards \"Choice\", \"Score\", \"Noul\". A central arrow points to a dark endpoint card \"POST /v1/systemone\". Right column is a response card \"answers\" with three blank typed result rows and one probability gauge. A small bottom strip shows \"固定模型版本\" and \"记录 model + confidence\".\nStyle and medium: flat technical infographic, warm paper, teal / coral / mustard modules, strong black arrows, precise grouping, no 3D, no photorealism.\nText (exact): Allowed readable text only: \"TypeSafe 官方 API：State + Questions → Answers\", \"State\", \"订单 / 原话 / 政策\", \"Questions\", \"Choice\", \"Score\", \"Noul\", \"POST /v1/systemone\", \"answers\", \"固定模型版本\", and \"记录 model + confidence\". Render each exactly once. All JSON keys, numbers, code, and secondary fields must be blank abstract placeholders.\nAvoid: extra words, fake URLs, duplicated labels, misspellings, watermark.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 275,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 275,
+        "cached_tokens": 0
+      },
+      "output_tokens": 164,
+      "total_tokens": 439,
+      "output_tokens_details": {
+        "image_tokens": 164,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "64472058-d21d-4cf8-a7dc-432a3b6e80b0"
+  },
+  "elapsed_seconds": 55.206,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-api-guide.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T04:04:57+00:00"
+}

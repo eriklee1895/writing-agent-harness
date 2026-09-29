@@ -1,0 +1,11 @@
+{
+  "mode": "built-in image_gen",
+  "use_case": "illustration-story",
+  "style_profile": "cinematic-editorial",
+  "final_file": "starship-beyond-earth.png",
+  "prompts": [
+    "Use case: illustration-story. Asset type: full-width editorial illustration inside a Chinese personal essay titled 星舰第14次试飞，向星辰大海再进一步. Create one exceptionally beautiful, restrained cinematic painterly illustration about human curiosity and space exploration. Landscape 16:9. A physically plausible stainless steel Starship upper-stage spacecraft, with black heatshield side and four control flaps, seen from a gentle rear three-quarter perspective drifting above Earth's curved blue atmospheric limb. Earth fills the lower third, deep ink-blue space above with a sparse realistic star field; a very distant tiny rust-red Mars in the upper distance suggests a future aspiration, clearly an imagined scene, not a photograph of Flight 14. Quiet immense scale, delicate sunrise along the planet, silver reflected light on metal, fine film grain and subtle brush texture, serious adult science magazine art. Spacecraft modest in frame, not a giant hero object. No astronaut, no city, no flag, no words, no labels, no logos, no infographic graphics, no fantasy nebula, no multiple moons, no exhaust flame while coasting. This illustration will be captioned AI概念插画：向更远的宇宙出发. Keep the scene dignified and optimistic without advertising gloss.",
+    "Edit this concept illustration. Preserve the Earth, dawn lighting, distant small Mars, stars, colors, framing and overall mood exactly. Correct ONLY the Starship spacecraft geometry: it has exactly FOUR aerodynamic control flaps TOTAL, two large aft flaps on opposite lateral sides near the engine end, and two small forward flaps on opposite lateral sides near the nose. Remove the erroneous extra dorsal and ventral aft fins that currently form a four-fin cross at the rear. The aft end must contain six visibly recessed dark rocket engine bells (three larger vacuum nozzles and three smaller central sea-level nozzles), not a flat empty black disk. No exhaust. This is an editorial concept image, maintain subtle painterly quality. Do not add text or logos."
+  ],
+  "disclosure": "AI概念插画，非第14次试飞实拍；地球与火星不按实际视角及尺度呈现。"
+}

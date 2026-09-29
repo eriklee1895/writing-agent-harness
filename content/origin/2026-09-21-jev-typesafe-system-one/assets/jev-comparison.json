@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: landscape flat editorial infographic for a Chinese AI engineering article.\nPrimary request: compare an ordinary LLM / System Two workflow with Jev / System One in one readable diagram.\nComposition: warm off-white paper background, two large side-by-side panels with arrows and a shared bottom flow. Left panel is coral and titled \"LLM / System Two\". Right panel is teal and titled \"Jev / System One\". Left panel shows a sequential token chain ending in a string output. Right panel shows parallel branches converging into typed decisions. Add a bottom strip reading \"人类输入 → 一次前向 → 可执行结果\".\nStyle and medium: flat-tech infographic inspired by polished Chinese technical notes: hand-drawn editorial accents, dark ink outlines, warm paper, coral and teal modules, clean arrows, no 3D, no photorealism.\nText (exact): Allowed readable text only: \"System One vs System Two：两种 AI 工作方式\", \"LLM / System Two\", \"逐 token 生成\", \"字符串输出\", \"需要解析\", \"Jev / System One\", \"并行评估\", \"类型化决策\", \"概率输出\", and \"人类输入 → 一次前向 → 可执行结果\". Render each exactly once in the specified place. All other labels, cards, code, numbers, and annotations must be blank abstract shapes.\nAvoid: extra words, misspellings, duplicated text, generic brain, neon cyberpunk, watermark.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 303,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 303,
+        "cached_tokens": 0
+      },
+      "output_tokens": 167,
+      "total_tokens": 470,
+      "output_tokens_details": {
+        "image_tokens": 167,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "3628390d-7a53-43e4-b694-7f29937fc827"
+  },
+  "elapsed_seconds": 60.176,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-comparison.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T04:02:37+00:00"
+}

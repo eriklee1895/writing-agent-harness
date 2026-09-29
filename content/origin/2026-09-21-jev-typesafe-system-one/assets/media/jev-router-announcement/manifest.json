@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "url": "https://x.com/OpenRouter/status/2103610898690855161",
+      "media_url": "https://video.twimg.com/amplify_video/2103610863605465088/vid/avc1/1440x1080/m1mDfHnNZl7p-nsJ.mp4",
+      "type": "video",
+      "local_file": "jev-router-intro.mp4",
+      "retrieved_at": "2026-09-27",
+      "title": "Introducing typesafe/jev-router"
+    },
+    {
+      "url": "https://x.com/OpenRouter/status/2103610914503315515",
+      "media_url": "https://pbs.twimg.com/media/HTGG-sdbMAAVaGx.jpg?name=orig",
+      "type": "image",
+      "local_file": "jev-router-benchmark.jpg",
+      "retrieved_at": "2026-09-27",
+      "title": "Jev Router benchmark claim"
+    }
+  ],
+  "note": "The two source posts contain different media types: one video and one benchmark image. Confirm rights and platform terms before redistribution."
+}

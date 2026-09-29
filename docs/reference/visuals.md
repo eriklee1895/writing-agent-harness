@@ -1,6 +1,6 @@
 # Visuals
 
-生成图片优先使用系统 `$imagegen` skill。不要重建项目重复的 `gpt-image-gen`，除非用户明确要求创建 project-specific fork。
+位图 / 视频 / 语音 / 配乐生成使用本机 user-level media skills（由 erik-agent-skills repo 统一维护，不在本 repo 内）：图片 `gpt-image-2` / `seedream-image-gen`，视频 `seedance-video-gen`，语音合成 `volcengine-tts`，生成式音频 `seed-audio-gen`，无人声配乐 `volcengine-bigmusic-bgm`。不要在本 repo `.agents/skills/` 重建这些 skill 的副本。文章配图/封面优先走项目 skill `article-illustration`。
 
 账号信息放在 `.env`。不要打印 secret values。OpenAI 图片相关 key 可能包括：
 
@@ -77,6 +77,7 @@ OPENAI_BASE_URL
 - 只在图片能帮助理解、传播或渠道呈现时加入。
 - 技术文章优先使用简洁信息图、结构图、流程图或有明确语义的插图。
 - 流程、架构、状态和对比图必须在图内保留可读的节点标签、关系或关键数据；无文字的装饰性图不能代替解释性配图。
+- Blog 中的 `alt` 默认不会自动显示为图注。技术图建议在图后增加可见的 `*图 N：…*` caption；引用外部图时把来源收进同一行图注。
 - 散文/随笔不要默认钉死水彩；优先按文章气质选择 `editorial-atmospheric`、`modern-guochao-editorial`、`cinematic-editorial`、`watercolor-illustration` 等风格。
 - 移动端优先，避免信息密度过高或文字过多。
 - 微信公众号正文图片保存后应上传为 `mmbiz.qpic.cn` URL。

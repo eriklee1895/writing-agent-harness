@@ -2,7 +2,7 @@
 
 项目还在演进中。当前不要为了整洁强行迁移历史内容，但新内容建议逐步靠近这个 layout。
 
-飞书文档、Notion 笔记和网页剪藏都可以作为上游输入；内容进入 repo 后，以 `content/origin/` 里的 Markdown / MDX 作为可追踪、可自动化处理的 canonical source。
+飞书文档、Notion 页面、Blog 文章和网页剪藏都可以作为上游输入，也可以接收从 canonical article 同步的内容。内容进入 repo 后，以 `content/origin/` 里的 Markdown / MDX 作为可追踪、可自动化处理的 canonical source。
 
 ```text
 writing-agent-harness/
@@ -19,6 +19,7 @@ writing-agent-harness/
 │   ├── drafts/                  # 本地写作工作区，gitignored
 │   ├── origin/                  # 可追踪 canonical Markdown / MDX
 │   ├── blog/                    # 可追踪博客 Markdown / MDX 渠道副本（如需本 repo 内留存）
+│   ├── feishu/                  # 飞书文档同步记录、远端链接与状态
 │   ├── wechat/                  # 可追踪微信公众号文章、preview、notes 和 metadata
 │   └── assets/                  # 跨文章复用 prompt、metadata、manifest
 ```
@@ -50,9 +51,10 @@ content/origin/YYYY-MM-DD-topic/
 ```text
 content/wechat/YYYY-MM-DD-topic/
 content/blog/YYYY-MM-DD-topic/
+content/feishu/YYYY-MM-DD-topic/
 ```
 
-Astro 博客 repo 的 `src/content/posts/YYYY-MM-DD-topic.mdx` 也属于渠道发布副本，应该由 `content/origin/YYYY-MM-DD-topic/` 单向生成；不要把博客 repo 当成写作源头。
+Astro 博客 repo 的 `src/content/posts/YYYY-MM-DD-topic.mdx` 属于渠道发布副本，由 `content/origin/YYYY-MM-DD-topic/` 生成。既有博客文章可以作为新的写作输入；对已经纳入 origin 管理的文章，发布版本仍以 canonical source 为准。
 
 博客分类不建议用物理目录表达。`src/content/posts/` 保持扁平，分类、系列和标签放在 frontmatter：
 

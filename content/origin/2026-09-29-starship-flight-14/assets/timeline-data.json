@@ -1,0 +1,16 @@
+{
+  "title": "从公开方案，到首次入轨",
+  "checked_at": "2026-09-29",
+  "date_basis": "事件发生地当地日期",
+  "scope": "2016年以来公开方案与试飞关键节点，非完整研发史；公开方案不等于研发起点，节点间距不代表时间长度",
+  "milestones": [
+    {"date":"2016.09.27","mission":"ITS · 公开方案","title":"公布行星际运输方案","detail":"提出后来演变为星舰的系统构想","boundary":"这是公开方案节点，不代表研发从此时开始","source":"https://www.youtube.com/watch?v=H7Uyfqi_TE8"},
+    {"date":"2019.08.27","mission":"Starhopper","title":"150米低空试飞","detail":"早期验证机完成起飞、横移与着陆","boundary":"低空技术验证，早于 SN15 高空试飞","source":"https://www.youtube.com/watch?v=bYb3bfA6_sQ"},
+    {"date":"2021.05.05","mission":"SN15","title":"高空试飞，成功着陆","detail":"原型机完成下降、翻转与着陆","boundary":"约10千米高空测试，尚未进入太空","source":"https://www.spacex.com/launches/starship-sn15","outcome_source":"https://www.spacex.com/updates"},
+    {"date":"2023.04.20","mission":"Flight 1","title":"整箭首次升空","detail":"两级未能分离，飞行终止","boundary":"全系统首次飞行，未完成预定任务","source":"https://www.spacex.com/launches/starship-flight-test"},
+    {"date":"2024.06.06","mission":"Flight 4","title":"两级受控溅落","detail":"助推器与飞船分别返回海面","boundary":"海面溅落，尚未回收复用","source":"https://www.spacex.com/launches/starship-flight-4"},
+    {"date":"2024.10.13","mission":"Flight 5","title":"助推器首次塔架捕获","detail":"发射塔机械臂接住返航助推器","boundary":"被捕获的是助推器，飞船仍溅落海面","source":"https://www.spacex.com/launches/starship-flight-5"},
+    {"date":"2025.08.26","mission":"Flight 10","title":"载荷部署演示","detail":"释放8个模拟载荷，完成太空再点火","boundary":"模拟载荷演示，仍为亚轨道飞行","source":"https://www.spacex.com/launches/starship-flight-10"},
+    {"date":"2026.09.28","mission":"Flight 14","title":"首次入轨，部署卫星","detail":"送出26颗星链卫星，随后受控返回","boundary":"因发动机异常提前返回，未完整回收复用","source":"https://www.spacex.com/launches/starship-flight-14"}
+  ]
+}

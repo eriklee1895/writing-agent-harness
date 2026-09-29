@@ -1,0 +1,112 @@
+{
+  "article_slug": "meta-muse",
+  "created_at": "2026-09-11",
+  "source_checked_at": "2026-09-11",
+  "current_cover": "meta-muse-cover-v4.png",
+  "wechat_cover": "meta-muse-cover-v4-wechat.png",
+  "assets": [
+    {
+      "file": "meta-muse-cover-v4.png",
+      "wechat_file": "meta-muse-cover-v4-wechat.png",
+      "type": "cover",
+      "usage": "current blog banner and WeChat headline cover",
+      "alt": "Meta Muse 动态概念封面：以 Meta 与 Muse 标记为参考生成的云端个人 Agent 场景，用户将目标发往跨应用工作的云端电脑",
+      "style_profile": "cinematic-editorial",
+      "generation_method": "built-in imagegen with Meta and Muse logo reference images; no logo overlay or post-composited brand panel; sips crop for WeChat",
+      "prompt_file": "meta-muse-cover-v4.prompt.md",
+      "reference_images": ["meta-brand-reference.png", "muse-logo-reference.png"],
+      "source_basis": "Official Meta wordmark and Muse product mark used as reference images; Muse product capabilities integrated into the generated scene",
+      "status": "current"
+    },
+    {
+      "file": "meta-brand-reference.png",
+      "type": "reference-image",
+      "usage": "imagegen reference for Meta infinity-loop form and color language",
+      "source_file": "meta-brand-official.svg",
+      "source_url": "https://static.xx.fbcdn.net/rsrc.php/y9/r/tL_v571NdZ0.svg",
+      "status": "current-reference"
+    },
+    {
+      "file": "muse-logo-reference.png",
+      "type": "reference-image",
+      "usage": "imagegen reference for Muse M mark and blue gradient",
+      "source_file": "muse-logo-official.svg",
+      "source_url": "https://muse.ai/landing/brand/muse-logo.svg",
+      "status": "current-reference"
+    },
+    {
+      "file": "meta-muse-cover-v3.png",
+      "wechat_file": "meta-muse-cover-v3-wechat.png",
+      "background_file": "meta-muse-cover-v3-bg.png",
+      "composition_source": "meta-muse-cover-v3.svg",
+      "type": "cover",
+      "usage": "superseded blog banner and WeChat headline cover",
+      "alt": "Meta Muse 动态概念封面：用户从夜色城市向被安全边界包裹的云端 Agent 电脑发起任务",
+      "style_profile": "cinematic-editorial",
+      "generation_method": "built-in imagegen background + official Meta/Muse SVG lockup + rsvg-convert + sips crop",
+      "prompt_file": "meta-muse-cover-v3.prompt.md",
+      "source_basis": "Web-searched Muse product visuals informed the mood; official brand assets were composited for exact logo rendering",
+      "status": "superseded"
+    },
+    {
+      "file": "meta-brand-official.svg",
+      "type": "brand-mark",
+      "usage": "exact Meta wordmark in cover lockup",
+      "source_url": "https://static.xx.fbcdn.net/rsrc.php/y9/r/tL_v571NdZ0.svg",
+      "status": "current"
+    },
+    {
+      "file": "muse-logo-official.svg",
+      "type": "brand-mark",
+      "usage": "exact Muse M mark in cover lockup",
+      "source_url": "https://muse.ai/landing/brand/muse-logo.svg",
+      "status": "current"
+    },
+    {
+      "file": "meta-muse-cover-v2.png",
+      "wechat_file": "meta-muse-cover-v2-wechat.png",
+      "type": "cover",
+      "usage": "current blog banner and WeChat headline cover source",
+      "alt": "Meta Muse 的概念图：用户在夜色中的现实空间里，通过手机连接一台持续运行并受安全边界保护的云端 Agent 电脑",
+      "style_profile": "cinematic-editorial",
+      "generation_method": "built-in imagegen; cropped with sips for WeChat",
+      "prompt_file": "meta-muse-cover-v2.prompt.md",
+      "source_basis": "Web-searched Muse visual cues: cloud computer, secure boundary, persistent work; original artwork, no copied brand assets",
+      "status": "superseded"
+    },
+    {
+      "file": "meta-muse-cover.svg",
+      "raster_file": "meta-muse-cover.png",
+      "type": "cover",
+      "usage": "blog banner and WeChat headline cover",
+      "alt": "Meta Muse 的概念图：一个拥有持久云端电脑、浏览器和审批边界的个人 Agent",
+      "style_profile": "flat-tech-infographic",
+      "generation_method": "hand-authored SVG, rasterized with rsvg-convert",
+      "design_brief": "以一台发光的持久云端电脑为主体，左侧是用户目标，右侧是代表审批与安全边界的盾牌；暗色编辑科技风，保留小图阅读时的留白，不使用 Meta 官方截图或未经授权的品牌素材。",
+      "source_basis": "Article thesis; no external image source",
+      "status": "superseded"
+    },
+    {
+      "file": "meta-muse-architecture.svg",
+      "raster_file": "meta-muse-architecture.png",
+      "type": "technical-diagram",
+      "usage": "body figure 1",
+      "alt": "Meta Muse 公开架构重绘：客户端、每用户 Secure VM、Hatch runtime、Sentinel 安全边界和外部连接器",
+      "style_profile": "repo-architecture-clean",
+      "generation_method": "hand-authored SVG, rasterized with rsvg-convert",
+      "design_brief": "根据 Meta 公开安全文章重绘用户入口、每用户 VM、runtime cell、host-side guardrails、凭据服务、持久状态和外部系统，明确标注公开资料边界。",
+      "source_basis": "https://research.meta.ai/blog/security-and-safety-for-ai-agents-our-approach-with-muse"
+    },
+    {
+      "file": "meta-muse-revolution-matrix.svg",
+      "raster_file": "meta-muse-revolution-matrix.png",
+      "type": "judgment-matrix",
+      "usage": "body figure 2",
+      "alt": "Meta Muse 革命性判断矩阵：模型、产品、系统和分发四个维度",
+      "style_profile": "flat-tech-infographic",
+      "generation_method": "hand-authored SVG, rasterized with rsvg-convert",
+      "design_brief": "以模型、产品、系统与分发四个维度，把革命性判断拆开，避免用单一分数掩盖证据差异；暖纸张底色、黑色表头、低饱和状态色。",
+      "source_basis": "Meta official launch, product design, safety and model posts; Reuters cross-check"
+    }
+  ]
+}

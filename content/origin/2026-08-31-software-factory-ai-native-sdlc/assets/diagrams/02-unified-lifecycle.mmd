@@ -1,0 +1,23 @@
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#f4eee6","primaryTextColor":"#1f252c","primaryBorderColor":"#315ea8","lineColor":"#6f777d","secondaryColor":"#e8efe8","tertiaryColor":"#eef2f7","fontFamily":"PingFang SC, Arial"}}}%%
+flowchart LR
+    I["Work Item<br/>Issue / Intent / Alert"] --> T{"Triage"}
+    T -->|"信息不足"| Q["澄清 / 暂停"]
+    T -->|"前提不成立"| X["关闭并记录证据"]
+    T -->|"可执行"| S["Spec + 验收标准"]
+    S --> P{"风险与权限 Gate"}
+    P --> W["隔离 Workspace<br/>Run Attempt"]
+    W --> E["实现 + 工具调用"]
+    E --> V["测试 + 独立验证"]
+    V --> H{"人工 / Policy Gate"}
+    H -->|"修改"| E
+    H -->|"批准"| D["PR / Deploy / Handoff"]
+    D --> M["监控 + 反馈 + Eval"]
+    M -.-> T
+
+    classDef work fill:#f4eee6,stroke:#315ea8,stroke-width:2px,color:#1f252c;
+    classDef gate fill:#e8efe8,stroke:#557a5c,stroke-width:2px,color:#1f252c;
+    classDef stop fill:#f7e7df,stroke:#c46f50,color:#1f252c;
+    class I,S,W,E,V,D,M work;
+    class T,P,H gate;
+    class Q,X stop;
+

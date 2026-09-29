@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: One polished 3:2 landscape infographic for the documentation homepage of a personal AI writing workflow. It must read clearly at desktop size and feel expressive, crafted, and editorial rather than like a plain software flowchart.\n\nComposition: Wide left-to-right main path with exactly six numbered stage cards in the center. One simple arrow between adjacent cards, no crossing arrows. A compact top guardrail strip. A quiet bottom band with two panels: platform connections and continuous improvement. Use a clear grid, generous margins, balanced whitespace, short copy, and distinct but coordinated stage colors.\n\nVisual style: Warm off-white paper, deep forest-green typography, restrained terracotta, sage, teal, and amber accents. Crisp editorial infographic with softly illustrated hand-drawn mini-icons, fine ink lines, subtle paper texture, and polished typography. Keep the diagram content dominant. No people, robot mascots, photos, fake logos, browser chrome, or watermark.\n\nText allowlist (these are the only readable strings allowed, each no more than once; spell paths and skill names exactly):\nTitle: “AI 写作 Workflow + Skills 全景”\nSubtitle: “飞书、Notion 与 Blog 双向接入同一 canonical source”\nGuardrail strip: “AGENTS.md · SOUL.md · docs/runbooks · 本地 runtime”\nStage 01: “01 灵感与构思”; “飞书文档 · Notion 笔记 · 博客文章”; “content/inbox/”; “content/drafts/”; “article-ideation”; “问题 · 读者 · 核心判断”; “Writing brief + outline”.\nStage 02: “02 研究与写稿”; “查证事实 · 形成完整初稿”; “format-standards.md”.\nStage 03: “03 沉淀与打磨”; “content/origin/YYYY-MM-DD-<slug>/”; “polish-article”; “Markdown / MDX”.\nStage 04: “04 完善与检查”; “article-illustration”; “video-material-ingest → video-highlight-select → article-video-clip”; “article-readiness-check”.\nStage 05: “05 渠道派生与预览”; “微信公众号”; “wechat-article-renderer”; “wechat-publish-workflow”; “wechat-article-publisher”; “Blog · erik-blog-publish-workflow”; “Feishu ↔ Markdown / MDX”; “Notion ↔ Markdown / MDX”; “content/feishu/”.\nStage 06: “06 用户审核与收尾”; “Human Final Review”; “用户确认后发布”; “writing-task-closeout”.\nBottom left panel: “双向平台接入”; “飞书文档 ↔ Markdown / MDX”; “Notion ↔ Markdown / MDX”; “博客文章 ↔ canonical source”; “wechat-article-fetcher”; “article-to-notion + notion-cli”.\nBottom right panel: “持续改进”; “.local-archive/”; “docs/retrospectives/”; “.local-memory/”; “docs/”; “.agents/skills/”.\n\nText constraint: Render only the allowlisted text above; do not invent labels, slogans, numbers, captions, UI text, or any extra words. Every quoted skill name and path must be spelled exactly. If any text cannot be rendered accurately, leave that small field blank instead of approximating it. Keep the main process order and every stated relationship intact. Avoid tiny paragraph text and overly dense cards.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 722,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 722,
+        "cached_tokens": 0
+      },
+      "output_tokens": 163,
+      "total_tokens": 885,
+      "output_tokens_details": {
+        "image_tokens": 163,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "018f38b5-8df6-41b0-9472-7ae6cef8063f"
+  },
+  "elapsed_seconds": 52.425,
+  "attempts": 1,
+  "output": "docs/assets/ai-writing-skills-workflow-overview-gpt-image-2.5.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-29T08:13:12+00:00"
+}

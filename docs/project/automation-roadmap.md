@@ -9,7 +9,7 @@
 先沉淀可靠 skill 和人工确认 workflow：
 
 ```text
-Feishu / notes -> Markdown / MDX -> research -> polish -> channel packaging -> preview -> human review -> publish
+Feishu / Notion / Blog / notes ⇄ Markdown / MDX -> research -> polish -> channel packaging -> preview -> human review -> publish
 ```
 
 重点：
@@ -23,8 +23,9 @@ Feishu / notes -> Markdown / MDX -> research -> polish -> channel packaging -> p
 
 补齐：
 
-- 飞书文档到 Markdown / MDX 的同步 skill。
-- Markdown / MDX 到 Astro content collections 的博客发布 skill。
+- [x] 飞书文档与 Markdown / MDX 的双向同步链路已打通；补齐 runbook 作为后续文档工作。
+- [x] Markdown / MDX 与个人博客的读入和发布链路已打通；维护 Astro publish workflow。
+- [x] Notion 与 Markdown / MDX 的读入和写回链路已打通。
 - 微信公众号草稿箱同步的项目定制 CDP uploader，逐步减少对通用 skill 的依赖。
 - 文章 metadata、assets、reference links 的统一规范。
 - `video-material-ingest`：基于 `yt-dlp` 摄取已知视频 URL，沉淀 metadata、manifest 和 sources，为后续转写、抽帧、切片、HyperFrames 和短视频生产做素材入口。

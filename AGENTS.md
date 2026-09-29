@@ -9,7 +9,7 @@
 - 保留用户 edits；不要 revert 用户改动，除非用户明确要求。
 - 不要打印、提交或泄漏 secrets、本地运行态、账号态数据和依赖目录。
 - Current events、company/product facts、pricing、laws、fast-moving tech topics 必须查证，并写清具体日期。
-- repo 内长期 canonical source 放在 `content/origin/`，格式是 Markdown / MDX。飞书文档、Notion 等可以作为上游写作入口；进入 repo 后要同步或转换成可追踪文本。
+- repo 内长期 canonical source 放在 `content/origin/`，格式是 Markdown / MDX。飞书、Notion、Blog 均可作为内容输入，也支持把源稿同步回平台；进入 repo 的文章以 origin 中可追踪文本为准。
 - 内容写作、选题构思、文章润色、改稿、标题和风格判断时读取 [SOUL.md](SOUL.md)，对齐 Erik 的作者写作气质、register、anti-style 和审美边界；非写作任务不要默认加载。
 - 位图 / 视频 / 语音 / 配乐生成使用本机 user-level media skills（由 erik-agent-skills repo 统一维护，不在本 repo 内）：图片 `gpt-image-2` / `seedream-image-gen`，视频 `seedance-video-gen`，语音合成 `volcengine-tts`，生成式音频 `seed-audio-gen`，BGM `volcengine-bigmusic-bgm`；不要在本 repo `.agents/skills/` 重建这些 skill 的副本。文章配图仍走项目 skill `article-illustration`。
 - 任何最终发布动作都需要 user final review，除非用户明确授权自动发布。

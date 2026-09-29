@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1320" viewBox="0 0 1080 1320" role="img" aria-labelledby="title desc">
+  <title id="title">四家公司分别补上 Software Factory 的哪一层</title>
+  <desc id="desc">Anthropic 提供流程语言，Vercel 提供公开生产案例，Warp 提供控制面，OpenAI 提供任务调度与状态模型。</desc>
+  <rect width="1080" height="1320" fill="#faf9f5"/>
+  <text x="70" y="95" font-family="PingFang SC, Arial" font-size="48" font-weight="700" fill="#141413">四家公司，四个切入层</text>
+  <text x="70" y="145" font-family="PingFang SC, Arial" font-size="25" fill="#66645f">它们都叫 AI Native 开发，但解决的不是同一个问题</text>
+
+  <g font-family="PingFang SC, Arial">
+    <rect x="70" y="215" width="940" height="215" rx="24" fill="#f3f1ea" stroke="#d97757" stroke-width="4"/>
+    <text x="110" y="275" font-size="34" font-weight="700" fill="#d15f3f">Anthropic · 流程方法</text>
+    <text x="110" y="330" font-size="27" fill="#141413">intent.md → spec.md → plan.md → build → eval → deploy</text>
+    <text x="110" y="375" font-size="23" fill="#66645f">把每一阶段的输出变成版本化 artifact，并由接受事件触发下一步</text>
+
+    <rect x="70" y="465" width="940" height="215" rx="24" fill="#ffffff" stroke="#315ea8" stroke-width="4"/>
+    <text x="110" y="525" font-size="34" font-weight="700" fill="#315ea8">Vercel · 公开生产案例</text>
+    <text x="110" y="580" font-size="27" fill="#141413">分类 → 复现 → 分析 → 实现 → 独立 Review → 人工合并</text>
+    <text x="110" y="625" font-size="23" fill="#66645f">真实 issue、PR、backport 与 Sandbox 运行记录可以公开抽样</text>
+
+    <rect x="70" y="715" width="940" height="215" rx="24" fill="#eef2f7" stroke="#315ea8" stroke-width="4"/>
+    <text x="110" y="775" font-size="34" font-weight="700" fill="#315ea8">Warp · Factory 控制面</text>
+    <text x="110" y="830" font-size="27" fill="#141413">factory-as-code · 多模型 / harness · metrics · scorers</text>
+    <text x="110" y="875" font-size="23" fill="#66645f">把 Agent、权限、入口、评测和改进做成可配置的云端基础设施</text>
+
+    <rect x="70" y="965" width="940" height="215" rx="24" fill="#e8efe8" stroke="#557a5c" stroke-width="4"/>
+    <text x="110" y="1025" font-size="34" font-weight="700" fill="#3f6847">OpenAI · 调度与状态</text>
+    <text x="110" y="1080" font-size="27" fill="#141413">Task · Run Attempt · Workspace · Retry · Reconciliation</text>
+    <text x="110" y="1125" font-size="23" fill="#66645f">让人管理任务，让 Orchestrator 管理 Session、失败和恢复</text>
+  </g>
+
+  <rect x="70" y="1220" width="940" height="60" rx="18" fill="#141413"/>
+  <text x="540" y="1260" text-anchor="middle" font-family="PingFang SC, Arial" font-size="24" font-weight="600" fill="#faf9f5">合起来，才是一套完整的 Software Factory</text>
+</svg>
+

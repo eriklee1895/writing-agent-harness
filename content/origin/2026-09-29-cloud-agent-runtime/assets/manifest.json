@@ -1,0 +1,319 @@
+{
+  "article": "2026-09-29-cloud-agent-runtime",
+  "updated_at": "2026-09-29",
+  "assets": [
+    {
+      "file": "runtime-isolation-editorial-v2.png",
+      "role": "body-technical-diagram",
+      "status": "used-in-draft",
+      "tool": "built-in image_gen",
+      "style_profile": "flat-tech-infographic",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "prompts": [
+        "runtime-isolation-editorial-v1.prompt.md",
+        "runtime-isolation-editorial-v2.prompt.md"
+      ],
+      "generation_id": "exec-7658d73e-5e68-4a27-83d8-2256d7a1fd63",
+      "input_generation_id": "exec-ccc09656-3c2a-43bb-a26f-387a0c0bd8b1",
+      "alt": "普通容器、通用虚拟机和 microVM 的分层：容器共享宿主内核，VM和microVM具有独立Guest内核",
+      "qa": {
+        "reviewer": "assistant",
+        "label_check": "passed",
+        "dependency_relationship_check": "passed",
+        "readability_check": "passed after background and contrast revision",
+        "opaque_background": true,
+        "user_final_review": "approved: user checked WeChat draft and authorized blog publication"
+      },
+      "archive_path": ".local-archive/2026-09-29-cloud-agent-runtime/images/runtime-isolation-editorial-v2.png",
+      "sha256": "baee01915814c25da3837114ce838dc506a15425c5ac03e3814e404bbe6f1078",
+      "archived_at": "2026-09-29"
+    },
+    {
+      "file": "runtime-isolation.png",
+      "role": "technical-reference",
+      "status": "retained-not-used-in-draft",
+      "tool": "Mermaid CLI 11.4.2",
+      "source": "runtime-isolation.mmd",
+      "config": "mermaid-config.json"
+    },
+    {
+      "file": "agent-continuity-v1.png",
+      "role": "body-explanatory-illustration",
+      "status": "used-in-draft",
+      "tool": "built-in image_gen",
+      "style_profile": "flat-tech-infographic",
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "mode": "RGB",
+      "prompts": [
+        "agent-continuity-v1.prompt.md"
+      ],
+      "generation_id": "exec-dd16656d-f97d-4871-8104-a66d69b1c143",
+      "style_reference": "runtime-isolation-editorial-v2.png",
+      "alt": "Agent需要分别保留文件与环境、身份与授权、执行现场和任务进度",
+      "qa": {
+        "reviewer": "assistant",
+        "label_check": "passed",
+        "semantic_check": "passed",
+        "opaque_background": true,
+        "user_final_review": "approved: user checked WeChat draft and authorized blog publication"
+      },
+      "archive_path": ".local-archive/2026-09-29-cloud-agent-runtime/images/agent-continuity-v1.png",
+      "sha256": "9d048fca6d19ef098fe5652f5cfa0b114cce3e6e283f541715a6e804f74453b8",
+      "archived_at": "2026-09-29"
+    },
+    {
+      "file": "persistent-workspace-elastic-runtime-v2.png",
+      "role": "body-explanatory-illustration",
+      "status": "superseded-retained",
+      "tool": "built-in image_gen",
+      "style_profile": "flat-tech-infographic",
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "mode": "RGB",
+      "prompts": [
+        "persistent-workspace-elastic-runtime-v1.prompt.md",
+        "persistent-workspace-elastic-runtime-v2.prompt.md"
+      ],
+      "generation_id": "exec-a7ecc0e8-f74f-48c2-82d4-f1124a9c5120",
+      "style_reference": "runtime-isolation-editorial-v2.png",
+      "alt": "持久工作区与授权服务支持按需调度不同执行环境",
+      "qa": {
+        "reviewer": "assistant",
+        "label_check": "passed",
+        "semantic_check": "passed",
+        "opaque_background": true,
+        "user_final_review": "pending"
+      }
+    },
+    {
+      "file": "manus-2-opening-v1.png",
+      "role": "opening-editorial-illustration",
+      "status": "superseded-retained",
+      "tool": "built-in image_gen",
+      "style_profile": "editorial-atmospheric",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "prompts": [
+        "manus-2-opening-v1.prompt.md"
+      ],
+      "generation_id": "exec-a1c19281-d724-41b5-afdb-dfc2d8cb1082",
+      "alt": "Manus 2.0：本机与云端工作环境的概念插图",
+      "is_product_screenshot": false,
+      "qa": {
+        "reviewer": "assistant",
+        "label_check": "passed",
+        "opaque_background": true,
+        "user_final_review": "pending"
+      }
+    },
+    {
+      "file": "agent-work-continues-ending-v1.png",
+      "role": "closing-editorial-illustration",
+      "status": "superseded-retained",
+      "tool": "built-in image_gen",
+      "style_profile": "editorial-atmospheric",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "prompts": [
+        "agent-work-continues-ending-v1.prompt.md"
+      ],
+      "generation_id": "exec-944e2df7-9271-488f-8e67-b729480ff120",
+      "alt": "清晨的工作区继续昨夜留下的任务，概念插图",
+      "is_product_screenshot": false,
+      "qa": {
+        "reviewer": "assistant",
+        "label_check": "passed",
+        "opaque_background": true,
+        "user_final_review": "pending"
+      }
+    },
+    {
+      "file": "manus-2-opening-v2.png",
+      "role": "opening-editorial-illustration",
+      "status": "used-in-draft",
+      "tool": "built-in image_gen",
+      "style_profile": "editorial-atmospheric",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "prompts": [
+        "manus-2-opening-v1.prompt.md",
+        "manus-2-opening-v2.prompt.md"
+      ],
+      "generation_id": "exec-8e14448d-7897-4952-9af1-c12205cddb2b",
+      "alt": "Manus 2.0：本机与云端工作环境的概念插图",
+      "is_product_screenshot": false,
+      "qa": {
+        "reviewer": "assistant",
+        "label_check": "passed",
+        "opaque_background": true,
+        "user_final_review": "approved: user checked WeChat draft and authorized blog publication",
+        "brand_reference_check": "recognizable match to official reference; AI-rendered, not pixel-exact composition"
+      },
+      "input_images": [
+        "manus-2-opening-v1.png",
+        "manus-glyph-official-reference.png"
+      ],
+      "archive_path": ".local-archive/2026-09-29-cloud-agent-runtime/images/manus-2-opening-v2.png",
+      "sha256": "5283f2406eeb9fa0411bb914080fa0775f74d9c6e5701bd88e48089481218d68",
+      "archived_at": "2026-09-29"
+    },
+    {
+      "file": "agent-work-continues-ending-v2.png",
+      "role": "closing-editorial-illustration",
+      "status": "used-in-draft",
+      "tool": "built-in image_gen",
+      "style_profile": "editorial-atmospheric",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "prompts": [
+        "agent-work-continues-ending-v1.prompt.md",
+        "agent-work-continues-ending-v2.prompt.md"
+      ],
+      "generation_id": "exec-2ea6fe6b-1bb3-468d-9fa4-2df492bffcad",
+      "alt": "清晨的工作区继续昨夜留下的任务，概念插图",
+      "is_product_screenshot": false,
+      "qa": {
+        "reviewer": "assistant",
+        "label_check": "passed",
+        "opaque_background": true,
+        "user_final_review": "approved: user checked WeChat draft and authorized blog publication",
+        "brand_reference_check": "recognizable match to official reference; AI-rendered, not pixel-exact composition"
+      },
+      "input_images": [
+        "agent-work-continues-ending-v1.png",
+        "muse-logo-official-reference.png"
+      ],
+      "archive_path": ".local-archive/2026-09-29-cloud-agent-runtime/images/agent-work-continues-ending-v2.png",
+      "sha256": "d9b328dc8ac49ce010a8441e94162a2c7e1b3946ff05f8c45ec5f3b4ea8aba00",
+      "archived_at": "2026-09-29"
+    },
+    {
+      "file": "manus-glyph-official-reference.png",
+      "role": "official-brand-reference",
+      "status": "reference",
+      "source_file": "manus-glyph-official.svg",
+      "source_url": "https://files.manuscdn.com/assets/image/brand/image/Manus-Glyph-Black.svg",
+      "source_page": "https://events.manus.im/brand",
+      "checked_at": "2026-09-29",
+      "render_method": "rsvg-convert; no shape editing"
+    },
+    {
+      "file": "muse-logo-official-reference.png",
+      "role": "official-brand-reference",
+      "status": "reference",
+      "source_file": "muse-logo-current-official.svg",
+      "source_url": "https://introducing.muse.ai/landing/MuseLogo.svg",
+      "source_page": "https://introducing.muse.ai/",
+      "checked_at": "2026-09-29",
+      "render_method": "rsvg-convert; no shape editing"
+    },
+    {
+      "file": "cloudflare-workspace-backends-v1.png",
+      "role": "body-technical-diagram",
+      "status": "used-in-draft",
+      "tool": "built-in image_gen",
+      "style_profile": "flat-tech-infographic",
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "mode": "RGB",
+      "prompts": [
+        "cloudflare-workspace-backends-v1.prompt.md"
+      ],
+      "generation_id": "exec-7e4cffcd-940e-4514-b71b-369dfc73f65c",
+      "reference_images": [
+        "cloudflare-official-backends-reference.png",
+        "persistent-workspace-elastic-runtime-v2.png"
+      ],
+      "reference_roles": [
+        "technical meaning and relationships",
+        "visual style only"
+      ],
+      "source_url": "https://blog.cloudflare.com/cloudflare-computer/",
+      "source_figure_url": "https://blog.cloudflare.com/_emdash/api/media/file/01KZ4CFYR52H8M9DBZFH552T63.png",
+      "attribution": "Chinese redrawing based on Cloudflare official Workspace/execution runtime diagram",
+      "alt": "Cloudflare Computer共享工作区通过binding与FUSE连接两种执行后端",
+      "qa": {
+        "reviewer": "assistant",
+        "label_check": "passed",
+        "architecture_relationship_check": "passed against source figure and accompanying text",
+        "opaque_background": true,
+        "user_final_review": "approved: user checked WeChat draft and authorized blog publication"
+      },
+      "archive_path": ".local-archive/2026-09-29-cloud-agent-runtime/images/cloudflare-workspace-backends-v1.png",
+      "sha256": "ab30b91b3ce4f3ff245c4bda9ae6c9a06081a05906abbdde83a9fd81d65b6934",
+      "archived_at": "2026-09-29"
+    },
+    {
+      "file": "cloudflare-official-backends-reference.png",
+      "role": "external-technical-reference",
+      "status": "reference",
+      "source_owner": "Cloudflare",
+      "source_url": "https://blog.cloudflare.com/_emdash/api/media/file/01KZ4CFYR52H8M9DBZFH552T63.png",
+      "source_page": "https://blog.cloudflare.com/cloudflare-computer/",
+      "checked_at": "2026-09-29",
+      "usage": "technical reference for attributed Chinese redrawing"
+    },
+    {
+      "file": "wechat-cover-v1.png",
+      "role": "wechat-headline-cover",
+      "status": "used-in-wechat-draft",
+      "tool": "built-in image_gen",
+      "dimensions": [
+        1922,
+        818
+      ],
+      "mode": "RGB",
+      "prompts": [
+        "wechat-cover-v1.prompt.md"
+      ],
+      "generation_id": "exec-446abd37-b3e1-42a7-b704-eb2b36bbb380",
+      "input_images": [
+        "manus-2-opening-v2.png",
+        "muse-logo-official-reference.png"
+      ],
+      "qa": {
+        "reviewer": "assistant",
+        "label_check": "passed",
+        "ratio_check": "passed",
+        "user_final_review": "approved: user checked WeChat draft and authorized blog publication",
+        "wechat_cover_set": true
+      },
+      "wechat_appmsgid": "100001416",
+      "archive_path": ".local-archive/2026-09-29-cloud-agent-runtime/images/wechat-cover-v1.png",
+      "sha256": "44909457c4d62a9893914e29421f4301f7e84dd40caf416d5ff7de55e50b973e",
+      "archived_at": "2026-09-29"
+    }
+  ],
+  "closeout": {
+    "date": "2026-09-29",
+    "archive": ".local-archive/2026-09-29-cloud-agent-runtime",
+    "channels": {
+      "blog": "published",
+      "wechat": "draft-created",
+      "feishu": "synced"
+    }
+  }
+}

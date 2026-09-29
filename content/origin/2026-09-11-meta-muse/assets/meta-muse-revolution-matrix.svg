@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">How revolutionary is Meta Muse</title>
+  <desc id="desc">A four-dimension judgment matrix evaluating Muse across model, product form, safety architecture, and distribution.</desc>
+  <defs>
+    <style>
+      .sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif; }
+      .title { font-size: 34px; font-weight: 760; fill: #17212b; }
+      .head { font-size: 20px; font-weight: 720; fill: #17212b; }
+      .label { font-size: 19px; font-weight: 680; fill: #22303c; }
+      .body { font-size: 17px; fill: #4f6170; }
+      .verdict { font-size: 22px; font-weight: 760; fill: #17212b; }
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#faf9f5"/>
+  <text x="70" y="70" class="sans title">“革命性”要拆成四个问题</text>
+  <text x="70" y="105" class="sans body">同一个产品可以在交互形态上领先，在模型层却仍然只是一次重要迭代。</text>
+  <rect x="70" y="150" width="1460" height="82" rx="18" fill="#1d2731"/>
+  <text x="105" y="201" class="sans head" style="fill:#faf9f5">判断维度</text>
+  <text x="355" y="201" class="sans head" style="fill:#faf9f5">公开证据</text>
+  <text x="1115" y="201" class="sans head" style="fill:#faf9f5">当前判断</text>
+
+  <g class="sans">
+    <rect x="70" y="250" width="1460" height="112" rx="12" fill="#fffdf9" stroke="#e0d8ce"/>
+    <text x="105" y="297" class="label">模型层</text>
+    <text x="105" y="328" class="body">Muse Spark 1.3</text>
+    <text x="355" y="292" class="body">长程 Agent、工具调用、真实协作、</text>
+    <text x="355" y="320" class="body">代码效率改进；但主要是 Meta 自报指标。</text>
+    <rect x="1115" y="278" width="345" height="56" rx="14" fill="#f4dfd3"/>
+    <text x="1140" y="313" class="label" fill="#9a4d3d">有进步，未证实范式跃迁</text>
+
+    <rect x="70" y="378" width="1460" height="112" rx="12" fill="#f2f7f7" stroke="#cddedf"/>
+    <text x="105" y="425" class="label">产品层</text>
+    <text x="105" y="456" class="body">持续工作的 Agent</text>
+    <text x="355" y="420" class="body">每人专用云电脑、后台任务、目标与记忆、</text>
+    <text x="355" y="448" class="body">Artifacts、主聊天 + side chats、主动提醒。</text>
+    <rect x="1115" y="406" width="345" height="56" rx="14" fill="#d8eef0"/>
+    <text x="1140" y="441" class="label" fill="#2d727a">结构性变化，潜力最高</text>
+
+    <rect x="70" y="506" width="1460" height="112" rx="12" fill="#fff8f0" stroke="#ead2c1"/>
+    <text x="105" y="553" class="label">系统层</text>
+    <text x="105" y="584" class="body">信任与副作用</text>
+    <text x="355" y="548" class="body">Sentinel、authd、privsep、egress 过滤、</text>
+    <text x="355" y="576" class="body">审批能力、审计；Confidential VM 仍在路上。</text>
+    <rect x="1115" y="534" width="345" height="56" rx="14" fill="#e7f0e4"/>
+    <text x="1140" y="569" class="label" fill="#3b7441">门槛显著提高，仍属早期</text>
+
+    <rect x="70" y="634" width="1460" height="112" rx="12" fill="#f7f2e8" stroke="#e1d6bf"/>
+    <text x="105" y="681" class="label">分发层</text>
+    <text x="105" y="712" class="body">走向大众</text>
+    <text x="355" y="676" class="body">美国首发，App / Web / WhatsApp，未来眼镜；</text>
+    <text x="355" y="704" class="body">免费 + 订阅，目标是数十亿用户。</text>
+    <rect x="1115" y="662" width="345" height="56" rx="14" fill="#eee7f6"/>
+    <text x="1140" y="697" class="label" fill="#6a4a8f">规模想象很大，采用未证明</text>
+  </g>
+
+  <rect x="70" y="790" width="1460" height="64" rx="18" fill="#f3eee6" stroke="#e2d4c5"/>
+  <text x="105" y="831" class="sans verdict">结论：Muse 是一场“Agent 产品架构”的重大押注，不是已经被证明的通用智能革命。</text>
+</svg>

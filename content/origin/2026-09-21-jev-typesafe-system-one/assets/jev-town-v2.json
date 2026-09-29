@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: landscape body illustration for a technical case study about the author's Jev Town project.\nPrimary request: an editorial bird's-eye view of a small town where local state determines probabilistic decisions. Residents see different parts of the town, an unclaimed parcel appears in the central square, and their sight boundaries are visibly different. The image should feel like a real system model made visible, not a fantasy game poster.\nComposition: compact town map with market, plaza, tavern, docks, and a narrow hidden alley. Twelve small residents are distributed through the scene. Show translucent sight cones or boundaries around several residents. Put a simple wooden sign near the plaza reading \"Jev Town\" exactly once. Put a small restrained sign on a technical observation panel reading \"Jev\" exactly once. Keep all other signs, storefronts, UI panels, and labels blank and non-readable.\nStyle and medium: refined editorial map illustration with paper collage, architectural detail, warm late-afternoon light, muted brick, parchment, graphite, faded blue, olive, and one vermilion parcel. Grounded, observant, slightly uncanny, not cute.\nText (exact): Render \"Jev Town\" exactly once on the plaza sign and \"Jev\" exactly once on the small observation panel. No other readable words, letters, numbers, logos, or watermark.\nAvoid: medieval fantasy postcard, cute mascot art, game HUD, excessive tiny text, duplicated labels, misspellings, magical glow.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 299,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 299,
+        "cached_tokens": 0
+      },
+      "output_tokens": 175,
+      "total_tokens": 474,
+      "output_tokens_details": {
+        "image_tokens": 175,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "75b1d26b-bb44-4a91-aa2f-aa05e56c71bb"
+  },
+  "elapsed_seconds": 46.177,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-town-v2.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T02:03:44+00:00"
+}

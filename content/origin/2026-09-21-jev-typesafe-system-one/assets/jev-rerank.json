@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: landscape flat data infographic for a Chinese AI engineering article.\nPrimary request: explain an original Jev rerank evaluation with one clear conclusion: English quality is roughly tied with a dedicated reranker, Chinese quality is lower, but Jev is much faster; call shape also affects quality.\nComposition: warm paper background, large title at top, three horizontal dataset rows. Row 1: \"SciFact\" with \"EN\", \"quality: tie\", and \"8.9× faster\". Row 2: \"NFCorpus\" with \"EN\", \"quality: tie\", and \"7.5–8.2× faster\". Row 3: \"T2Retrieval\" with \"ZH\", \"quality: Jev lower\", and \"9.5× faster\". Use a small split comparison icon for each row and a speed arrow. Add a bottom banner: \"调用形状决定质量\" and a small subline: \"一次问完 50 篇 ≠ 一篇一问\".\nStyle and medium: flat editorial benchmark infographic, similar to a high-quality Chinese technical note: warm off-white paper, dark ink typography, coral and teal accents, clean comparison rows, hand-drawn but precise, no 3D, no photorealism.\nText (exact): The only readable text allowed is \"Jev 做 Rerank：英文打平，中文落后\", \"SciFact\", \"EN\", \"quality: tie\", \"8.9× faster\", \"NFCorpus\", \"7.5–8.2× faster\", \"T2Retrieval\", \"ZH\", \"quality: Jev lower\", \"9.5× faster\", \"调用形状决定质量\", and \"一次问完 50 篇 ≠ 一篇一问\". Render each exactly once. Do not invent scores, percentages, citations, or extra labels.\nAvoid: false precision, fake charts, invented benchmark names, duplicated text, misspellings, watermark.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 405,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 405,
+        "cached_tokens": 0
+      },
+      "output_tokens": 168,
+      "total_tokens": 573,
+      "output_tokens_details": {
+        "image_tokens": 168,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "94ac00ba-9d01-490e-8533-daeda580707a"
+  },
+  "elapsed_seconds": 52.806,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-rerank.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T05:09:23+00:00"
+}

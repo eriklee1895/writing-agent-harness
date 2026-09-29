@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "command": "edit",
+  "endpoint": "/v1/images/edits",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Image 1: edit target and final canvas.\nChange: completely redesign the attached Jev cover as a rich flat editorial infographic. Replace the current sparse empty cards and generic flow lines with a readable knowledge map that explains what Jev does. Use a warm paper background, dark ink outlines, coral / teal / cobalt accents, hand-drawn technical-note details, and strong typographic hierarchy.\nComposition: large title block at the top-right; left side has three concrete input cards; center has a Jev decision node; right side has three explicit output cards and arrows. The three input cards must be labeled \"订单\", \"用户原话\", and \"业务规则\". The three output cards must be labeled \"Decision\", \"Probability\", and \"Confidence\". Show a small bottom strip labeled \"State → Questions → Typed Decisions\". Add the brand labels \"Jev\", \"SYSTEM ONE\", and \"TypeSafe AI\" exactly once each in the title block.\nText (exact): Allowed readable text only: \"Jev\", \"SYSTEM ONE\", \"TypeSafe AI\", \"订单\", \"用户原话\", \"业务规则\", \"Decision\", \"Probability\", \"Confidence\", and \"State → Questions → Typed Decisions\". Render each exactly once. No blank gray placeholder bars, no invented UI text, no extra labels.\nPreserve: Preserve the subject identity as Jev / TypeSafe's software decision model and preserve a clear left-to-right transformation from evidence to executable results. Do not preserve the old sparse card layout, dark background, or empty code-window placeholders.\nAvoid: generic abstract AI wallpaper, empty cards, fake code, tiny unreadable text, duplicated labels, misspellings, photorealism, neon cyberpunk, watermark.\n",
+    "n": 1,
+    "size": "auto",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [
+    {
+      "index": 1,
+      "path": "/var/folders/bd/stx12mg16dd8hsrj72kswfl40000gn/T/codex-clipboard-14cfcabd-c237-43ae-8e8c-f6354c22f58e.png",
+      "role": "edit target and visual reference"
+    }
+  ],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 514,
+      "input_tokens_details": {
+        "image_tokens": 166,
+        "text_tokens": 348,
+        "cached_tokens": 0
+      },
+      "output_tokens": 177,
+      "total_tokens": 691,
+      "output_tokens_details": {
+        "image_tokens": 177,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "218f2020-7201-498b-87de-e164a1723c0a"
+  },
+  "elapsed_seconds": 49.752,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-cover-redesign.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T06:06:57+00:00"
+}

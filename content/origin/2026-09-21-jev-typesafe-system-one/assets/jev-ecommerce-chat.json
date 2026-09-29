@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: portrait flat editorial UI mockup illustration for a Chinese AI engineering article, showing a real ecommerce after-sales scenario.\nPrimary request: a mobile customer-service conversation where an LLM handles the conversation but a Jev decision card makes the business judgment visible.\nComposition: vertical smartphone-like chat screen on warm paper. At top a store header. Then a compact order card. Then one blue customer message bubble. Below it, a coral Jev decision card with a simple decision icon and four structured result chips. The card must visually connect to a small rule/check panel, but not look like a production app screenshot.\nText (exact): Allowed readable text only: \"悦享数码旗舰店\", \"头戴式蓝牙耳机 ¥299\", \"戴了十分钟，耳朵压得疼，想退\", \"Jev 决策\", \"佩戴不适\", \"可以受理\", \"补贴上限 12 元\", and \"等待验货后退款\". Render each exactly once in the specified UI location. All timestamps, buttons, navigation labels, user names, order numbers, and other fields must be blank abstract placeholders.\nStyle and medium: flat-tech editorial illustration, warm off-white mobile UI, cobalt blue message bubble, coral decision card, teal rule/check panel, dark ink outlines, clean readable Chinese typography, subtle hand-drawn accents, no photorealism.\nAvoid: extra text, fake names, unreadable dense UI, brand logos, duplicated labels, misspellings, watermark.\n",
+    "n": 1,
+    "size": "1024x1536",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 310,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 310,
+        "cached_tokens": 0
+      },
+      "output_tokens": 165,
+      "total_tokens": 475,
+      "output_tokens_details": {
+        "image_tokens": 165,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "2dd9f200-f08d-4690-a566-d282ee7247a6"
+  },
+  "elapsed_seconds": 70.452,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-ecommerce-chat.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T04:15:33+00:00"
+}

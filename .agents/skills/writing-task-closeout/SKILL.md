@@ -134,6 +134,9 @@ Do not use base64 as an archive strategy. It bloats HTML and Git history while m
 - 同时复制最终 `index.md` 到 `.local-archive/YYYY-MM-DD-<slug>/index.md` 作为文章快照。
 - 保留源 prompt、style profile、model/provider、size/ratio、generation time、usage 和 article reference；将对应 `.json` metadata 放入 `.local-archive/YYYY-MM-DD-<slug>/prompts/`。
 - Repo 中保留 `content/origin/YYYY-MM-DD-<slug>/assets/manifest.json` 作为轻量 provenance，记录每张图的来源、生成参数、归档路径、使用状态。
+- 移动后必须维持 canonical 的 `assets/...` 引用有效：可在原素材路径保留指向归档图片的相对软链接，并确认该链接仍被媒体忽略规则排除。不要把 canonical 引用改成 `.local-archive/...`。校验归档文件哈希、软链接解析和预览加载；跨机器仍需按 manifest 同步或恢复图片。
+- 归档 `index.md` 快照也需要能找到图片：可在归档根建立 `assets -> images` 相对链接。独立博客仓库中的已发布图片属于其部署资产，不随写作仓库清理删除。
+- 后续需要修改或重新生成已归档图片时，先把工作路径的软链接替换为独立工作副本或使用新文件名，避免通过软链接覆盖归档快照。
 
 ### Video Archive
 

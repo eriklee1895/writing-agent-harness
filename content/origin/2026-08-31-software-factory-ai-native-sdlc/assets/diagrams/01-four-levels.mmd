@@ -1,0 +1,16 @@
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#f4eee6","primaryTextColor":"#1f252c","primaryBorderColor":"#315ea8","lineColor":"#6f777d","secondaryColor":"#e8efe8","tertiaryColor":"#eef2f7","fontFamily":"PingFang SC, Arial"}}}%%
+flowchart LR
+    A["Coding Agent<br/>一次交互式执行"] --> B["Background Agent<br/>离开本机持续运行"]
+    B --> C["Orchestrator<br/>并发、调度、重试"]
+    C --> D["Software Factory<br/>覆盖完整任务生命周期"]
+
+    A1["Session 是工作单位"] -.-> A
+    B1["Run 可以异步"] -.-> B
+    C1["Task 可以调度多个 Run"] -.-> C
+    D1["状态、隔离、验证、审批、恢复、评测"] -.-> D
+
+    classDef main fill:#f4eee6,stroke:#315ea8,stroke-width:2px,color:#1f252c;
+    classDef note fill:#eef2f7,stroke:#8a96a3,color:#3d4650;
+    class A,B,C,D main;
+    class A1,B1,C1,D1 note;
+

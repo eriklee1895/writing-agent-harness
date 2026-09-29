@@ -38,7 +38,7 @@ content/wechat/YYYY-MM-DD-topic/
 └── assets/
 ```
 
-`content/drafts/` 可以作为本地写作工作区，但默认 gitignored。文章进入草稿箱同步、发布交付或 repo review 前，应把 canonical Markdown / MDX、notes 和 metadata promote 到 `content/origin/`，再把微信公众号派生稿和 preview 放到 `content/wechat/`。微信目录可以有自己的 `assets/`；如果图片已在 `content/origin/YYYY-MM-DD-<slug>/assets/` 且体积较大，可以用相对路径指回 origin 目录，避免重复二进制文件。
+`content/drafts/` 可以作为本地写作工作区，但默认 gitignored。文章进入草稿箱同步、发布交付或 repo review 前，应把 canonical Markdown / MDX、notes 和 metadata promote 到 `content/origin/`，再把微信公众号派生稿和 preview 放到 `content/wechat/`。微信目录可以有自己的 `assets/`；如果图片已在 `content/origin/YYYY-MM-DD-<slug>/assets/` 且体积较大，可以用相对路径指回 origin 目录，避免重复二进制文件。复制 preview 后，将 HTML 的图片 `src="assets/..."` 改为 `src="../../origin/<slug>/assets/..."`，保留绝对 `data-local-path` 不变；本地浏览器预览服务以 `content/` 为根目录。
 
 ## Step 1: 准备 canonical Markdown
 
@@ -50,10 +50,11 @@ content/wechat/YYYY-MM-DD-topic/
 ---
 title: "文章标题"
 description: "文章摘要"
-author: "Erik"
 cover: "./assets/cover.png"
 ---
 ```
+
+作者由 repo 根目录 `.config/wechat.toml` 中的 `default_author` 提供；canonical frontmatter 不再写 `author`，避免与微信发布器的作者配置契约冲突。
 
 正文图片放在文章目录的 `assets/`，并使用有意义的 alt text，因为 renderer 会把 alt text 转成 caption。
 

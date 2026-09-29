@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: landscape flat system architecture infographic for a Chinese AI engineering article.\nPrimary request: show an Agent tool-call safety flow where a reasoning LLM plans, Jev makes a fast semantic gate decision, deterministic policy code owns authority, and the tool executes only after the gate.\nComposition: left-to-right flow. First large box: \"LLM 规划\" with a code-agent icon. Second coral box: \"Jev 门控\" with three small labels \"风险\", \"是否确认\", \"是否可回滚\". Third teal box: \"Policy Code\" with a shield and rule icon. Fourth box: \"Tool 执行\". From Jev, branch into three clearly labeled paths: \"自动执行\", \"大模型复核\", \"人工确认\". Add a bottom note: \"Jev 提供语义信号，不拥有权限\".\nStyle and medium: flat technical architecture infographic, warm off-white paper, coral / teal / yellow modules, thick dark arrows, hand-drawn Chinese editorial accents, clear separation of semantic judgment and deterministic authority, no 3D, no photorealism.\nText (exact): The only readable text allowed is \"Agent 工具调用：LLM 规划，Jev 门控，代码执行\", \"LLM 规划\", \"Jev 门控\", \"风险\", \"是否确认\", \"是否可回滚\", \"Policy Code\", \"Tool 执行\", \"自动执行\", \"大模型复核\", \"人工确认\", and \"Jev 提供语义信号，不拥有权限\". Render each exactly once. No other readable text.\nAvoid: extra words, fake command lines, invented product logos, duplicated labels, misspellings, watermark.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 349,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 349,
+        "cached_tokens": 0
+      },
+      "output_tokens": 162,
+      "total_tokens": 511,
+      "output_tokens_details": {
+        "image_tokens": 162,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "e7110bfc-1aea-4ea6-8aed-55e66f82d8b7"
+  },
+  "elapsed_seconds": 29.965,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-tool-gate.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T05:09:00+00:00"
+}

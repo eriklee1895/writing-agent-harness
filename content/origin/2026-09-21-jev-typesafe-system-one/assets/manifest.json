@@ -1,0 +1,17 @@
+{
+  "article": "2026-09-21-jev-typesafe-system-one",
+  "generated_with": "gpt-image-api / gpt-image-2.5-sunburst",
+  "assets": [
+    {"file":"jev-cover-redesign.png","role":"cover","alt":"Flat infographic cover with Jev, SYSTEM ONE and TypeSafe AI turning orders, user language, and business rules into decisions, probabilities, and confidence.","metadata_file":"jev-cover-redesign.json","status":"used"},
+    {"file":"jev-comparison.png","role":"comparison infographic","alt":"System One and System Two comparison: serial token generation versus parallel typed decisions.","metadata_file":"jev-comparison.json","status":"used"},
+    {"file":"jev-system-one-redesign.png","role":"decision pipeline infographic","alt":"Jev System One explainer showing State, Questions, Choice, Score, Noul, Probability, and Code with readable semantic descriptions.","metadata_file":"jev-system-one-redesign.json","status":"used"},
+    {"file":"jev-numbers.png","role":"fact and caveat infographic","alt":"Official Jev numbers paired with the caveats required when citing them.","metadata_file":"jev-numbers.json","status":"used"},
+    {"file":"jev-primitives.png","role":"primitive infographic","alt":"Choice, Score, and Noul shown with their answer spaces and return semantics.","metadata_file":"jev-primitives.json","status":"used"},
+    {"file":"jev-tool-gate.png","role":"tool gate infographic","alt":"Agent tool-call architecture with LLM planning, Jev semantic gate, policy code, and execution paths.","metadata_file":"jev-tool-gate.json","status":"used"},
+    {"file":"jev-routing.png","role":"routing infographic","alt":"Example confidence-gated routing from Jev decision to automation, model review, or human review.","metadata_file":"jev-routing.json","status":"used"},
+    {"file":"jev-rerank.png","role":"benchmark infographic","alt":"Original rerank comparison showing English quality tie, Chinese quality loss, speed advantage, and call-shape caveat.","metadata_file":"jev-rerank.json","status":"used"},
+    {"file":"jev-town-flat.png","role":"case study infographic","alt":"Flat Jev Town map showing local state, partial view, a package, residents, and decision branches.","metadata_file":"jev-town-flat.json","status":"used"},
+    {"file":"jev-api-guide.png","role":"API guide infographic","alt":"TypeSafe official API flow from State and Questions to POST /v1/systemone and answers.","metadata_file":"jev-api-guide.json","status":"used"},
+    {"file":"jev-town-ui.jpg","role":"project screenshot","alt":"Screenshot of the Jev Town dashboard showing residents, event timeline, and live probability distributions.","source":"https://github.com/eriklee1895/jev-town/blob/main/docs/screenshot.jpg","status":"used"}
+  ]
+}

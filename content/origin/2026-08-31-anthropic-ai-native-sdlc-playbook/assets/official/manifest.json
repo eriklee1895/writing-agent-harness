@@ -1,0 +1,54 @@
+{
+  "retrieved_at": "2026-08-31T00:20:00+08:00",
+  "usage_note": "Copyright remains with Anthropic. Local copies are retained for quotation, commentary, and article layout with source attribution.",
+  "assets": [
+    {
+      "file": "01-build-bottleneck-shifts.png",
+      "source_page": "https://claude.com/blog/the-ai-native-sdlc-playbook",
+      "source_url": "https://cdn.prod.website-files.com/68a44d4040f98a4adf2207b6/6a8739a1b934ffe55bfc9715_44592f18.png",
+      "caption": "Build is no longer the constraint; human-speed stages remain long."
+    },
+    {
+      "file": "02-ai-native-sdlc-loop.png",
+      "source_page": "https://claude.com/blog/the-ai-native-sdlc-playbook",
+      "source_url": "https://cdn.prod.website-files.com/68a44d4040f98a4adf2207b6/6a8858c2eccce183e7553cf2_53b010df.png",
+      "caption": "Traditional linear SDLC compared with an AI-native loop."
+    },
+    {
+      "file": "03-play-dependency-map.png",
+      "source_page": "https://claude.com/blog/the-ai-native-sdlc-playbook",
+      "source_url": "https://cdn.prod.website-files.com/68a44d4040f98a4adf2207b6/6a8855c75344623fc81efcb8_5d5a3c05.png",
+      "caption": "Dependency order among Anthropic's modular plays."
+    },
+    {
+      "file": "04-claude-tag-on-call-loop.png",
+      "source_page": "https://claude.com/blog/the-ai-native-sdlc-playbook",
+      "source_url": "https://cdn.prod.website-files.com/68a44d4040f98a4adf2207b6/6a8760aded54a2a8319cd5b9_fe6d780d.png",
+      "caption": "Channel-based on-call loop with the conversation acting as an audit trail."
+    },
+    {
+      "file": "05-secure-sdlc-stages.png",
+      "source_page": "https://claude.com/blog/how-anthropic-secures-its-ai-native-software-development-lifecycle",
+      "source_url": "https://cdn.prod.website-files.com/68a44d4040f98a4adf2207b6/6a5fa5786cc9f557247c1256_9c126d9d.png",
+      "caption": "Anthropic's compressed AI-native SDLC security stages."
+    },
+    {
+      "file": "06-automated-project-security-review.png",
+      "source_page": "https://claude.com/blog/how-anthropic-secures-its-ai-native-software-development-lifecycle",
+      "source_url": "https://cdn.prod.website-files.com/68a44d4040f98a4adf2207b6/6a5fa80d84f25c4ed3f5421f_three-steps-diagram.png",
+      "caption": "Automated project security review enriched with organizational context."
+    },
+    {
+      "file": "07-security-guidance-closed-loop.png",
+      "source_page": "https://claude.com/blog/how-anthropic-secures-its-ai-native-software-development-lifecycle",
+      "source_url": "https://cdn.prod.website-files.com/68a44d4040f98a4adf2207b6/6a5fa78b8f99d4eea5c0c389_closed-loop-diagram.png",
+      "caption": "Security findings update guidance so the same bug class is less likely to recur."
+    },
+    {
+      "file": "08-agent-permission-boundary.png",
+      "source_page": "https://claude.com/blog/how-anthropic-secures-its-ai-native-software-development-lifecycle",
+      "source_url": "https://cdn.prod.website-files.com/68a44d4040f98a4adf2207b6/6a5faaaf38e56da47cb6564d_permission-boundary-diagram.png",
+      "caption": "Permission boundaries must include an agent's ability to reach other agents."
+    }
+  ]
+}

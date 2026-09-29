@@ -1,0 +1,116 @@
+{
+  "article": "2026-08-31-software-factory-ai-native-sdlc",
+  "research_cutoff": "2026-08-31",
+  "assets": [
+    {
+      "file": "00-cover-software-factory.svg",
+      "derived_file": "00-cover-software-factory.png",
+      "type": "original-explainer-cover",
+      "alt": "Software Factory 从 Work Item、Task Control Plane、隔离运行、验证、人工 Gate 到交付与反馈的完整流程",
+      "status": "used",
+      "generator": "deterministic project-local SVG rendered with rsvg-convert",
+      "use_note": "Replaced the decorative generated cover after review; every visual now carries explanatory labels and answers a workflow question.",
+      "sha256": "01af18f6c43a7dfc7f9e3db1ec4c19a03a50a739ff6543954773131e353b7685",
+      "derived_sha256": "3aeb6b20538a85e088151b7d6a2b9a25b3c8537338b1f49b6c3173f06a4cd37e",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/origin/00-cover-software-factory.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "images/10-anthropic-ai-native-sdlc.png",
+      "type": "official-diagram",
+      "alt": "Anthropic 对比传统线性 SDLC 与 AI Native 循环式 SDLC",
+      "status": "used",
+      "source_article": "https://claude.com/blog/the-ai-native-sdlc-playbook",
+      "source_asset": "https://cdn.prod.website-files.com/68a44d4040f98a4adf2207b6/6a8858c2eccce183e7553cf2_53b010df.png",
+      "use_note": "Official diagram quoted for editorial analysis with source attribution; unmodified.",
+      "sha256": "88f8afd78d8a448f2b86e6f24d78f16c999a9587299f6d7d0613fb3945569763",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/origin/images/10-anthropic-ai-native-sdlc.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "images/11-vercel-ai-sdk-factory.png",
+      "type": "official-diagram",
+      "alt": "Vercel AI SDK Factory 将 Issue 按 Bug、Feature 和 Documentation 分流，并由独立 Agent 复现、实现、审核和回移植",
+      "status": "used",
+      "source_article": "https://vercel.com/blog/building-a-software-factory-for-ai-sdk",
+      "source_asset": "https://assets.vercel.com/image/upload/contentful/image/e5382hct74si/7sF5IEnmB4NSWlpNdc5B8L/53eb8a08465a69c0adea867366e71d0b/AI_SDK_factory-light.png",
+      "use_note": "Official diagram quoted for editorial analysis with source attribution; unmodified.",
+      "sha256": "0948d274188706247d54205ecb2eb634b18c510906c7987ace18ff0681d2ef17",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/origin/images/11-vercel-ai-sdk-factory.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "images/12-warp-factory-as-code.png",
+      "type": "official-diagram",
+      "alt": "Warp 用 factory.yaml 配置仓库、模型、Agent 角色和 GitHub 触发器的示意图",
+      "status": "used",
+      "source_article": "https://www.warp.dev/blog/open-infrastructure-for-building-a-software-factory",
+      "source_asset": "https://cdn.sanity.io/images/1ygbk6d0/production/1e277b64e8da2344277f8cec40d52e9776fedaa3-3456x2160.png",
+      "use_note": "Official diagram quoted for editorial analysis with source attribution; unmodified.",
+      "sha256": "33fe5abd7402ab9ca1a25c1036212082578aa71ae71f8055505496c17db12921",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/origin/images/12-warp-factory-as-code.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "images/13-openai-symphony-state-machine.svg",
+      "derived_file": "images/13-openai-symphony-state-machine.png",
+      "type": "official-diagram",
+      "alt": "OpenAI Symphony 使用 Linear 状态驱动 Agent 工作、人工审核、合并和后续任务",
+      "status": "used",
+      "source_article": "https://openai.com/index/open-source-codex-orchestration-symphony/",
+      "source_asset": "https://images.ctfassets.net/kftzwdyauwt9/2RXkNLtpHGpak1yDzDzK0q/93d10db4325727ce9aba8a5b8e89274e/Coworking-Desktop-Light-Symphony__6_.svg",
+      "use_note": "Official SVG quoted for editorial analysis with source attribution. PNG is a white-background render for channel compatibility.",
+      "sha256": "0efab2a2acb370f3b1610a4b1eb90372a8e4d6bd246a1a39b9fbf580ccc6ab16",
+      "derived_sha256": "105672d03a2559af451131c17e5e97a5180c87ec36077dddaa4d54fa6fa2d443",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/origin/images/13-openai-symphony-state-machine.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "images/14-warp-self-improvement-loop.png",
+      "type": "official-diagram",
+      "alt": "Warp 将执行 Agent、评分 Agent 和自改进 Agent 连接成反馈链路",
+      "status": "used",
+      "source_article": "https://www.warp.dev/blog/agent-self-improving-software-factories",
+      "source_asset": "https://cdn.sanity.io/images/1ygbk6d0/production/4c971d3122688ea9b66b5fb64f8460e1d22416c4-3456x2160.png",
+      "use_note": "Official diagram quoted for editorial analysis with source attribution; unmodified.",
+      "sha256": "bba2c193872746490b3b2e705325a8ead87ae8256aa51be8a8922f7f37f7dae3",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/origin/images/14-warp-self-improvement-loop.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "diagrams/01-four-levels.mmd",
+      "derived_file": "diagrams/01-four-levels.png",
+      "type": "original-workflow-diagram",
+      "alt": "从 Coding Agent、Background Agent、Orchestrator 到 Software Factory 的四层能力边界",
+      "status": "used",
+      "generator": "Mermaid CLI",
+      "derived_sha256": "959547ae1234430bb840923ec1e860c743f59d41bfe0c26b5370c644711b3be3",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/origin/diagrams/01-four-levels.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "diagrams/02-unified-lifecycle.mmd",
+      "derived_file": "diagrams/02-unified-lifecycle.png",
+      "type": "original-workflow-diagram",
+      "alt": "Software Factory 从 Work Item 到监控和反馈的统一生命周期",
+      "status": "used",
+      "generator": "Mermaid CLI",
+      "derived_sha256": "21635e01388d2aab62330fb4cc3f7b803387d263e2c689a20256be17aaa4f23e",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/origin/diagrams/02-unified-lifecycle.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "diagrams/03-task-run-state.mmd",
+      "derived_file": "diagrams/03-task-run-state.png",
+      "type": "original-state-diagram",
+      "alt": "Task、Run Attempt、Agent Session、Workspace、Artifact 与 Gate 的关系",
+      "status": "used",
+      "generator": "Mermaid CLI",
+      "derived_sha256": "aea74a386e06707ac9a91580885c0d185baf4a015797c98ca27ed0eea348a5bc",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/origin/diagrams/03-task-run-state.png",
+      "working_copy_retained": true
+    }
+  ],
+  "archive_root": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/",
+  "closeout_status": "draft-created"
+}

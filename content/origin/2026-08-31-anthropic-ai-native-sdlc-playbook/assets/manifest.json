@@ -1,0 +1,56 @@
+{
+  "article": "2026-08-31-anthropic-ai-native-sdlc-playbook",
+  "archive_path": ".local-archive/2026-08-31-anthropic-ai-native-sdlc-playbook/",
+  "archive_policy": "The archive contains a closeout snapshot. The origin assets remain as working copies so canonical Markdown and channel renderers retain valid asset paths.",
+  "assets": [
+    {
+      "file": "generated/01-five-plane-control-loop.png",
+      "usage": "cover and body",
+      "origin": "OpenAI ImageGen",
+      "prompt_reference": "generated/prompts.md#01-five-plane-control-looppng",
+      "archive_copy": "images/01-five-plane-control-loop.png"
+    },
+    {
+      "file": "official/01-build-bottleneck-shifts.png",
+      "usage": "body",
+      "origin": "Anthropic official blog",
+      "source_reference": "official/manifest.json",
+      "archive_copy": "images/01-build-bottleneck-shifts.png"
+    },
+    {
+      "file": "official/02-ai-native-sdlc-loop.png",
+      "usage": "body",
+      "origin": "Anthropic official blog",
+      "source_reference": "official/manifest.json",
+      "archive_copy": "images/02-ai-native-sdlc-loop.png"
+    },
+    {
+      "file": "generated/02-guidance-evidence-boundaries.png",
+      "usage": "body",
+      "origin": "OpenAI ImageGen",
+      "prompt_reference": "generated/prompts.md#02-guidance-evidence-boundariespng",
+      "archive_copy": "images/02-guidance-evidence-boundaries.png"
+    },
+    {
+      "file": "official/08-agent-permission-boundary.png",
+      "usage": "body",
+      "origin": "Anthropic official blog",
+      "source_reference": "official/manifest.json",
+      "archive_copy": "images/08-agent-permission-boundary.png"
+    },
+    {
+      "file": "official/07-security-guidance-closed-loop.png",
+      "usage": "body",
+      "origin": "Anthropic official blog",
+      "source_reference": "official/manifest.json",
+      "archive_copy": "images/07-security-guidance-closed-loop.png"
+    },
+    {
+      "file": "official/03-play-dependency-map.png",
+      "usage": "body",
+      "origin": "Anthropic official blog",
+      "source_reference": "official/manifest.json",
+      "archive_copy": "images/03-play-dependency-map.png"
+    }
+  ]
+}

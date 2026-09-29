@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: wide flat technical infographic cover for a Chinese AI engineering article.\nPrimary request: make Jev visibly read as a new software decision model, not as an abstract AI illustration.\nComposition: clean flat vector editorial layout on a dark graphite canvas. Left side: a compact stack of unlabeled evidence cards and colored input streams. Center: a simple decision node. Right side: three clean probability gauges feeding three code-like branch cards. At the upper-right, reserve a strong typographic title block.\nStyle and medium: flat-tech infographic, crisp geometric shapes, limited palette, subtle paper grain, high contrast, no 3D rendering, no photorealism, no glossy interface.\nText (exact): Render \"Jev\" exactly once as the largest title. Render \"SYSTEM ONE\" exactly once below it in smaller uppercase. Render \"TypeSafe AI\" exactly once below that. Render no other readable words, numbers, letters, UI labels, or logos anywhere else; all other cards and code blocks must be blank abstract placeholders.\nLighting and color: dark graphite, off-white, cobalt blue, vermilion, one muted green accent.\nAvoid: painterly scene, realistic desk, generic brain, robot, cyberpunk neon, tiny invented text, misspellings, duplicated labels, watermark.\n",
+    "n": 1,
+    "size": "1792x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 261,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 261,
+        "cached_tokens": 0
+      },
+      "output_tokens": 166,
+      "total_tokens": 427,
+      "output_tokens_details": {
+        "image_tokens": 166,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "84eb99ef-91fb-4401-bb30-11dd4a1c4057"
+  },
+  "elapsed_seconds": 39.988,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-cover-flat.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T02:41:41+00:00"
+}

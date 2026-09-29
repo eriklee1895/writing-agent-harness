@@ -26,7 +26,7 @@ research -> outline -> draft -> polish -> visuals -> packaging -> publish -> rev
 - 管理项目级 AI writing skills。
 - 存放文章源稿、渠道派生稿、视觉资产和发布流程文档。
 
-写作的 canonical article 以 `content/origin/` 中的 Markdown / MDX 为主。原始思考和初稿可能来自飞书文档或 Notion，进入 repo 后同步或转换为 Markdown / MDX，再分发到个人博客（primary home base）、微信公众号和其他平台。
+写作的 canonical article 以 `content/origin/` 中的 Markdown / MDX 为主。原始思考和初稿可以来自飞书文档、Notion 页面或 Blog 文章；飞书、Notion 和 Blog 均支持内容导入与向外同步。内容进入 repo 后以 Markdown / MDX 作为可追踪 source，再派生到个人博客（primary home base）、微信公众号及其他渠道。
 
 ## 写作场景
 
@@ -90,6 +90,10 @@ Canonical Markdown → WeChat HTML preview (warm-editorial style) → Playwright
 
 默认 style preset：`warm-editorial`（暖纸张底编辑随笔风，技术深度长文默认）。
 详细流程见 [../workflows/wechat-writing-publishing.md](../workflows/wechat-writing-publishing.md)。
+
+### 飞书与 Notion
+
+飞书文档、Notion 页面 / 数据库和 Blog 文章均可作为写作输入；Markdown / MDX 源稿也可以同步回相应平台。飞书文章的本地同步记录放在 `content/feishu/`，个人博客发布使用 `erik-blog-publish-workflow`，飞书和 Notion 的具体入口见 `AGENTS.md` 与对应 user-level skills。
 
 ### 其他渠道
 

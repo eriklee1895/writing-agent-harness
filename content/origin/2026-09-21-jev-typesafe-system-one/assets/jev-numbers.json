@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: landscape flat fact-and-caveat infographic for a Chinese AI engineering article.\nPrimary request: put Jev's official headline numbers beside the caveats that must travel with them.\nComposition: title at top. Left panel with header \"官方核心数字\" and four stacked cards: \"70–500ms\", \"$0.042/MTok\", \"输出免费\", \"0% schema error（schema 内）\". Right panel with header \"引用时必须带口径\" and four stacked cards: \"官方自测\", \"4 个 workflow 平均\", \"schema 内不等于业务正确\", \"校准需自测\". A full-width bottom banner reads \"数字 + 口径，一起引用\".\nStyle and medium: flat editorial data infographic, warm paper, coral and teal section headers, clean icons, thin ink lines, visually dense but highly readable, no 3D, no photorealism.\nText (exact): Allowed readable text only: \"官方数字与引用口径\", \"官方核心数字\", \"70–500ms\", \"$0.042/MTok\", \"输出免费\", \"0% schema error（schema 内）\", \"引用时必须带口径\", \"官方自测\", \"4 个 workflow 平均\", \"schema 内不等于业务正确\", \"校准需自测\", and \"数字 + 口径，一起引用\". Render each exactly once. No other readable text.\nAvoid: extra numbers, invented percentages, duplicated labels, misspellings, watermark.\n",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 313,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 313,
+        "cached_tokens": 0
+      },
+      "output_tokens": 161,
+      "total_tokens": 474,
+      "output_tokens_details": {
+        "image_tokens": 161,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "31cc6ed5-a501-4279-b0a0-ebc851f1d730"
+  },
+  "elapsed_seconds": 39.267,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-numbers.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T04:04:41+00:00"
+}

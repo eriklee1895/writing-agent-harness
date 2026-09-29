@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Deliverable: wide article cover for a Chinese AI engineering blog, readable as a small Feishu/WeChat thumbnail.\nPrimary request: a sophisticated editorial cover for Jev, TypeSafe AI's System One decision model. The image must make the model name visibly memorable instead of treating it as an abstract unlabeled diagram.\nComposition: dark graphite and warm paper editorial workspace. On the left, messy human-language evidence cards and ambiguous fragments flow into a clean central decision line. On the right, three restrained probability gauges and branching software paths suggest typed decisions becoming code. Place one large title in the upper-right: \"Jev\". Place one smaller subtitle directly below it: \"SYSTEM ONE\". Place one small brand line below the subtitle: \"TypeSafe AI\". Keep the text inside a clean dark negative-space panel with strong contrast and generous margins.\nStyle and medium: premium contemporary editorial technology illustration, tactile paper grain, precise geometric forms, restrained cobalt blue and vermilion accents, intelligent rather than glossy sci-fi.\nLighting and color: soft warm light on paper, deep graphite background, cobalt and vermilion data paths, off-white typography.\nText (exact): Render \"Jev\" exactly once as the main title, title case, large clean sans-serif. Render \"SYSTEM ONE\" exactly once below it in smaller uppercase sans-serif. Render \"TypeSafe AI\" exactly once below that in small title case. No other readable letters, numbers, words, labels, signatures, or logos anywhere in the image.\nAvoid: generic glowing brain, robot mascot, cyberpunk neon, stock illustration, tiny invented UI text, misspellings, duplicated titles, watermark.\n",
+    "n": 1,
+    "size": "1792x1024",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 332,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 332,
+        "cached_tokens": 0
+      },
+      "output_tokens": 165,
+      "total_tokens": 497,
+      "output_tokens_details": {
+        "image_tokens": 165,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "d5665f95-2361-427a-a1b9-ee81852f7b5f"
+  },
+  "elapsed_seconds": 51.231,
+  "attempts": 1,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-cover-v2.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T02:03:49+00:00"
+}

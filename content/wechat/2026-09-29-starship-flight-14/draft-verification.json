@@ -1,0 +1,31 @@
+{
+  "appmsgid": "100001399",
+  "checked_at": "2026-09-29 10:43:35",
+  "check_mode": "saved draft reopened in WeChat editor",
+  "titleMatches": true,
+  "imageCount": 6,
+  "cdnImageCount": 6,
+  "allImagesVisible": true,
+  "twoColumnPairs": [
+    {
+      "widths": [
+        286.109375,
+        286.109375
+      ],
+      "sameRow": true,
+      "leftBeforeRight": true
+    },
+    {
+      "widths": [
+        286.109375,
+        286.109375
+      ],
+      "sameRow": true,
+      "leftBeforeRight": true
+    }
+  ],
+  "timelineIncludes2016And2019": true,
+  "externalHrefCount": 0,
+  "cover": "Uploaded; preview visually confirmed in saved editor",
+  "publiclyPublished": false
+}

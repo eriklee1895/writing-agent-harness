@@ -1,0 +1,136 @@
+{
+  "checked_at": "2026-09-29",
+  "article": "../index.md",
+  "layout": {
+    "photos": "Two pairs using existing ::compare blocks, ~49.5% width per column; same layout retained on mobile.",
+    "timeline": "Full width; deterministic HTML-to-PNG; eight selected public-design and flight milestones.",
+    "table": "Eight-row appendix; WeChat renderer emits inline flex divs, not HTML table.",
+    "concept": "Full width, clearly captioned AI concept illustration."
+  },
+  "assets": [
+    {
+      "file": "flight14-spacex-hero.jpg",
+      "kind": "news_photo",
+      "used_as": "cover",
+      "credit": "SpaceX",
+      "page": "https://www.spacex.com/launches/starship-flight-14",
+      "url": "https://sxcontent9668.azureedge.us/cms-assets/assets/Flight_14_Website_Desktop_5_4f66593f23.jpg",
+      "archive_path": ".local-archive/2026-09-29-starship-flight-14/images/flight14-spacex-hero.jpg",
+      "sha256": "4e058069eb27acd6c37598298d2e4db15d6d6ae379f4634162a2149fbf505fa7",
+      "bytes": 356151
+    },
+    {
+      "file": "flight14-liftoff-spacex.jpeg",
+      "kind": "news_photo",
+      "used_as": "pair_1_left",
+      "credit": "SpaceX via Spaceflight Now",
+      "page": "https://spaceflightnow.com/2026/09/28/starship-returns-to-earth-rocket-splashes-down-north-of-hawaii-after-three-hour-flight/",
+      "url": "https://spaceflightnow.com/wp-content/uploads/2026/09/20260928_Starship_Flight-14.jpeg",
+      "archive_path": ".local-archive/2026-09-29-starship-flight-14/images/flight14-liftoff-spacex.jpeg",
+      "sha256": "ec5ece63967d997131700ffb180ebd3a5afdd196f5896f1d2bc924c13c7ba2c2",
+      "bytes": 100408
+    },
+    {
+      "file": "flight14-in-space-cnn.jpg",
+      "kind": "news_photo",
+      "used_as": "pair_1_right",
+      "credit": "SpaceX via CNN",
+      "page": "https://www.cnn.com/2026/09/28/science/live-news/spacex-starship-flight-14-launch",
+      "url": "https://media.cnn.com/api/v1/images/stellar/prod/screenshot-2026-09-28-at-10-27-30-am.jpg?c=original&q=w_1280,c_fill",
+      "archive_path": ".local-archive/2026-09-29-starship-flight-14/images/flight14-in-space-cnn.jpg",
+      "sha256": "8ab0e3772daa69234c5c400c2c228dc5befe99ea015e7e49d9cc2a57c85de2fb",
+      "bytes": 104350
+    },
+    {
+      "file": "flight14-plasma-cnn.jpg",
+      "kind": "news_photo",
+      "used_as": "pair_2_left",
+      "credit": "SpaceX via CNN",
+      "page": "https://www.cnn.com/2026/09/28/science/live-news/spacex-starship-flight-14-launch",
+      "url": "https://media.cnn.com/api/v1/images/stellar/prod/screenshot-2026-09-28-at-11-32-04-am.jpg?c=original&q=w_1280,c_fill",
+      "archive_path": ".local-archive/2026-09-29-starship-flight-14/images/flight14-plasma-cnn.jpg",
+      "sha256": "65d4fdea2fd3a3dc0238425ac581568e60c0a6faf29e4977010df0a973d7c42a",
+      "bytes": 49927
+    },
+    {
+      "file": "flight14-splashdown-cnn.jpg",
+      "kind": "news_photo",
+      "used_as": "pair_2_right",
+      "credit": "SpaceX via CNN",
+      "page": "https://www.cnn.com/2026/09/28/science/live-news/spacex-starship-flight-14-launch",
+      "url": "https://media.cnn.com/api/v1/images/stellar/prod/screenshot-2026-09-28-at-11-57-33-am.jpg?c=original&q=w_1280,c_fill",
+      "archive_path": ".local-archive/2026-09-29-starship-flight-14/images/flight14-splashdown-cnn.jpg",
+      "sha256": "a41934688adc431932617b19519c4a460c345f812c94161b22dfd9d045972df4",
+      "bytes": 74179
+    },
+    {
+      "file": "flight14-reentry-ocean.jpeg",
+      "kind": "news_photo",
+      "used_as": "alternate",
+      "credit": "SpaceX via Spaceflight Now",
+      "page": "https://spaceflightnow.com/2026/09/28/starship-returns-to-earth-rocket-splashes-down-north-of-hawaii-after-three-hour-flight/",
+      "url": "https://spaceflightnow.com/wp-content/uploads/2026/09/20260928_Starship_Flight-14_entry2.jpeg"
+    },
+    {
+      "file": "flight14-landing-burn.jpeg",
+      "kind": "news_photo",
+      "used_as": "alternate",
+      "credit": "SpaceX via Spaceflight Now",
+      "page": "https://spaceflightnow.com/2026/09/28/starship-returns-to-earth-rocket-splashes-down-north-of-hawaii-after-three-hour-flight/",
+      "url": "https://spaceflightnow.com/wp-content/uploads/2026/09/20260928_Starship_Flight-14_entry3.jpeg"
+    },
+    {
+      "file": "starship-timeline.png",
+      "kind": "original_infographic",
+      "used_as": "body",
+      "source_data": "timeline-data.json",
+      "editable_source": "timeline.html",
+      "generator": "build-timeline.mjs + agent-browser screenshot",
+      "credit": "Original layout, facts from SpaceX official mission reports",
+      "archive_path": ".local-archive/2026-09-29-starship-flight-14/images/starship-timeline.png",
+      "sha256": "5c540205c9b4e7235958dddd5a2a3bbcf3c5711216f58c65a1532e6a15b5263e",
+      "bytes": 280456
+    },
+    {
+      "file": "starship-beyond-earth.png",
+      "kind": "ai_concept",
+      "used_as": "body",
+      "generator": "built-in image_gen",
+      "prompt_file": "imagegen-prompts.json",
+      "credit": "AI-generated concept illustration, not flight photography",
+      "archive_path": ".local-archive/2026-09-29-starship-flight-14/images/starship-beyond-earth.png",
+      "sha256": "75af86fc3611e39149ebc13b17947e5d9859c468b6bc53e8bb3baf733a0a0847",
+      "bytes": 1799060,
+      "generated_filename": "exec-19e65a92-199b-4cd0-a56f-8a1c14e66be8.png"
+    }
+  ],
+  "user_material": [
+    {
+      "used": false,
+      "reason": "Falcon 9 photograph; not Flight 14",
+      "original_filename": "Starlink_G9_2_Theater_Horiz_8410_Desktop_dfed4f1932.jpg"
+    },
+    {
+      "used": false,
+      "reason": "Starship photo; exact flight and original credit not independently established; replaced in article with verified Flight 14 imagery",
+      "original_filename": "4SkDgttIFWLQo52Ff7SMkYMBPlXfIjz683CGG48CK-QKl48ylYXABzggq4JOJ9ykxPXu8cBNCBoTBevS6z2cCujzBjv3XGo8gvuUUUeVFu-KPR2XeDKn7BTtWv1-4sn_m4RzbLd7tx0dqH0_9_f_Ot9XkDwsozFQghdR9pUaqqScGAAfT-Ppg2x015_z34uE.jpeg"
+    },
+    {
+      "used": false,
+      "reason": "Starship photo; exact flight and original credit not independently established; replaced in article with verified Flight 14 imagery",
+      "original_filename": "TiKdYD7J_Yj3G7ReOPyN6HDAM3xJxyTedHmNCLrWUFhDCmn8Uf6oIlxaiuawV6EUoqm50XYHya8XU1u62RNzKv9a-ybewT3N3dms4_pRJo3XSyaZdKgv8TbkqhyKDAPC7ZGpqsToZSbuQTyQ9L1Ze197smkSwZWr05sg6fAGCvNthZpfJLnHJkoGQIlscpj0.jpeg"
+    },
+    {
+      "used": false,
+      "reason": "Falcon Heavy photograph; not Starship",
+      "original_filename": "20260829_CC_Roman_DSC_9781_desktop_6c9ca5fd57.jpg"
+    }
+  ],
+  "news_photo_treatment": "Original downloaded files retained, no generative alteration or removal of credits; attribution is recorded, not a claim of blanket reuse permission.",
+  "archive": {
+    "path": ".local-archive/2026-09-29-starship-flight-14",
+    "archived_at": "2026-09-29",
+    "working_assets": "Relative symlinks to images in local archive; original Markdown references retained",
+    "blog_assets": "Separate published copies in eriklee-blog/src/content/posts/assets/2026-09-29-starship-flight-14"
+  }
+}

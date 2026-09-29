@@ -1,0 +1,31 @@
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#f4eee6","primaryTextColor":"#1f252c","primaryBorderColor":"#315ea8","lineColor":"#6f777d","secondaryColor":"#e8efe8","tertiaryColor":"#eef2f7","fontFamily":"PingFang SC, Arial"}}}%%
+flowchart TB
+    T["Task<br/>目标、状态、风险、验收标准"]
+    R1["Run Attempt #1<br/>超时 / 失败"]
+    R2["Run Attempt #2<br/>到达 Human Review"]
+    S1["Agent Session<br/>thread / turn / token"]
+    S2["Agent Session<br/>continuation"]
+    W["Workspace<br/>checkout、环境、未提交状态"]
+    A["Artifacts<br/>spec、plan、diff、测试、录像、回执"]
+    G["Gate / Handoff<br/>Human Review"]
+
+    T --> R1
+    T --> R2
+    R1 --> S1
+    R2 --> S2
+    R1 --> W
+    R2 --> W
+    S1 --> A
+    S2 --> A
+    W --> A
+    A --> G
+    G -. "状态写回 Task" .-> T
+
+    classDef durable fill:#f4eee6,stroke:#315ea8,stroke-width:2px,color:#1f252c;
+    classDef attempt fill:#eef2f7,stroke:#8a96a3,color:#1f252c;
+    classDef exec fill:#f7e7df,stroke:#c46f50,color:#1f252c;
+    classDef gate fill:#e8efe8,stroke:#557a5c,stroke-width:2px,color:#1f252c;
+    class T,A durable;
+    class R1,R2 attempt;
+    class S1,S2,W exec;
+    class G gate;

@@ -1,0 +1,85 @@
+{
+  "channel": "wechat-preview",
+  "source": "../../../origin/2026-08-31-software-factory-ai-native-sdlc/index.md",
+  "assets": [
+    {
+      "file": "00-cover-software-factory.png",
+      "role": "explainer-cover",
+      "origin": "../../../origin/2026-08-31-software-factory-ai-native-sdlc/assets/00-cover-software-factory.png",
+      "sha256": "3aeb6b20538a85e088151b7d6a2b9a25b3c8537338b1f49b6c3173f06a4cd37e",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/wechat/00-cover-software-factory.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "10-four-levels.png",
+      "source_file": "10-four-levels-mobile.svg",
+      "role": "mobile-explainer",
+      "alt": "从 Coding Agent 到 Software Factory 的四层能力边界",
+      "sha256": "5a146a571846bede66ca94bfda679481cdbc7e21bbfa6a7f94741f6e2ed20be8",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/wechat/10-four-levels.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "11-unified-lifecycle.png",
+      "source_file": "11-unified-lifecycle-mobile.svg",
+      "role": "mobile-workflow",
+      "alt": "一条任务从 Work Item 到交付和反馈的完整生命周期",
+      "sha256": "294ee45b5a37f156a91ccb4117313a1144eb3b06a84dad6d122885bd7ff0333f",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/wechat/11-unified-lifecycle.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "12-anthropic-ai-native-sdlc.png",
+      "role": "official-source-diagram",
+      "origin": "../../../origin/2026-08-31-software-factory-ai-native-sdlc/assets/images/10-anthropic-ai-native-sdlc.png",
+      "sha256": "88f8afd78d8a448f2b86e6f24d78f16c999a9587299f6d7d0613fb3945569763",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/wechat/12-anthropic-ai-native-sdlc.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "13-vercel-ai-sdk-factory.png",
+      "role": "official-source-diagram",
+      "origin": "../../../origin/2026-08-31-software-factory-ai-native-sdlc/assets/images/11-vercel-ai-sdk-factory.png",
+      "sha256": "0948d274188706247d54205ecb2eb634b18c510906c7987ace18ff0681d2ef17",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/wechat/13-vercel-ai-sdk-factory.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "14-task-run-state.png",
+      "role": "original-state-diagram",
+      "origin": "../../../origin/2026-08-31-software-factory-ai-native-sdlc/assets/diagrams/03-task-run-state.png",
+      "sha256": "aea74a386e06707ac9a91580885c0d185baf4a015797c98ca27ed0eea348a5bc",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/wechat/14-task-run-state.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "20-four-practices-map.png",
+      "source_file": "20-four-practices-map.svg",
+      "role": "mobile-comparison",
+      "alt": "Anthropic、Vercel、Warp 与 OpenAI 的四个切入层",
+      "sha256": "7d718b3b63bf53ae8de5393ec0953efbc11afbf5b6a76b5cb200771f584c8f76",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/wechat/20-four-practices-map.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "21-nine-components.png",
+      "source_file": "21-nine-components.svg",
+      "role": "mobile-component-map",
+      "alt": "Software Factory 的九个组件",
+      "sha256": "416cd9c3305a8ee0cc7338087fec83d959215b03de12592064dabef3d4b086f1",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/wechat/21-nine-components.png",
+      "working_copy_retained": true
+    },
+    {
+      "file": "22-adoption-ladder.png",
+      "source_file": "22-adoption-ladder.svg",
+      "role": "mobile-adoption-guide",
+      "alt": "普通团队建设 Software Factory 的五步路径",
+      "sha256": "f665d652a4429cef0289c1780b5a6276a635ad497fde743d3ce18d24887cb944",
+      "archive_path": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/images/wechat/22-adoption-ladder.png",
+      "working_copy_retained": true
+    }
+  ],
+  "archive_root": ".local-archive/2026-08-31-software-factory-ai-native-sdlc/",
+  "closeout_status": "draft-created"
+}

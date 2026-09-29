@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "command": "edit",
+  "endpoint": "/v1/images/edits",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Image 1: edit target and final canvas.\nChange: completely redesign the attached System One infographic as a high-information flat technical explainer. Keep the overall idea of state flowing into questions, probability, and code, but replace every empty placeholder line with short semantic descriptions and make the three primitives visibly different.\nComposition: warm paper background, four clear horizontal zones. Zone 1 title \"State\" with three concrete cards: \"订单 / 用户原话 / 规则\". Zone 2 title \"Questions\" with three cards: \"Choice\", \"Score\", \"Noul\". Under them place one short explanation each: \"候选项中选一个\", \"有序等级评分\", \"真假概率\". Zone 3 title \"Probability\" with three meaningful distributions and short labels \"选项概率\", \"等级分布\", \"P(yes)\". Zone 4 title \"Code\" with three branch cards: \"自动执行\", \"人工复核\", \"升级 LLM\". At the top center add \"Jev · SYSTEM ONE\". At the bottom add the exact line \"decision + probability + confidence\".\nText (exact): Allowed readable text only: \"Jev · SYSTEM ONE\", \"State\", \"订单 / 用户原话 / 规则\", \"Questions\", \"Choice\", \"Score\", \"Noul\", \"候选项中选一个\", \"有序等级评分\", \"真假概率\", \"Probability\", \"选项概率\", \"等级分布\", \"P(yes)\", \"Code\", \"自动执行\", \"人工复核\", \"升级 LLM\", and \"decision + probability + confidence\". Render each exactly once. No gray filler bars, no fake JSON, no extra text.\nPreserve: Preserve the basic left-to-right logic and the three Jev primitive names. Improve hierarchy, spacing, typography, and semantic information density. The result must read like a designed technical note, not a generic dashboard template.\nAvoid: blank placeholder lines, empty cards, duplicated labels, misspellings, fake API fields, 3D effects, photorealism, watermark.\n",
+    "n": 1,
+    "size": "auto",
+    "quality": "high",
+    "background": "auto",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "provider": "custom",
+    "wire_model": "gpt-image-2.5-sunburst"
+  },
+  "inputs": [
+    {
+      "index": 1,
+      "path": "/var/folders/bd/stx12mg16dd8hsrj72kswfl40000gn/T/codex-clipboard-47c255bf-5558-4860-95b0-d7a633767d0b.png",
+      "role": "edit target and visual reference"
+    }
+  ],
+  "mask": null,
+  "response": {
+    "size": null,
+    "quality": null,
+    "background": null,
+    "output_format": null,
+    "usage": {
+      "input_tokens": 585,
+      "input_tokens_details": {
+        "image_tokens": 163,
+        "text_tokens": 422,
+        "cached_tokens": 0
+      },
+      "output_tokens": 171,
+      "total_tokens": 756,
+      "output_tokens_details": {
+        "image_tokens": 171,
+        "text_tokens": 0,
+        "reasoning_tokens": 0
+      }
+    },
+    "request_id": "b71e3522-6aa3-4bb3-8faf-2ded4572ad53"
+  },
+  "elapsed_seconds": 164.199,
+  "attempts": 2,
+  "output": "content/origin/2026-09-21-jev-typesafe-system-one/assets/jev-system-one-redesign.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-09-22T06:08:51+00:00"
+}

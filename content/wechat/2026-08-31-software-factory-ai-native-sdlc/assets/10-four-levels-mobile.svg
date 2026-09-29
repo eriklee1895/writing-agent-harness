@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1420" viewBox="0 0 1080 1420" role="img" aria-labelledby="title desc">
+  <title id="title">从 Coding Agent 到 Software Factory 的四层边界</title>
+  <desc id="desc">系统逐步补齐异步运行、任务调度与完整生命周期。</desc>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#6f777d"/></marker></defs>
+  <rect width="1080" height="1420" fill="#faf9f5"/>
+  <text x="70" y="92" font-family="PingFang SC, Arial" font-size="48" font-weight="700" fill="#141413">从 Agent 到 Factory</text>
+  <text x="70" y="142" font-family="PingFang SC, Arial" font-size="24" fill="#66645f">差别不在 Agent 数量，而在系统持有什么状态</text>
+
+  <g font-family="PingFang SC, Arial">
+    <rect x="90" y="220" width="900" height="210" rx="26" fill="#fff" stroke="#315ea8" stroke-width="4"/>
+    <text x="135" y="282" font-size="34" font-weight="700" fill="#315ea8">01 · Coding Agent</text>
+    <text x="135" y="340" font-size="27" fill="#141413">一次交互式执行：读仓库、改代码、跑测试</text>
+    <text x="135" y="385" font-size="23" fill="#66645f">工作单位：Session</text>
+
+    <rect x="90" y="500" width="900" height="210" rx="26" fill="#eef2f7" stroke="#315ea8" stroke-width="4"/>
+    <text x="135" y="562" font-size="34" font-weight="700" fill="#315ea8">02 · Background Agent</text>
+    <text x="135" y="620" font-size="27" fill="#141413">离开本机仍能持续运行</text>
+    <text x="135" y="665" font-size="23" fill="#66645f">新增能力：Run 可以异步</text>
+
+    <rect x="90" y="780" width="900" height="210" rx="26" fill="#f3f1ea" stroke="#d97757" stroke-width="4"/>
+    <text x="135" y="842" font-size="34" font-weight="700" fill="#d15f3f">03 · Orchestrator</text>
+    <text x="135" y="900" font-size="27" fill="#141413">并发、领取、调度、超时、重试与取消</text>
+    <text x="135" y="945" font-size="23" fill="#66645f">新增能力：Task 可以调度多个 Run</text>
+
+    <rect x="90" y="1060" width="900" height="235" rx="26" fill="#e8efe8" stroke="#557a5c" stroke-width="4"/>
+    <text x="135" y="1122" font-size="34" font-weight="700" fill="#3f6847">04 · Software Factory</text>
+    <text x="135" y="1180" font-size="27" fill="#141413">覆盖任务进入、执行、验证、审批、交付与反馈</text>
+    <text x="135" y="1225" font-size="23" fill="#66645f">新增能力：完整生命周期、恢复与评测</text>
+  </g>
+
+  <g stroke="#6f777d" stroke-width="5" marker-end="url(#a)">
+    <line x1="540" y1="435" x2="540" y2="485"/>
+    <line x1="540" y1="715" x2="540" y2="765"/>
+    <line x1="540" y1="995" x2="540" y2="1045"/>
+  </g>
+  <text x="540" y="1360" text-anchor="middle" font-family="PingFang SC, Arial" font-size="25" font-weight="600" fill="#141413">Session → Async Run → Orchestration → Lifecycle</text>
+</svg>
+
