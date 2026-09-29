@@ -1,0 +1,51 @@
+{
+  "article": "2026-09-29-manus-cue-personal-agent",
+  "retrieved_at": "2026-09-29",
+  "assets": [
+    {
+      "file": "cue-official-agent-overview.webp",
+      "kind": "official_product_illustration",
+      "alt": "Cue 官方产品插图，左侧呈现多个不同职责的 Agent，右侧展示 Mail Assistant 的手机配置页",
+      "source": "https://files.manuscdn.com/assets/dashboard/materials/2026/09/28/972bc30a55a668ad2620114691959f5ee710a3d2c5792144050068a152b5b21b.webp",
+      "source_page": "https://manus.im/blog/introducing-manus-2-0",
+      "usage": "cover and article opening",
+      "status": "selected",
+      "dimensions": "2048x1152"
+    },
+    {
+      "file": "cue-official-agent-overview.jpeg",
+      "kind": "user_supplied_official_product_illustration",
+      "alt": "Cue 官方产品插图，左侧呈现多个不同职责的 Agent，右侧展示 Mail Assistant 的手机配置页",
+      "source": "user supplied at /Users/eriklee/Downloads/cue.jpeg; identified by user as official",
+      "usage": "source reference, superseded by the higher-resolution official web asset",
+      "status": "superseded"
+    },
+    {
+      "file": "cue-official-mobile-trip-agent.webp",
+      "kind": "official_product_demonstration",
+      "alt": "Cue 官方产品页中的手机端旅行 Agent 对话演示，展示 Agent 在独立对话中给出航班建议与可执行结果卡片",
+      "source": "https://cue.im/assets/connectorTrip-1032-Dk0WKJCx.webp",
+      "source_page": "https://cue.im/",
+      "usage": "article body",
+      "status": "selected"
+    },
+    {
+      "file": "cue-official-scan-create.webp",
+      "kind": "official_product_demonstration",
+      "alt": "Cue 官方产品页中的扫码创建 Agent 演示，左侧是店铺二维码，右侧是新建的披萨预订 Agent 对话",
+      "source": "https://cue.im/assets/scanCreate-1600-dnxUycTl.webp",
+      "source_page": "https://cue.im/",
+      "usage": "article body",
+      "status": "selected"
+    },
+    {
+      "file": "cue-official-group-chat.webp",
+      "kind": "official_product_demonstration",
+      "alt": "Cue 官方产品页中的京都行程群聊演示，多个 Agent 分别整理行程、打包清单和预订事项",
+      "source": "https://cue.im/assets/groupChat-1600-D7YxMI22.webp",
+      "source_page": "https://cue.im/",
+      "usage": "article body",
+      "status": "selected"
+    }
+  ]
+}
