@@ -443,7 +443,7 @@ _JS_DRAFT_STATUS = """
     messages,
     saveIndicator,
     // post-save DOM also flashes a "保存成功" label in some variants; capture title value too
-    title: (document.querySelector('#title')?.value || '').trim().slice(0,40),
+    title: (document.querySelector('#title')?.value || '').trim(),
   });
 }
 """
