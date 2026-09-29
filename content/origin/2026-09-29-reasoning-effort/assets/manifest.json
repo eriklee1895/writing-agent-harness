@@ -1,0 +1,41 @@
+{
+  "article": "2026-09-29-reasoning-effort",
+  "created_at": "2026-09-29",
+  "generation_tool": "built-in image_gen",
+  "post_processing": "Generated PNGs copied into the article assets unchanged; no hand-set text overlays.",
+  "assets": [
+    {
+      "file": "reasoning-effort-cover-imagegen.png",
+      "type": "article-cover",
+      "alt": "Reasoning Effort 不是一个思考时长旋钮：从思维链到 Agent 的推理预算、验证与自主权。",
+      "source_base_filename": "exec-cfe39dcb-498a-4216-8c1b-0820178211c1.png",
+      "prompt": "Use case: infographic-diagram. Asset type: wide hero cover for a Chinese technical article about reasoning effort. Exact title: Reasoning Effort：不是一个‘思考时长’旋钮. Exact subtitle: 从思维链到 Agent：推理预算、验证与自主权. Show a short token sequence branching into a single extended reasoning path, candidate paths checked by a verifier, and a compact tool-feedback loop; all converge through a model-specific effort control toward measured outcomes. Warm ivory editorial paper, refined technical-magazine infographic, extra-wide 2.35:1 composition, prominent readable title, muted cobalt, rust orange, muted teal. Preserve exact text; no additional wording or logos.",
+      "placement": "Article cover"
+    },
+    {
+      "file": "reasoning-effort-mechanism-imagegen.png",
+      "type": "technical-infographic",
+      "alt": "CoT、推理时计算、reasoning effort 和 Agent 执行预算之间的关系。",
+      "source_base_filename": "exec-2c5c1a01-adc1-48ff-a26a-de2060013141.png",
+      "prompt": "Use case: scientific-educational. Asset type: landscape technical infographic for an article on reasoning effort. Exact title: Reasoning Effort：不是一个‘思考时长’旋钮. Exact subtitle: 先分清四个层次. Four connected cards with exact text: 思维链 CoT — 模型生成的中间步骤; 推理时计算 — 单轨迹延展 · 候选搜索 · 验证; Effort — API 控制项 · 机制随模型而异; Agent 执行 — 多轮调用 · 工具 · Harness 边界. Exact footer: 看用量、延迟和任务结果；不要把 high 等同于固定 token 数。. Refined flat-tech editorial infographic, warm ivory paper, muted cobalt, rust orange, muted teal, landscape 3:2, clear Chinese typography. Preserve exact text; no extra labels or filler.",
+      "placement": "After the CoT and test-time-compute taxonomy"
+    },
+    {
+      "file": "reasoning-effort-benchmark-imagegen.png",
+      "type": "data-infographic",
+      "alt": "doubao-seed-evolving 的 medium 和 high 在固定 Direct Planner 请求中的推理开销与 Agent 结果。",
+      "source_base_filename": "exec-b940f33d-49e4-4774-97e0-b7e7ac0099ce.png",
+      "prompt": "Use case: productivity-visual. Asset type: landscape data infographic for an article. Exact title: Reasoning effort 的成本与结果. Subtitle: doubao-seed-evolving · Direct 与 Agent · 探索性小样本. Direct table columns: 指标 | medium（n=5） | high（n=3） | high / medium. Rows: p50 总耗时 | 238.9 秒 | 521.4 秒 | 2.18×; 首个可见答案 TTFT | 77.1 秒 | 301.0 秒 | 3.90×; Reasoning tokens p50 | 2,576 | 11,710 | 4.55×. Note: 可见答案 decode TPS 基本持平. Agent text: medium：成功 2/3; high：成功 2/3; high 成功耗时：503.2 秒、693.7 秒; 其中一次超过 600 秒生产 turn budget. Caveat: 样本很小；这些数据只描述该模型、prompt 和配置，不代表质量提升或其他模型的普遍规律。. Refined editorial chart, warm paper texture, readable Chinese typography, blue medium bars and rust-orange high bars. Do not alter numeric values.",
+      "placement": "After the personal Direct benchmark summary",
+      "source": "September 2026 Ark Responses API Direct and Hermes Agent benchmark; exploratory small samples"
+    },
+    {
+      "file": "claude-effort-playbook-imagegen.png",
+      "type": "decision-infographic",
+      "alt": "根据任务需求、介入意愿和验证风险选择 Claude Code effort 档位的操作流程图。",
+      "source_base_filename": "exec-740b300b-af51-4c6c-b369-d09425247c2d.png",
+      "prompt": "Use case: scientific-educational. Asset type: portrait mobile-first Chinese decision infographic for Claude Code effort settings. Exact title: 按任务分配工作预算. Exact question: 我想多大程度中途介入？. Vertical flow exact text: 需求不清; 先让 Claude 访谈，补齐规格; LOW｜脑暴、草图、简单修改；快速迭代; MEDIUM｜日常软件工程、新功能; HIGH｜复杂 bug、安全审查、性能问题；检查隐藏边界; MAX｜端到端自主完成与验证；更多模型判断与等待. Side warning: 方向错了？; 先查假设、澄清任务; 别只加 effort. Exact footer: Claude Code 实测建议 · 换模型或 Agent 后做小对照. Refined flat-tech editorial infographic, high-contrast dark charcoal text on light warm-ivory cards, cobalt, teal, rust-orange accents, portrait 2:3, legible Chinese sans-serif. Preserve exact wording; no extra copy or filler.",
+      "placement": "After the Claude Code effort-use recommendations"
+    }
+  ]
+}
