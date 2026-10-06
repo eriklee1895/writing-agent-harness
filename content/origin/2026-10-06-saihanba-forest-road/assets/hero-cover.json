@@ -1,0 +1,27 @@
+{
+  "prompt": "A hand-drawn editorial illustration in the style of a refined illustrated atlas plate: subtle paper grain, fine linework, flat-but-textured shapes, muted natural palette, generous calm negative space. National Geographic editorial sensibility. Horizontal wide banner composition.\n\nSCENE — a two-lane asphalt road runs straight ahead and curves gently away into the distance, seen from a low eye-level viewpoint standing on the road itself. The road is flanked on BOTH sides by dense ranks of tall, straight coniferous larch trees planted in orderly rows, receding into the distance and climbing low hills. It is early October in northern China: the larches are distinctly GREEN — deep forest green and blue-green — NOT gold and NOT autumn-colored. A narrow strip of dry ochre grass lines the road shoulder. The sky is soft pale grey-white and overcast, calm and even.\n\nMOOD — quiet, spacious, a little solemn. The feeling of driving through a forest that was planted by people rather than grown by itself. Understated and restrained, not dramatic, not a tourist poster, not fantasy concept art.\n\nNEGATIVE INSTRUCTIONS — no text, letters, numbers, signs, signposts, captions, watermarks, logos, brand marks, English or Chinese words anywhere. No people, no cars, no animals, no buildings. No golden, yellow or orange foliage — the larches must be green.",
+  "model": "doubao-seedream-5-0-pro-260628",
+  "model_label": "Seedream 5.0 Pro (2026-06-28 build)",
+  "size": "2048x872",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": false,
+  "optimize_prompt": "standard",
+  "reference_images_count": 0,
+  "reference_images_are_data_urls": null,
+  "negative_prompt": "模糊, 低质量, 水印, 变形, 多余肢体",
+  "marker_rects": [],
+  "outpaint": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-10-06-saihanba-forest-road/assets/hero-cover.png",
+  "created_at": "2026-10-06T10:02:13",
+  "dry_run": false,
+  "reported_size": "2048x872",
+  "elapsed_ms": 49088,
+  "usage": {
+    "input_images": 0,
+    "generated_images": 1,
+    "output_tokens": 6976,
+    "total_tokens": 6976
+  }
+}

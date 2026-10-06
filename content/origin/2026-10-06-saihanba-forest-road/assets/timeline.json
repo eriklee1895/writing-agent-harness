@@ -1,0 +1,27 @@
+{
+  "prompt": "A clever hand-drawn editorial timeline illustration in the style of a refined illustrated atlas plate: subtle paper grain, fine linework, flat-but-textured shapes, muted natural palette, calm and understated. National Geographic editorial infographic sensibility.\n\nSCENE — two parallel horizontal timelines across the frame, like two lanes, each with three stations above small year labels.\n\nTOP LANE, a little planter figure seen from a slight distance:\n- station 1 (label 1962): a young person in simple work clothes standing on sandy ground holding a small sapling.\n- station 2 (label 1990): the same figure, now old, walking away with a wave, leaving the frame.\n- station 3 (label 2004): the lane is empty, only a small marker post.\n\nBOTTOM LANE, a tree:\n- station 1 (label 1962): a tiny sapling in dry ochre sandy ground.\n- station 2 (label 1990): a slim half-grown GREEN conifer, maybe shoulder-height to a person.\n- station 3 (label 2004): a tall mature GREEN larch, reaching high, full crown, next to a tiny distant figure for scale.\n\nThe visual idea: the person's lane ends just as the tree's lane keeps going — by the time the tree is tall, the planter is gone. Ground color transitions from ochre sand on the left to green forest floor on the right. Larch is GREEN throughout; only the distant grassland is ochre. It is early October.\n\nTEXT — render exactly these year labels in a small clean sans-serif: 1962, 1990, 2004 (numbers only, six labels total). Nothing else.\n\nNEGATIVE INSTRUCTIONS — no Chinese characters, no other numbers, letters, words, titles, captions, legends, arrows with text, watermarks, logos, brand marks, English words, faces in close-up, or golden autumn foliage. The larches must be green.",
+  "model": "doubao-seedream-5-0-pro-260628",
+  "model_label": "Seedream 5.0 Pro (2026-06-28 build)",
+  "size": "2048x1152",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": false,
+  "optimize_prompt": "standard",
+  "reference_images_count": 0,
+  "reference_images_are_data_urls": null,
+  "negative_prompt": "模糊, 低质量, 水印, 变形, 多余肢体",
+  "marker_rects": [],
+  "outpaint": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-10-06-saihanba-forest-road/assets/timeline.png",
+  "created_at": "2026-10-06T08:46:58",
+  "dry_run": false,
+  "reported_size": "2048x1152",
+  "elapsed_ms": 65745,
+  "usage": {
+    "input_images": 0,
+    "generated_images": 1,
+    "output_tokens": 9216,
+    "total_tokens": 9216
+  }
+}

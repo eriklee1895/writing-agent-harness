@@ -1,0 +1,27 @@
+{
+  "prompt": "An elegant editorial travel route map illustration, 16:9 horizontal landscape orientation, drawn like a hand-illustrated atlas plate seen from a slightly elevated three-quarter aerial angle.\n\nCOMPOSITION — a single winding road runs diagonally from the upper-left down to the lower-right across the whole frame, drawn as a clean fine double-line ribbon.\n- Upper-left third: open grassland with low rolling hills, sparse scattered single trees, dry ochre-yellow steppe grass. This is the starting grassland.\n- Middle band: dense forest covering the hills. It begins with a patch of pale-trunked birch with leaves just starting to pale-yellow, and transitions into tight ranks of dark GREEN coniferous larch planted in orderly rows across the ridges. The larches are distinctly and clearly green — deep forest green and blue-green — because it is only early October and they have not yet turned autumn color.\n- Lower-right: the terrain opens into a valley with a thin river and a small distant city at the foot of muted mountains.\n\nSEASON AND PALETTE — early October in northern China. Grassland is ochre and straw; the birch is mostly green with a few leaves turning pale yellow; the larch is entirely green; distant mountains are muted blue-grey. Restrained natural palette, nothing saturated or glossy. No golden autumn colors anywhere.\n\nSTYLE — refined editorial cartographic illustration. Flat-but-textured, fine linework, subtle paper grain, generous calm negative space. National Geographic map-plate sensibility. Should feel observed and understated, not cartoonish, not fantasy, not a tourist poster.\n\nTEXT LABELS — render exactly these Chinese labels, in a clean modern Chinese sans-serif, each placed directly at its location, small and unobtrusive:\n乌兰布统草原 — at the upper-left grassland\n塞罕坝 — at the centre forest\n承德 — at the lower-right city\n内蒙古 — as a small label in the upper-left area\n河北 — as a small label in the lower-right area\nA thin dashed boundary line crosses the forest, separating 内蒙古 above from 河北 below.\n\nSTRICT NEGATIVE INSTRUCTIONS — the larch trees must be green, NOT yellow or gold. Do not render any other text, letters, numbers, legends, keys, compass roses, scale bars, watermarks, signatures or captions. Do not fill empty areas with decorative or placeholder text. Do not draw people, cars, animals, buildings with signage, or logos. Do not add a title. Do not add any English words.",
+  "model": "doubao-seedream-5-0-pro-260628",
+  "model_label": "Seedream 5.0 Pro (2026-06-28 build)",
+  "size": "2048x1152",
+  "output_format": "png",
+  "watermark": false,
+  "web_search": false,
+  "optimize_prompt": "standard",
+  "reference_images_count": 0,
+  "reference_images_are_data_urls": null,
+  "negative_prompt": "模糊, 低质量, 水印, 变形, 多余肢体",
+  "marker_rects": [],
+  "outpaint": [],
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "image_path": "/Users/eriklee/code/my_project/writing-agent-harness/content/origin/2026-10-06-saihanba-forest-road/assets/route-map.png",
+  "created_at": "2026-10-06T08:36:10",
+  "dry_run": false,
+  "reported_size": "2048x1152",
+  "elapsed_ms": 107837,
+  "usage": {
+    "input_images": 0,
+    "generated_images": 1,
+    "output_tokens": 9216,
+    "total_tokens": 9216
+  }
+}
