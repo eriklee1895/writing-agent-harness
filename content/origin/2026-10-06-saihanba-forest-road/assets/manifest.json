@@ -1,0 +1,60 @@
+{
+  "article": "塞罕坝精神，我打算给孩子讲很多遍",
+  "slug": "2026-10-06-saihanba-forest-road",
+  "date": "2026-10-06",
+  "register": "literary-essay",
+  "style_profile": "hand-drawn editorial atlas plate (custom brief, not a built-in profile)",
+  "generator": "seedream-image-gen",
+  "model": "doubao-seedream-5-0-pro-260628",
+  "image_count": 5,
+  "binary_location": ".local-archive/2026-10-06-saihanba-forest-road/images/",
+  "binary_policy": "PNG 二进制不进 git；content/origin 下保留指向归档的相对软链接（被 .gitignore 的 *.png 规则覆盖）",
+  "prompt_metadata": ".local-archive/2026-10-06-saihanba-forest-road/prompts/",
+  "cross_machine_recovery": "从 eriklee-blog 仓库 src/content/posts/assets/2026-10-06-saihanba-forest-road/ 拷回（已提交，含全部 5 张 PNG），或按 prompts/*.json 重新生成",
+  "images": [
+    {
+      "file": "hero-cover.png",
+      "usage": "wechat-cover + blog-heroImage",
+      "size": "2048x872",
+      "aspect": "2.35:1",
+      "insertion_point": "frontmatter cover / blog heroImage",
+      "alt": "秋日穿过塞罕坝的绿色落叶松林公路"
+    },
+    {
+      "file": "route-map.png",
+      "usage": "wechat-body + blog-body",
+      "size": "2048x1152",
+      "insertion_point": "开头「路线一跳出来，我发现中间要经过塞罕坝」之后",
+      "alt": "旅游路线图：乌兰布统草原 → 塞罕坝 → 承德",
+      "text_labels_verified": ["内蒙古", "乌兰布统草原", "塞罕坝", "承德", "河北"]
+    },
+    {
+      "file": "doubao-larch.png",
+      "usage": "wechat-body + blog-body",
+      "size": "1792x1024",
+      "insertion_point": "「豆包说落叶松」之后",
+      "alt": "举着手机对着窗外落叶松拍照，屏幕里豆包回答「落叶松」",
+      "text_labels_verified": ["落叶松"]
+    },
+    {
+      "file": "lesson-bounce.png",
+      "usage": "wechat-body + blog-body",
+      "size": "1792x1024",
+      "insertion_point": "「小的那个，我估计压根没听进去」之后",
+      "alt": "从驾驶位看后座两个孩子的后脑勺，画着小树的话泡泡从头顶弹开"
+    },
+    {
+      "file": "timeline.png",
+      "usage": "wechat-body + blog-body",
+      "size": "2048x1152",
+      "insertion_point": "「你看，人走了十四年，树才长好」之后",
+      "alt": "两条平行时间线：上为种树人1962上坝、1990离开、2004只剩界碑；下为树1962小苗、1990半大、2004成材",
+      "text_labels_verified": ["1962", "1990", "2004"]
+    }
+  ],
+  "fact_constraints": [
+    "落叶松必须为绿色（10 月初尚未变色），禁止金黄/秋色 —— 首版路线图误画金黄，已重做",
+    "路线图五个地名逐字核对；timeline 年份逐字核对",
+    "禁止在图中生成任何其他文字、图例、比例尺、水印（生图常见反模式）"
+  ]
+}
