@@ -177,10 +177,43 @@ def normalize_asset_path(value: object, slug: str) -> str:
 
 
 def source_asset_exists(source_dir: Path, value: object) -> bool:
+    """Whether an asset reference resolves to a file **in the origin tree**.
+
+    Use this only when the answer gates a destructive action — see
+    `strip_leading_cover_image`. For "should I write this frontmatter field?",
+    use `asset_exists_in_source_or_destination` instead.
+    """
     text = str(value or "").strip().removeprefix("./")
     if not text.startswith("assets/"):
         return True
     return (source_dir / text).exists()
+
+
+def asset_exists_in_source_or_destination(
+    source_dir: Path, value: object, destination_assets_dir: Path
+) -> bool:
+    """Whether an asset reference is resolvable by *either* repository.
+
+    Frontmatter fields like `cover` must not be blanked just because the origin
+    working tree lacks the file. Image binaries are gitignored, so a clean
+    checkout legitimately has none of them while the blog still serves its own
+    committed copy — blanking on that basis deletes `heroImage`/`ogImage` from
+    published posts and requires hand-repair that the next sync destroys again.
+
+    This is the same source-OR-destination idiom `replace_missing_asset_refs`
+    uses below, and it is justified by the same reasoning as the "deliberately
+    additive" comment in `sync_article`.
+
+    Do NOT collapse this into `source_asset_exists`, and do NOT "unify" the two
+    call sites. They answer different questions: this one gates writing a field,
+    the other gates deleting an image from the body. The strict one must stay
+    strict.
+    """
+    text = str(value or "").strip().removeprefix("./")
+    if not text.startswith("assets/"):
+        return True
+    relative = text.removeprefix("assets/")
+    return (source_dir / text).exists() or (destination_assets_dir / relative).exists()
 
 
 def rewrite_asset_links(body: str, slug: str) -> str:
@@ -423,6 +456,7 @@ def build_blog_frontmatter(
     body: str,
     source_path: Path,
     args: argparse.Namespace,
+    destination_assets_dir: Path,
 ) -> str:
     title = source_meta.get("title") or first_heading_title(body) or source_path.parent.name
     description = (
@@ -454,7 +488,13 @@ def build_blog_frontmatter(
         or source_meta.get("coverImage")
         or source_meta.get("cover")
     )
-    if cover and not source_asset_exists(source_path.parent, cover):
+    # Gate on source-OR-destination, never on the origin tree alone: covers are
+    # gitignored, so a clean checkout is *expected* to be missing them while the
+    # blog still holds its own copy. Blanking on a missing local file silently
+    # deletes heroImage/ogImage from published posts.
+    if cover and not asset_exists_in_source_or_destination(
+        source_path.parent, cover, destination_assets_dir
+    ):
         cover = ""
 
     source_ref = display_source_path(source_path)
@@ -570,6 +610,11 @@ def strip_leading_cover_image(body: str, cover: object, source_dir: Path) -> str
     visible on the lanhua and meta-muse posts). Only strips when the cover
     actually resolves to a local asset, so a broken cover reference can never
     delete the only copy of an image.
+
+    Deliberately stays strict on `source_asset_exists`. Do not switch this to
+    `asset_exists_in_source_or_destination`: if the destination has the file but
+    the origin does not, stripping would remove the body image while the blog's
+    own copy may be the only one left.
     """
     cover_ref = str(cover or "").strip()
     if not cover_ref or _EXTERNAL_URL_RE.match(cover_ref):
@@ -654,7 +699,7 @@ def sync_article(args: argparse.Namespace) -> Path:
     body = convert_callouts_to_alerts(body)
     if args.extension == "mdx":
         body = escape_mdx_text(body)
-    output = build_blog_frontmatter(meta, body, source_path, args) + body.rstrip() + "\n"
+    output = build_blog_frontmatter(meta, body, source_path, args, destination_assets_dir) + body.rstrip() + "\n"
     destination.write_text(output, encoding="utf-8")
 
     return destination
