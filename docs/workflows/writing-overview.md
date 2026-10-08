@@ -18,7 +18,7 @@
 6. 根据 writing brief 和 research 形成 full draft。
 7. 使用 `polish-article` 打磨逻辑、register、表达质感、专业深度和题材气质。
 8. 只有当图片或视频能帮助理解、传播或渠道呈现时，才生成或优化 visuals。
-   - 图片/封面/信息图走 `article-illustration`。
+   - 图片/封面/信息图按**用户在任务中指定的生图 skill**（`gpt-image-api` / `seedream-image-gen` / `openrouter-image`，均为 user-level skills）；未指定时先问，不要沿用上一轮的选型。渠道尺寸规格见 [docs/reference/visuals.md](../reference/visuals.md)。
    - 已知视频 URL 先走 `video-material-ingest` 留痕。
    - 文章内视频先走 `video-highlight-select` 做人工辅助选片，再走 `article-video-clip` 做轻包装。
 9. 使用 `article-readiness-check` 做发布前检查：正文 readiness、事实边界、Markdown/MDX hygiene、frontmatter、图片/视频引用、渠道 handoff 和 publish blockers。

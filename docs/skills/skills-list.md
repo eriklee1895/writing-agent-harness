@@ -65,8 +65,9 @@
 
 - `article-illustration`
   - 生成文章封面、正文插图、章节视觉分隔图和技术图示。
-  - 默认支持 `--style-profile auto`，但正式文章出图时应优先明确指定风格。
-  - Guide 和历史优质生图案例见 [article-illustration/README.md](article-illustration/README.md)。
+  - ⚠️ **自 2026-10-06 起不再是文章配图的默认路径。** 它绑定单一 provider（GPT Image API），部分预设实际是为该 provider 的限制所做的绕法——例如 `wechat-cover-hd` 需要「生成 1792×1024 再裁剪到 1080×460」，根因是该 API 最宽只支持 1792×1024；而支持任意比例的生图 skill 可直接出 2.35:1。
+  - 文章配图改用 user-level 生图 skill：`gpt-image-api` / `seedream-image-gen` / `openrouter-image`，**由用户在任务中指定**，未指定时先问。渠道尺寸规格见 [reference/visuals.md](../reference/visuals.md)。
+  - 仍可作为风格 preset 参考和历史优质生图案例库使用。Guide 与历史案例见 [article-illustration/README.md](article-illustration/README.md)。
 
 - `wechat-article-fetcher`
   - 用 Playwright + 本地持久化 Profile 提取微信公众号文章到结构化 Markdown + assets。

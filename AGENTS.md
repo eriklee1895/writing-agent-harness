@@ -11,7 +11,7 @@
 - Current events、company/product facts、pricing、laws、fast-moving tech topics 必须查证，并写清具体日期。
 - repo 内长期 canonical source 放在 `content/origin/`，格式是 Markdown / MDX。飞书、Notion、Blog 均可作为内容输入，也支持把源稿同步回平台；进入 repo 的文章以 origin 中可追踪文本为准。
 - 内容写作、选题构思、文章润色、改稿、标题和风格判断时读取 [SOUL.md](SOUL.md)，对齐 Erik 的作者写作气质、register、anti-style 和审美边界；非写作任务不要默认加载。
-- 位图 / 视频 / 语音 / 配乐生成使用本机 user-level media skills（由 erik-agent-skills repo 统一维护，不在本 repo 内）：图片 `gpt-image-2` / `seedream-image-gen`，视频 `seedance-video-gen`，语音合成 `volcengine-tts`，生成式音频 `seed-audio-gen`，BGM `volcengine-bigmusic-bgm`；不要在本 repo `.agents/skills/` 重建这些 skill 的副本。文章配图仍走项目 skill `article-illustration`。
+- 位图 / 视频 / 语音 / 配乐生成使用本机 user-level media skills（由 erik-agent-skills repo 统一维护，不在本 repo 内）：图片 `gpt-image-api` / `seedream-image-gen` / `openrouter-image`，视频 `seedance-video-gen`，语音合成 `volcengine-tts`，生成式音频 `seed-audio-gen`，BGM `volcengine-bigmusic-bgm`；不要在本 repo `.agents/skills/` 重建这些 skill 的副本。**生图 skill 不设默认**，由用户在任务中指定；未指定时先问一句，不要自行沿用上一个任务的选型。
 - 任何最终发布动作都需要 user final review，除非用户明确授权自动发布。
 - 先做 small, practical automation；不要把未跑通的能力写成已可用能力。
 - 遇到可复用的新坑点、新技巧、workflow 改进或 skill 缺陷，随手沉淀到项目 docs，或新增、修改 project-level skills。
@@ -83,7 +83,7 @@
 ## Current Defaults
 
 - 微信公众号 renderer 支持六种 style：`warm-editorial`（暖纸张底 `#faf9f5` + 陶土橙 accent + 黑底白字表头 + 深色代码块的编辑随笔风，技术深度长文默认）、`agent-flow`（纯白底、无卡片、扇形流式排版，备用，夜间模式最稳）、`impact-rational`（白底带左边框 hero + 目录/摘要面板的技术评论 style，备用）、`literary-essay`（个人散文/随笔）、`cultural-essay`（文化现象/城市/音乐/文旅随笔）、`tech-blog`（通用技术博客）。默认偏向 `warm-editorial`：成品/杂志质感更好看，且无卡片纯流式在夜间模式自动反色下也稳。表格统一用 flex `<div>` 渲染（不用 `<table>` 标签，否则微信会套虚线编辑框）。
-- 文章插图生成默认使用 `article-illustration --style-profile auto` 按文章气质选择画风。
+- 文章配图的**渠道尺寸**是渠道约束，与选哪个生图 skill 无关：规格见 [docs/reference/visuals.md](docs/reference/visuals.md)（微信头条封面 2.35:1）。能原生生成目标比例的模型直接出图；不支持该比例的模型才需要生成后再裁。
 - 早期灵感脑暴使用 project skill：`article-ideation`。
 - 文章打磨使用 project skill：`polish-article`。
 - **❗ 写作开始前必须先读取 [docs/reference/format-standards.md](docs/reference/format-standards.md)。** 无论文章是 Markdown 技术报告、HTML 单页报告还是微信渠道，agent 都应在动笔前理解目标格式的写作方法论、视觉手段和质量标准。这条不是建议，是前置要求。

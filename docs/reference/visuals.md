@@ -61,13 +61,17 @@ OPENAI_BASE_URL
 | 次条封面（小图） | 200×200px | 1:1 | — |
 | 信息流卡片 | 500×500px | 1:1 | — |
 
-不要用 `1792x1024`（约 1.75:1），`cover-hd` 修正为 `1080x460`（2.35:1）。
+不要把封面做成约 1.75:1 的宽图再指望平台不裁切；目标是 2.35:1（1080×460 或等效像素）。
 
-> ⚠️ GPT Image API 最宽只支持 `1792x1024`，无法直接生成 2.35:1。`article-illustration` skill 的 `wechat-cover-hd` 预设已内置自动裁剪：生成 `1792x1024` → Pillow 裁剪至 `1080x460`。使用命令：
-> ```bash
-> uv run .agents/skills/article-illustration/scripts/generate_article_illustration.py \
->   --size wechat-cover-hd --style-profile auto ...
-> ```
+**不同生图 skill 对目标比例的支持不同，选型时先确认：**
+
+| Skill | 能否原生出 2.35:1 | 做法 |
+|---|---|---|
+| `seedream-image-gen`（Seedream 5.0 Pro） | ✅ 支持任意比例（区间 `[1/16, 16]`） | 直接 `--size 2048x872` 出 2.35:1，无需裁剪 |
+| `gpt-image-api`（GPT Image 2.5） | ❌ 最宽 1792×1024（约 1.75:1） | 生成后本地裁剪到 1080×460 |
+| `openrouter-image` | 取决于所选模型 | 先查该模型的尺寸上限 |
+
+> 历史说明：`article-illustration` 的 `wechat-cover-hd` 预设内置了「生成 1792×1024 → Pillow 裁剪到 1080×460」，那是为 GPT Image API 的宽度限制做的绕法。换用支持任意比例的生图 skill 后不再需要。该 skill 已不再是默认路径。
 
 - 不要让 image model 直接生成精确中文标题。优先生成干净背景图，再用本地工具 overlay exact text。
 - 关键信息要在微信小图预览里仍然可读。
@@ -78,6 +82,7 @@ OPENAI_BASE_URL
 - 技术文章优先使用简洁信息图、结构图、流程图或有明确语义的插图。
 - 流程、架构、状态和对比图必须在图内保留可读的节点标签、关系或关键数据；无文字的装饰性图不能代替解释性配图。
 - Blog 中的 `alt` 默认不会自动显示为图注。技术图建议在图后增加可见的 `*图 N：…*` caption；引用外部图时把来源收进同一行图注。
-- 散文/随笔不要默认钉死水彩；优先按文章气质选择 `editorial-atmospheric`、`modern-guochao-editorial`、`cinematic-editorial`、`watercolor-illustration` 等风格。
+- 散文/随笔不要默认钉死水彩；先按文章气质定画风，再按画风选生图 skill——中文题材 / 国潮 / 水墨 / 节气 / 编辑信息图优先 `seedream-image-gen`，需要精确英文文字、参考图引导或遮罩编辑优先 `gpt-image-api`。
+- **同一篇文章的多张插图必须同源同风格。** 混用不同生图模型会产生明显的风格割裂，比单张图的质量差异更伤观感。成套插图一旦定了 provider，整篇都用它。
 - 移动端优先，避免信息密度过高或文字过多。
 - 微信公众号正文图片保存后应上传为 `mmbiz.qpic.cn` URL。

@@ -92,7 +92,7 @@ content/origin/YYYY-MM-DD-<slug>/index.md
 |------|-------|------|------|
 | 灵感脑暴 | `article-ideation` | 灵感碎片、链接、截图 | writing brief + outline |
 | 写作打磨 | `polish-article` | Markdown 草稿 | 打磨后 Markdown |
-| 插图生成 | `article-illustration` | 风格/尺寸描述 | 插画/封面/信息图 |
+| 插图生成 | 用户指定的生图 skill（`gpt-image-api` / `seedream-image-gen` / `openrouter-image`） | 风格/尺寸描述 | 插画/封面/信息图 |
 | AIGC 媒体生成 | `gpt-image-2` / `seedream-image-gen` / `seedance-video-gen` / `volcengine-tts` / `seed-audio-gen` / `volcengine-bigmusic-bgm`（均为 user-level skills，由 erik-agent-skills 维护） | 文字/参考图/提示词 | 图片/视频/旁白/音频素材 |
 | 视频素材摄取 | `video-material-ingest` | 已知视频 URL | `assets/media/` 素材包 |
 | 视频高光选择 | `video-highlight-select` | 本地素材包 + 文章意图 | contact sheet + 候选片段表 |

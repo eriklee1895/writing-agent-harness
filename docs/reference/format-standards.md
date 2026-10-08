@@ -42,7 +42,7 @@ Agent 默认从 Markdown 开始，除非用户明确要求 HTML 报告。
 - 不要在一个图表里塞超过 8-10 个节点
 - 不要用 Mermaid 做时间线叙事（列表更清晰）
 
-**article-illustration 场景**：
+**生图配图场景**：
 - 封面图：给文章一个视觉入口
 - 概念插图：抽象概念需要具象化表达（如"上下文窗口衰减"）
 - 章节分隔视觉元素
@@ -67,7 +67,7 @@ Agent 默认从 Markdown 开始，除非用户明确要求 HTML 报告。
 
 ### 配图节奏
 
-- 封面：1 张，用 `article-illustration`
+- 封面：1 张，用任务指定的生图 skill（选型见 [visuals.md](visuals.md)）
 - 正文插图：每 1500-2000 字左右可考虑一张概念插图，但不是硬性指标
 - 架构/流程图：按需，不要因为"这里可以画图"而画图
 
@@ -114,7 +114,7 @@ Agent 默认从 Markdown 开始，除非用户明确要求 HTML 报告。
 - 可以 `<pre class="mermaid">` 内联，通过 CDN 加载 mermaid.js 渲染
 - 或在构建阶段预渲染为 SVG 再内联
 
-**article-illustration 配图**：
+**生图配图**：
 - 封面 hero image
 - 章节配图
 - 概念插图和信息图
