@@ -1272,7 +1272,7 @@ _ORIGIN_RE = re.compile(
 )
 
 # Read appmsgid from an existing publish-status.md (tolerant to frontmatter
-# variations; pulls the first appmsgid: "..." or appmsgid: 100000410 value).
+# variations; pulls the first appmsgid: "..." or appmsgid: <见 .local-archive 发布态> value).
 _APPMSGID_RE = re.compile(r'^appmsgid:\s*"?([^"\s]+)"?', re.MULTILINE)
 
 

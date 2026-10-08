@@ -7,5 +7,5 @@
 - Images remain in origin assets; `src` uses relative paths and `data-local-path` retains absolute upload paths.
 - Two photo pairs remain in two columns at mobile widths.
 - `review/` stores local browser screenshots. Local checks do not establish WeChat editor roundtrip compatibility.
-- Status: saved draft `appmsgid=100001399`; reopened and verified; not publicly published.
+- Status: saved draft `appmsgid=<见 .local-archive 发布态>`; reopened and verified; not publicly published.
 - Saved draft verification: `draft-verification.json`. Draft history: `publish-status.md`.

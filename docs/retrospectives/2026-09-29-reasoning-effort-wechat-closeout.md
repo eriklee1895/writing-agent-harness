@@ -3,7 +3,7 @@
 ## 状态
 
 - 状态：`draft-created`，尚未群发。
-- 公众号草稿：appmsgid `100001431`。
+- 公众号草稿：appmsgid `<见 .local-archive 发布态>`。
 - Blog：<https://eriklee-blog.pages.dev/posts/2026-09-29-reasoning-effort/>。
 - 飞书文档：<https://bytedance.my.larkoffice.com/docx/BibxdSJjXoUWREx7YsvmSsNLyJf>（回读确认标题、8 个标题层级与 3 张正文图）。
 - 微信 preview：`content/wechat/2026-09-29-reasoning-effort/index.wechat-preview.html`。
@@ -14,7 +14,7 @@
 - Renderer 使用 `warm-editorial`，输出 3 张正文图；生成 HTML 无 `<script>`、外链 `href` 或 base64 图片。
 - 430px 移动视口 `scrollWidth=clientWidth=430`，无横向溢出。
 - Publisher 保存前回读：标题 42 字符、摘要 100 字符，作者使用 `.config/wechat.toml` 的默认值。
-- 发布器截图显示编辑器 `已保存`，Draft History 有 09-29 16:47 的手动保存记录；appmsgid 为 `100001431`。
+- 发布器截图显示编辑器 `已保存`，Draft History 有 09-29 16:47 的手动保存记录；appmsgid 为 `<见 .local-archive 发布态>`。
 
 ## 坑点与修复
 

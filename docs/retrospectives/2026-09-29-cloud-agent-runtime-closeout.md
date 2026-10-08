@@ -5,7 +5,7 @@
 ## 交付状态
 
 - Blog 已发布：[线上文章](https://eriklee-blog.pages.dev/posts/2026-09-29-cloud-agent-runtime/)，提交 `02c6fce0fee255dcee39928d9a5f4c62d7138a57`。Cloudflare Pages 部署成功；线上正文、5 图、表格、RSS 与搜索已经验证。
-- 微信草稿 `100001416` 已由用户检查，状态保持 `draft-created`，未执行发表或群发。原始提交文件保留在 `content/wechat/2026-09-29-cloud-agent-runtime/index.wechat-preview.html`。
+- 微信草稿 `<见 .local-archive 发布态>` 已由用户检查，状态保持 `draft-created`，未执行发表或群发。原始提交文件保留在 `content/wechat/2026-09-29-cloud-agent-runtime/index.wechat-preview.html`。
 - [飞书文档](https://bytedance.my.larkoffice.com/docx/YNHsddyDYoCBKUxQwOMmsCZrykh) 已转写，回读 revision 16：102 个 block、7 节正文、5 图、2 张原生表格、17 链接，58 个非表格文本 block 核对完整。
 - 最终稿和 6 张使用中的图片（5 张正文图及封面）归档至 `.local-archive/2026-09-29-cloud-agent-runtime/`。原 assets 路径改为相对软链接，文章图片引用不变。博客仓库部署资产保留。
 - canonical frontmatter 的 `status: draft` 沿用原稿状态；实际交付状态以三份渠道 `publish-status.md` 为准，不能据此推断微信已发表。

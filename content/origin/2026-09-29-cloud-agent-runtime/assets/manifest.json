@@ -301,7 +301,7 @@
         "user_final_review": "approved: user checked WeChat draft and authorized blog publication",
         "wechat_cover_set": true
       },
-      "wechat_appmsgid": "100001416",
+      "wechat_appmsgid": "<见 .local-archive 发布态>",
       "archive_path": ".local-archive/2026-09-29-cloud-agent-runtime/images/wechat-cover-v1.png",
       "sha256": "44909457c4d62a9893914e29421f4301f7e84dd40caf416d5ff7de55e50b973e",
       "archived_at": "2026-09-29"

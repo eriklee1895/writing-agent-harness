@@ -2,13 +2,13 @@
 
 ## Summary
 
-本次 closeout 中对 `wechat-article-publisher`（Playwright 版）修复了 3 个累积 bug，使 end-to-end 自动化从「封面/摘要可以，标题/作者经常丢失」升级到「标题/作者/摘要/封面/原创声明/正文开头全对」。最终产出干净草稿 appmsgid=100000498（作者=李玉恒，无开头空行），保存耗时 5.16s（之前错误路径 122s 超时）。
+本次 closeout 中对 `wechat-article-publisher`（Playwright 版）修复了 3 个累积 bug，使 end-to-end 自动化从「封面/摘要可以，标题/作者经常丢失」升级到「标题/作者/摘要/封面/原创声明/正文开头全对」。最终产出干净草稿 appmsgid=<见 .local-archive 发布态>（作者=李玉恒，无开头空行），保存耗时 5.16s（之前错误路径 122s 超时）。
 
 ## Bugs Fixed
 
 ### 1. Pre-allocated appmsgid false-positive (CRITICAL)
 
-**症状**：`save_draft_and_confirm()` 把 URL 中任何 `appmsgid=...` 当成保存成功信号，立即返回。但微信公众号在**新开编辑器 tab 时就预分配**一个 appmsgid 槽位（在 URL 里）。所以函数实际从未真正点击「保存为草稿」按钮，元数据也从未 commit。这是为什么前 11 次草稿（100000410→100000490）要么标题/作者为空、要么被自动保存覆盖但 metadata 不完整。
+**症状**：`save_draft_and_confirm()` 把 URL 中任何 `appmsgid=...` 当成保存成功信号，立即返回。但微信公众号在**新开编辑器 tab 时就预分配**一个 appmsgid 槽位（在 URL 里）。所以函数实际从未真正点击「保存为草稿」按钮，元数据也从未 commit。这是为什么前 11 次草稿（<见 .local-archive 发布态>）要么标题/作者为空、要么被自动保存覆盖但 metadata 不完整。
 
 **修复**：
 - 编辑器打开后立即捕获 `initial_appmsgid`；
@@ -28,7 +28,7 @@
 
 ### 3. publish-status.md frontmatter 关闭分隔符丢失后 upsert 静默失效
 
-**症状**：closeout 时发现 `publish-status.md` 顶部 frontmatter 的 `appmsgid`/`author`/`saved_at` 停留在 11:02 的旧值，而 Draft History 已更新到 14:24 的最新 appmsgid=100000498。原因：一次早期写入可能丢失了 closing `---` 分隔符，后续 `_upsert_status_frontmatter()` 因为找不到 `\n---` 而 `return existing` 静默跳过更新，导致 frontmatter 永远停在第一次写入时的状态。
+**症状**：closeout 时发现 `publish-status.md` 顶部 frontmatter 的 `appmsgid`/`author`/`saved_at` 停留在 11:02 的旧值，而 Draft History 已更新到 14:24 的最新 appmsgid=<见 .local-archive 发布态>。原因：一次早期写入可能丢失了 closing `---` 分隔符，后续 `_upsert_status_frontmatter()` 因为找不到 `\n---` 而 `return existing` 静默跳过更新，导致 frontmatter 永远停在第一次写入时的状态。
 
 **修复**：
 - `end == -1` 时不再 bail out，而是从 `\n## Draft History\n` 或 `\n# 发布状态` 分界处重建最小 frontmatter（date/slug/dir/channel + 当前 updates）；

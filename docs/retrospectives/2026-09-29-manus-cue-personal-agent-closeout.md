@@ -4,7 +4,7 @@
 
 - Status: `draft-created`，未确认正式发布。
 - Canonical: `content/origin/2026-09-29-manus-cue-personal-agent/index.md`。
-- WeChat draft: `appmsgid=100001441`；标题（28 字）、作者、57 字摘要、封面 `cover-set`、正文图 CDN `4/4`，publisher 三重验证通过。
+- WeChat draft: `appmsgid=<见 .local-archive 发布态>`；标题（28 字）、作者、57 字摘要、封面 `cover-set`、正文图 CDN `4/4`，publisher 三重验证通过。
 - Blog / 飞书：本任务未涉及。
 - Local archive: `.local-archive/2026-09-29-manus-cue-personal-agent/`。
 

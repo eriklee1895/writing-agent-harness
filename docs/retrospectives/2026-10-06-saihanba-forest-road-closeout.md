@@ -11,7 +11,7 @@
 | 项 | 结果 |
 |---|---|
 | 博客 | ✅ published — https://eriklee-blog.pages.dev/posts/2026-10-06-saihanba-forest-road/ |
-| 微信 | ⏸ draft-created — `appmsgid=100001451`（未群发） |
+| 微信 | ⏸ draft-created — `appmsgid=<见 .local-archive 发布态>`（未群发） |
 | 文章 | 1599 字，25 自然段，4 张正文图 + 1 张封面 |
 | 归档 | `.local-archive/2026-10-06-saihanba-forest-road/` |
 
