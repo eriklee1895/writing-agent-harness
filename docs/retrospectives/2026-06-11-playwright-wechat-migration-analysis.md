@@ -189,7 +189,7 @@ await cdp.send('Input.dispatchMouseEvent', {
 | 独立 profile 登录并复用 | ✅ 首次 14.2s 扫码登录；第二次 `login_wait 0.00s`（免扫码） |
 | 声明式捕获文章编辑器新标签页 | ✅ `context.expect_page()` 首次成功，editor `type=77` |
 | 填写 title/author/正文 | ✅ ProseMirror `execCommand insertHTML`，editor innerText=1329 chars |
-| 保存草稿出现 `appmsgid` | ✅ `appmsgid=100000229`，首次成功 |
+| 保存草稿出现 `appmsgid` | ✅ `appmsgid=<见 .local-archive 发布态>`，首次成功 |
 | 无硬编码 `sleep` | ✅ 全程 `wait_for_url` / `wait_for_selector` / `expect_page` |
 
 **产物**：
@@ -220,7 +220,7 @@ await cdp.send('Input.dispatchMouseEvent', {
 |----|------|
 | 内联图片解析 → 占位符 → 定位删除 → `set_input_files` | ✅ 2/2 插入，编辑器内图片计数 0→2 |
 | 上传到微信 CDN | ✅ 2/2 变成 `https://mmbiz.qpic.cn/sz_mmbiz_png/...` |
-| 带图存草稿 | ✅ `appmsgid=100000237` |
+| 带图存草稿 | ✅ `appmsgid=<见 .local-archive 发布态>` |
 | 正文图片输入框 | 仅 1 个 `input[type=file][accept*=image]`，`.first` 无歧义（对齐 baoyu） |
 
 **两个必须固化进 skill 的坑**：
@@ -334,9 +334,9 @@ with sync_playwright() as p:
 | 2026-06-06 | CDP Only | 当时 API 需要 IP 白名单，个人 harness 维护成本太高 |
 | 2026-06-10 | Playwright > CDP for 文章提取 | 验证成功，明确记录"CDP 因进程管理复杂、代码量大而不采用" |
 | 2026-06-11 | 启动 Playwright 迁移分析 | 用户提问，结合已验证数据和 CDP 稳定性问题，确认迁移方向 |
-| 2026-06-11 | Phase 1 PoC 完成，G1 通过 | 文章流程跑通：307 行 / 11.5s 热跑 / `appmsgid=100000229` 首次成功；三轴优于 CDP，进入 Phase 2 |
-| 2026-06-11 | Phase 1.5 图片上传验证通过 | `半生雪` 2 图上 `mmbiz.qpic.cn` CDN，`appmsgid=100000237` |
+| 2026-06-11 | Phase 1 PoC 完成，G1 通过 | 文章流程跑通：307 行 / 11.5s 热跑 / `appmsgid=<见 .local-archive 发布态>` 首次成功；三轴优于 CDP，进入 Phase 2 |
+| 2026-06-11 | Phase 1.5 图片上传验证通过 | `半生雪` 2 图上 `mmbiz.qpic.cn` CDN，`appmsgid=<见 .local-archive 发布态>` |
 | 2026-06-11 | Phase 2 skill 落地 | 新建 Playwright 发布 skill，renderer HTML 输入 + 正文图片 + 草稿保存全链路验证；切换 `wechat-publish-workflow` 默认，baoyu 降级 fallback |
-| 2026-06-11 | Phase 2.1 改名 + 修核心 bug | 经 grill-me 定稿：skill 改名 `wechat-article-publisher`（延续 article 家族）；加 `config.toml`（`default_author=李玉恒`）；元数据权威源改为 source `.md` frontmatter。**修标题 bug**：`#title` 是隐藏 textarea，可见标题是独立 `#js_title_main .ProseMirror`，改为点击+键入再回读校验。**修多图 bug**：串行化上传（每图等 CDN 完成再传下一张），banshengxue 2/2 上 CDN，`appmsgid=100000256`，标题截图目视确认。hero 大标题从正文剔除。封面 best-effort（开弹窗但未稳定跑通）→ 文档化为手动。 |
-| 2026-06-11 | Phase 2.2 验证 frontmatter 权威源 + 修图-caption 空行 | 存量文章 `cloudflare-vite-astro`（frontmatter title≠正文H1 + 5 图）端到端：标题取 frontmatter（非正文 H1）、作者李玉恒、5/5 图上 CDN、`appmsgid=100000267`。**修图-caption 空行**：renderer 的 `<figure>` 被抽走图片后残留嵌套空 `<span>`（baoyu 当年漏掉的正是这个嵌套节点）→ 提取时拆 figure 成占位符段+caption 段，上传后清理空段，截图确认 caption 紧贴图片。 |
+| 2026-06-11 | Phase 2.1 改名 + 修核心 bug | 经 grill-me 定稿：skill 改名 `wechat-article-publisher`（延续 article 家族）；加 `config.toml`（`default_author=李玉恒`）；元数据权威源改为 source `.md` frontmatter。**修标题 bug**：`#title` 是隐藏 textarea，可见标题是独立 `#js_title_main .ProseMirror`，改为点击+键入再回读校验。**修多图 bug**：串行化上传（每图等 CDN 完成再传下一张），banshengxue 2/2 上 CDN，`appmsgid=<见 .local-archive 发布态>`，标题截图目视确认。hero 大标题从正文剔除。封面 best-effort（开弹窗但未稳定跑通）→ 文档化为手动。 |
+| 2026-06-11 | Phase 2.2 验证 frontmatter 权威源 + 修图-caption 空行 | 存量文章 `cloudflare-vite-astro`（frontmatter title≠正文H1 + 5 图）端到端：标题取 frontmatter（非正文 H1）、作者李玉恒、5/5 图上 CDN、`appmsgid=<见 .local-archive 发布态>`。**修图-caption 空行**：renderer 的 `<figure>` 被抽走图片后残留嵌套空 `<span>`（baoyu 当年漏掉的正是这个嵌套节点）→ 提取时拆 figure 成占位符段+caption 段，上传后清理空段，截图确认 caption 紧贴图片。 |
 | 2026-06-11 | 封面自动化两次尝试后定为 opt-in 手动 | 拿到封面弹窗结构后补全「本地上传→等加载→完成」，两次实测都停在 `uploaded-unconfirmed`（自定义拖拽+裁剪控件，文件没落地，错误「必须插入一张图片」）。封面弹窗另有「从正文选择」更稳路径（仅限正文图）。结论：封面**默认手动**，`--try-cover` 保留实验入口，不阻塞保存、不默认拖慢发布。 |

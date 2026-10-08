@@ -93,7 +93,7 @@
      → article-illustration ✅ 新增水彩风格
      → wechat-article-renderer ✅ 新增散文模式
      → wechat-publish-workflow ✅ CDP 发布
-     → 草稿箱                ✅ appmsgid: 100000062
+     → 草稿箱                ✅ appmsgid: <见 .local-archive 发布态>
      → 人工 review + 发布    ⏳ 待用户确认
 ```
 

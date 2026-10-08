@@ -5,7 +5,7 @@
 - 标题：星舰第14次试飞，向星辰大海再进一步。
 - Canonical：`content/origin/2026-09-29-starship-flight-14/index.md`。
 - Blog：已发布，https://eriklee-blog.pages.dev/posts/2026-09-29-starship-flight-14/ 。提交 `1814d03d1e41cd14fac28a1e26720e77abf8b2d0`，Cloudflare Pages 部署检查成功；线上正文、七张文章图片资源、RSS、分类和搜索均已确认。
-- WeChat：`draft-created`，`appmsgid=100001399`，未代替用户发表。六张正文图、两组双栏、时间线、封面与22% / 24% / 54%附表列宽均在保存重新打开后验证。
+- WeChat：`draft-created`，`appmsgid=<见 .local-archive 发布态>`，未代替用户发表。六张正文图、两组双栏、时间线、封面与22% / 24% / 54%附表列宽均在保存重新打开后验证。
 - 本机归档：`.local-archive/2026-09-29-starship-flight-14/`，含最终源稿快照、七张实际使用图片、提示词、时间线数据、渠道状态与本地预览截图。origin assets 以相对软链接维持现有引用，不改为 archive 路径。
 
 ## 写作与事实核对

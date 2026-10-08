@@ -4,7 +4,7 @@
 
 - Status: `draft-created`，未确认正式发布。
 - Canonical: `content/origin/2026-08-31-software-factory-ai-native-sdlc/index.md`。
-- WeChat draft: `appmsgid=100001199`；标题、作者、43 字摘要、封面和 9 张正文图已校验，图片 CDN `9/9`。
+- WeChat draft: `appmsgid=<见 .local-archive 发布态>`；标题、作者、43 字摘要、封面和 9 张正文图已校验，图片 CDN `9/9`。
 - Feishu docx: [Software Factory：AI Native 软件开发流程的新范式](https://bytedance.my.larkoffice.com/docx/NLopdNdp1o3H0Gx1X5fmjW3myId)，revision 25。
 - Blog: 未执行同步、构建或发布。
 - Local archive: `.local-archive/2026-08-31-software-factory-ai-native-sdlc/`。

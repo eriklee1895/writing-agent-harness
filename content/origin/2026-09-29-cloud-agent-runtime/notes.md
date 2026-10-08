@@ -1,7 +1,7 @@
 # 初稿交接记录
 
 - 日期：2026-09-29。
-- Canonical source：[index.md](index.md)。公众号草稿`100001416`已由用户检查，尚未收到公众号正式发表信息；博客已按用户授权发布，状态记录见下方。
+- Canonical source：[index.md](index.md)。公众号草稿`<见 .local-archive 发布态>`已由用户检查，尚未收到公众号正式发表信息；博客已按用户授权发布，状态记录见下方。
 - 文体：Agent / AI Technical Essay，辅助采用 Industry / Frontier Analysis。
 - 写作输入：[writing brief v2](../../drafts/2026-09-29-cloud-agent-runtime/writing-brief.md)、[深度研究底稿](../../drafts/2026-09-29-cloud-agent-runtime/deep-research.md)、[来源索引](../../drafts/2026-09-29-cloud-agent-runtime/research-sources.md)。这些drafts文件是本机scratch；正式文章的事实链接已直接进入正文，不依赖scratch链接公开展示。
 - 用户选定标题顺序“从Muse到Manus”已保留，指Muse发布到Manus2.0，不暗示Cloud Computer始于2.0。
@@ -106,7 +106,7 @@
 - 调用publisher之前检查了title、51字summary、无author frontmatter、默认作者配置存在、封面路径、5图路径、无外链href及自定义列宽。
 - 既有工作树含其他任务改动，未为了发布流程清理或提交它们。使用本篇源稿/提交HTML/媒体SHA256检查点，保留精修前与提交版本，作为本次可追溯保障。
 - 提交HTML：[index.wechat-preview.html](../../wechat/2026-09-29-cloud-agent-runtime/index.wechat-preview.html)。
-- publisher实际结果：正文请求5图、插入5图、CDN5/5，标题回读一致，封面`cover-set`；作者从项目配置读取。已保存appmsgid=`100001416`。
+- publisher实际结果：正文请求5图、插入5图、CDN5/5，标题回读一致，封面`cover-set`；作者从项目配置读取。已保存appmsgid=`<见 .local-archive 发布态>`。
 - 保存后用同一专用profile重新进入后台首页，在“近期草稿”找到同名草稿并打开微信临时预览。正文5图均从mmbiz.qpic.cn加载、natural尺寸非零、显示尺寸非零；两张表保留20/40/40与20/32/48，表格单元格无溢出；正文结尾完整、外部链接数量0。
 - 微信真实预览截图仅存本机drafts/qa，不含预览访问链接的发布记录。临时预览链接包含短期访问参数，不作为永久发布URL保存或交付。
 - 发布状态与历史：[publish-status.md](../../wechat/2026-09-29-cloud-agent-runtime/publish-status.md)。此次未点击发表/群发，未自动声明原创；留给用户最终检查。

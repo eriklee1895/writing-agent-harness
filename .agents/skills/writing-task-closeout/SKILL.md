@@ -77,7 +77,7 @@ description: "写作任务发布后 closeout。Use after WeChat/blog draft creat
   "slug": "hermes-agent-self-evolution",
   "date": "2026-06-12",
   "status": "draft-created",
-  "appmsgid": "100000313",
+  "appmsgid": "<见 .local-archive 发布态>",
   "skills_used": ["wechat-article-renderer", "wechat-article-publisher"],
   "patterns_detected": ["closeout-img-path-broken"],
   "staleness_flags": ["publisher-cover-auto-upload-unreliable"]
@@ -109,12 +109,16 @@ description: "写作任务发布后 closeout。Use after WeChat/blog draft creat
 ### What Stays In Git
 
 - Canonical Markdown / MDX articles（in `content/origin/`）and channel-specific text versions.
-- Frontmatter and publish status.
+- Frontmatter（仅文章元数据）。
 - Image prompt / metadata JSON, if small and not containing secrets.
 - Asset manifest / notes, alt text, caption, usage, insertion point.
 - `sources.md`, `manifest.json`, `clip-manifest.json`, `notes.md`.
-- Published URL, CDN URL, `appmsgid`, blog repo path, or platform ID.
+- Published URL, CDN URL, blog repo path, or platform ID（**不含 `appmsgid`**，见下）。
 - Retrospective notes and reusable workflow updates.
+
+⛔ **`appmsgid` / 草稿 URL / 群发状态一律不进 git。** 它们是渠道运营态而非文章内容，写在 `.local-archive/YYYY-MM-DD-<slug>/publish-status.md`（`.gitignore` 已覆盖）。理由：`appmsgid` 可构造微信后台编辑链接，属账号态敏感信息；且草稿会删会重发、值会变，写进 git history 只会留下 stale data。
+
+> 复盘、notes、readiness 里要引用发布态时，写指针而不是内联真实值——例如「公众号草稿：`appmsgid=<见 .local-archive 发布态>`」。**只要句子本身内联了那串数字，它就已经进了 git**，无论它出现在 `content/`、`docs/` 还是 skill 文档里。
 
 ### What Does Not Stay In Git
 

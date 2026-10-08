@@ -2,7 +2,7 @@
 
 ## Verdict
 
-**Blog published; WeChat draft reviewed.** 用户已确认公众号草稿`100001416`无误，并授权发布博客。博客已上线且完成线上验证；公众号尚未收到正式发表/群发信息。
+**Blog published; WeChat draft reviewed.** 用户已确认公众号草稿`<见 .local-archive 发布态>`无误，并授权发布博客。博客已上线且完成线上验证；公众号尚未收到正式发表/群发信息。
 
 ## Scope
 

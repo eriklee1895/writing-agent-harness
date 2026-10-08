@@ -9,13 +9,13 @@
 - Seedream 5.0 Pro 生成插图：首次竖版图构图失衡，改为 16:9 横版 + 新中式编辑插画，5 张图定稿（封面/赠花/校园/歌词漂流/结尾）。
 - 归档到 `content/origin/2026-07-16-lanhua/`。
 - `wechat-article-renderer --style warm-editorial` 渲染 HTML，preview server 用 python http.server 修复图片路径问题。
-- `wechat-article-publisher` 创建草稿：appmsgid=100001000，5 张图全部上传到微信 CDN，14 秒登录扫码。
+- `wechat-article-publisher` 创建草稿：appmsgid=<见 .local-archive 发布态>，5 张图全部上传到微信 CDN，14 秒登录扫码。
 - 复盘时发现 frontmatter 缺 `summary`，触发 skill 优化。
 
 ## 最终状态
 
 - **Status**：draft-created
-- **appmsgid**：100001000
+- **appmsgid**：<见 .local-archive 发布态>
 - **作者**：李玉恒（`.config/wechat.toml` default_author）
 - **正文**：19401 chars，5 张插图
 - **本地归档**：`.local-archive/2026-07-16-lanhua/`

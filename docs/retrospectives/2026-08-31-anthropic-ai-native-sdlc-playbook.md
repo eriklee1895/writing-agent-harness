@@ -4,7 +4,7 @@
 
 - Status: `draft-created`，未正式发布。
 - Canonical: `content/origin/2026-08-31-anthropic-ai-native-sdlc-playbook/index.md`。
-- WeChat draft: `appmsgid=100001260`；标题、作者、58 字摘要、封面与 7 张正文图均在保存前后校验。
+- WeChat draft: `appmsgid=<见 .local-archive 发布态>`；标题、作者、58 字摘要、封面与 7 张正文图均在保存前后校验。
 - Feishu docx: https://bytedance.my.larkoffice.com/docx/NzDqdwD3ZoToUCxjUXfmRpTByLg
 - Local archive: `.local-archive/2026-08-31-anthropic-ai-native-sdlc-playbook/`。
 

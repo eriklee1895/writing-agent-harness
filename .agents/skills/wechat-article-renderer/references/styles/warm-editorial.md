@@ -4,7 +4,7 @@
 
 ## Intent
 
-`warm-editorial` 是从文章 origin `index.html` 单页报告移植过来的暖色纸张风格，适合需要"杂志/编辑手记"质感的技术深度长文。比 `agent-flow` 更有设计感、更暖，但仍保持长文阅读的克制。首次用于《Claude Code Skill Creator 评测体系深度解析》（2026-06-15，appmsgid=100000376）。
+`warm-editorial` 是从文章 origin `index.html` 单页报告移植过来的暖色纸张风格，适合需要"杂志/编辑手记"质感的技术深度长文。比 `agent-flow` 更有设计感、更暖，但仍保持长文阅读的克制。首次用于《Claude Code Skill Creator 评测体系深度解析》（2026-06-15，appmsgid=<见 .local-archive 发布态>）。
 
 ## Visual System
 

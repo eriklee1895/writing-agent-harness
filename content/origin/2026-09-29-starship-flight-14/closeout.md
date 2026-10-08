@@ -7,7 +7,7 @@
 ## 渠道
 
 - Blog 已发布：https://eriklee-blog.pages.dev/posts/2026-09-29-starship-flight-14/ 。生产提交 `1814d03d1e41cd14fac28a1e26720e77abf8b2d0`，Pages部署及线上检查完成。
-- WeChat 为草稿：`appmsgid=100001399`。六张正文图与22% / 24% / 54%列宽均在保存后检查。剩余人工动作是审阅并决定是否发表。
+- WeChat 为草稿：`appmsgid=<见 .local-archive 发布态>`。六张正文图与22% / 24% / 54%列宽均在保存后检查。剩余人工动作是审阅并决定是否发表。
 
 ## 素材
 
