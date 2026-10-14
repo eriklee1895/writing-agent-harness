@@ -1,0 +1,27 @@
+Use case: infographic-diagram.
+Asset type: a high-resolution wide landscape Chinese comparison infographic for a technical blog, around 16:9.
+Primary request: show the separately chronological development paths of LangChain and CopilotKit, emphasizing how SDKs expand into more tools and platform products. This is an informative historical comparison, not a forecast.
+Style: clean white background, sharp readable dark-slate sans-serif typography, restrained blue for the LangChain lane and orange for the CopilotKit lane, fine gray arrows. Match a polished engineering publication. No people, buildings, robots, illustrations, stock art, logos or decorative metaphors.
+
+Title exact: "从 SDK 向外扩展：两条发展轨迹"
+
+Two separate horizontal lanes with four cards each, left to right. No vertical arrows or connections between lanes. Each lane has exactly three rightward arrows connecting its four cards. Date spacing is categorical, not a shared time scale.
+
+Top lane label: "LangChain"
+Card 1 three lines: "2022 年秋" / "LangChain" / "Python SDK"
+Card 2 three lines: "2023.07" / "LangSmith" / "调试与评估"
+Card 3 three lines: "2024.01" / "LangGraph" / "Agent 工作流"
+Card 4 three lines: "2024.06" / "LangGraph Cloud" / "部署与运行"
+
+Bottom lane label: "CopilotKit"
+Card 1 three lines: "2024.07" / "CopilotKit v1" / "SDK / Runtime / Cloud beta"
+Card 2 three lines: "2025.05" / "AG-UI" / "开放交互协议"
+Card 3 three lines: "2026.05" / "Intelligence" / "交互持久化"
+Card 4 three lines: "2026.08—10" / "Channels / CLiF" / "协作渠道与学习方向"
+
+Below both lanes, one small full-width note exactly:
+"各行分别按时间排序；不表示产品逐项对应或增长速度相同。"
+A second small note exactly:
+"CLiF 的用户操作轨迹仍为 early access。"
+
+All listed text must appear verbatim and legibly; product names must not be respelled or truncated. Dates must remain attached to the correct product. Use enough space for long names. No extra milestones, dates, financing amounts, valuations, growth curves or logos. No dashed future timeline: all dates refer to the article's verified public announcements.

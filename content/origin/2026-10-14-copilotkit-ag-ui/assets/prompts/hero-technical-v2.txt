@@ -1,0 +1,15 @@
+Use case: infographic-diagram.
+Asset type: a final high-resolution landscape technical infographic used as a Chinese blog cover, approximately 16:9.
+Primary request: explain where AG-UI sits and how CopilotKit relates to it. This must be an information-rich, labeled technical graphic, NOT atmospheric illustration. Clean white background, sharp black/dark-slate sans-serif typography, fine gray connection lines, restrained blue for the protocol and orange for CopilotKit. No buildings, landscapes, people, robots, paper textures or decorative metaphor.
+
+Layout: a large top title and a clearly readable three-column diagram, with generous spacing and no overlapping arrows.
+Exact title: "CopilotKit：从 SDK 到 Agent 交互生态"
+Exact subtitle: "共同协议连接多种后端与用户应用"
+
+Left column headed "Agent 后端", with three stacked labels: "LangGraph", "Google ADK", "Agno / Mastra". Under the stack put a small label "框架适配".
+Center column: one prominent blue block headed "AG-UI", with the exact secondary text "开放交互协议". Inside or immediately below it display four short, clearly separated labels: "消息", "工具调用", "共享状态", "运行事件".
+Connect left column and center with one clean two-headed arrow.
+Right column: one orange-outlined block headed "CopilotKit", with the exact secondary text "SDK / Runtime / Channels". Connect center and this block with one clean two-headed arrow. Beneath the right block, connect to three compact client boxes labeled "Web", "移动端", "Slack / Teams". Label this small group "用户界面".
+Below the diagram, separated by a light rule, show one optional-service strip: heading "Intelligence", body "线程持久化 · 渠道基础设施". Its connector to CopilotKit must be dashed and labeled "可选服务"; do not connect it as a mandatory AG-UI component.
+Footer exact text: "AG-UI 是开放协议；CopilotKit 是其实现与产品栈之一。"
+All copy listed above must be rendered verbatim, legibly, with no additional invented words. Preserve correct capitalization of product names. Use graphical hierarchy and actual connectors to communicate meaning. No claims that every implementation is fully interchangeable or that the protocol itself provides persistence. This is a conceptual integration map, not a protocol conformance certification.

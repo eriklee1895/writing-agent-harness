@@ -1,0 +1,139 @@
+{
+  "as_of": "2026-10-14",
+  "metric": "README-listed supported backend frameworks / SDKs",
+  "rules": [
+    "Count only Supported rows under Frameworks, excluding built-in/direct-to-LLM.",
+    "Merge LangGraph and LangChain as the same backend family.",
+    "Exclude AWS Bedrock AgentCore: a deployment platform, moved between sections.",
+    "Exclude protocol specs, client SDK languages, frontend clients, In Progress and Help Wanted.",
+    "Community integrations count as listed support, not vendor-native support.",
+    "Snapshots measure directory documentation coverage, not production adoption.",
+    "README edits can lag release dates; no claim is made about first availability dates."
+  ],
+  "snapshots": [
+    {
+      "cutoff": "2025-12-31",
+      "sha": "1ab1f2d4bff2eed48e917313e8323de3589cc122",
+      "commit_date": "2025-12-29T15:48:29Z",
+      "commit_api": "https://api.github.com/repos/ag-ui-protocol/ag-ui/commits?path=README.md&until=2025-12-31T23%3A59%3A59Z&per_page=1",
+      "source_url": "https://github.com/ag-ui-protocol/ag-ui/blob/1ab1f2d4bff2eed48e917313e8323de3589cc122/README.md",
+      "supported_backend_count": 10,
+      "supported_backends": [
+        "AG2",
+        "AWS Strands Agents",
+        "Agno",
+        "CrewAI",
+        "Google ADK",
+        "LangChain / LangGraph",
+        "LlamaIndex",
+        "Mastra",
+        "Microsoft Agent Framework",
+        "Pydantic AI"
+      ]
+    },
+    {
+      "cutoff": "2026-03-31",
+      "sha": "0bffef9c14d32ba3da4cf03806c253a1251d9ab7",
+      "commit_date": "2026-03-26T14:46:35Z",
+      "commit_api": "https://api.github.com/repos/ag-ui-protocol/ag-ui/commits?path=README.md&until=2026-03-31T23%3A59%3A59Z&per_page=1",
+      "source_url": "https://github.com/ag-ui-protocol/ag-ui/blob/0bffef9c14d32ba3da4cf03806c253a1251d9ab7/README.md",
+      "supported_backend_count": 11,
+      "supported_backends": [
+        "AG2",
+        "AWS Strands Agents",
+        "Agno",
+        "CrewAI",
+        "Google ADK",
+        "LangChain / LangGraph",
+        "Langroid",
+        "LlamaIndex",
+        "Mastra",
+        "Microsoft Agent Framework",
+        "Pydantic AI"
+      ],
+      "newly_listed_since_previous_snapshot": [
+        "Langroid"
+      ]
+    },
+    {
+      "cutoff": "2026-06-30",
+      "sha": "d49eb3820cc7164679c6921819e88efa0e7616c0",
+      "commit_date": "2026-04-28T22:02:01Z",
+      "commit_api": "https://api.github.com/repos/ag-ui-protocol/ag-ui/commits?path=README.md&until=2026-06-30T23%3A59%3A59Z&per_page=1",
+      "source_url": "https://github.com/ag-ui-protocol/ag-ui/blob/d49eb3820cc7164679c6921819e88efa0e7616c0/README.md",
+      "supported_backend_count": 12,
+      "supported_backends": [
+        "AG2",
+        "AWS Strands Agents",
+        "Agno",
+        "Claude Agent SDK",
+        "CrewAI",
+        "Google ADK",
+        "LangChain / LangGraph",
+        "Langroid",
+        "LlamaIndex",
+        "Mastra",
+        "Microsoft Agent Framework",
+        "Pydantic AI"
+      ],
+      "newly_listed_since_previous_snapshot": [
+        "Claude Agent SDK"
+      ]
+    },
+    {
+      "cutoff": "2026-09-30",
+      "sha": "27b4150cf5dc86d29a778a6a461e39f58309761f",
+      "commit_date": "2026-08-19T11:21:26Z",
+      "commit_api": "https://api.github.com/repos/ag-ui-protocol/ag-ui/commits?path=README.md&until=2026-09-30T23%3A59%3A59Z&per_page=1",
+      "source_url": "https://github.com/ag-ui-protocol/ag-ui/blob/27b4150cf5dc86d29a778a6a461e39f58309761f/README.md",
+      "supported_backend_count": 13,
+      "supported_backends": [
+        "AG2",
+        "AWS Strands Agents",
+        "Agno",
+        "Claude Agent SDK",
+        "Claude Managed Agents SDK",
+        "CrewAI",
+        "Google ADK",
+        "LangChain / LangGraph",
+        "Langroid",
+        "LlamaIndex",
+        "Mastra",
+        "Microsoft Agent Framework",
+        "Pydantic AI"
+      ],
+      "newly_listed_since_previous_snapshot": [
+        "Claude Managed Agents SDK"
+      ]
+    },
+    {
+      "cutoff": "2026-10-14",
+      "sha": "d3c1146e2c0788dd800f4fbc91ea8c8f0bb8ad31",
+      "commit_date": "2026-10-13T09:10:43Z",
+      "commit_api": "https://api.github.com/repos/ag-ui-protocol/ag-ui/commits?path=README.md&until=2026-10-14T23%3A59%3A59Z&per_page=1",
+      "source_url": "https://github.com/ag-ui-protocol/ag-ui/blob/d3c1146e2c0788dd800f4fbc91ea8c8f0bb8ad31/README.md",
+      "supported_backend_count": 15,
+      "supported_backends": [
+        "AG2",
+        "AWS Strands Agents",
+        "Agno",
+        "Claude Agent SDK",
+        "Claude Managed Agents SDK",
+        "Cloudflare Agents",
+        "CrewAI",
+        "Google ADK",
+        "Google Antigravity",
+        "LangChain / LangGraph",
+        "Langroid",
+        "LlamaIndex",
+        "Mastra",
+        "Microsoft Agent Framework",
+        "Pydantic AI"
+      ],
+      "newly_listed_since_previous_snapshot": [
+        "Cloudflare Agents",
+        "Google Antigravity"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "execution": "built-in image_gen",
+  "mode": "generate",
+  "provider": "built-in",
+  "model": null,
+  "model_note": "Exact model ID not exposed by built-in tool.",
+  "prompt_file": "prompts/protocol-scopes.txt",
+  "actual_size": "1536x1024",
+  "sha256": "3b9cd12908310749798277203a3a5c369b6da51e40e010cafd85a75a8aa0e8b1",
+  "visual_review": "Four protocol rows and labels checked; scopes are not represented as mandatory sequential steps; AG-UI/A2UI distinction preserved."
+}
