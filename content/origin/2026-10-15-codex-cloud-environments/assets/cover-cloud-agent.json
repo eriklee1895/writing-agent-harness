@@ -1,0 +1,34 @@
+{
+ "provider": "openrouter",
+ "request_model": "openai/gpt-image-2.5-sunburst",
+ "request": {
+  "model": "openai/gpt-image-2.5-sunburst",
+  "prompt": "# Codex Cloud — development beyond the desk\n\nCreate one refined editorial illustration for a personal engineering blog article titled \"Codex Cloud: development beyond the desk\". This is an expressive cover, not an explanatory diagram. Landscape 16:9, high quality, balanced composition that remains clear as a small article-card thumbnail.\n\nVisual story: a smartphone in the foreground is the small, calm control point for development work continuing in the cloud. A quiet office desk with a closed laptop and empty chair recedes softly into the far left background. The main composition opens toward the right into airy space, where one sculptural pale cloud carries three distinct, translucent workspace panels. One fine, gently curved copper line connects the smartphone to these cloud workspaces. The panels contain only a few clean abstract code-bracket shapes, a diff mark, and small test checkmarks, suggesting separate coding tasks without attempting a real UI. Keep the idea simple and immediately readable: phone as the entry point, cloud as the place doing the work, the desk no longer holding the developer in place.\n\nArt direction: sophisticated contemporary editorial illustration with subtle paper grain, precise fine linework, layered cut-paper forms and gently modeled dimensional objects. Warm morning light. Cream paper, pale sage green, soft mist blue, warm graphite, restrained terracotta and copper accents. Delicate shadows and ample negative space. Fresh, thoughtful and quietly optimistic. An authored visual for a literary technical notebook. The phone and cloud form one strong diagonal; avoid a collection of equally sized icons. Keep important objects inside the middle 75 percent so card crops preserve the story.\n\nDo not include people, hands, robots, faces, code rain, server racks, neon lighting, purple gradients, holographic sci-fi rooms, brand logos, badges, title typography, paragraphs, or watermarks. No readable text anywhere in the image. Only the minimal abstract code glyphs and checkmarks described above are allowed. Do not turn the composition into a flowchart, dashboard, SaaS landing page, stock business illustration, or product screenshot. The artwork should fill the canvas naturally, with no frame or border.\n",
+  "aspect_ratio": "16:9",
+  "n": 1,
+  "quality": "high"
+ },
+ "outputs": [
+  "/Users/eriklee/.codex/worktrees/b4f6/writing-agent-harness/content/origin/2026-10-15-codex-cloud-environments/assets/cover-cloud-agent.png"
+ ],
+ "usage": {
+  "prompt_tokens": 433,
+  "completion_tokens": 1078,
+  "total_tokens": 1511,
+  "cost": 0.034505,
+  "is_byok": false,
+  "prompt_tokens_details": {
+   "cached_tokens": 0
+  },
+  "cost_details": {
+   "upstream_inference_cost": 0.034505,
+   "upstream_inference_prompt_cost": 0.002165,
+   "upstream_inference_completions_cost": 0.03234
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 0,
+   "image_tokens": 1078
+  }
+ },
+ "elapsed_seconds": 33.8
+}

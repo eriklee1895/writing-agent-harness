@@ -1,8 +1,24 @@
 {
   "schema_version": 1,
   "article": "2026-10-15-codex-cloud-environments",
-  "scope": "Official documentation UI illustrations added to the article; existing SVG diagrams remain separately authored conceptual diagrams.",
+  "scope": "Official documentation UI illustrations and generated editorial cover; existing SVG diagrams remain separately authored conceptual diagrams.",
   "assets": [
+    {
+      "file": "cover-cloud-agent.png",
+      "kind": "generated-editorial-cover",
+      "provider": "openrouter",
+      "model": "openai/gpt-image-2.5-sunburst",
+      "prompt_file": "cover-prompt.md",
+      "metadata_file": "cover-cloud-agent.json",
+      "generated_date": "2026-10-15",
+      "pixel_width": 1536,
+      "pixel_height": 864,
+      "bytes": 1881728,
+      "sha256": "962d0be89099647a0c011291094a9ea1428891bc6f06897301866848d4394ab1",
+      "cost_usd": 0.034505,
+      "used_in": "frontmatter-cover; blog hero, article thumbnail and Open Graph image",
+      "status": "used"
+    },
     {
       "file": "official-environment-picker.jpg",
       "kind": "official-documentation-ui-illustration",
