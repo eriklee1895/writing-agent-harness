@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "article": "2026-10-15-codex-cloud-environments",
+  "scope": "Official documentation UI illustrations added to the article; existing SVG diagrams remain separately authored conceptual diagrams.",
+  "assets": [
+    {
+      "file": "official-environment-picker.jpg",
+      "kind": "official-documentation-ui-illustration",
+      "source_page": "https://learn.chatgpt.com/docs/environments/cloud-environments#create-and-publish-an-environment",
+      "source_figure_label": "Desktop app environment picker with Create environment and Manage environments below the saved environments",
+      "source_format": "HTML/CSS figure rendered by the official documentation page",
+      "capture_method": "Browser viewport screenshot, cropped to the original figure bounds; no redraw or image generation",
+      "captured_date": "2026-10-15",
+      "pixel_width": 738,
+      "pixel_height": 529,
+      "bytes": 47674,
+      "sha256": "953445c047f5d30baa11e5d9a5b0a0c24fa3055cffe0ee57745329585168902f",
+      "used_in": "section-3-environment-creation",
+      "status": "used",
+      "attribution": "OpenAI / ChatGPT Learn; visible source link in article caption"
+    },
+    {
+      "file": "official-environment-settings.jpg",
+      "kind": "official-documentation-ui-illustration",
+      "source_page": "https://learn.chatgpt.com/docs/environments/cloud-environments#reuse-and-update-saved-state",
+      "source_figure_label": "Codex Cloud settings with Environments and Personal vault tabs and the Edit menu open for a published environment",
+      "source_format": "HTML/CSS figure rendered by the official documentation page",
+      "capture_method": "Browser viewport screenshot, cropped to the original figure bounds; no redraw or image generation",
+      "captured_date": "2026-10-15",
+      "pixel_width": 738,
+      "pixel_height": 553,
+      "bytes": 58947,
+      "sha256": "3cc921f851843554f5fc688ffbdbe79d9c67485ada60839001c1ef3c3c87ab27",
+      "used_in": "section-2-environment-update",
+      "status": "used",
+      "attribution": "OpenAI / ChatGPT Learn; visible source link in article caption"
+    },
+    {
+      "file": "official-network-secret.jpg",
+      "kind": "official-documentation-ui-illustration",
+      "source_page": "https://learn.chatgpt.com/docs/environments/cloud-environments#configure-environment-variables-and-network-secrets",
+      "source_figure_label": "Manage secrets dialog with a masked registry token, Environment ownership, and packages.example.com as its allowed destination",
+      "source_format": "HTML/CSS figure rendered by the official documentation page",
+      "capture_method": "Browser viewport screenshot, cropped to the original figure bounds; no redraw or image generation",
+      "captured_date": "2026-10-15",
+      "pixel_width": 738,
+      "pixel_height": 486,
+      "bytes": 45777,
+      "sha256": "75fd68993e7de83767f2f39e96e1dfefa3274d5772ecf8b72ccc3fa9f9fff689",
+      "used_in": "section-4-network-secret",
+      "status": "used",
+      "attribution": "OpenAI / ChatGPT Learn; visible source link in article caption"
+    },
+    {
+      "file": "official-personal-vault.jpg",
+      "kind": "official-documentation-ui-illustration",
+      "source_page": "https://learn.chatgpt.com/docs/environments/cloud-environments#supply-personal-values",
+      "source_figure_label": "Personal vault dialog adding the APP_MODE environment variable with the value development for all environments",
+      "source_format": "HTML/CSS figure rendered by the official documentation page",
+      "capture_method": "Browser viewport screenshot, cropped to the original figure bounds; no redraw or image generation",
+      "captured_date": "2026-10-15",
+      "pixel_width": 738,
+      "pixel_height": 578,
+      "bytes": 54089,
+      "sha256": "8e0289a1fc3f1a27c629dcbc9ce9b2ebcc3f7c5f561d3d29bc7d35f4ae82150d",
+      "used_in": "section-4-personal-vault",
+      "status": "used",
+      "attribution": "OpenAI / ChatGPT Learn; visible source link in article caption"
+    }
+  ]
+}

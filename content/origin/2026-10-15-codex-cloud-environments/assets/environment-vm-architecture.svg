@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="790" viewBox="0 0 900 790" role="img" aria-labelledby="title desc">
+  <title id="title">Codex Cloud: reusable preparation, isolated Task VMs, separate access configuration</title>
+  <desc id="desc">A Cloud Environment defines repositories, runtimes, tools, installation, startup and access settings. Publishing captures a prepared filesystem reused by new Task VMs. Network policy and credential bindings are shown separately from that filesystem. Each Task has its own workspace and tool execution. The diagram is a conceptual model, not an internal deployment topology or a claim about VM memory snapshots.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1 9 5 1 9" fill="none" stroke="#78877c" stroke-width="1.6"/></marker>
+    <style>text{font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#24332c}.label{font-size:23px;font-weight:650}.body{font-size:17px;fill:#5c6d61}.small{font-size:15px;fill:#647369}.vm{font-size:21px;font-weight:650}.green{fill:#35664d}</style>
+  </defs>
+  <rect x="1" y="1" width="898" height="788" rx="20" fill="#fafbf8" stroke="#dfe5dc"/>
+  <text x="35" y="37" class="small">ENVIRONMENT → PREPARATION → TASK EXECUTION</text>
+  <rect x="40" y="62" width="820" height="125" rx="16" fill="#eef3ec" stroke="#c6d6c0"/>
+  <text x="450" y="102" text-anchor="middle" class="label">Cloud Environment</text>
+  <text x="450" y="135" text-anchor="middle" class="body">Repositories · Runtimes · Tools · Install script · Start skill</text>
+  <text x="450" y="164" text-anchor="middle" class="body">Reusable setup and access requirements</text>
+  <path d="M260 187V251" stroke="#78877c" stroke-width="1.7" fill="none" marker-end="url(#arrow)"/>
+  <text x="279" y="226" class="small">Publish</text>
+  <path d="M690 187V251" stroke="#78877c" stroke-width="1.7" fill="none" marker-end="url(#arrow)"/>
+  <text x="709" y="226" class="small">Configure access</text>
+  <rect x="40" y="263" width="440" height="119" rx="15" fill="#edf1f6" stroke="#c8d4e0"/>
+  <text x="260" y="303" text-anchor="middle" class="label">Prepared filesystem</text>
+  <text x="260" y="336" text-anchor="middle" class="body">Installed tools and prepared files</text>
+  <text x="260" y="363" text-anchor="middle" class="small">Starting point for new Tasks</text>
+  <rect x="520" y="263" width="340" height="119" rx="15" fill="#fffaf0" stroke="#dfd2b2"/>
+  <text x="690" y="303" text-anchor="middle" class="label">Access configuration</text>
+  <text x="690" y="336" text-anchor="middle" class="body">Network policy · Credential bindings</text>
+  <text x="690" y="363" text-anchor="middle" class="small">Separate from filesystem reuse</text>
+  <path d="M260 382V437H175V502" stroke="#78877c" stroke-width="1.7" fill="none" marker-end="url(#arrow)"/>
+  <path d="M260 437H450V502" stroke="#78877c" stroke-width="1.7" fill="none" marker-end="url(#arrow)"/>
+  <path d="M450 437H725V502" stroke="#78877c" stroke-width="1.7" fill="none" marker-end="url(#arrow)"/>
+  <rect x="65" y="398" width="390" height="29" rx="14" fill="#fafbf8"/>
+  <text x="260" y="418" text-anchor="middle" class="small">New Tasks reuse the prepared filesystem</text>
+  <path d="M850 382V478" stroke="#a18a5d" stroke-width="1.7" stroke-dasharray="5 4" fill="none" marker-end="url(#arrow)"/>
+  <text x="831" y="418" text-anchor="end" class="small">Per-Task access</text>
+  <rect x="40" y="483" width="820" height="212" rx="17" fill="none" stroke="#cbd6c6" stroke-dasharray="6 5"/>
+  <rect x="60" y="515" width="230" height="151" rx="14" fill="#fff" stroke="#cbd8c6"/>
+  <rect x="335" y="515" width="230" height="151" rx="14" fill="#fff" stroke="#cbd8c6"/>
+  <rect x="610" y="515" width="230" height="151" rx="14" fill="#fff" stroke="#cbd8c6"/>
+  <text x="175" y="554" text-anchor="middle" class="vm">Task A · VM</text>
+  <text x="450" y="554" text-anchor="middle" class="vm">Task B · VM</text>
+  <text x="725" y="554" text-anchor="middle" class="vm">Task C · VM</text>
+  <text x="175" y="587" text-anchor="middle" class="body">Own workspace</text>
+  <text x="450" y="587" text-anchor="middle" class="body">Own workspace</text>
+  <text x="725" y="587" text-anchor="middle" class="body">Own workspace</text>
+  <text x="175" y="615" text-anchor="middle" class="body">Shell · Build · Test</text>
+  <text x="450" y="615" text-anchor="middle" class="body">Shell · Build · Test</text>
+  <text x="725" y="615" text-anchor="middle" class="body">Shell · Build · Test</text>
+  <text x="175" y="644" text-anchor="middle" class="small green">Separate working state</text>
+  <text x="450" y="644" text-anchor="middle" class="small green">Separate working state</text>
+  <text x="725" y="644" text-anchor="middle" class="small green">Separate working state</text>
+  <text x="450" y="733" text-anchor="middle" class="small">Network Secret: placeholder in Task · Real Value supplied by Proxy</text>
+  <text x="450" y="761" text-anchor="middle" class="small">Conceptual model · Hypervisor and snapshot implementation are not specified</text>
+</svg>
