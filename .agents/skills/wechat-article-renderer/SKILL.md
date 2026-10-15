@@ -15,6 +15,8 @@ Current default style preset: `warm-editorial`（中文名：暖色纸张，编�
 
 ## Quick Start
 
+**Erik 的公众号默认要求优先于 preset：纯白底、正文容器透明。** 保留字体、留白和强调色即可；不要把历史暖纸色底直接交付。当前脚本的 `warm-editorial` token 仍含暖底，需检查并适配生成 HTML；这条是工作流约束，不能据此声称脚本已自动修复。用户已经验收的 HTML 不要在发布或收尾时重渲染覆盖。
+
 Run the bundled renderer:
 
 ```bash
@@ -80,6 +82,13 @@ Shared renderer rules:
 - CDP publishing resolves `data-local-path` at draft creation time, uploads images to WeChat, and replaces `src` with WeChat CDN URLs.
 - Make small-screen safety non-negotiable: `box-sizing:border-box`, width constraints, and long-token wrapping.
 - Keep `一句话总结` and `文章大纲` available when the selected style supports long-form reading aids.
+
+## Gotchas
+
+- **frontmatter 标题不等于已渲染标题**：当前脚本只从正文 H1 提取标题；只有 frontmatter `title` 的源稿可能得到“未命名文章”。生成后核对 `<title>`、可见 hero 和摘要，以 canonical 元数据修正派生 HTML，不要为适配而给正文补重复标题。
+- **图注只保留一份**：renderer 会自动显示 image alt；如果源稿已有 `*图 N：…*`，公众号 HTML 应保留明确图注并去掉重复的自动 alt 图注。
+- **SVG 与本地说明链接需渠道适配**：公众号正文使用 PNG 等可上传格式；源稿 SVG 保留。仓库内 README 链接不能作为公众号跳转或无法访问的正文引用。
+- 390–430px 的明暗预览通过后，仍须检查已保存草稿的真实图片尺寸与 CDN；不要把浏览器 media query 通过称为微信夜间模式已验证。
 
 ## Cover Images
 

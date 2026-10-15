@@ -55,7 +55,9 @@
       "source": "agui-ecosystem-data.json",
       "generator": "render_figures.py",
       "status": "used",
-      "archive_path": null
+      "archive_path": ".local-archive/2026-10-14-copilotkit-ag-ui/images/agui-ecosystem-growth.svg",
+      "sha256": "543f9815edb049670f7407bb742660e54fc54605124469301819ae209a759519",
+      "channel_png_archive_path": ".local-archive/2026-10-14-copilotkit-ag-ui/images/agui-ecosystem-growth.png"
     },
     {
       "id": "ecosystem",
@@ -85,7 +87,7 @@
       "model": null,
       "actual_size": "1672x941",
       "sha256": "9a631dc2c30a274004e0261958aca1f3209131fa4e56f4ecff7e52767273a4d2",
-      "archive_path": null,
+      "archive_path": ".local-archive/2026-10-14-copilotkit-ag-ui/images/hero-technical-v2.png",
       "edit_prompt_files": [
         "prompts/hero-technical-v2-edit.txt",
         "prompts/hero-technical-v2-label-edit.txt"
@@ -108,7 +110,7 @@
       "model": null,
       "actual_size": "1122x1402",
       "sha256": "82c70a961bf13f5951d6ee6d4196b415258f3f365fcefe5830da9b42fced3955",
-      "archive_path": null
+      "archive_path": ".local-archive/2026-10-14-copilotkit-ag-ui/images/clif-information-flow-v2.png"
     },
     {
       "id": "protocol-scopes",
@@ -145,7 +147,7 @@
       "model": null,
       "actual_size": "1672x941",
       "sha256": "9f73093de18caaf1489de253c968de02fb27e8ec5c9b7f56625bcac456d5f269",
-      "archive_path": null
+      "archive_path": ".local-archive/2026-10-14-copilotkit-ag-ui/images/company-development-paths.png"
     },
     {
       "id": "protocol-scopes-acp-v2",
@@ -162,7 +164,7 @@
       "alt": "五种协议的连接对象与侧重；ACP 与 AG-UI 均连接客户端和 Agent",
       "actual_size": "1448x1086",
       "sha256": "848160342d386b92d7032814a631214fae8d191e0119c09f5fad266780884fb9",
-      "archive_path": null
+      "archive_path": ".local-archive/2026-10-14-copilotkit-ag-ui/images/protocol-scopes-acp-v2.png"
     },
     {
       "id": "copilotkit-ecosystem-v2",
@@ -179,7 +181,7 @@
       "status": "used",
       "placement": "CopilotKit: 一个 SDK，慢慢长成一套工具",
       "alt": "以 CopilotKit 为中心的四类产品总览，AG-UI 作为共同交互协议列出",
-      "archive_path": null
+      "archive_path": ".local-archive/2026-10-14-copilotkit-ag-ui/images/copilotkit-ecosystem-v2.png"
     },
     {
       "id": "open-ecosystem-business",
@@ -198,7 +200,7 @@
       "actual_size": "1122x1402",
       "sha256": "ece553555dd33d56f0dcda11f64a4cac65436c7dcd753a0428db8c288c626dbf",
       "review": "Chinese labels checked; branches represent possible choices, not inevitable conversion. Three observation points match the article. No invented revenue or conversion data.",
-      "archive_path": null
+      "archive_path": ".local-archive/2026-10-14-copilotkit-ag-ui/images/open-ecosystem-business.png"
     }
   ],
   "current_generation_method": "built-in image_gen"

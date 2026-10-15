@@ -82,7 +82,7 @@
 
 ## Current Defaults
 
-- 微信公众号 renderer 支持六种 style：`warm-editorial`（暖纸张底 `#faf9f5` + 陶土橙 accent + 黑底白字表头 + 深色代码块的编辑随笔风，技术深度长文默认）、`agent-flow`（纯白底、无卡片、扇形流式排版，备用，夜间模式最稳）、`impact-rational`（白底带左边框 hero + 目录/摘要面板的技术评论 style，备用）、`literary-essay`（个人散文/随笔）、`cultural-essay`（文化现象/城市/音乐/文旅随笔）、`tech-blog`（通用技术博客）。默认偏向 `warm-editorial`：成品/杂志质感更好看，且无卡片纯流式在夜间模式自动反色下也稳。表格统一用 flex `<div>` 渲染（不用 `<table>` 标签，否则微信会套虚线编辑框）。
+- 微信公众号排版默认要求**纯白底 `#ffffff`、正文外层与章节容器透明**，便于手机昼夜阅读适配；不要沿用模板暖纸色底。技术长文可保留 `warm-editorial` 的陶土橙强调、字号和留白，但须检查实际输出底色，表头默认采用透明背景与深色文字。`agent-flow` 等其他 preset 仍可按文章选择。浏览器深色模式模拟不能代替微信真机验收。表格统一用 flex `<div>` 渲染（不用 `<table>` 标签，否则微信会套虚线编辑框）。
 - 文章配图的**渠道尺寸**是渠道约束，与选哪个生图 skill 无关：规格见 [docs/reference/visuals.md](docs/reference/visuals.md)（微信头条封面 2.35:1）。能原生生成目标比例的模型直接出图；不支持该比例的模型才需要生成后再裁。
 - 早期灵感脑暴使用 project skill：`article-ideation`。
 - 文章打磨使用 project skill：`polish-article`。
@@ -92,7 +92,7 @@
 - 微信公众号文章提取使用 project skill：`wechat-article-fetcher`；输入 URL 提取正文、元数据和图片到结构化素材包，支持 `--output-dir content/inbox/articles/` 直接入库。
 - 微信公众号发布流程使用 project skill：`wechat-publish-workflow`；底层上传器默认用 `wechat-article-publisher`（Playwright，已验证文章流程 + 标题/作者/摘要 + 串行正文图片上传 + 草稿保存；封面通常在草稿箱 final review 时手动设置）。迁移背景见 [docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md](docs/retrospectives/2026-06-11-playwright-wechat-migration-analysis.md)。
 - Erik Lee 个人博客发布流程使用 project skill：`erik-blog-publish-workflow`；负责把 `content/origin/` 正式稿同步到 `/Users/eriklee/code/my_project/eriklee-blog`，检查 assets / taxonomy / build，并按 Cloudflare Pages 自动部署边界处理 git handoff。`git push main` 等价于公开发布，默认需要明确确认。
-- 本地 Markdown 转写飞书云文档使用 user-level skill `markdown-article-to-feishu-doc`（由 erik-agent-skills 维护，不在本 repo）；解析 frontmatter、保留完整 block 结构、本地图片按原始尺寸上传、` ```mermaid ` 自动渲染为画板、`==高亮文本==` 转 callout。火山引擎文档抓取 / 联网搜索同理走 user-level `volcengine-doc-fetcher` / `volcengine-web-search`。
+- 本地 Markdown 转写飞书云文档使用 user-level skill `markdown-article-to-feishu-doc`（由 erik-agent-skills 维护，不在本 repo）；解析 frontmatter、保留完整 block 结构、本地图片按原始尺寸上传，Mermaid 默认保留代码块、显式选择 whiteboard 模式才渲染画板，`==高亮文本==` 转 callout。火山引擎文档抓取 / 联网搜索同理走 user-level `volcengine-doc-fetcher` / `volcengine-web-search`。
 - 剪藏网页文章（微信公众号、技术博客、arXiv 等）到 Notion 使用 project skill：`article-to-notion`；微信公众号走 Playwright 抓取含懒加载图，通用站点走 firecrawl/tavily，图片本地上传到 Notion 解决防盗链；底层依赖 `notion-cli` skill 封装的官方 `ntn` CLI，认证走 `ntn login` OAuth（无需 integration token 或 share connection）。
 - 直接读写 Notion 页面、上传文件、设 cover/properties/icon 一律通过 `notion-cli` skill 的 `scripts/ntn_cli.py` helper 调用，不要手写 `ntn api` 或 REST 调用（已知坑点全部集中规避）。
 - 发布或交付后的写作任务收尾使用 project skill：`writing-task-closeout`。

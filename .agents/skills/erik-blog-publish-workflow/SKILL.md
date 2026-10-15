@@ -138,6 +138,9 @@ Do not physically categorize files into folders. Keep blog posts flat under `src
 
 ## Gotchas
 
+- The adapter's keyword taxonomy can put a CopilotKit company analysis in `LangChain Notes` because the title mentions LangChain. Compare the final article subject and register with the generated category, series and type; preserve approved channel overrides on re-sync.
+- Asset copying selects referenced **images**, not every linked local document. A caption link to `assets/README.md` can therefore point to a file absent from the deployed site. Publish a small reader-facing data/methodology page or download alongside the article, then update the blog-only link and verify it online. Do not expose rejected images, research caches or generation logs to fix a public data link.
+
 - Use [the root sync adapter](../../../scripts/sync_origin_to_blog.py) for `origin -> eriklee-blog`. From the repository root, invoke `uv run scripts/sync_origin_to_blog.py`; from this skill directory, use the relative path shown above. Ignore the historical `sync_origin_to_astropaper.py` name.
 - Do not run `git add .` in either repo. It can accidentally stage unrelated origin drafts, local assets, or generated files.
 - Do not delete user edits in `eriklee-blog` while syncing. Read diffs first.

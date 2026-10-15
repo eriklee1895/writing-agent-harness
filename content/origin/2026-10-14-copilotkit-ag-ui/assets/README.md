@@ -2,6 +2,10 @@
 
 资料截至：2026-10-14。图表为本文的确定性绘图产物，不使用 AI 生图。
 
+> **最终交付快照（2026-10-15）**：全文有效视觉为 7 幅（1 张封面、6 张正文图）。其中增长统计图是确定性绘图，其余为用户选定的内置 imagegen 信息图。以下生成过程记录中的数量属于当时版本；当前使用状态与归档路径以 [manifest.json](manifest.json) 为准。
+
+本机已归档实际使用的 7 个 PNG（含增长图渠道副本）和增长 SVG；PNG 工作路径保留相对软链接，SVG 继续由 Git 追踪。[交付与恢复说明](../delivery-notes.md)记录渠道链接及跨机器恢复方法。
+
 ## 图 1：AG-UI 目录中的受支持后端
 
 指标是 **上游 README 记录为 Supported 的后端框架 / SDK 数量**。
@@ -104,4 +108,8 @@ uv run content/origin/2026-10-14-copilotkit-ag-ui/assets/render_figures.py
 用户不满意旧版四条横向列表。当前改用 [copilotkit-ecosystem-v2.png](copilotkit-ecosystem-v2.png)：以 CopilotKit 为中心、四类产品分组的总览，保留十二个产品标签和 CLiF 用户操作轨迹 early access 标识。连线只表示分组关系，不表示运行依赖或数据流。
 
 使用内置 image_gen 重新生成，提示词见 [copilotkit-ecosystem-v2.txt](prompts/copilotkit-ecosystem-v2.txt)，尺寸和校验记录见同名 JSON。旧 copilotkit-ecosystem-map.svg 与渲染脚本保留为历史记录，文章不再引用；增长数据图仍使用确定性 SVG。
+
+## 末节收尾图
+
+[open-ecosystem-business.png](open-ecosystem-business.png)用于“开放之后，生意从哪里来”：开放生态引入开发者，生产阶段可自建、选择其他产品或购买平台服务；列出核心流程、独立实现协作、跨前端付费三个观察点。箭头表示可能路径，不代表已验证的商业转化率或收入。提示词、同名 JSON 和 manifest 均已保存。
 
