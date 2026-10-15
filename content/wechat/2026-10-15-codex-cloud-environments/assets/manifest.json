@@ -1,0 +1,105 @@
+{
+  "article": "2026-10-15-codex-cloud-environments",
+  "source_sha256": "aa0a7b50ea27bfe5ae4caf125ca5cd55076b6796bc08f35471a5b9821e3c4146",
+  "style": "warm-editorial",
+  "cover": "cover-wechat.png",
+  "body_hero": "../../origin/2026-10-15-codex-cloud-environments/assets/cover-cloud-agent-v2.png",
+  "cover_generation": {
+    "mode": "built-in image_gen edit",
+    "model": null,
+    "prompt": "cover-wechat-prompt.md",
+    "purpose": "Approximate 2.35:1 WeChat lead cover; preserve the approved technical concept and all key content"
+  },
+  "diagram_format": "channel-specific mobile SVG sources, rasterized to PNG for WeChat upload",
+  "changes": [
+    "Approved body retained; four tables expanded into labelled paragraphs",
+    "Mermaid and three SVG concepts laid out vertically with mobile-size labels",
+    "Official UI images referenced from origin without duplication",
+    "External sources retained as numbered plain-text references",
+    "Configuration request rendered as a wrapping quote, shell example preserved as code"
+  ],
+  "references": [
+    {
+      "title": "官方概览：Codex Cloud",
+      "url": "https://learn.chatgpt.com/docs/cloud"
+    },
+    {
+      "title": "官方指南：Tasks and memory",
+      "url": "https://learn.chatgpt.com/docs/dots/tasks-and-memory"
+    },
+    {
+      "title": "官方指南：Connect computers and apps to your dot",
+      "url": "https://learn.chatgpt.com/docs/dots/computers-and-apps"
+    },
+    {
+      "title": "OpenAI · Cloud Environments（配置、Credentials、VM、网络与能力边界）",
+      "url": "https://learn.chatgpt.com/docs/environments/cloud-environments"
+    },
+    {
+      "title": "Legacy 文档：Secrets 的 lifecycle",
+      "url": "https://learn.chatgpt.com/docs/environments/cloud-environment"
+    },
+    {
+      "title": "官方指南：Isolate workloads",
+      "url": "https://developers.openai.com/api/docs/guides/agents-api/environments/security"
+    },
+    {
+      "title": "Pricing",
+      "url": "https://learn.chatgpt.com/docs/pricing"
+    }
+  ],
+  "assets": [
+    {
+      "file": "workflow-handoff.png",
+      "source": "workflow-handoff.svg",
+      "width": 1280,
+      "height": 1960,
+      "bytes": 172960,
+      "sha256": "d14db18606ef1d8d98c56bc2914f24da08775d81415361e023609acaf6b94e52",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/wechat/workflow-handoff.png",
+      "working_path_policy": "relative-symlink; media ignored by git"
+    },
+    {
+      "file": "environment-tasks.png",
+      "source": "environment-tasks.svg",
+      "width": 1280,
+      "height": 2040,
+      "bytes": 196401,
+      "sha256": "2afddcba239e363d26b96af34fa8aa47e8095125ab158cb13539ab7289f94683",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/wechat/environment-tasks.png",
+      "working_path_policy": "relative-symlink; media ignored by git"
+    },
+    {
+      "file": "credential-injection.png",
+      "source": "credential-injection.svg",
+      "width": 1280,
+      "height": 2320,
+      "bytes": 235477,
+      "sha256": "b31f9c1e9845f2cd5a57a2a68a0d64f888388bf1d1f75f42001ede90588ba6e6",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/wechat/credential-injection.png",
+      "working_path_policy": "relative-symlink; media ignored by git"
+    },
+    {
+      "file": "environment-vm-architecture.png",
+      "source": "environment-vm-architecture.svg",
+      "width": 1280,
+      "height": 2839,
+      "bytes": 301338,
+      "sha256": "f760eafcf1dccf3df26bbd1e4d6d37a6b30e757a147aad1b6f9cbfb8942a00d1",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/wechat/environment-vm-architecture.png",
+      "working_path_policy": "relative-symlink; media ignored by git"
+    },
+    {
+      "file": "cover-wechat.png",
+      "source": "cover-wechat-prompt.md",
+      "width": 1920,
+      "height": 819,
+      "bytes": 1399085,
+      "sha256": "69cef8308ffd00356416d2deaf833f7602b441351b4e46f81690a2f6dd9870b3",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/wechat/cover-wechat.png",
+      "working_path_policy": "relative-symlink; media ignored by git"
+    }
+  ],
+  "archive_root": ".local-archive/2026-10-15-codex-cloud-environments",
+  "recovery": "Restore binary files from archive to their asset paths, or keep the verified relative symlinks; blog deployment copies are independent."
+}

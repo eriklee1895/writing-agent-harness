@@ -51,4 +51,4 @@ warm-editorial 提供了浏览器预览用 dark token（`darkBg:#1a1a18` 等）�
 
 - 技术深度长文，想要比 agent-flow 更"成品/编辑"质感时。
 - 文章本身已有一份 warm 纸张风的 origin HTML 单页报告，想在微信端复刻视觉时。
-- 默认技术评论/观点文仍优先 `agent-flow`（最稳）；warm-editorial 是有意做设计感时的升级选项。
+- 技术长文可保留 `warm-editorial` 的强调、字号与留白；交付底色以当前 AGENTS.md 及本文 Override rule 为准，`agent-flow` 等 preset 按文章选择。
