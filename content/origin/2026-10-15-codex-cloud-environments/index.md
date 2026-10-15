@@ -1,7 +1,7 @@
 ---
 title: "Codex 云端环境学习体验：把开发带离办公桌"
 date: 2026-10-15
-cover: assets/cover-cloud-agent.png
+cover: assets/cover-cloud-agent-v2.png
 register: agent-ai-essay
 tags:
   - Codex
