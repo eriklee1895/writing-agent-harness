@@ -17,6 +17,8 @@ Channel ratios are constraints, not provider defaults. Prefer native target-rati
 
 ## Quick workflow
 
+**生成器选择优先于旧脚本入口**：本 skill 可用于规划图片角色、信息结构与提示词；实际生图遵循任务中用户指定的 user-level media skill。用户选定内置 `imagegen` 时使用内置工具，不因下方历史脚本示例改走 API。未指定生成器时先询问；同一篇文章已确认的选型可继续沿用。不要把脚本中的模型或尺寸默认值作为当前模型能力的事实来源。
+
 1. Identify what you need:
    - WeChat cover (公众号头条封面, 2.35:1)
    - Body inset illustration (for literary essays or tech articles)

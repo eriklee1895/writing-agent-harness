@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "execution": "built-in image_gen",
+  "mode": "edit",
+  "provider": "built-in",
+  "model": null,
+  "model_note": "Exact model ID not exposed by tool.",
+  "input": "protocol-scopes.png",
+  "prompt_file": "prompts/protocol-scopes-acp-v2-edit.txt",
+  "actual_size": "1448x1086",
+  "sha256": "848160342d386b92d7032814a631214fae8d191e0119c09f5fad266780884fb9",
+  "visual_review": "Five rows and exact labels checked. ACP and AG-UI both highlighted; footer explicitly states overlap. ACP expanded as Agent Client Protocol.",
+  "facts_checked_at": "2026-10-14",
+  "sources": [
+    "https://agentclientprotocol.com/get-started/introduction",
+    "https://agentclientprotocol.com/protocol/v1/overview",
+    "https://docs.ag-ui.com/spec/1.0"
+  ]
+}

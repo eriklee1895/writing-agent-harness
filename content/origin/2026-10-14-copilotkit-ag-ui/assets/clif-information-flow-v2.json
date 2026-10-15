@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "execution": "built-in image_gen",
+  "mode": "generate then targeted edit",
+  "provider": "built-in",
+  "model": null,
+  "model_note": "The built-in tool did not expose an exact model ID.",
+  "prompt_file": "prompts/clif-information-flow-v2.txt",
+  "edit_prompt_file": "prompts/clif-information-flow-v2-edit.txt",
+  "actual_size": "1122x1402",
+  "sha256": "82c70a961bf13f5951d6ee6d4196b415258f3f365fcefe5830da9b42fced3955",
+  "visual_review": "Four arrows checked: two inputs to analysis, analysis to review, review to application. Extension directions unconnected and clearly separated."
+}

@@ -1,0 +1,18 @@
+Use case: infographic-diagram.
+Asset type: a final high-resolution landscape Chinese technical infographic for the CLiF section of a blog, approximately 3:2.
+Primary request: explain the information flow from agent activity and user actions to reviewed skills, and clearly distinguish early access from currently described capability. Every meaningful node must be labeled; this must be a useful explanatory graphic rather than an atmospheric illustration.
+Style: clean white background, high-contrast dark-slate sans-serif text, fine gray connectors, restrained blue and orange, consistent with a polished engineering publication. No people, robots, architecture, landscapes, metaphoric objects or paper textures.
+
+Title exact: "交互如何变成 Agent 改进材料？"
+Subtitle exact: "从两侧轨迹中提出建议，再由人审阅"
+
+Top row has two equal source cards.
+Left card heading "Agent 轨迹"; content "消息 · 工具调用 · 状态变化"; small blue badge "官方称当前可用".
+Right card heading "用户操作轨迹"; content "修改 · 审批 · 手工补全"; small orange badge "early access".
+Both source cards have downward arrows merging into a center block labeled "分析与技能建议".
+Below that, a left-to-right flow of three clearly separated blocks: "技能建议" → "人工审阅" → "应用到 Agent".
+From "应用到 Agent" draw a single return arrow to "Agent 轨迹", labeled "后续运行".
+Use an orange border around "人工审阅", making the human review gate visually clear.
+Below the main flow, in a distinct dashed container, show heading "产品延伸方向", then two labeled items "评估材料" and "训练数据". A dashed arrow from "分析与技能建议" leads to this dashed container. These outputs must not be presented as equally mature or fully automated deployment.
+Footer exact: "依据官方说明整理；不代表已实测的自动优化效果。"
+Use only the exact copy given in this brief, with no invented labels, percentages, dates or claims. Make Chinese and English characters sharp and readable, keep the flow logically consistent, avoid duplicate node text beyond the explicitly specified labels.

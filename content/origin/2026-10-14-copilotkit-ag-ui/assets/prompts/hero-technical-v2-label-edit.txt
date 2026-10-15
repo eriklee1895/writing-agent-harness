@@ -1,0 +1,1 @@
+Change exactly one label in this technical infographic: replace the Chinese label "可选服务" beside the dashed Intelligence connector with "平台服务". Preserve every other word, line, arrow, icon, color, size, position and layout exactly. Do not add or remove anything else. The new label must be sharp and correctly spelled.

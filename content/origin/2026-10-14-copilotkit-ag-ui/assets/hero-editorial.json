@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-flare",
+    "prompt": "Deliverable: a 16:9 blog cover for an essay about CopilotKit and the emerging shared interaction layer between AI agents and people.\nContemporary editorial illustration for a thoughtful Chinese technology essay. Mixed medium: precise graphite drawing with restrained gouache and fine screen-print grain on warm ivory paper (#faf9f5). Palette: charcoal, terracotta orange (#ae5438), muted sage, a little desaturated slate blue. Architectural clarity, asymmetrical editorial composition, quiet intelligent atmosphere, tactile surfaces, visible human craft. Flat color areas and delicate pencil lines, simplified depth, not photorealistic and not a glossy 3D render. No logos, readable text, letters, numbers, watermarks, robots with faces, brains, neon, glowing network nodes, circuit-board patterns or dramatic sci-fi lighting. This is conceptual art, not a literal software architecture diagram or a real product screenshot.\n\nSubject: a carefully constructed tabletop architectural model of three distinct small workspaces arranged around an open shared courtyard. Each workspace has its own quiet geometric character, but one continuous terracotta walkway links their entrances and continues toward a small group of two human figures reviewing a paper plan. The shared walkway is the visual focus; the buildings remain distinct. Make the physical connection understandable without arrows or labels.\n\nComposition: wide oblique overhead view, balanced but not symmetrical. The model occupies the middle and lower two thirds, with generous warm paper breathing room above and at the edges. The eye follows the single terracotta passage from the different workspaces toward the human reviewing area. Include a few restrained graphite construction marks, not a dense web of lines. Objects have elegant architectural proportions rather than a toy-city aesthetic. Keep key elements comfortably inside the central 80 percent for cover cropping.\n\nArt direction: the image should suggest a small practical interface becoming common infrastructure. Show collaboration and independent parts connected by a usable passage, with an understated editorial mood. No triumphal imagery, skyscrapers, trophies, money or growth arrows. No text anywhere.",
+    "n": 1,
+    "size": "2048x1152",
+    "quality": "auto",
+    "background": "opaque",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "out": "content/origin/2026-10-14-copilotkit-ag-ui/assets/hero-editorial.png",
+    "line": 1,
+    "provider": "ofox",
+    "wire_model": "openai/gpt-image-2.5-flare"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": "2048x1152",
+    "quality": "medium",
+    "background": "opaque",
+    "output_format": "png",
+    "usage": {
+      "input_tokens": 411,
+      "input_tokens_details": {
+        "text_tokens": 411
+      },
+      "output_tokens": 628,
+      "total_tokens": 1039,
+      "output_tokens_details": {
+        "image_tokens": 628
+      }
+    },
+    "request_id": "9bf8aa12-521b-41bc-bf37-4ee56c62764a"
+  },
+  "elapsed_seconds": 26.804,
+  "attempts": 1,
+  "output": "content/origin/2026-10-14-copilotkit-ag-ui/assets/hero-editorial.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-10-14T13:08:19+00:00"
+}

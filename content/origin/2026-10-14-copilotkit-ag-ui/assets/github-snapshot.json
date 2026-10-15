@@ -1,0 +1,18 @@
+{
+  "as_of": "2026-10-14",
+  "note": "Separate attention signals; not unique users or production adoption.",
+  "repos": [
+    {
+      "repo": "CopilotKit/CopilotKit",
+      "stars": 38003,
+      "forks": 4731,
+      "source": "https://api.github.com/repos/CopilotKit/CopilotKit"
+    },
+    {
+      "repo": "ag-ui-protocol/ag-ui",
+      "stars": 16513,
+      "forks": 1512,
+      "source": "https://api.github.com/repos/ag-ui-protocol/ag-ui"
+    }
+  ]
+}

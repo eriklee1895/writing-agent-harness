@@ -1,0 +1,18 @@
+Use case: infographic-diagram.
+Asset type: a high-resolution landscape Chinese explanatory infographic for a technical blog, approximately 3:2.
+Primary request: compare four different agent-related protocols using an informative, readable matrix, not atmospheric illustration.
+Style: clean white background, sharp dark-slate sans-serif text, light gray dividers, blue for protocol labels, restrained orange highlight for the AG-UI row. Consistent engineering publication style. No people, buildings, paper texture, robots, stock photography, brand logos or decoration.
+
+Exact title: "四种协议，各管哪一段？"
+Use a matrix with exactly three column headers: "协议", "主要连接", "解决什么问题".
+There are exactly four data rows with the following exact content:
+Row 1: "MCP" | "Agent ↔ 工具与数据" | "调用工具、读取资源"
+Row 2: "A2A" | "Agent ↔ Agent" | "跨 Agent 通信与协作"
+Row 3: "AG-UI" | "Agent ↔ 用户应用" | "消息、工具行为、状态与运行事件"
+Row 4: "A2UI" | "界面描述 ↔ 渲染器" | "声明组件与界面结构"
+
+Below the matrix add one well-spaced highlighted summary box with two lines of exact copy:
+"AG-UI 传递交互事件"
+"A2UI 描述界面，两者可组合"
+
+Use large readable Chinese text and correct Latin capitalization. The arrow glyph ↔ appears only as provided in row text; do NOT add connector arrows between the four protocol rows. They are different scopes, not sequential mandatory steps. The summary must not imply A2UI is mandatory for AG-UI. Include only the exact text in this brief. No unsupported statistics, no new labels, no extra explanatory footer or slogans.

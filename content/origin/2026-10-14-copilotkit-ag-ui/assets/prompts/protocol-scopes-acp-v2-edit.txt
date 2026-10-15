@@ -1,0 +1,20 @@
+Edit the supplied Chinese protocol comparison infographic. Preserve its clean white background, dark sans-serif typography and blue/orange engineering-publication style, but expand it to FIVE protocol rows and correct the conceptual framing: these scopes overlap.
+
+New exact title: "五种协议，连接谁、侧重什么？"
+Keep exactly three column headers: "协议", "主要连接", "侧重解决什么问题".
+Render these five rows, in this exact order:
+"MCP" | "Agent ↔ 工具与数据" | "调用工具、读取资源"
+"A2A" | "Agent ↔ Agent" | "跨 Agent 通信与协作"
+"ACP" | "客户端 ↔ Agent" | "会话、流式更新、权限与宿主能力"
+"AG-UI" | "Agent ↔ 用户应用" | "消息、工具行为、共享状态"
+"A2UI" | "界面描述 ↔ 渲染器" | "声明组件与界面结构"
+
+Give BOTH the ACP and AG-UI rows a restrained light-orange highlight so that their overlap is visible. Other protocol names remain blue. Do not imply only AG-UI has tools or only ACP can run inside an editor. No vertical connector arrows or sequential mandatory-step interpretation.
+
+Replace the old bottom summary entirely with a well-spaced box containing these exact two lines:
+"ACP 与 AG-UI 都连接客户端和 Agent"
+"ACP 侧重宿主集成，AG-UI 侧重应用交互事件"
+Below the box add one small but readable line:
+"此处 ACP 指 Agent Client Protocol；以上为侧重比较，能力存在重叠。"
+
+Use enough vertical space for five comfortably readable rows; approximately 4:3 landscape is fine. Preserve spelling, capitalization, the Chinese characters, and all five row associations precisely. No extra logos, labels, facts, dates or decorative illustration. This is a comparison of focus, not a claim of hard or exclusive boundaries.

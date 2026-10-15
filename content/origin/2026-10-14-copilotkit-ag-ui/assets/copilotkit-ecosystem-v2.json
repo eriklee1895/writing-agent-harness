@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "execution": "built-in image_gen",
+  "mode": "generate",
+  "provider": "built-in",
+  "model": null,
+  "model_note": "Exact model ID not exposed by tool.",
+  "prompt_file": "prompts/copilotkit-ecosystem-v2.txt",
+  "actual_size": "1448x1086",
+  "sha256": "ed26dba84c4d10f61faae969e66fec805b8510066976c607e7eec460d6f74caa",
+  "visual_review": "All four categories and twelve product labels checked; hub lines imply grouping, not runtime flow; CLiF early-access badge and data date checked."
+}

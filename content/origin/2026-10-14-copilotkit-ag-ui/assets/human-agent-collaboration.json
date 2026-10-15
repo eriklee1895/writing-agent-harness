@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-flare",
+    "prompt": "Deliverable: a 3:2 body illustration for the reflective middle-to-late section of the same essay, about the experience people leave behind when correcting and guiding an AI agent.\nContemporary editorial illustration for a thoughtful Chinese technology essay. Mixed medium: precise graphite drawing with restrained gouache and fine screen-print grain on warm ivory paper (#faf9f5). Palette: charcoal, terracotta orange (#ae5438), muted sage, a little desaturated slate blue. Architectural clarity, asymmetrical editorial composition, quiet intelligent atmosphere, tactile surfaces, visible human craft. Flat color areas and delicate pencil lines, simplified depth, not photorealistic and not a glossy 3D render. No logos, readable text, letters, numbers, watermarks, robots with faces, brains, neon, glowing network nodes, circuit-board patterns or dramatic sci-fi lighting. This is conceptual art, not a literal software architecture diagram or a real product screenshot.\n\nSubject: one broad shared drafting table viewed obliquely from above. A single human figure sits on the left, calmly making a small terracotta-pencil correction on a large sheet of paper. On the right, a modest non-anthropomorphic drafting mechanism with one simple pencil arm is arranging a few geometric paper pieces on that same sheet. The human mark and the mechanism's construction coexist on the shared work surface. Beneath the table, three earlier translucent paper drafts are neatly visible as layers, suggesting accumulated experience rather than a stack of meaningless documents. The person's face is abstract and unidentifiable.\n\nComposition: an intimate, quieter counterpart to the architectural cover. The tabletop and the hands at work are the focus. Put the person left of center and the simple mechanism right of center. Leave generous margins around the scene. The shared sheet contains only a few abstract shapes and a clear visible revision mark; no UI mockup, no code, no fake text and no charts. Use terracotta only to emphasize the small human correction, with muted sage and slate elsewhere.\n\nArt direction: convey participation, thoughtful revision and the possibility of retaining experience. Neither the person nor the mechanism dominates. Quiet, tactile and humane; avoid the stock-image handshake between a robot and a person. No readable text anywhere.",
+    "n": 1,
+    "size": "1536x1024",
+    "quality": "auto",
+    "background": "opaque",
+    "output_format": "png",
+    "output_compression": null,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "out": "content/origin/2026-10-14-copilotkit-ag-ui/assets/human-agent-collaboration.png",
+    "line": 2,
+    "provider": "ofox",
+    "wire_model": "openai/gpt-image-2.5-flare"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": "1536x1024",
+    "quality": "low",
+    "background": "opaque",
+    "output_format": "png",
+    "usage": {
+      "input_tokens": 456,
+      "input_tokens_details": {
+        "text_tokens": 456
+      },
+      "output_tokens": 158,
+      "total_tokens": 614,
+      "output_tokens_details": {
+        "image_tokens": 158
+      }
+    },
+    "request_id": "eb08254b-df70-4115-817f-8c6994ee6023"
+  },
+  "elapsed_seconds": 20.647,
+  "attempts": 1,
+  "output": "content/origin/2026-10-14-copilotkit-ag-ui/assets/human-agent-collaboration.png",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-10-14T13:08:13+00:00"
+}

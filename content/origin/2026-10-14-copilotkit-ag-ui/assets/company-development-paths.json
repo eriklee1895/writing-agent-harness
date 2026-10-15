@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "execution": "built-in image_gen",
+  "mode": "generate",
+  "provider": "built-in",
+  "model": null,
+  "model_note": "Exact model ID not exposed by built-in tool.",
+  "prompt_file": "prompts/company-development-paths.txt",
+  "actual_size": "1672x941",
+  "sha256": "9f73093de18caaf1489de253c968de02fb27e8ec5c9b7f56625bcac456d5f269",
+  "visual_review": "All eight product/date cards checked; six arrows remain inside their own lane; Cloud beta and CLiF early-access qualification preserved."
+}

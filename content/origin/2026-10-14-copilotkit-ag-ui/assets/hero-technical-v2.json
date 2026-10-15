@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "execution": "built-in image_gen",
+  "mode": "generate then two targeted edits",
+  "provider": "built-in",
+  "model": null,
+  "model_note": "The built-in tool did not expose an exact model ID.",
+  "prompt_file": "prompts/hero-technical-v2.txt",
+  "edit_prompt_file": "prompts/hero-technical-v2-edit.txt",
+  "actual_size": "1672x941",
+  "sha256": "9a631dc2c30a274004e0261958aca1f3209131fa4e56f4ecff7e52767273a4d2",
+  "visual_review": "Labels and protocol/product distinction checked; optional-service connector corrected to CopilotKit; brand logos removed. Intelligence connector is labeled platform service, not universally optional.",
+  "edit_prompt_files": [
+    "prompts/hero-technical-v2-edit.txt",
+    "prompts/hero-technical-v2-label-edit.txt"
+  ]
+}

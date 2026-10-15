@@ -1,0 +1,36 @@
+Use case: infographic-diagram.
+Asset type: a high-resolution landscape product ecosystem infographic for a Chinese technical blog, approximately 4:3.
+Primary request: redesign a CopilotKit product ecosystem overview as a polished, information-rich hub-and-four-groups visual. This must look noticeably better than four long rows of text. Show clear grouping, readable copy, balanced proportions and purposeful spacing.
+
+Exact title at the top: "CopilotKit 的产品生态"
+
+Composition:
+A compact central hub labeled exactly "CopilotKit", connected with four thin lines WITHOUT arrowheads to four equal-sized grouped panels arranged around it in a 2-by-2 composition. The hub is at the center junction between panels, not inside any panel. The lines indicate portfolio grouping, not data flow or runtime dependency; they must never cross text. Give each panel its own strong category heading, small simple outline icon and neatly arranged labeled product chips. Make the panels visually distinct from a spreadsheet or a stack of full-width boxes.
+
+Top-left panel heading "用户界面".
+Product chips: "React", "Vue", "Angular", "React Native".
+Small description: "Web 与移动端 SDK"
+
+Top-right panel heading "开发工作流".
+Product chips: "CLI", "Inspector", "aimock".
+Small description: "搭建 · 调试 · 测试"
+
+Bottom-left panel heading "生产与渠道".
+Product chips: "Intelligence", "Channels".
+Small description: "会话持久化 · Slack / Teams"
+
+Bottom-right panel heading "应用与学习".
+Product chips: "OpenBot", "Open Intelligent UI", "CLiF".
+Small description: "开源应用与学习产品"
+Put a compact amber badge immediately beside CLiF with the exact text "用户操作轨迹 early access". Ensure it is legible and not attached to the other two products.
+
+Below all four groups, a separate slim foundation strip labeled exactly:
+"AG-UI：开放交互协议"
+Final small date line:
+"产品范围截至 2026-10-14"
+
+Art direction:
+White background; crisp dark navy sans-serif Chinese and Latin typography; restrained saturated blue for category headings and connecting lines; warm orange for the central CopilotKit hub and the early-access badge. Very light blue and very light warm neutral panel fills, subtle thin borders, flat clean product-publication aesthetic, no heavy gradients or oversized shadows. Use thoughtful visual hierarchy, ample but not excessive whitespace, and professional type alignment. Product chips must accommodate long names without shrinking the text into tiny captions. Keep all contents comfortably inside the frame.
+
+Text accuracy:
+Use ONLY the exact copy supplied above, preserving case of CopilotKit, React Native, aimock, Open Intelligent UI, CLiF, AG-UI. Do not invent logos, counts, percentages, claims, stages or additional product names. All labels must be clearly readable at article width. No people, robots, buildings, decorative tech textures, fake screenshots or atmospheric illustration. Do not imply all products have equal maturity or that AG-UI belongs exclusively to CopilotKit.
