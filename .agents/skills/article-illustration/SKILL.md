@@ -7,6 +7,14 @@ description: Generate article illustrations in multiple styles — watercolor ar
 
 Use this skill to create illustrations for articles — covers, inset imagery, dividers, banners, and diagrams.
 
+## Provider routing and brief priority
+
+This skill coordinates the visual brief, layout and provenance. For live raster generation, use the user's selected media skill: `imagegen`, `gpt-image-api`, `seedream-image-gen` or `openrouter-image`. If no provider has been selected for the current task, ask once, following AGENTS.md. An explicit selection persists within the task; do not ask again or override it with the legacy script below.
+
+For product or Agent engineering articles, establish the product identifiers, key components and relationships before the first cover prompt. Include recognizable logos when requested and meaningful English labels when they help explain the subject. Match the visual medium to the article's technical content and the author's brief; atmosphere alone does not establish a technical topic. Keep a cover's conceptual connections consistent with the article, especially task handoff versus credential delivery.
+
+Channel ratios are constraints, not provider defaults. Prefer native target-ratio generation or background extension that preserves the approved content. The legacy `wechat-cover-hd` crop below can cut off logos and labels; it is not the default adaptation strategy.
+
 ## Quick workflow
 
 1. Identify what you need:
@@ -34,9 +42,9 @@ Use this skill to create illustrations for articles — covers, inset imagery, d
    - `auto` for provider-chosen default
 4. If the user supplied reference images, treat them as style guidance only.
 5. If the user wants to inspect the prompt first, use `--dry-run`.
-6. For live generation, run the bundled script with `uv run`.
+6. For live generation, follow the selected media skill. Use the bundled legacy script only when that CLI path is explicitly requested and its provider/model compatibility has been checked.
 
-## Script
+## Legacy CLI script (explicit fallback only)
 
 Use `uv run` for Python scripts:
 
@@ -85,9 +93,7 @@ Size presets:
 
 ## Model selection
 
-- Use `gpt-image-2` for official OpenAI and for `https://aihubmix.com/v1`.
-- Use `openai/gpt-image-2` for `https://api.ofox.io/v1`.
-- Default back to `gpt-image-2` unless a provider requires a namespaced model name.
+Use the selected media skill's current model contract. Do not infer the model identity of built-in `imagegen` from the image quality or a user-mentioned model version. The legacy script's historical model names and size presets require compatibility checks before use; this documentation update does not validate that CLI against current providers.
 
 ## References
 

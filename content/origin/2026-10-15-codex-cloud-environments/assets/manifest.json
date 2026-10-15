@@ -18,7 +18,9 @@
       "alt": "ChatGPT on a phone hands off work to a Codex Cloud Environment containing three isolated Task VMs",
       "used_in": "frontmatter-cover; blog hero, article thumbnail and Open Graph image",
       "status": "used",
-      "notes": "User requested technical illustration with ChatGPT logo and Codex Cloud Environment. One targeted edit removed a misleading credential-proxy placement. Conceptual illustration, not a production deployment diagram."
+      "notes": "User requested technical illustration with ChatGPT logo and Codex Cloud Environment. One targeted edit removed a misleading credential-proxy placement. Conceptual illustration, not a production deployment diagram.",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/origin/cover-cloud-agent-v2.png",
+      "working_path_policy": "relative-symlink; media ignored by git"
     },
     {
       "file": "cover-cloud-agent.png",
@@ -50,7 +52,9 @@
       "sha256": "953445c047f5d30baa11e5d9a5b0a0c24fa3055cffe0ee57745329585168902f",
       "used_in": "section-3-environment-creation",
       "status": "used",
-      "attribution": "OpenAI / ChatGPT Learn; visible source link in article caption"
+      "attribution": "OpenAI / ChatGPT Learn; visible source link in article caption",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/origin/official-environment-picker.jpg",
+      "working_path_policy": "relative-symlink; media ignored by git"
     },
     {
       "file": "official-environment-settings.jpg",
@@ -66,7 +70,9 @@
       "sha256": "3cc921f851843554f5fc688ffbdbe79d9c67485ada60839001c1ef3c3c87ab27",
       "used_in": "section-2-environment-update",
       "status": "used",
-      "attribution": "OpenAI / ChatGPT Learn; visible source link in article caption"
+      "attribution": "OpenAI / ChatGPT Learn; visible source link in article caption",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/origin/official-environment-settings.jpg",
+      "working_path_policy": "relative-symlink; media ignored by git"
     },
     {
       "file": "official-network-secret.jpg",
@@ -82,7 +88,9 @@
       "sha256": "75fd68993e7de83767f2f39e96e1dfefa3274d5772ecf8b72ccc3fa9f9fff689",
       "used_in": "section-4-network-secret",
       "status": "used",
-      "attribution": "OpenAI / ChatGPT Learn; visible source link in article caption"
+      "attribution": "OpenAI / ChatGPT Learn; visible source link in article caption",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/origin/official-network-secret.jpg",
+      "working_path_policy": "relative-symlink; media ignored by git"
     },
     {
       "file": "official-personal-vault.jpg",
@@ -98,7 +106,35 @@
       "sha256": "8e0289a1fc3f1a27c629dcbc9ce9b2ebcc3f7c5f561d3d29bc7d35f4ae82150d",
       "used_in": "section-4-personal-vault",
       "status": "used",
-      "attribution": "OpenAI / ChatGPT Learn; visible source link in article caption"
+      "attribution": "OpenAI / ChatGPT Learn; visible source link in article caption",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/origin/official-personal-vault.jpg",
+      "working_path_policy": "relative-symlink; media ignored by git"
+    },
+    {
+      "file": "environment-tasks.svg",
+      "kind": "authored-conceptual-svg",
+      "sha256": "4d1b2730a0675a60dddb1879db8a41222bd480dc686721d0c8b3ae63b552f917",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/origin/environment-tasks.svg",
+      "status": "used",
+      "working_path_policy": "tracked SVG; archival copy retained"
+    },
+    {
+      "file": "credential-injection.svg",
+      "kind": "authored-conceptual-svg",
+      "sha256": "f58f30a89222d752c592bfc843a42f2e5ec3d7a346c6b65069caf60c23d1a142",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/origin/credential-injection.svg",
+      "status": "used",
+      "working_path_policy": "tracked SVG; archival copy retained"
+    },
+    {
+      "file": "environment-vm-architecture.svg",
+      "kind": "authored-conceptual-svg",
+      "sha256": "9a7ede67d238ab5fb5bd6fa8f3bc8b7d155cda9453297e51f4bb7879a3df9fef",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/origin/environment-vm-architecture.svg",
+      "status": "used",
+      "working_path_policy": "tracked SVG; archival copy retained"
     }
-  ]
+  ],
+  "archive_root": ".local-archive/2026-10-15-codex-cloud-environments",
+  "recovery": "Restore binary files from archive to their asset paths, or keep the verified relative symlinks; blog deployment copies are independent."
 }

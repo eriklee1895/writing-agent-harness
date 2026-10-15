@@ -154,7 +154,7 @@ content/origin/YYYY-MM-DD-<slug>/assets/   # 配图、封面等
 - Markdown → HTML 转换后，所有外部 `<a href>` 需移除
 - 正文图片通过 `wechat-article-publisher` 上传到微信 CDN，不要 base64 内联
 - 代码块在微信编辑器中渲染行为复杂（3 种不同 HTML 结构），需要 `wechat-article-renderer` 专门处理
-- 默认 style 偏好 `agent-flow`（纯白底、无卡片、扇形流式排版），原因：微信夜间模式自动反色时浅色卡片很亮
+- 交付默认纯白底、正文容器透明；可沿用 `warm-editorial` 的强调色、字号和留白，`agent-flow` 等 preset 按文章选择。以 AGENTS.md 与 renderer Skill 的当前要求为准，检查实际 HTML；已验收产物不在发布或收尾时重渲染覆盖。
 
 ---
 

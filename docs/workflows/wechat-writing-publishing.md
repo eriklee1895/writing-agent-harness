@@ -6,11 +6,11 @@
 
 把一篇 canonical Markdown article 转成适合微信公众号移动端阅读的 HTML preview，再同步到微信公众号草稿箱，最后由用户进行 final human review 和发布。
 
-当前默认 style preset：
+当前交付默认纯白底、正文外层与章节容器透明。技术长文可沿用以下 preset 的强调色、字号与留白，但需检查输出，去掉历史暖纸色底和黑底表头；renderer token 尚未自动同步。已验收的 HTML 不在发布或收尾时重渲染覆盖。
 
 ```text
-impact-rational
-中文名：冲击开场，理性正文
+warm-editorial
+保留陶土橙强调、编辑随笔的字体与留白
 ```
 
 ## 推荐链路
@@ -80,7 +80,7 @@ polish-article
 使用：
 
 ```bash
-node .agents/skills/wechat-article-renderer/scripts/render-wechat-article.mjs /absolute/path/to/article.md --style impact-rational
+node .agents/skills/wechat-article-renderer/scripts/render-wechat-article.mjs /absolute/path/to/article.md --style warm-editorial
 ```
 
 默认输出：
@@ -112,7 +112,7 @@ http://localhost:49255/
 - title 和 image count 正常；
 - generated HTML 没有 `<script>`、`TODO`、`TBD`；
 - generated HTML 没有 base64 图片；
-- HTML 没有 `<a>`、`href`、外部 URL；
+- HTML 没有外部 `<a href>`；参考资料的 URL 可保留为可复制纯文本；
 - 表格、图片、caption、section cards 没有移动端溢出；
 - 图片路径可解析；
 - 参考资料以 plain text reference 呈现。

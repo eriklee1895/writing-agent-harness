@@ -55,7 +55,9 @@
       "width": 1280,
       "height": 1960,
       "bytes": 172960,
-      "sha256": "d14db18606ef1d8d98c56bc2914f24da08775d81415361e023609acaf6b94e52"
+      "sha256": "d14db18606ef1d8d98c56bc2914f24da08775d81415361e023609acaf6b94e52",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/wechat/workflow-handoff.png",
+      "working_path_policy": "relative-symlink; media ignored by git"
     },
     {
       "file": "environment-tasks.png",
@@ -63,7 +65,9 @@
       "width": 1280,
       "height": 2040,
       "bytes": 196401,
-      "sha256": "2afddcba239e363d26b96af34fa8aa47e8095125ab158cb13539ab7289f94683"
+      "sha256": "2afddcba239e363d26b96af34fa8aa47e8095125ab158cb13539ab7289f94683",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/wechat/environment-tasks.png",
+      "working_path_policy": "relative-symlink; media ignored by git"
     },
     {
       "file": "credential-injection.png",
@@ -71,7 +75,9 @@
       "width": 1280,
       "height": 2320,
       "bytes": 235477,
-      "sha256": "b31f9c1e9845f2cd5a57a2a68a0d64f888388bf1d1f75f42001ede90588ba6e6"
+      "sha256": "b31f9c1e9845f2cd5a57a2a68a0d64f888388bf1d1f75f42001ede90588ba6e6",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/wechat/credential-injection.png",
+      "working_path_policy": "relative-symlink; media ignored by git"
     },
     {
       "file": "environment-vm-architecture.png",
@@ -79,7 +85,9 @@
       "width": 1280,
       "height": 2839,
       "bytes": 301338,
-      "sha256": "f760eafcf1dccf3df26bbd1e4d6d37a6b30e757a147aad1b6f9cbfb8942a00d1"
+      "sha256": "f760eafcf1dccf3df26bbd1e4d6d37a6b30e757a147aad1b6f9cbfb8942a00d1",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/wechat/environment-vm-architecture.png",
+      "working_path_policy": "relative-symlink; media ignored by git"
     },
     {
       "file": "cover-wechat.png",
@@ -87,7 +95,11 @@
       "width": 1920,
       "height": 819,
       "bytes": 1399085,
-      "sha256": "69cef8308ffd00356416d2deaf833f7602b441351b4e46f81690a2f6dd9870b3"
+      "sha256": "69cef8308ffd00356416d2deaf833f7602b441351b4e46f81690a2f6dd9870b3",
+      "archive_path": ".local-archive/2026-10-15-codex-cloud-environments/images/wechat/cover-wechat.png",
+      "working_path_policy": "relative-symlink; media ignored by git"
     }
-  ]
+  ],
+  "archive_root": ".local-archive/2026-10-15-codex-cloud-environments",
+  "recovery": "Restore binary files from archive to their asset paths, or keep the verified relative symlinks; blog deployment copies are independent."
 }

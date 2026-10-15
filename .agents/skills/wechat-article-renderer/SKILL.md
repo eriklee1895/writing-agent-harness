@@ -83,7 +83,7 @@ Shared renderer rules:
 
 ## Cover Images
 
-When a WeChat article needs a new cover image, use the project `article-illustration` skill (or the user-level `gpt-image-2` / `seedream-image-gen` media skills, maintained by erik-agent-skills) and load credentials from the project `.env` without printing secret values. Do not recreate media-generation skills inside this repo.
+When a WeChat article needs a cover, use `article-illustration` to organize its brief and follow the user's selected media skill (`imagegen`, `gpt-image-api`, `seedream-image-gen` or `openrouter-image`) for generation. Ask once if the current task has no selection. Keep the approved artwork intact when adapting to the approximately 2.35:1 lead-cover ratio; prefer native target-ratio generation or background extension when cropping would remove labels or logos. Built-in `imagegen` does not require API-key setup; API skills own their credential handling. Do not recreate media-generation skills inside this repo.
 
 ## Publishing Boundary
 

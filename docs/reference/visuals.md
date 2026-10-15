@@ -1,6 +1,6 @@
 # Visuals
 
-位图 / 视频 / 语音 / 配乐生成使用本机 user-level media skills（由 erik-agent-skills repo 统一维护，不在本 repo 内）：图片 `gpt-image-2` / `seedream-image-gen`，视频 `seedance-video-gen`，语音合成 `volcengine-tts`，生成式音频 `seed-audio-gen`，无人声配乐 `volcengine-bigmusic-bgm`。不要在本 repo `.agents/skills/` 重建这些 skill 的副本。文章配图/封面优先走项目 skill `article-illustration`。
+位图 / 视频 / 语音 / 配乐生成使用现有 media skills：图片按用户在当前任务中的选择使用 `imagegen`（内置工具）、`gpt-image-api`、`seedream-image-gen` 或 `openrouter-image`；后三者由 erik-agent-skills 维护。视频使用 `seedance-video-gen`，语音合成使用 `volcengine-tts`，生成式音频使用 `seed-audio-gen`，无人声配乐使用 `volcengine-bigmusic-bgm`。不要在本 repo `.agents/skills/` 重建这些 skill 的副本。项目 `article-illustration` 组织配图 brief、风格和 provenance；没有用户选型时先问一句，不设生图工具默认值。
 
 账号信息放在 `.env`。不要打印 secret values。OpenAI 图片相关 key 可能包括：
 

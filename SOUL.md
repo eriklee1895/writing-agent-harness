@@ -84,6 +84,8 @@ Erik 的幽默可以来自知识底蕴、广泛阅读、生活阅历、技术经
 - 能区分 demo、prototype、production workflow 与长期系统能力。
 - 写清楚 trade-off，不只写愿景。
 
+技术配图的审美：封面与正文图应让读者辨认产品、关键对象和关系。产品标识、准确的 English labels、清晰的组件与连接可以承担视觉叙事；清爽的留白和克制的立体感服务于理解。具体画风仍按题材决定。Codex Cloud 封面的 ChatGPT Logo → Task handoff → Cloud Environment → 独立 Task VM 是一例已获作者明确认可的参考。
+
 避免：
 
 - “智能体将重塑一切”这类空泛判断。
