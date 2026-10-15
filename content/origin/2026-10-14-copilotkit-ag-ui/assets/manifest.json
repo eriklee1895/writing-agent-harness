@@ -23,7 +23,7 @@
       "quality": "auto",
       "sha256": "0f77fd6ac24f2583d620cdf48d4c9b18bdb56b3645ee3ba86b66d03239162cc3",
       "visual_review": "Composition, palette, unintended text, and conceptual status checked.",
-      "archive_path": null,
+      "archive_path": ".local-archive/2026-10-14-copilotkit-ag-ui/unused-assets/hero-editorial.png",
       "rejection_reason": "氛围插图，无文字和技术信息；改用信息图。"
     },
     {
@@ -44,7 +44,7 @@
       "quality": "auto",
       "sha256": "381ab246e2d431d8e2f31734bb8a2140042ff6864c2d65072e556665162f85a3",
       "visual_review": "Composition, palette, unintended text, and conceptual status checked.",
-      "archive_path": null,
+      "archive_path": ".local-archive/2026-10-14-copilotkit-ag-ui/unused-assets/human-agent-collaboration.png",
       "rejection_reason": "氛围插图，无文字和技术信息；改用信息图。"
     },
     {
@@ -68,7 +68,8 @@
       "generator": "render_figures.py",
       "status": "superseded_by_user",
       "archive_path": null,
-      "superseded_reason": "User rejected old four-row design; replaced by generated hub-and-four-groups infographic."
+      "superseded_reason": "User rejected old four-row design; replaced by generated hub-and-four-groups infographic.",
+      "raster_archive_path": ".local-archive/2026-10-14-copilotkit-ag-ui/unused-assets/copilotkit-ecosystem-map.png"
     },
     {
       "id": "hero-technical-v2",
@@ -128,7 +129,7 @@
       "model": null,
       "actual_size": "1536x1024",
       "sha256": "3b9cd12908310749798277203a3a5c369b6da51e40e010cafd85a75a8aa0e8b1",
-      "archive_path": null,
+      "archive_path": ".local-archive/2026-10-14-copilotkit-ag-ui/unused-assets/protocol-scopes.png",
       "superseded_reason": "Missing ACP; framing implied exclusive protocol boundaries."
     },
     {
