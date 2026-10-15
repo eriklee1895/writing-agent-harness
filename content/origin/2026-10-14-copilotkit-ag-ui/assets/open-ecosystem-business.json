@@ -1,0 +1,19 @@
+{
+  "id": "open-ecosystem-business",
+  "file": "open-ecosystem-business.png",
+  "role": "body-concluding-analysis",
+  "kind": "generated-technical-infographic",
+  "execution": "built-in image_gen",
+  "provider": "built-in",
+  "model": null,
+  "generated": "2026-10-15",
+  "prompt_file": "prompts/open-ecosystem-business.txt",
+  "metadata_file": "open-ecosystem-business.json",
+  "status": "used",
+  "placement": "开放之后，生意从哪里来",
+  "alt": "开放生态带来开发者采用，生产阶段可选择自建或平台服务；商业转化仍需赢得客户选择",
+  "actual_size": "1122x1402",
+  "sha256": "ece553555dd33d56f0dcda11f64a4cac65436c7dcd753a0428db8c288c626dbf",
+  "review": "Chinese labels checked; branches represent possible choices, not inevitable conversion. Three observation points match the article. No invented revenue or conversion data.",
+  "archive_path": null
+}

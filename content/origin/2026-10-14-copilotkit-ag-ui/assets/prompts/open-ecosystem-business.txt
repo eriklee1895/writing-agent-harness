@@ -1,0 +1,35 @@
+Use case: infographic-diagram.
+Asset type: a concluding information-rich Chinese editorial infographic for a technical industry essay about CopilotKit, for mobile reading. Generate a NEW raster image, portrait 4:5 composition, high resolution, pure white #FFFFFF background, generous margins. The author's thesis is that open protocol adoption may create commercial opportunity, but does not automatically become paying customers. All relationships are conceptual analysis, not measured conversion data.
+
+Style: polished professional technical infographic, matching a blue/orange CopilotKit article series. Flat vector-like crisp line work, deep navy bold Chinese sans serif text, blue for open ecosystem, restrained orange for commercial opportunities. Large legible typography. White or extremely faint white-tinted node interiors, thin outlines. No photographic elements, no atmospheric illustration, no decorative robots, no fake logos, no currency icons, no charts with fabricated numbers, no gradients, no paper texture. Most important: readable Chinese labels and meaningful arrows. All printed text below is exact, do not add other text.
+
+Composition:
+Top title large bold: “从开源入口，到持续收入”
+Below smaller subtitle: “CopilotKit 的商业机会，仍要由产品兑现”
+
+Main diagram down the center:
+First wide blue outlined module:
+“开放生态”
+“AG-UI 协议 · CopilotKit SDK”
+A short downward arrow to second wide navy outlined module:
+“开发者采用，项目进入生产”
+From this module split into TWO clearly separated paths, thin arrows:
+Left path to gray outlined smaller module:
+“自建或选择其他产品”
+“使用协议，未必付费”
+Right path to orange outlined smaller module:
+“选择 CopilotKit 平台服务”
+“为生产能力与服务付费”
+Label on right arrow only: “需要赢得客户选择”
+These two branches express possible choices, not inevitable sequential steps. NO arrow from left module to right module. No circular flywheel.
+
+Below these modules a thin divider, then small dark bold heading:
+“接下来，看三件事”
+Three spacious numbered lines, dark text with orange numbers:
+“01  Intelligence 能否进入核心流程”
+“02  独立实现能否稳定协作”
+“03  其他前端的用户是否愿意购买平台服务”
+
+At bottom small but readable muted note:
+“分析示意，不代表已验证的转化率或收入”
+Keep bottom note away from edges. Ensure last line does not overflow. Use 4:5 portrait geometry with compact meaningful flow taking upper two-thirds and observation list lower third.
