@@ -1,5 +1,5 @@
 ---
-title: "拆解 Claude Duet：一个会主动找你的 Claude，和它身后的九个月"
+title: "拆解 Claude Duet：一个会主动找你的 Claude"
 date: 2026-10-26
 register: industry-analysis
 category: AI Frontier
