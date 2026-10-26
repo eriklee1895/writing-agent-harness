@@ -4,6 +4,7 @@ date: 2026-10-26
 register: industry-analysis
 category: AI Frontier
 type: 行业观察
+cover: assets/cover-blocks-sunrise.jpeg
 summary: "Anthropic 的常驻个人 Agent Duet 没有新原语：云 VM、凭据隔离、动作分类器都是旧积木，新的只有巡检节奏、打扰判断和外发信息审查。"
 tags:
   - Claude Duet
