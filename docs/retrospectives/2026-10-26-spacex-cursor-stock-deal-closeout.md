@@ -46,3 +46,9 @@
 - 博客提交已推送 `main`；原有 `.claude/` 与旧封面没有进入提交。
 - 写作仓库只提交 canonical、HTML、prompt、manifest、同步器、测试与本复盘；本机 `.local-archive/`、`.local-memory/`、图片二进制和发布状态不提交。
 - 博客公开内容已完成，无剩余发布动作。后续若在共享 skill 中补多分类说明，属于独立维护工作。
+
+## 首页推荐修复
+
+用户发现首页左侧仍是 Claude Duet。根因不是部署缓存，而是两篇 `pubDatetime` 均为 `2026-10-26T00:00:00Z`，且均无 `featured`，首页回退到排序后的第一篇。采用显式编辑推荐而非伪造时间：SpaceX 设置 `featured: true`，同步器增加字段透传与默认省略测试，12 项测试通过。
+
+博客修复提交 `5c7aeb1` 已推送 `main`。本地构建与页面确认 SpaceX 左侧推荐、Claude Duet 右侧最新文章；Cloudflare 多次 200 响应确认新 lead，用户线上截图再次验证。推送前的 GitHub 连接超时通过保留本地提交、网络恢复后重试解决，没有改 remote 或凭据。
