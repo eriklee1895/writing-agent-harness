@@ -5,6 +5,7 @@ summary: "从30美元订阅到太空算力，拆解SpaceX收购Cursor的产业�
 cover: assets/hero-cover-v2.png
 register: industry-analysis
 type: 行业观察
+featured: true
 category: AI Frontier
 categories:
   - Business Insights

@@ -180,3 +180,23 @@ def test_additional_categories_are_emitted_as_yaml_list(tmp_path):
 def test_no_additional_categories_omits_optional_field(tmp_path):
     frontmatter = render(tmp_path, origin_has_file=False, destination_has_file=False)
     assert "\ncategories:" not in frontmatter
+
+
+def test_featured_flag_is_forwarded(tmp_path):
+    source_path, destination_assets = build_scene(
+        tmp_path, origin_has_file=False, destination_has_file=False
+    )
+    frontmatter = sync.build_blog_frontmatter(
+        {"title": "Demo", "featured": True},
+        "body\n",
+        source_path,
+        make_args(),
+        destination_assets,
+    )
+
+    assert "\nfeatured: true\n" in frontmatter
+
+
+def test_featured_is_omitted_by_default(tmp_path):
+    frontmatter = render(tmp_path, origin_has_file=False, destination_has_file=False)
+    assert "\nfeatured:" not in frontmatter

@@ -508,6 +508,7 @@ def build_blog_frontmatter(
         f"pubDatetime: {coerce_pub_datetime(date_value)}",
         "author: \"Erik Lee\"",
         f"draft: {yaml_scalar(draft)}",
+        f"featured: {yaml_scalar(source_meta.get('featured') is True)}" if "featured" in source_meta else "",
         f"category: {yaml_scalar(category)}",
         *(yaml_list(categories, "categories") if categories else []),
         yaml_optional_string("series", series),
