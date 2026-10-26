@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="use-iframe" content="true">
+<meta name="html-box-height-mode" content="auto">
+<title>麒麟大口茶 SKU 与价格</title>
+<style>
+  :root { --paper:#f7f3ea; --ink:#1f2933; --muted:#6b7280; --line:#d9d2c3; --citrus:#f2c14e; --leaf:#5b8c5a; --terracotta:#c96f4a; --blue:#a9c7d8; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--paper); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; padding:28px 20px; }
+  .wrap { max-width:760px; margin:0 auto; }
+  .kicker { font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--terracotta); font-weight:700; margin-bottom:8px; }
+  h1 { font-size:24px; line-height:1.3; margin-bottom:6px; }
+  .sub { font-size:13px; color:var(--muted); margin-bottom:24px; }
+  .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px 14px; min-height:142px; display:flex; flex-direction:column; justify-content:space-between; }
+  .card .city { font-size:12px; color:var(--muted); }
+  .card .price { font-size:26px; font-weight:700; line-height:1.1; margin:6px 0 2px; }
+  .card .price small { font-size:12px; font-weight:500; color:var(--muted); }
+  .card .note { font-size:11px; line-height:1.5; color:var(--muted); }
+  .card.rtd { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .card.rtd .city, .card.rtd .note { color:#cfc7b8; }
+  .card.rtd .price { color:var(--citrus); }
+  .badge { display:inline-block; font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; background:var(--citrus); color:var(--ink); padding:3px 8px; border-radius:999px; margin-bottom:10px; align-self:flex-start; }
+  .foot { margin-top:20px; padding-top:12px; border-top:1px solid var(--line); font-size:11px; line-height:1.6; color:var(--muted); }
+  @media (max-width:640px) { .grid { grid-template-columns:1fr 1fr; } }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#161a1d; --ink:#f1ede4; --muted:#a8a29e; --line:#2f353a; }
+    body { background:var(--paper); }
+    .card { background:#1f2428; }
+    .card.rtd { background:var(--citrus); color:#1f2933; }
+    .card.rtd .price { color:#1f2933; }
+    .card.rtd .city, .card.rtd .note { color:#3b3428; }
+  }
+  html[data-embed-theme="dark"] { --paper:#161a1d; --ink:#f1ede4; --muted:#a8a29e; --line:#2f353a; }
+  html[data-embed-theme="dark"] body { background:var(--paper); }
+  html[data-embed-theme="dark"] .card { background:#1f2428; }
+  html[data-embed-theme="dark"] .card.rtd { background:var(--citrus); color:#1f2933; }
+  html[data-embed-theme="dark"] .card.rtd .price { color:#1f2933; }
+  html[data-embed-theme="dark"] .card.rtd .city, html[data-embed-theme="dark"] .card.rtd .note { color:#3b3428; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">ONE FLAVOR · THREE PRICES · ONE EXTENSION</div>
+  <h1>一个味道，三层价格</h1>
+  <div class="sub">麒麟大口茶的 SKU 不是一款产品，是一条按城市成本定价的价格带。</div>
+  <div class="grid">
+    <div class="card"><div><div class="city">昆明</div><div class="price">¥15<small> / 杯</small></div></div><div class="note">现制 · 糯香柠檬茶</div></div>
+    <div class="card"><div><div class="city">深圳</div><div class="price">¥17<small> / 杯</small></div></div><div class="note">现制 · 糯香柠檬茶</div></div>
+    <div class="card"><div><div class="city">北京</div><div class="price">¥18<small> / 杯</small></div></div><div class="note">现制 · 糯香柠檬茶</div></div>
+    <div class="card rtd"><div><span class="badge">2026 新延伸</span><div class="city">即饮 · 双罐</div><div class="price">¥19.9<small> / 2 罐</small></div></div><div class="note">390ml × 2 · 云南白药参与研发 · 云南山泉渠道</div></div>
+  </div>
+  <div class="foot">来源：品牌披露、大众点评、Foodaily（2026-10-12）。价格为公开口径；现制产品实际成交价可能因门店与活动不同。</div>
+</div>
+</body>
+</html>
