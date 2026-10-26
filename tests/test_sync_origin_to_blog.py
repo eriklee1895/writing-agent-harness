@@ -159,3 +159,24 @@ def test_non_asset_references_are_trusted(tmp_path):
 
     for value in ("https://example.com/a.png", "cover.png", "", None):
         assert sync.asset_exists_in_source_or_destination(source_dir, value, destination) is True
+
+
+def test_additional_categories_are_emitted_as_yaml_list(tmp_path):
+    source_path, destination_assets = build_scene(
+        tmp_path, origin_has_file=False, destination_has_file=False
+    )
+    frontmatter = sync.build_blog_frontmatter(
+        {"title": "Demo", "category": "AI Frontier", "categories": ["Business Insights"]},
+        "body\n",
+        source_path,
+        make_args(),
+        destination_assets,
+    )
+
+    assert 'category: "AI Frontier"' in frontmatter
+    assert 'categories:\n  - "Business Insights"\n' in frontmatter
+
+
+def test_no_additional_categories_omits_optional_field(tmp_path):
+    frontmatter = render(tmp_path, origin_has_file=False, destination_has_file=False)
+    assert "\ncategories:" not in frontmatter

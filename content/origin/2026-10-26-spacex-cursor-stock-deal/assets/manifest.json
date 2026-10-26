@@ -1,0 +1,193 @@
+{
+  "manifest_version": 1,
+  "article": "content/origin/2026-10-26-spacex-cursor-stock-deal/index.md",
+  "published_url": "https://eriklee-blog.pages.dev/posts/2026-10-26-spacex-cursor-stock-deal/",
+  "blog_commit": "8e39d10",
+  "archive_index": ".local-archive/2026-10-26-spacex-cursor-stock-deal/index.md",
+  "notes": "Only article-referenced images are archived. Unused generated variants remain local working copies and are not tracked as final assets.",
+  "images": [
+    {
+      "file": "hero-cover-v2.png",
+      "usage": "frontmatter cover",
+      "status": "used",
+      "source": "gpt-image-api",
+      "model": "gpt-image-2.5-sunburst",
+      "provider": "ofox",
+      "size": "1536x1024",
+      "quality": "high",
+      "created_at": "2026-10-26T11:16:50+00:00",
+      "prompts": [
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/hero-cover.txt",
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/hero-cover-title-fix.txt"
+      ],
+      "metadata": ".local-archive/2026-10-26-spacex-cursor-stock-deal/prompts/hero-cover-v2.json",
+      "archive": ".local-archive/2026-10-26-spacex-cursor-stock-deal/images/hero-cover-v2.png",
+      "working_link": "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/hero-cover-v2.png",
+      "symlink_target": "../../../../.local-archive/2026-10-26-spacex-cursor-stock-deal/images/hero-cover-v2.png",
+      "sha256": "f54b91d4bd4eae2c0f5b09c4cded3df0164ee0db392157d3ef2923c96a892f24",
+      "bytes": 799038
+    },
+    {
+      "file": "ch01-growth-constraints.png",
+      "usage": "chapter: Cursor before acquisition",
+      "status": "used",
+      "source": "gpt-image-api",
+      "model": "gpt-image-2.5-sunburst",
+      "provider": "ofox",
+      "size": "1536x1024",
+      "quality": "high",
+      "created_at": "2026-10-26T06:40:06+00:00",
+      "prompts": [
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/ch01-growth-constraints.txt"
+      ],
+      "metadata": ".local-archive/2026-10-26-spacex-cursor-stock-deal/prompts/ch01-growth-constraints.json",
+      "archive": ".local-archive/2026-10-26-spacex-cursor-stock-deal/images/ch01-growth-constraints.png",
+      "working_link": "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/ch01-growth-constraints.png",
+      "symlink_target": "../../../../.local-archive/2026-10-26-spacex-cursor-stock-deal/images/ch01-growth-constraints.png",
+      "sha256": "59f79bc3851b21982dc655c4df5e38876b9a4385c923f06d88e0f930f7132290",
+      "bytes": 822870
+    },
+    {
+      "file": "ch02-strategic-fit-v2.png",
+      "usage": "chapter: strategic fit",
+      "status": "used",
+      "source": "gpt-image-api",
+      "model": "gpt-image-2.5-sunburst",
+      "provider": "ofox",
+      "size": "1536x1024",
+      "quality": "high",
+      "created_at": "2026-10-26T06:33:48+00:00",
+      "prompts": [
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/ch02-strategic-fit.txt",
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/ch02-strategic-fit-xai-fix.txt"
+      ],
+      "metadata": ".local-archive/2026-10-26-spacex-cursor-stock-deal/prompts/ch02-strategic-fit-v2.json",
+      "archive": ".local-archive/2026-10-26-spacex-cursor-stock-deal/images/ch02-strategic-fit-v2.png",
+      "working_link": "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/ch02-strategic-fit-v2.png",
+      "symlink_target": "../../../../.local-archive/2026-10-26-spacex-cursor-stock-deal/images/ch02-strategic-fit-v2.png",
+      "sha256": "82440da093aefdcdca300913bd0d5c21e7569ab9480a68028b184875cbfe01ad",
+      "bytes": 1011529
+    },
+    {
+      "file": "ch03-stock-acquisition-terms.png",
+      "usage": "chapter: stock acquisition terms",
+      "status": "used",
+      "source": "gpt-image-api",
+      "model": "gpt-image-2.5-sunburst",
+      "provider": "ofox",
+      "size": "1536x1024",
+      "quality": "high",
+      "created_at": "2026-10-26T06:41:55+00:00",
+      "prompts": [
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/ch03-stock-acquisition-terms.txt"
+      ],
+      "metadata": ".local-archive/2026-10-26-spacex-cursor-stock-deal/prompts/ch03-stock-acquisition-terms.json",
+      "archive": ".local-archive/2026-10-26-spacex-cursor-stock-deal/images/ch03-stock-acquisition-terms.png",
+      "working_link": "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/ch03-stock-acquisition-terms.png",
+      "symlink_target": "../../../../.local-archive/2026-10-26-spacex-cursor-stock-deal/images/ch03-stock-acquisition-terms.png",
+      "sha256": "6dde9ab1121f0163a793eac4aa99153fc53a635e0626939693d20b2e730aefee",
+      "bytes": 778079
+    },
+    {
+      "file": "ch04-vwap-exchange-ratio.png",
+      "usage": "chapter: VWAP and exchange ratio",
+      "status": "used",
+      "source": "gpt-image-api",
+      "model": "gpt-image-2.5-sunburst",
+      "provider": "ofox",
+      "size": "1536x1024",
+      "quality": "high",
+      "created_at": "2026-10-26T06:40:40+00:00",
+      "prompts": [
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/ch04-vwap-exchange-ratio.txt"
+      ],
+      "metadata": ".local-archive/2026-10-26-spacex-cursor-stock-deal/prompts/ch04-vwap-exchange-ratio.json",
+      "archive": ".local-archive/2026-10-26-spacex-cursor-stock-deal/images/ch04-vwap-exchange-ratio.png",
+      "working_link": "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/ch04-vwap-exchange-ratio.png",
+      "symlink_target": "../../../../.local-archive/2026-10-26-spacex-cursor-stock-deal/images/ch04-vwap-exchange-ratio.png",
+      "sha256": "e186bf2270f9261316a9406e08563da6e6b0cb5daf15803c74bd474d23bfcd52",
+      "bytes": 943119
+    },
+    {
+      "file": "ch06-three-prices.png",
+      "usage": "chapter: accounting values",
+      "status": "used",
+      "source": "gpt-image-api",
+      "model": "gpt-image-2.5-sunburst",
+      "provider": "ofox",
+      "size": "1536x1024",
+      "quality": "high",
+      "created_at": "2026-10-26T06:16:16+00:00",
+      "prompts": [
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/ch06-three-prices.txt"
+      ],
+      "metadata": ".local-archive/2026-10-26-spacex-cursor-stock-deal/prompts/ch06-three-prices.json",
+      "archive": ".local-archive/2026-10-26-spacex-cursor-stock-deal/images/ch06-three-prices.png",
+      "working_link": "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/ch06-three-prices.png",
+      "symlink_target": "../../../../.local-archive/2026-10-26-spacex-cursor-stock-deal/images/ch06-three-prices.png",
+      "sha256": "307bc26fecce71d86c9ff5f03625514d5e6d9b938dde70aba923dd0cc2218065",
+      "bytes": 838239
+    },
+    {
+      "file": "ch07-risk-allocation.png",
+      "usage": "chapter: risk allocation",
+      "status": "used",
+      "source": "gpt-image-api",
+      "model": "gpt-image-2.5-sunburst",
+      "provider": "ofox",
+      "size": "1536x1024",
+      "quality": "high",
+      "created_at": "2026-10-26T06:41:14+00:00",
+      "prompts": [
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/ch07-risk-allocation.txt"
+      ],
+      "metadata": ".local-archive/2026-10-26-spacex-cursor-stock-deal/prompts/ch07-risk-allocation.json",
+      "archive": ".local-archive/2026-10-26-spacex-cursor-stock-deal/images/ch07-risk-allocation.png",
+      "working_link": "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/ch07-risk-allocation.png",
+      "symlink_target": "../../../../.local-archive/2026-10-26-spacex-cursor-stock-deal/images/ch07-risk-allocation.png",
+      "sha256": "1848cec6d7e88a8b5265b4d05ac95f9da5cfe16b3d8baac8d7add9b838e2e2f2",
+      "bytes": 771103
+    },
+    {
+      "file": "ch08-orbital-full-stack-v2.png",
+      "usage": "chapter: orbital full stack",
+      "status": "used",
+      "source": "gpt-image-api",
+      "model": "gpt-image-2.5-sunburst",
+      "provider": "ofox",
+      "size": "1536x1024",
+      "quality": "high",
+      "created_at": "2026-10-26T06:44:24+00:00",
+      "prompts": [
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/ch08-orbital-full-stack.txt",
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/ch08-xai-fix.txt"
+      ],
+      "metadata": ".local-archive/2026-10-26-spacex-cursor-stock-deal/prompts/ch08-orbital-full-stack-v2.json",
+      "archive": ".local-archive/2026-10-26-spacex-cursor-stock-deal/images/ch08-orbital-full-stack-v2.png",
+      "working_link": "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/ch08-orbital-full-stack-v2.png",
+      "symlink_target": "../../../../.local-archive/2026-10-26-spacex-cursor-stock-deal/images/ch08-orbital-full-stack-v2.png",
+      "sha256": "1593538fbe70f0a51c80f3c43f70a5169d1870bbe8d5bb7220c6154cca132303",
+      "bytes": 1117974
+    },
+    {
+      "file": "closing-starship-orbital-dawn.png",
+      "usage": "closing artistic vision",
+      "status": "used",
+      "source": "gpt-image-api",
+      "model": "gpt-image-2.5-sunburst",
+      "provider": "ofox",
+      "size": "1728x736",
+      "quality": "auto",
+      "created_at": "2026-10-26T11:32:54+00:00",
+      "prompts": [
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/closing-starship-orbital-dawn.txt"
+      ],
+      "metadata": ".local-archive/2026-10-26-spacex-cursor-stock-deal/prompts/closing-starship-orbital-dawn.json",
+      "archive": ".local-archive/2026-10-26-spacex-cursor-stock-deal/images/closing-starship-orbital-dawn.png",
+      "working_link": "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/closing-starship-orbital-dawn.png",
+      "symlink_target": "../../../../.local-archive/2026-10-26-spacex-cursor-stock-deal/images/closing-starship-orbital-dawn.png",
+      "sha256": "00e8ab5e85940fbc28824d01442cf185c258b7737736ca264eb073af8f458bf0",
+      "bytes": 1848570
+    }
+  ]
+}

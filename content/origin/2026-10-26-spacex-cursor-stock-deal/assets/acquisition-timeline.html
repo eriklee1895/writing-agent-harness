@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>从算力合作到统一订阅</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #fff;
+      --fg: #1f1f1f;
+      --mu: #6b6b6b;
+      --bd: #e3e2de;
+      --card: #f7f6f3;
+      --card2: #f0efed;
+      --blue: #2a78d6;
+      --orange: #eb6834;
+      --green: #1baf7a;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #191919;
+        --fg: #e6e6e6;
+        --mu: #9b9b9b;
+        --bd: #343434;
+        --card: #232323;
+        --card2: #30302e;
+        --blue: #3987e5;
+        --orange: #d95926;
+        --green: #199e70;
+      }
+    }
+    html[data-embed-theme="light"] {
+      color-scheme: light;
+      --bg: #fff;
+      --fg: #1f1f1f;
+      --mu: #6b6b6b;
+      --bd: #e3e2de;
+      --card: #f7f6f3;
+      --card2: #f0efed;
+      --blue: #2a78d6;
+      --orange: #eb6834;
+      --green: #1baf7a;
+    }
+    html[data-embed-theme="dark"] {
+      color-scheme: dark;
+      --bg: #191919;
+      --fg: #e6e6e6;
+      --mu: #9b9b9b;
+      --bd: #343434;
+      --card: #232323;
+      --card2: #30302e;
+      --blue: #3987e5;
+      --orange: #d95926;
+      --green: #199e70;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans CJK SC", "PingFang SC", sans-serif;
+    }
+    button, summary { font: inherit; }
+    button { color: var(--fg); }
+    button:focus-visible,
+    summary:focus-visible,
+    .table-wrap:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 3px;
+    }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    [hidden] { display: none !important; }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    main {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 32px 28px 36px;
+    }
+    .report-header {
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--bd);
+    }
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--mu);
+      font-size: 13px;
+      font-weight: 650;
+      letter-spacing: .08em;
+    }
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.25;
+      letter-spacing: -.03em;
+    }
+    .intro {
+      max-width: 780px;
+      margin: 12px 0 0;
+      color: var(--mu);
+      font-size: 15px;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+      margin: 20px 0 0;
+      padding: 0;
+      list-style: none;
+      color: var(--mu);
+      font-size: 13px;
+    }
+    .legend li { display: inline-flex; align-items: center; gap: 7px; }
+    .legend-mark {
+      width: 10px;
+      height: 10px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--mark);
+      box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--mark);
+    }
+    .tone-agreement { --accent: var(--blue); }
+    .tone-transaction { --accent: var(--orange); }
+    .tone-integration { --accent: var(--green); }
+    .tone-registration { --accent: var(--mu); }
+
+    .timeline-section { margin-top: 26px; }
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .section-heading h2 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+    .section-note {
+      margin: 0;
+      color: var(--mu);
+      font-size: 13px;
+      text-align: right;
+    }
+    .stage-list {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+      margin: 0;
+      padding: 24px 0 0;
+      list-style: none;
+    }
+    .stage-list::before {
+      content: "";
+      position: absolute;
+      top: 7px;
+      left: calc(100% / 12);
+      right: calc(100% / 12);
+      height: 2px;
+      background: var(--bd);
+    }
+    .stage-item { min-width: 0; }
+    .stage-button {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 7px;
+      width: 100%;
+      height: 100%;
+      min-height: 158px;
+      padding: 15px 13px 13px;
+      border: 1px solid var(--bd);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--fg);
+      text-align: left;
+      cursor: pointer;
+    }
+    .stage-button::before {
+      content: "";
+      position: absolute;
+      top: -22px;
+      left: 50%;
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--bg);
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent);
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .stage-button:hover { background: var(--card); }
+    .stage-button[aria-pressed="true"] {
+      border-color: var(--accent);
+      background: var(--card);
+      box-shadow: inset 0 3px 0 var(--accent);
+    }
+    .stage-index {
+      color: var(--mu);
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: .03em;
+    }
+    .stage-date {
+      color: var(--fg);
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+    }
+    .stage-name {
+      font-size: 15px;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+    .stage-action {
+      margin-top: auto;
+      color: var(--mu);
+      font-size: 12px;
+    }
+
+    .detail-panel {
+      --accent: var(--blue);
+      margin-top: 18px;
+      padding: 24px;
+      border: 1px solid var(--bd);
+      border-top: 3px solid var(--accent);
+      border-radius: 12px;
+      background: var(--card);
+    }
+    .detail-panel[data-tone="agreement"] { --accent: var(--blue); }
+    .detail-panel[data-tone="transaction"] { --accent: var(--orange); }
+    .detail-panel[data-tone="integration"] { --accent: var(--green); }
+    .detail-panel[data-tone="registration"] { --accent: var(--mu); }
+    .detail-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .detail-kicker {
+      margin: 0 0 5px;
+      color: var(--mu);
+      font-size: 13px;
+      font-weight: 650;
+    }
+    .detail-heading h2 {
+      margin: 0;
+      font-size: clamp(22px, 3vw, 28px);
+      line-height: 1.35;
+      letter-spacing: -.015em;
+    }
+    .detail-date {
+      display: inline-block;
+      margin-top: 7px;
+      color: var(--mu);
+      font-size: 14px;
+      font-variant-numeric: tabular-nums;
+    }
+    .detail-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      min-height: 30px;
+      padding: 3px 10px;
+      border: 1px solid var(--bd);
+      border-radius: 999px;
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .detail-badge::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .detail-summary {
+      max-width: 900px;
+      margin: 18px 0 0;
+      font-size: 16px;
+    }
+    .fact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 20px 0 0;
+    }
+    .fact {
+      min-width: 0;
+      padding: 13px 15px;
+      border: 1px solid var(--bd);
+      border-radius: 8px;
+      background: var(--bg);
+    }
+    .fact dt {
+      color: var(--mu);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .fact dd {
+      margin: 4px 0 0;
+      font-size: 17px;
+      font-weight: 650;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+    .detail-note {
+      margin: 16px 0 0;
+      padding-left: 12px;
+      border-left: 3px solid var(--accent);
+      color: var(--mu);
+      font-size: 14px;
+    }
+    .detail-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--bd);
+    }
+    .pager { display: flex; gap: 8px; }
+    .pager button {
+      min-height: 44px;
+      padding: 8px 14px;
+      border: 1px solid var(--bd);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.4;
+      cursor: pointer;
+    }
+    .pager button:not(:disabled):hover { background: var(--card2); }
+    .position {
+      margin: 0;
+      color: var(--mu);
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .all-facts {
+      margin-top: 18px;
+      border: 1px solid var(--bd);
+      border-radius: 10px;
+      background: var(--bg);
+    }
+    .all-facts summary {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      min-height: 52px;
+      padding: 12px 16px;
+      border-radius: 9px;
+      color: var(--fg);
+      font-weight: 650;
+      cursor: pointer;
+    }
+    .all-facts summary::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      flex: 0 0 auto;
+      margin: 0 2px 5px;
+      border-right: 2px solid var(--mu);
+      border-bottom: 2px solid var(--mu);
+      transform: rotate(45deg);
+    }
+    .all-facts[open] summary::before {
+      margin: 5px 2px 0;
+      transform: rotate(225deg);
+    }
+    .all-facts summary:hover { background: var(--card); }
+    .all-facts[open] summary { border-bottom: 1px solid var(--bd); }
+    .summary-note {
+      margin-left: auto;
+      color: var(--mu);
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 0 0 9px 9px;
+    }
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--bd);
+      vertical-align: top;
+    }
+    th {
+      background: var(--card);
+      color: var(--mu);
+      font-size: 12px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+    td { color: var(--fg); }
+    tbody tr:last-child td { border-bottom: 0; }
+    td:first-child {
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .noscript {
+      margin: 14px 0 0;
+      color: var(--mu);
+      font-size: 14px;
+    }
+    .footnote {
+      margin-top: 18px;
+      color: var(--mu);
+      font-size: 13px;
+    }
+    .footnote p { margin: 4px 0 0; }
+
+    @media (max-width: 1050px) {
+      .stage-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        padding-top: 0;
+      }
+      .stage-list::before, .stage-button::before { display: none; }
+      .stage-button { min-height: 148px; }
+    }
+    @media (max-width: 680px) {
+      main { padding: 22px 16px 28px; }
+      .report-header { padding-bottom: 20px; }
+      .intro { font-size: 14px; }
+      .legend { gap: 9px 16px; }
+      .section-heading { align-items: flex-start; flex-direction: column; gap: 4px; }
+      .section-note { text-align: left; }
+      .stage-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .stage-button { min-height: 150px; padding: 13px 12px 12px; }
+      .stage-name { font-size: 14px; }
+      .detail-panel { padding: 18px 16px; }
+      .detail-heading { flex-direction: column; gap: 12px; }
+      .detail-badge { align-self: flex-start; }
+      .detail-summary { margin-top: 14px; font-size: 15px; }
+      .fact-grid { grid-template-columns: 1fr; margin-top: 16px; }
+      .fact dd { font-size: 16px; }
+      .detail-footer { align-items: flex-start; flex-direction: column; }
+      .pager { width: 100%; }
+      .pager button { flex: 1; padding-inline: 10px; }
+    }
+    @media (max-width: 360px) {
+      .stage-list { grid-template-columns: 1fr; }
+      .stage-button { min-height: 132px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+    @media (forced-colors: active) {
+      .stage-button[aria-pressed="true"] { outline: 2px solid ButtonText; outline-offset: -5px; }
+      .stage-list::before { background: CanvasText; }
+    }
+  </style>
+</head>
+<body>
+  <main aria-labelledby="page-title">
+    <header class="report-header">
+      <p class="eyebrow">交易与产品整合 · 交互时间线</p>
+      <h1 id="page-title">从算力合作到统一订阅</h1>
+      <p class="intro">沿六个节点查看协议、发行、交割、产品整合与注册披露。点击阶段阅读关键条款，或展开底部表格查看全部事实。</p>
+      <ul class="legend" aria-label="阶段性质图例">
+        <li class="tone-agreement"><span class="legend-mark" style="--mark: var(--accent)" aria-hidden="true"></span>协议约定</li>
+        <li class="tone-transaction"><span class="legend-mark" style="--mark: var(--accent)" aria-hidden="true"></span>发行与交割</li>
+        <li class="tone-integration"><span class="legend-mark" style="--mark: var(--accent)" aria-hidden="true"></span>产品整合</li>
+        <li class="tone-registration"><span class="legend-mark" style="--mark: var(--accent)" aria-hidden="true"></span>注册披露</li>
+      </ul>
+    </header>
+
+    <section class="timeline-section" aria-labelledby="timeline-title">
+      <div class="section-heading">
+        <h2 id="timeline-title">六个关键节点</h2>
+        <p class="section-note" id="timeline-help">Tab 聚焦，Enter 查看；也可用左右方向键切换</p>
+      </div>
+      <nav aria-label="选择时间线阶段" aria-describedby="timeline-help">
+        <ol class="stage-list">
+          <li class="stage-item tone-agreement">
+            <button class="stage-button" type="button" data-stage="0" aria-pressed="true" aria-controls="detail-panel">
+              <span class="stage-index">01 · 合作协议</span>
+              <time class="stage-date" datetime="2026-04-19">2026-04-19</time>
+              <span class="stage-name">算力合作与看涨期权</span>
+              <span class="stage-action">当前阶段</span>
+            </button>
+          </li>
+          <li class="stage-item tone-transaction">
+            <button class="stage-button" type="button" data-stage="1" aria-pressed="false" aria-controls="detail-panel">
+              <span class="stage-index">02 · IPO</span>
+              <time class="stage-date" datetime="2026-06-12">2026-06-12</time>
+              <span class="stage-name">发行价与净募资</span>
+              <span class="stage-action">查看详情</span>
+            </button>
+          </li>
+          <li class="stage-item tone-agreement">
+            <button class="stage-button" type="button" data-stage="2" aria-pressed="false" aria-controls="detail-panel">
+              <span class="stage-index">03 · 合并协议</span>
+              <time class="stage-date" datetime="2026-06-16">2026-06-16</time>
+              <span class="stage-name">签署，不是交割</span>
+              <span class="stage-action">查看详情</span>
+            </button>
+          </li>
+          <li class="stage-item tone-transaction">
+            <button class="stage-button" type="button" data-stage="3" aria-pressed="false" aria-controls="detail-panel">
+              <span class="stage-index">04 · 交易交割</span>
+              <time class="stage-date" datetime="2026-08-14">2026-08-14</time>
+              <span class="stage-name">VWAP 与换股比例</span>
+              <span class="stage-action">查看详情</span>
+            </button>
+          </li>
+          <li class="stage-item tone-integration">
+            <button class="stage-button" type="button" data-stage="4" aria-pressed="false" aria-controls="detail-panel">
+              <span class="stage-index">05 · 产品整合</span>
+              <time class="stage-date" datetime="2026-10-12">2026-10-12</time>
+              <span class="stage-name">X Subscription</span>
+              <span class="stage-action">查看详情</span>
+            </button>
+          </li>
+          <li class="stage-item tone-registration">
+            <button class="stage-button" type="button" data-stage="5" aria-pressed="false" aria-controls="detail-panel">
+              <span class="stage-index">06 · 注册披露</span>
+              <time class="stage-date" datetime="2026-10-22">2026-10-22</time>
+              <span class="stage-name">Form S-8 转售注册</span>
+              <span class="stage-action">查看详情</span>
+            </button>
+          </li>
+        </ol>
+      </nav>
+
+      <section class="detail-panel tone-agreement" id="detail-panel" data-tone="agreement" aria-labelledby="detail-title" aria-live="polite" aria-atomic="true">
+        <div class="detail-heading">
+          <div>
+            <p class="detail-kicker" id="detail-kicker">阶段 01 / 06 · 合作协议</p>
+            <h2 id="detail-title">算力合作与看涨期权</h2>
+            <time class="detail-date" id="detail-date" datetime="2026-04-19">2026-04-19</time>
+          </div>
+          <span class="detail-badge" id="detail-category">合作协议</span>
+        </div>
+        <p class="detail-summary" id="detail-summary">这一节点由算力合作协议与 call option（看涨期权）组成。期权是一项权利，而不是必须执行的义务。</p>
+        <dl class="fact-grid" id="fact-grid">
+          <div class="fact" id="fact-0">
+            <dt id="fact-label-0">合作协议</dt>
+            <dd id="fact-value-0">算力合作</dd>
+          </div>
+          <div class="fact" id="fact-1">
+            <dt id="fact-label-1">附带权利</dt>
+            <dd id="fact-value-1">call option（看涨期权）</dd>
+          </div>
+          <div class="fact" id="fact-2">
+            <dt id="fact-label-2">权利性质</dt>
+            <dd id="fact-value-2">是权利，不是义务</dd>
+          </div>
+          <div class="fact" id="fact-3" hidden>
+            <dt id="fact-label-3"></dt>
+            <dd id="fact-value-3"></dd>
+          </div>
+        </dl>
+        <p class="detail-note" id="detail-note">这里描述的是合作与期权安排，不把后续合并协议或交割提前到本节点。</p>
+        <div class="detail-footer">
+          <div class="pager" aria-label="切换阶段">
+            <button id="previous-stage" type="button" aria-controls="detail-panel" disabled>← 上一阶段</button>
+            <button id="next-stage" type="button" aria-controls="detail-panel">下一阶段 →</button>
+          </div>
+          <p class="position" id="stage-position">第 1 / 6 阶段</p>
+        </div>
+      </section>
+      <noscript><p class="noscript">当前未启用 JavaScript；展开下方表格仍可阅读全部六阶段事实。</p></noscript>
+    </section>
+
+    <details class="all-facts">
+      <summary><span>查看全部六阶段事实</span><span class="summary-note">表格版</span></summary>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="六阶段事实表，可横向滚动">
+        <table>
+          <caption class="sr-only">从算力合作到统一订阅的六个阶段</caption>
+          <thead>
+            <tr><th scope="col">日期</th><th scope="col">阶段性质</th><th scope="col">事件</th><th scope="col">关键事实</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-04-19</td><td>合作协议</td><td>算力合作与看涨期权</td>
+              <td>达成算力合作协议并附带 call option；该期权是权利，不是义务。</td>
+            </tr>
+            <tr>
+              <td>2026-06-12</td><td>IPO</td><td>发行价与净募资</td>
+              <td>IPO 价格 $135；约 638.9M 股 Class A 股票，包含全额 greenshoe；净募资约 $85.675B。</td>
+            </tr>
+            <tr>
+              <td>2026-06-16</td><td>合并协议</td><td>签署合并协议</td>
+              <td>以股票为对价，隐含股权价值 $60B。本日是签约日，不是交割日。</td>
+            </tr>
+            <tr>
+              <td>2026-08-14</td><td>交易交割</td><td>完成交割</td>
+              <td>七个交易日 VWAP 为 $128.65，Exchange Ratio（换股比例）为 9.7142。</td>
+            </tr>
+            <tr>
+              <td>2026-10-12</td><td>产品整合</td><td>X Subscription</td>
+              <td>Premium 定价 $30；现有用户可保留旧方案。</td>
+            </tr>
+            <tr>
+              <td>2026-10-22</td><td>注册披露</td><td>Form S-8 转售注册</td>
+              <td>reoffer registration 涉及 23,637,224 股；注册不构成实际出售的证据。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <footer class="footnote">
+      <p>阅读边界：2026-06-16 是合并协议签署日，2026-08-14 是交割日；产品整合与注册披露分别单列。</p>
+      <p>Form S-8 转售注册不等于实际出售，也不能作为实际出售已经发生的证据。</p>
+    </footer>
+  </main>
+
+  <script>
+    (() => {
+      'use strict';
+      const stages = [
+        {
+          date: '2026-04-19',
+          category: '合作协议',
+          tone: 'agreement',
+          title: '算力合作与看涨期权',
+          summary: '这一节点由算力合作协议与 call option（看涨期权）组成。期权是一项权利，而不是必须执行的义务。',
+          facts: [
+            ['合作协议', '算力合作'],
+            ['附带权利', 'call option（看涨期权）'],
+            ['权利性质', '是权利，不是义务']
+          ],
+          note: '这里描述的是合作与期权安排，不把后续合并协议或交割提前到本节点。'
+        },
+        {
+          date: '2026-06-12',
+          category: 'IPO',
+          tone: 'transaction',
+          title: 'IPO：发行价与净募资',
+          summary: 'IPO 价格为 $135；发行约 638.9M 股 Class A 股票，包含全额 greenshoe，净募资约 $85.675B。',
+          facts: [
+            ['IPO 价格', '$135'],
+            ['Class A 股数', '约 638.9M 股'],
+            ['超额配售', '包含全额 greenshoe'],
+            ['净募资', '约 $85.675B']
+          ],
+          note: '约 638.9M 股已经包含全额 greenshoe，不另行列加。'
+        },
+        {
+          date: '2026-06-16',
+          category: '合并协议',
+          tone: 'agreement',
+          title: '签署合并协议',
+          summary: '合并协议以股票为对价，隐含股权价值 $60B。这个节点是协议签署，不是交易交割。',
+          facts: [
+            ['事件', '合并协议签署'],
+            ['隐含股权价值', '$60B'],
+            ['对价形式', '股票'],
+            ['节点状态', '签约，不是交割']
+          ],
+          note: '2026-06-16 不是交割日；$60B 是协议所述隐含股权价值，不是固定现金对价。'
+        },
+        {
+          date: '2026-08-14',
+          category: '交易交割',
+          tone: 'transaction',
+          title: '完成交割',
+          summary: '交易于 2026-08-14 完成交割，七个交易日 VWAP 为 $128.65，Exchange Ratio 为 9.7142。',
+          facts: [
+            ['交割日', '2026-08-14'],
+            ['VWAP', '$128.65'],
+            ['VWAP 观察窗口', '七个交易日'],
+            ['Exchange Ratio（换股比例）', '9.7142']
+          ],
+          note: '本节点才是交割；VWAP 与换股比例属于交割信息，应与 2026-06-16 的签约节点区分。'
+        },
+        {
+          date: '2026-10-12',
+          category: '产品整合',
+          tone: 'integration',
+          title: 'X Subscription',
+          summary: 'X Subscription 推出，Premium 定价 $30；现有用户可以保留旧方案。',
+          facts: [
+            ['订阅产品', 'X Subscription'],
+            ['Premium', '$30'],
+            ['旧方案', '现有用户可保留']
+          ],
+          note: '这是产品与订阅整合节点，不是新的合并协议签署或交易交割节点。'
+        },
+        {
+          date: '2026-10-22',
+          category: '注册披露',
+          tone: 'registration',
+          title: 'Form S-8 转售注册',
+          summary: 'Form S-8 reoffer registration 涉及 23,637,224 股；该注册本身不证明股票已经实际出售。',
+          facts: [
+            ['表格', 'Form S-8'],
+            ['注册类型', 'reoffer registration（转售注册）'],
+            ['涉及股数', '23,637,224 股'],
+            ['实际出售', '注册不构成证据']
+          ],
+          note: '注册不等于实际出售，也不能作为实际出售已经发生的证据。'
+        }
+      ];
+
+      const buttons = Array.from(document.querySelectorAll('[data-stage]'));
+      const panel = document.getElementById('detail-panel');
+      const kicker = document.getElementById('detail-kicker');
+      const title = document.getElementById('detail-title');
+      const date = document.getElementById('detail-date');
+      const category = document.getElementById('detail-category');
+      const summary = document.getElementById('detail-summary');
+      const note = document.getElementById('detail-note');
+      const previous = document.getElementById('previous-stage');
+      const next = document.getElementById('next-stage');
+      const position = document.getElementById('stage-position');
+      let current = 0;
+
+      function render(index, moveFocus = false) {
+        current = Math.max(0, Math.min(stages.length - 1, index));
+        const stage = stages[current];
+        buttons.forEach((button, i) => {
+          const active = i === current;
+          button.setAttribute('aria-pressed', String(active));
+          button.querySelector('.stage-action').textContent = active ? '当前阶段' : '查看详情';
+        });
+        panel.dataset.tone = stage.tone;
+        kicker.textContent = '阶段 ' + String(current + 1).padStart(2, '0') + ' / 06 · ' + stage.category;
+        title.textContent = stage.title;
+        date.textContent = stage.date;
+        date.setAttribute('datetime', stage.date);
+        category.textContent = stage.category;
+        summary.textContent = stage.summary;
+        note.textContent = stage.note;
+        stage.facts.forEach((fact, i) => {
+          document.getElementById('fact-label-' + i).textContent = fact[0];
+          document.getElementById('fact-value-' + i).textContent = fact[1];
+          document.getElementById('fact-' + i).hidden = false;
+        });
+        for (let i = stage.facts.length; i < 4; i += 1) {
+          document.getElementById('fact-' + i).hidden = true;
+        }
+        previous.disabled = current === 0;
+        next.disabled = current === stages.length - 1;
+        position.textContent = '第 ' + (current + 1) + ' / 6 阶段';
+        if (moveFocus) buttons[current].focus();
+      }
+
+      buttons.forEach((button, index) => {
+        button.addEventListener('click', () => render(index));
+        button.addEventListener('keydown', event => {
+          let destination;
+          if (event.key === 'ArrowRight') destination = (index + 1) % stages.length;
+          if (event.key === 'ArrowLeft') destination = (index - 1 + stages.length) % stages.length;
+          if (event.key === 'Home') destination = 0;
+          if (event.key === 'End') destination = stages.length - 1;
+          if (destination !== undefined) {
+            event.preventDefault();
+            render(destination, true);
+          }
+        });
+      });
+      previous.addEventListener('click', () => render(current - 1));
+      next.addEventListener('click', () => render(current + 1));
+      render(0);
+    })();
+  </script>
+</body>
+</html>

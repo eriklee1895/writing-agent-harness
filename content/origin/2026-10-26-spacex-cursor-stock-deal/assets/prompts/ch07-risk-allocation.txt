@@ -1,0 +1,11 @@
+Deliverable: A 1536×1024 landscape financial editorial infographic for a Chinese technology and finance blog. This is a risk-allocation map, not an atmospheric illustration.
+
+Primary request: Show five distinct participants and the cost or risk each bears, without assigning blame. Center a simple equity certificate icon labeled "SPCX Class A" with an accurate SpaceX wordmark. Around it, five clean modules connected by thin neutral lines labeled "风险分配": "老股东 · 稀释", "Cursor 股东 · 股价与变现", "关键员工 · 服务与归属", "SpaceX · 留才与整合", "二级市场 · 重新定价". Each module gets a simple distinct icon, no extra descriptions.
+
+Composition: Title "谁承担什么？" at top, subtitle "不是一张 600 亿美元支票，而是五种风险". Arrange the five modules in a balanced ring or structured grid, with SpaceX and Cursor logos used only where meaningful. The center certificate is the payment mechanism, not a trophy or a cash check.
+
+Style and medium: Precise flat-vector financial editorial infographic, Swiss grid, white/off-white background, charcoal typography, restrained blue, forest green and terracotta accents. Thin lines, simple icons, no photography, no 3D, no gradients, no decorative scenery, no tiny footnotes.
+
+Text allowlist: Only "谁承担什么？", "不是一张 600 亿美元支票，而是五种风险", "SPCX Class A", "风险分配", "老股东 · 稀释", "Cursor 股东 · 股价与变现", "关键员工 · 服务与归属", "SpaceX · 留才与整合", "二级市场 · 重新定价", plus official wordmarks "SpaceX" and "Cursor". No other readable words, numbers, captions, footnotes, slogans or UI labels. Brand names may appear in the title/subtitle and official logos. All other decorative areas must be blank or non-readable shapes.
+
+Avoid: depicting retail investors as villains or victims, claiming only retail investors pay, showing a direct $60B cash transfer from the public to SpaceX, distorted logos, tiny text, extra people, extra participants or extra labels.

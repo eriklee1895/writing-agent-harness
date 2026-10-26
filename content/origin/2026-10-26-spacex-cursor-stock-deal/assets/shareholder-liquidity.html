@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>股票到手，不等于现金到手</title>
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:#fff;--fg:#1f1f1f;--mu:#6b6b6b;--bd:#e3e2de;--card:#f7f6f3;
+  --card2:#f0efed;--c1:#2a78d6;--c2:#eb6834;--c3:#1baf7a;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#191919;--fg:#e6e6e6;--mu:#9b9b9b;--bd:#343434;--card:#232323;
+    --card2:#30302e;--c1:#3987e5;--c2:#d95926;--c3:#199e70;
+  }
+}
+html[data-embed-theme="light"]{
+  color-scheme:light;
+  --bg:#fff;--fg:#1f1f1f;--mu:#6b6b6b;--bd:#e3e2de;--card:#f7f6f3;
+  --card2:#f0efed;--c1:#2a78d6;--c2:#eb6834;--c3:#1baf7a;
+}
+html[data-embed-theme="dark"]{
+  color-scheme:dark;
+  --bg:#191919;--fg:#e6e6e6;--mu:#9b9b9b;--bd:#343434;--card:#232323;
+  --card2:#30302e;--c1:#3987e5;--c2:#d95926;--c3:#199e70;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC",sans-serif;
+}
+button,summary{font:inherit}
+button{color:var(--fg);cursor:pointer;touch-action:manipulation}
+button:focus-visible,summary:focus-visible,.table-scroll:focus-visible{
+  outline:3px solid var(--c1);outline-offset:3px;
+}
+main{max-width:1080px;margin:0 auto;padding:28px}
+p,h1,h2,h3,h4{margin:0}
+h1{font-size:clamp(28px,4.4vw,42px);line-height:1.2;letter-spacing:-.035em;font-weight:750}
+h2{font-size:21px;line-height:1.4;letter-spacing:-.015em}
+h3{font-size:25px;line-height:1.35;letter-spacing:-.02em}
+h4{font-size:15px;line-height:1.5}
+.header{border-top:4px solid var(--fg);padding-top:18px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--mu);margin-bottom:10px}
+.intro{max-width:780px;margin-top:14px;color:var(--mu);font-size:16px}
+.section{margin-top:30px}
+.section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:12px}
+.section-note{font-size:13px;color:var(--mu)}
+.price-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.price-card{
+  position:relative;background:var(--card);border:1px solid var(--bd);border-top:3px solid var(--accent);
+  border-radius:10px;padding:17px 18px 18px;min-width:0;
+}
+.price-card[data-accent="blue"]{--accent:var(--c1)}
+.price-card[data-accent="orange"]{--accent:var(--c2)}
+.price-card[data-accent="green"]{--accent:var(--c3)}
+.price-kicker{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--mu)}
+.price{font-size:clamp(34px,4.5vw,46px);font-weight:730;line-height:1.15;letter-spacing:-.035em;margin:12px 0 10px;font-variant-numeric:normal}
+.price-label{font-size:15px;font-weight:650;line-height:1.5}
+.price-detail{font-size:13px;line-height:1.6;color:var(--mu);margin-top:5px}
+.price-caveat{margin-top:12px;font-size:14px;color:var(--mu)}
+.explorer-layout{display:grid;grid-template-columns:290px minmax(0,1fr);gap:16px;align-items:start}
+.category-list{display:grid;gap:8px}
+.category-button{
+  width:100%;min-height:64px;display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:center;
+  text-align:left;background:var(--bg);border:1px solid var(--bd);border-radius:9px;padding:10px 12px;
+}
+.category-button:hover{background:var(--card)}
+.category-button[aria-pressed="true"]{background:var(--card2);border-color:var(--fg);box-shadow:inset 3px 0 0 var(--c1)}
+.category-number{font-size:12px;color:var(--mu);font-variant-numeric:tabular-nums;align-self:start;padding-top:3px}
+.category-name{display:block;font-size:15px;font-weight:650;line-height:1.45}
+.category-hint{display:block;font-size:12px;line-height:1.45;color:var(--mu);margin-top:2px}
+.detail{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:20px;min-width:0}
+.detail-top{border-bottom:1px solid var(--bd);padding-bottom:15px;margin-bottom:16px}
+.detail-index{font-size:12px;font-weight:700;letter-spacing:.07em;color:var(--mu);margin-bottom:6px}
+.detail-summary{font-size:14px;color:var(--mu);margin-top:7px}
+.detail-panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.info-block{background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:15px;min-width:0}
+.info-label{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.info-mark{width:9px;height:9px;border-radius:2px;background:var(--accent);flex:0 0 auto}
+.info-block[data-accent="blue"]{--accent:var(--c1)}
+.info-block[data-accent="orange"]{--accent:var(--c2)}
+.info-block[data-accent="green"]{--accent:var(--c3)}
+.info-text{font-size:15px;line-height:1.7}
+.detail-boundary{margin-top:10px}
+.keyboard-note{font-size:12px;color:var(--mu);margin-top:10px}
+.comparison{margin-top:14px;border:1px solid var(--bd);border-radius:9px;background:var(--bg)}
+.comparison summary{min-height:44px;padding:11px 14px;cursor:pointer;font-size:14px;font-weight:650}
+.comparison summary::marker{color:var(--mu)}
+.table-scroll{overflow-x:auto;border-top:1px solid var(--bd)}
+table{width:100%;min-width:760px;border-collapse:collapse;text-align:left;font-size:13px;line-height:1.6}
+caption{text-align:left;padding:12px 14px;color:var(--mu);caption-side:top}
+th,td{padding:12px 14px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{background:var(--card);font-size:12px;color:var(--mu);font-weight:650}
+tbody tr:last-child td{border-bottom:0}
+td:first-child{font-weight:650;min-width:170px}
+td:nth-child(2){min-width:220px}
+td:nth-child(3){min-width:270px}
+.boundary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.boundary-card{border-top:2px solid var(--accent);background:var(--card);padding:15px 16px;border-radius:0 0 8px 8px}
+.boundary-card[data-accent="blue"]{--accent:var(--c1)}
+.boundary-card[data-accent="orange"]{--accent:var(--c2)}
+.boundary-card[data-accent="green"]{--accent:var(--c3)}
+.boundary-number{font-size:12px;color:var(--mu);font-weight:700;letter-spacing:.06em}
+.boundary-title{font-size:15px;font-weight:700;margin:6px 0}
+.boundary-text{font-size:13px;color:var(--mu);line-height:1.7}
+.footer{border-top:1px solid var(--bd);margin-top:26px;padding-top:14px;font-size:12px;color:var(--mu)}
+@media(max-width:820px){
+  .explorer-layout{grid-template-columns:1fr}
+  .category-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .price-grid,.boundary-grid{grid-template-columns:1fr}
+  .price-card{display:grid;grid-template-columns:minmax(130px,.55fr) minmax(0,1fr);column-gap:20px;align-items:center}
+  .price-kicker{grid-column:1}
+  .price{grid-column:1;margin:5px 0 0}
+  .price-label,.price-detail{grid-column:2}
+  .price-label{grid-row:1 / span 2;align-self:end}
+  .price-detail{grid-row:2 / span 2;align-self:start;margin-top:42px}
+}
+@media(max-width:600px){
+  main{padding:18px 16px}
+  .header{padding-top:14px}
+  .section{margin-top:26px}
+  .section-heading{display:block}
+  .section-note{margin-top:4px}
+  .category-list{grid-template-columns:1fr}
+  .category-button{min-height:58px}
+  .detail{padding:15px}
+  .detail-panels{grid-template-columns:1fr}
+  h3{font-size:22px}
+  .price-card{display:block;padding:15px 16px}
+  .price{margin:8px 0}
+  .price-detail{margin-top:4px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+@media(forced-colors:active){
+  .category-button[aria-pressed="true"]{outline:2px solid Highlight;outline-offset:-3px}
+  .info-mark{forced-color-adjust:none}
+}
+</style>
+</head>
+<body>
+<main>
+  <header class="header">
+    <p class="eyebrow">SPACEX / CURSOR · 权益与流动性</p>
+    <h1>股票到手，不等于现金到手</h1>
+    <p class="intro">同一笔交易里，不同身份拿到的权益、兑现条件和价格口径并不相同。选择一类身份，分别看“收到什么”与“还要承担什么”。这些类别可以重叠。</p>
+  </header>
+
+  <section class="section" aria-labelledby="prices-title">
+    <div class="section-heading">
+      <h2 id="prices-title">三个参考价，三个不同口径</h2>
+      <p class="section-note">先看日期，再看用途</p>
+    </div>
+    <div class="price-grid">
+      <article class="price-card" data-accent="blue">
+        <p class="price-kicker">参考价 01 · VWAP</p>
+        <p class="price">$128.65</p>
+        <p class="price-label">2026-08-14 交割前七日 VWAP</p>
+        <p class="price-detail">七日成交量加权平均价</p>
+      </article>
+      <article class="price-card" data-accent="orange">
+        <p class="price-kicker">参考价 02 · GAAP</p>
+        <p class="price">$141.29</p>
+        <p class="price-label">2026-08-14 交割日价格</p>
+        <p class="price-detail">用于 GAAP 计量</p>
+      </article>
+      <article class="price-card" data-accent="green">
+        <p class="price-kicker">参考价 03 · S-8</p>
+        <p class="price">$159.31</p>
+        <p class="price-label">2026-10-21 最近成交价</p>
+        <p class="price-detail">由 2026-10-22 S-8 引用</p>
+      </article>
+    </div>
+    <p class="price-caveat">日期与用途不同，三个数字不能直接互换，也不能单独证明任何人的实际成交或收益。</p>
+  </section>
+
+  <section class="section" aria-labelledby="explorer-title">
+    <div class="section-heading">
+      <h2 id="explorer-title">先选身份，再看兑现条件</h2>
+      <p class="section-note">六类身份可能重叠</p>
+    </div>
+    <div class="explorer-layout">
+      <nav class="category-list" aria-label="选择持有人身份">
+        <button class="category-button" type="button" data-category="0" aria-pressed="true" aria-controls="category-detail">
+          <span class="category-number" aria-hidden="true">01</span>
+          <span><span class="category-name">SpaceX 老股东</span><span class="category-hint">Cursor 与潜在协同</span></span>
+        </button>
+        <button class="category-button" type="button" data-category="1" aria-pressed="false" aria-controls="category-detail">
+          <span class="category-number" aria-hidden="true">02</span>
+          <span><span class="category-name">Cursor 普通股 / 优先股持有人</span><span class="category-hint">Class A 股票</span></span>
+        </button>
+        <button class="category-button" type="button" data-category="2" aria-pressed="false" aria-controls="category-detail">
+          <span class="category-number" aria-hidden="true">03</span>
+          <span><span class="category-name">已归属、尚未结算的 RSU</span><span class="category-hint">并购对价的权利</span></span>
+        </button>
+        <button class="category-button" type="button" data-category="3" aria-pressed="false" aria-controls="category-detail">
+          <span class="category-number" aria-hidden="true">04</span>
+          <span><span class="category-name">Revest 签署者</span><span class="category-hint">仅适用于签署者</span></span>
+        </button>
+        <button class="category-button" type="button" data-category="4" aria-pressed="false" aria-controls="category-detail">
+          <span class="category-number" aria-hidden="true">05</span>
+          <span><span class="category-name">未归属 RSU / RSA / 期权</span><span class="category-hint">Rollover awards</span></span>
+        </button>
+        <button class="category-button" type="button" data-category="5" aria-pressed="false" aria-controls="category-detail">
+          <span class="category-number" aria-hidden="true">06</span>
+          <span><span class="category-name">后来的公开市场买家</span><span class="category-hint">自己的入场价</span></span>
+        </button>
+      </nav>
+
+      <article class="detail" id="category-detail" aria-live="polite" aria-atomic="true" aria-labelledby="detail-title">
+        <div class="detail-top">
+          <p class="detail-index" id="detail-index">身份 01 / 06</p>
+          <h3 id="detail-title">SpaceX 老股东</h3>
+          <p class="detail-summary" id="detail-summary">交易前的 SpaceX 持有人</p>
+        </div>
+        <div class="detail-panels">
+          <section class="info-block" data-accent="blue" aria-labelledby="receive-label">
+            <div class="info-label"><span class="info-mark" aria-hidden="true"></span><h4 id="receive-label">收到什么</h4></div>
+            <p class="info-text" id="detail-receive">Cursor 及潜在协同带来的权益敞口。</p>
+          </section>
+          <section class="info-block" data-accent="orange" aria-labelledby="risk-label">
+            <div class="info-label"><span class="info-mark" aria-hidden="true"></span><h4 id="risk-label">风险 / 条件</h4></div>
+            <p class="info-text" id="detail-risk">承担股权稀释与整合风险。</p>
+          </section>
+        </div>
+        <section class="info-block detail-boundary" data-accent="green" aria-labelledby="boundary-label">
+          <div class="info-label"><span class="info-mark" aria-hidden="true"></span><h4 id="boundary-label">这一类别的边界</h4></div>
+          <p class="info-text" id="detail-boundary-text">潜在协同不等于已经实现的现金收益。</p>
+        </section>
+        <p class="keyboard-note">键盘：Tab 移至身份，方向键切换；Enter 或 Space 也可查看。</p>
+      </article>
+    </div>
+
+    <details class="comparison">
+      <summary>查看六类身份完整对照表</summary>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="六类身份对照表，可横向滚动">
+        <table>
+          <caption>类别可以重叠；每一类的权益与条件需要分别核对。</caption>
+          <thead><tr><th scope="col">身份</th><th scope="col">收到什么</th><th scope="col">风险 / 条件与边界</th></tr></thead>
+          <tbody>
+            <tr><td>SpaceX 老股东</td><td>Cursor 及潜在协同带来的权益敞口。</td><td>承担股权稀释与整合风险；潜在协同不等于已经实现的现金收益。</td></tr>
+            <tr><td>Cursor 普通股 / 优先股持有人</td><td>Class A 股票（A 类股）。</td><td>承担价格变化与转售条件；股票价格与能否转售是两个问题。</td></tr>
+            <tr><td>已归属、尚未结算的 RSU</td><td>获得并购对价的权利。</td><td>承担税务与结算条件；重点是税务和结算，不是未来归属。</td></tr>
+            <tr><td>Revest 签署者</td><td>此前不可没收的相关股份与期权，其中 75% 被重置为未归属状态。</td><td>股份涉及回购与转让限制；期权涉及归属与行权条件。仅适用于签署者，并非全部股东。</td></tr>
+            <tr><td>未归属 RSU / RSA / 期权</td><td>Rollover awards（承接 / 滚存奖励）。</td><td>仍需满足服务、归属，以及行权或结算条件。</td></tr>
+            <tr><td>后来的公开市场买家</td><td>在公开市场买入的股票。</td><td>承担自己的入场价与后续重新定价；买入股票不等于向 SpaceX 支付 600 亿美元（$60B）。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <section class="section" aria-labelledby="reading-title">
+    <div class="section-heading">
+      <h2 id="reading-title">读注册文件与价格时，保留三条边界</h2>
+    </div>
+    <div class="boundary-grid">
+      <article class="boundary-card" data-accent="blue">
+        <p class="boundary-number">边界 01</p>
+        <h3 class="boundary-title">注册 ≠ 实际出售</h3>
+        <p class="boundary-text">S-8 注册本身不证明实际出售已经发生，也不能据此确定实际出售的数量、价格或买家身份。</p>
+      </article>
+      <article class="boundary-card" data-accent="orange">
+        <p class="boundary-number">边界 02</p>
+        <h3 class="boundary-title">不同身份 ≠ 同一锁定期</h3>
+        <p class="boundary-text">身份与协议安排可能重叠，但不能据此假定所有人共用同一锁定期或同一转售条件。</p>
+      </article>
+      <article class="boundary-card" data-accent="green">
+        <p class="boundary-number">边界 03</p>
+        <h3 class="boundary-title">10 月价格 ≠ 亏损证明</h3>
+        <p class="boundary-text">$159.31 是所引日期的最近成交价；仅凭它，不能断定任何持有人发生了亏损。</p>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer">先分清身份与权益形式，再讨论可卖多少、以什么价格卖，以及是否已经卖出。</footer>
+</main>
+<script>
+(() => {
+  const categories = [
+    {
+      name: 'SpaceX 老股东',
+      summary: '交易前的 SpaceX 持有人',
+      receive: 'Cursor 及潜在协同带来的权益敞口。',
+      risk: '承担股权稀释与整合风险。',
+      boundary: '潜在协同不等于已经实现的现金收益。'
+    },
+    {
+      name: 'Cursor 普通股 / 优先股持有人',
+      summary: 'Cursor 普通股与优先股持有人',
+      receive: 'Class A 股票（A 类股）。',
+      risk: '承担价格变化与转售条件。',
+      boundary: '股票价格与能否转售是两个问题。'
+    },
+    {
+      name: '已归属、尚未结算的 RSU',
+      summary: '已经归属，但尚未完成结算的 RSU',
+      receive: '获得并购对价的权利。',
+      risk: '承担税务与结算条件。',
+      boundary: '这一类已经归属；重点是税务和结算，不是未来归属。'
+    },
+    {
+      name: 'Revest 签署者',
+      summary: '仅指签署 Revest 安排的持有人，并非全部股东',
+      receive: '此前不可没收的相关股份与期权，其中 75% 被重置为未归属状态。',
+      risk: '股份涉及回购与转让限制；期权涉及归属与行权条件。',
+      boundary: '75% 重置只适用于签署者，不能推广到全部股东。'
+    },
+    {
+      name: '未归属 RSU / RSA / 期权',
+      summary: '尚未归属的 RSU、RSA 与期权',
+      receive: 'Rollover awards（承接 / 滚存奖励）。',
+      risk: '仍需满足服务、归属，以及行权或结算条件。',
+      boundary: '奖励被承接，不等于服务、归属、行权或结算条件已经消失。'
+    },
+    {
+      name: '后来的公开市场买家',
+      summary: '交易之后从公开市场买入股票的人',
+      receive: '在公开市场买入的股票。',
+      risk: '承担自己的入场价与后续重新定价。',
+      boundary: '买入股票不等于向 SpaceX 支付 600 亿美元（$60B）。'
+    }
+  ];
+
+  const buttons = Array.from(document.querySelectorAll('[data-category]'));
+  const byId = id => document.getElementById(id);
+  let selected = 0;
+
+  function render(index) {
+    selected = index;
+    const item = categories[index];
+    buttons.forEach((button, buttonIndex) => {
+      button.setAttribute('aria-pressed', String(buttonIndex === index));
+    });
+    byId('detail-index').textContent = '身份 ' + String(index + 1).padStart(2, '0') + ' / 06';
+    byId('detail-title').textContent = item.name;
+    byId('detail-summary').textContent = item.summary;
+    byId('detail-receive').textContent = item.receive;
+    byId('detail-risk').textContent = item.risk;
+    byId('detail-boundary-text').textContent = item.boundary;
+  }
+
+  buttons.forEach((button, index) => {
+    button.addEventListener('click', () => render(index));
+    button.addEventListener('keydown', event => {
+      let next = null;
+      if (event.key === 'ArrowDown' || event.key === 'ArrowRight') next = (index + 1) % buttons.length;
+      if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (index - 1 + buttons.length) % buttons.length;
+      if (event.key === 'Home') next = 0;
+      if (event.key === 'End') next = buttons.length - 1;
+      if (next === null) return;
+      event.preventDefault();
+      render(next);
+      buttons[next].focus();
+    });
+  });
+
+  render(0);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+Deliverable: A 1536×1024 landscape financial editorial infographic for a Chinese technology and finance blog. This is a structural explanation, not an atmospheric illustration.
+
+Primary request: Explain why SpaceX wanted to acquire Cursor through a two-column exchange diagram. Left column is the SpaceX side, right column is Cursor. In the center, one arrow goes from SpaceX to Cursor labeled "GPU / 算力"; a separate arrow goes from Cursor back to SpaceX labeled "工作流 / 团队 / 客户". The directions must be unambiguous.
+
+Composition: Top title "SpaceX × Cursor" and subtitle "为什么值得买？". Left side contains accurate recognizable SpaceX and xAI logos, a small Grok mark, and an X logo. Right side contains an accurate recognizable Cursor logo and the label "Composer". Include one small monochrome line-art portrait of Elon Musk at the lower-left, with caption "ELON MUSK"; only one person, no group scene. Bottom strip reads "收购代替自建：买下时间". Use large clear regions, balanced whitespace, no more than these content groups.
+
+Style and medium: Precise flat-vector financial editorial infographic, Swiss grid, crisp geometry, white or off-white background, charcoal typography, restrained blue, forest green and terracotta accents. Thin lines, simple icons, clean brand modules. No photography, no 3D, no gradients, no decorative space scenery, no shadows that reduce clarity.
+
+Text allowlist (exact): Only these strings may be legible anywhere: "SpaceX × Cursor", "为什么值得买？", "SpaceX", "xAI", "Grok", "X", "Cursor", "Composer", "GPU / 算力", "工作流 / 团队 / 客户", "ELON MUSK", "收购代替自建：买下时间". Each string appears at most once. Brand wordmarks within the official logos count as their single occurrence. All other cards, badges and decorative fields must be blank or use non-readable shapes. Do not invent captions, descriptions, numbers, slogans, subtitles, footnotes or UI labels.
+
+Avoid: distorted or invented logo variants, extra people, a photorealistic Musk, cluttered labels, tiny text, extra arrows, reversed exchange direction, rockets or satellites used as decorative atmosphere rather than explanatory icons.

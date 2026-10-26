@@ -1,0 +1,11 @@
+Deliverable: A 1536×1024 landscape financial editorial infographic for a Chinese technology and finance blog. This is a numerical mechanism diagram, not an atmospheric illustration.
+
+Primary request: Explain a fixed implied value with floating share count. At the center top, a large fixed card labeled "约定标的价值 100 亿元". Below are two separate scenarios: Scenario A shows "参考股价 200 元" with an arrow to "5000 万股"; Scenario B shows "参考股价 125 元" with an arrow to "8000 万股". The math must be visually obvious and consistent.
+
+Composition: Title "隐含价值固定，股数浮动" at top, subtitle "一个纯假设的换股算例". Put the two scenarios side by side. Bottom has two distinct bands: left reads "交割前：股价↓ → 新股↑ → 稀释↑", right reads "交割后：全体股东共同承担波动". Small actual-deal badges in the top-right read "本案 VWAP：128.65 美元" and "Exchange Ratio：9.7142". Add a small note "仅解释机制，不是本案股数" near the scenarios. Add small accurate SpaceX and Cursor logos only if space permits.
+
+Style and medium: Precise flat-vector financial editorial infographic, Swiss grid, white/off-white background, charcoal numbers, restrained blue and terracotta accents. Thin lines, large numbers readable on phone, no photography, no 3D, no gradients, no decorative scenery, no tiny footnotes.
+
+Text allowlist: Only "隐含价值固定，股数浮动", "一个纯假设的换股算例", "约定标的价值 100 亿元", "参考股价 200 元", "5000 万股", "参考股价 125 元", "8000 万股", "交割前：股价↓ → 新股↑ → 稀释↑", "交割后：全体股东共同承担波动", "本案 VWAP：128.65 美元", "Exchange Ratio：9.7142", "仅解释机制，不是本案股数", "SpaceX", "Cursor". No other readable words, numbers, captions, footnotes, slogans or UI labels. Brand names may appear in official logo lockups. All other decorative fields must be blank or non-readable shapes.
+
+Avoid: incorrect arithmetic, implying the June peak was locked, mixing hypothetical share counts with actual merger shares, treating a lower reference price as fewer new shares, distorted logos, tiny text, additional scenarios or additional numbers.

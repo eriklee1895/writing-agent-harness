@@ -96,10 +96,10 @@ def yaml_scalar(value: object) -> str:
     return f'"{text}"'
 
 
-def yaml_list(values: object) -> list[str]:
+def yaml_list(values: object, key: str = "tags") -> list[str]:
     if not isinstance(values, list):
         values = ["others"] if not values else [str(values)]
-    lines = ["tags:"]
+    lines = [f"{key}:"]
     for item in values:
         lines.append(f"  - {yaml_scalar(item)}")
     return lines
@@ -480,6 +480,9 @@ def build_blog_frontmatter(
         or date_from_slug(source_path.parent.name)
     )
     category, series, tags = infer_taxonomy(source_meta, source_path.parent.name)
+    categories = source_meta.get("categories") or []
+    if isinstance(categories, str):
+        categories = [categories]
     register = str(source_meta.get("register") or "").strip().lower()
     default_type = _REGISTER_TAXONOMY.get(register, ("", "技术笔记"))[1]
     article_type = source_meta.get("type") or default_type
@@ -506,6 +509,7 @@ def build_blog_frontmatter(
         "author: \"Erik Lee\"",
         f"draft: {yaml_scalar(draft)}",
         f"category: {yaml_scalar(category)}",
+        *(yaml_list(categories, "categories") if categories else []),
         yaml_optional_string("series", series),
         f"type: {yaml_scalar(article_type)}",
         f"canonicalURL: {yaml_scalar(args.canonical_url)}" if args.canonical_url else "",

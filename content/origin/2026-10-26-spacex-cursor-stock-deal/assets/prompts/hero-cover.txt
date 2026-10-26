@@ -1,0 +1,11 @@
+Deliverable: A 1536×1024 landscape financial editorial cover infographic for the article "SpaceX 用股票收购 Cursor，600 亿美元究竟是谁出的？". Structural explanation, not an atmospheric illustration.
+
+Primary request: Visualize an operating business being acquired with public-company stock instead of a cash check. Left: an accurate Cursor logo above a simple developer-workflow icon. Center: a large equity certificate icon labeled "SPCX Class A" with a clear exchange arrow pointing from the SpaceX side to Cursor. Right: an accurate SpaceX wordmark, small xAI and Grok marks, and one small monochrome line-art portrait of Elon Musk with caption "ELON MUSK". The stock certificate is the payment instrument, not a decorative prop.
+
+Composition: Main title "600 亿美元，谁出的？" at top. Subtitle "SpaceX 用股票收购 Cursor" below it. Three small concept tags at bottom: "估值", "流动性", "风险分配". A small "ALL-STOCK DEAL" label above the central certificate. Keep generous whitespace and a strong center-left-to-right reading path.
+
+Style and medium: Precise flat-vector financial editorial infographic, Swiss grid, white/off-white background, charcoal typography, restrained blue, forest green and terracotta accents. Thin lines, simple icons, no photography, no 3D, no gradients, no decorative rocket launch or space scenery, no cash pile, no group of people.
+
+Text allowlist: Only "600 亿美元，谁出的？", "SpaceX 用股票收购 Cursor", "SPCX Class A", "ALL-STOCK DEAL", "估值", "流动性", "风险分配", "ELON MUSK", plus the official brand wordmarks "SpaceX", "xAI", "Grok", "Cursor". No other readable words, numbers, captions, footnotes, slogans or UI labels. Brand names may appear in the title/subtitle and official logo lockups. All other decorative areas must be blank or non-readable shapes.
+
+Avoid: implying IPO cash was used to pay Cursor shareholders, claiming shareholders are all retail investors, a generic banknote as the main payment, distorted logos, extra people, tiny text, invented labels.

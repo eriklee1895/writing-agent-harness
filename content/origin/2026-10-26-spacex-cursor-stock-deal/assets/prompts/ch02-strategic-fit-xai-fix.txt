@@ -1,0 +1,5 @@
+Change: Edit only the logo in the left panel directly below the SpaceX wordmark. The current mark looks like "XI". Replace it with a clear, accurate xAI wordmark in which all three letters "xAI" are visibly readable: lowercase x, uppercase A, uppercase I. Keep it in the same black monochrome position and size.
+
+Preserve: Use the supplied image as the exact baseline. Preserve every other pixel and element as closely as possible: the title and Chinese subtitle, SpaceX logo, Grok logo and text, X logo, Elon Musk portrait and caption, Cursor logo and text, Composer icon and text, both arrow directions and labels, bottom Chinese strip, colors, spacing, background, and all typography. Do not change any number, label, arrow, or other logo.
+
+Avoid: No new text, no new icons, no layout changes, no portrait change, no extra people, no additional brand marks, no atmospheric effects.

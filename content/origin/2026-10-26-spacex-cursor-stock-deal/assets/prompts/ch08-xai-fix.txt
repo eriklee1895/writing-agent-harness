@@ -1,0 +1,5 @@
+Change: Edit only the logo in the second module of the left "当前事实" chain, directly above the label "Grok · 模型". The current mark looks like "XI". Replace it with a clear, accurate xAI wordmark in which all three letters "xAI" are visibly readable: lowercase x, uppercase A, uppercase I. Keep the same black monochrome position and approximate size.
+
+Preserve: Use the supplied image as the exact baseline. Preserve every other element as closely as possible: the title and subtitle, the "当前事实" and "公司计划" sections, X and Grok logos, Grok Bot + Cursor labels and logos, 1.7GW, Starship and orbital satellite icons, "最早 2028 年开始部署", "长期目标：100GW / 年", the bottom prerequisites strip, all colors, spacing, connectors, background, and typography. Do not change any number, label, arrow, or other logo.
+
+Avoid: No new text, no new icons, no layout changes, no extra people, no additional brand marks, no starfield or atmospheric effects.

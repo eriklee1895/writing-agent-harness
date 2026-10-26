@@ -1,0 +1,11 @@
+Deliverable: A 1536×1024 landscape financial editorial infographic for a Chinese technology and finance blog. This is a conceptual decision map, not an atmospheric illustration.
+
+Primary request: Explain stock-funded acquisition terminology as a short sequence followed by two alternative interpretations. Top sequence has exactly three connected questions: "怎么付？" with label "全股票 / stock-for-stock", then "股票如何当货币？" with label "acquisition currency", then "为何此时付？" with label "market timing". Below, split into two clearly different cards: left "估值窗口" with label "市场择时假说", right "风险共担" with label "理性支付设计". Use a small two-sided scale icon or contrasting arrows, not a winner/loser verdict.
+
+Composition: Title "股票当货币，然后呢？" at top, subtitle "从支付方式到两种解释". Add small accurate SpaceX and Cursor logos only in the top-right. Use a clean reading path from the three top questions to the two bottom interpretations. Keep each card to one short label and one English line.
+
+Style and medium: Precise flat-vector financial editorial infographic, Swiss grid, white/off-white background, charcoal typography, restrained blue, forest green and terracotta accents. Thin lines, simple icons, no photography, no 3D, no gradients, no decorative scenery, no tiny footnotes.
+
+Text allowlist: Only "股票当货币，然后呢？", "从支付方式到两种解释", "怎么付？", "全股票 / stock-for-stock", "股票如何当货币？", "acquisition currency", "为何此时付？", "market timing", "估值窗口", "市场择时假说", "风险共担", "理性支付设计", "SpaceX", "Cursor". No other readable words, numbers, captions, footnotes, slogans or UI labels. Brand names may appear in official logo lockups. All other decorative fields must be blank or non-readable shapes.
+
+Avoid: claiming all stock acquisitions are overvaluation-driven or opportunistic, treating market timing as proven management intent, using "市值管理式并购" as an official academic label, distorted logos, extra theory cards, tiny text, unnecessary icons.

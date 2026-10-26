@@ -1,0 +1,11 @@
+Deliverable: A 1536×1024 landscape financial editorial infographic for a Chinese technology and finance blog. This is a numbers-first explanatory graphic, not an atmospheric illustration.
+
+Primary request: Show three distinct accounting and transaction concepts as three large cards, followed by one separate goodwill strip. The visual must make clear that these are different measurement concepts, not amounts to add together.
+
+Composition: Title "三种价格，三本账" at top, subtitle "不可相加，也不可互相替代". Three equal cards in one row. Card 1 shows the very large number "600 亿美元" with label "隐含股权价值" and small English label "IMPLIED EQUITY VALUE". Card 2 shows "424.74 亿美元" with label "GAAP 购买对价" and small English label "GAAP CONSIDERATION". Card 3 shows "233.76 亿美元" with label "交割后服务奖励" and small English label "POST-ACQUISITION SERVICE". Below, a separate full-width strip shows "366.46 亿美元" and "初步商誉 · 约占 GAAP 对价 86%". Add small accurate SpaceX and Cursor logos only in the top-right corner.
+
+Style and medium: Precise flat-vector financial editorial infographic, Swiss grid, white or off-white background, charcoal numbers, one restrained accent color per card (blue, forest green, terracotta), generous whitespace, large numbers readable on a phone. No photography, no 3D, no gradients, no decorative scenery, no tiny footnotes.
+
+Text allowlist (exact): Only these strings may be legible anywhere: "三种价格，三本账", "不可相加，也不可互相替代", "600 亿美元", "隐含股权价值", "IMPLIED EQUITY VALUE", "424.74 亿美元", "GAAP 购买对价", "GAAP CONSIDERATION", "233.76 亿美元", "交割后服务奖励", "POST-ACQUISITION SERVICE", "366.46 亿美元", "初步商誉 · 约占 GAAP 对价 86%", "SpaceX", "Cursor". Each string appears at most once. Brand wordmarks within official logos count as their single occurrence. All other areas must be blank or use non-readable shapes. Do not invent exchange rates, dollar abbreviations, percentages, footnotes, descriptions or additional labels.
+
+Avoid: arithmetic that adds the three card values, treating the goodwill strip as a fourth amount to add, wrong decimal places, wrong percentages, extra cards, distorted logos, tiny text, background highlights behind the numbers.

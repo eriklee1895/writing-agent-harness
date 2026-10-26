@@ -1,0 +1,22 @@
+Create a grand, cinematic closing illustration for a Chinese long-form analysis article about SpaceX, Cursor, stock-based acquisition, AI infrastructure and orbital computing.
+
+Scene and composition:
+- Ultra-wide panoramic editorial image, designed for a blog article's final wordless visual coda.
+- A single recognizable Starship-inspired heavy-lift spacecraft ascends from the lower-left portion of Earth toward a vast orbital satellite constellation in the upper-right distance.
+- Earth's curved horizon fills the lower edge, with a thin luminous dawn line, subtle ocean and cloud detail, and enormous negative space above it.
+- The orbital constellation feels like a plausible future AI-compute infrastructure: many small modular satellites with solar panels, arranged with realistic scale and perspective, not a gigantic fantasy city.
+- The spacecraft is small enough to preserve the overwhelming scale of Earth and space, but large enough to read immediately as the hero subject. A restrained, physically plausible exhaust plume trails behind it.
+- The visual journey leads the eye from Earth, through the ascending spacecraft, toward the orbital constellation and the deep star field beyond.
+
+Mood and style:
+- Majestic, expansive, quiet and hopeful: " humanity's infrastructure reaching toward the stars" rather than battle or science-fiction fantasy.
+- Premium cinematic editorial realism with physically plausible lighting, detailed but uncluttered, subtle atmospheric haze near Earth, crisp deep space above.
+- Deep navy and blue-black space, muted teal Earth, a restrained warm amber dawn accent. High dynamic range without neon overload.
+- Sophisticated and grounded, suitable for a serious financial and technology essay, not a movie poster.
+
+Hard constraints:
+- No words, letters, numbers, logos, watermarks, captions or typography anywhere in the image.
+- No people, faces, astronauts, cities in space, warp gates, laser beams, explosions, battles, alien structures or exaggerated science-fiction megastructures.
+- No extra planets, no visible moon, no galaxy swirl, no decorative lens-flare streaks.
+- Do not imply that orbital AI data centers already exist: treat the scene as a restrained aspirational editorial vision, not a documentary photograph.
+- Keep all important subjects away from the outer 6% crop-safe margin and ensure the composition remains legible at mobile article width.

@@ -1,0 +1,11 @@
+Deliverable: A 1536×1024 landscape financial editorial infographic for a Chinese technology and finance blog. This is a structural explanation, not an atmospheric illustration.
+
+Primary request: Show pre-acquisition Cursor as both high-growth and increasingly constrained. Left 40%: two separate evidence cards. Card A is labeled "2025.11" and shows "293 亿美元" with caption "投后估值". Card B is labeled "2026.06" and shows "约 26 亿美元" with caption "年化 B2B 收入". Add an accurate Cursor logo above these cards. Right 60%: three large constraint modules with simple icons and labels "算力", "模型成本", "竞争". Under "竞争", show a small comparison "Ramp 样本：41% → 约 26%" using two labeled data points, not a line chart or a claim of revenue decline.
+
+Composition: Title "高增长，也有高成本" at top, subtitle "Cursor · 收购前". Separate the left evidence cards visually from the right constraints so readers do not infer a continuous growth chart. Bottom note reads "日期与收入口径不同，不连成增长曲线". Use large numbers and short labels.
+
+Style and medium: Precise flat-vector financial editorial infographic, Swiss grid, white/off-white background, charcoal typography, restrained blue, forest green and terracotta accents. Thin lines, clean icons, no photography, no 3D, no gradients, no decorative scenery, no tiny footnotes.
+
+Text allowlist: Only "高增长，也有高成本", "Cursor · 收购前", "2025.11", "293 亿美元", "投后估值", "2026.06", "约 26 亿美元", "年化 B2B 收入", "算力", "模型成本", "竞争", "Ramp 样本：41% → 约 26%", "日期与收入口径不同，不连成增长曲线", and the official wordmark "Cursor". No other readable words, numbers, captions, footnotes, slogans or UI labels. Brand names may appear in the title/subtitle and logo. All other decorative fields must be blank or non-readable shapes.
+
+Avoid: treating the figures as audited GAAP revenue, joining the two evidence cards into a time-series growth curve, implying revenue fell 41% to 26%, adding unsupported market-share claims, fake logos, tiny text, extra cards or extra numbers.

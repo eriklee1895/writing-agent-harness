@@ -1,0 +1,11 @@
+Deliverable: A 1536×1024 landscape financial editorial infographic for a Chinese technology and finance blog. This is a layered architecture map, not an atmospheric illustration.
+
+Primary request: Show the current SpaceX application-to-compute chain on the left and the longer-term orbital compute plan on the right, separated by a clearly labeled boundary. Left side titled "当前事实" contains four linked modules: "X · 分发", "Grok · 模型", "Grok Bot + Cursor · 工作流", and "地面算力 · 1.7GW". Include accurate small X, Grok and Cursor logos. Right side titled "公司计划" contains a simple Starship icon leading to an orbital data-center satellite icon labeled "轨道 AI 算力", with two separate notes: "最早 2028 年开始部署" and "长期目标：100GW / 年". Include an accurate SpaceX wordmark above this side.
+
+Composition: Main title "从应用，到轨道算力" at top, subtitle "一条正在拼接的链". Use four connected modules on the left and two distinct time horizons on the right, never presenting the orbital system as already operational. Bottom strip lists the prerequisites: "复用 · 发射频次 · 技术验证 · 商业可行性". Use solid connectors for current capabilities and dashed connectors only for plans.
+
+Style and medium: Precise flat-vector financial editorial infographic, Swiss grid, white/off-white background, charcoal typography, restrained blue, forest green and terracotta accents. Thin lines, explanatory icons only, no photography, no 3D, no gradients, no decorative starfield or launch scenery, no tiny footnotes.
+
+Text allowlist: Only "从应用，到轨道算力", "一条正在拼接的链", "当前事实", "公司计划", "X · 分发", "Grok · 模型", "Grok Bot + Cursor · 工作流", "地面算力 · 1.7GW", "轨道 AI 算力", "最早 2028 年开始部署", "长期目标：100GW / 年", "复用 · 发射频次 · 技术验证 · 商业可行性", plus official wordmarks "SpaceX", "xAI", "Grok", "Cursor", "X". No other readable words, numbers, captions, footnotes, slogans or UI labels. Brand names may appear in official logo lockups. All other decorative areas must be blank or non-readable shapes.
+
+Avoid: implying 2028 means scaled commercial deployment or profit, treating 1.7GW as orbital capacity or actual utilization, fake satellite photographs, distorted logos, extra milestones, extra numbers, tiny text, starry atmosphere, claiming the full ecosystem is already proven.
