@@ -149,6 +149,12 @@ Feishu / Notion / Blog / etc. ⇄ Markdown / MDX
 - [ ] Blog 同步器保留 canonical summary / category / type，并明确转换或拒绝未支持的 `::compare` 等渠道指令，避免原样发布标记和缺失图注。
 - [ ] Renderer 支持文章级表格列宽配置；百分比列的横向 padding 放在内层，避免微信 sanitizer 去除 box-sizing 后影响比例。
 
+## 2026-10-26 麒麟大口茶多渠道收尾
+
+- [ ] Blog 同步器处理 `<!-- EMBED: assets/embeds/<file>.html -->`：复制 HTML 到 `public/embeds/<slug>/`，并替换成标准 `<figure class="html-embed"><iframe ...>`；当前 `escape_mdx_text` 会丢掉注释，iframe 需手动插入。依据：[多渠道复盘](../retrospectives/2026-10-26-qilin-dakoucha-multichannel.md)。
+- [ ] WeChat renderer 增加 HTML block 静态化 helper：按 390px CSS 宽度 + DPR 2 渲染、裁掉底部空白、替换为图片；桌面宽度截图在 366px 手机上不可读。
+- [ ] 公众号公开 URL 回填到 `.local-archive/2026-10-25-qilin-dakoucha/publish-status.md`（发布态数据不进 git）。
+
 ## Open Questions
 
 - 飞书、Notion、Blog 与 Markdown / MDX 的内容读入和回写链路已打通；各平台的标准 runbook 与格式边界仍可继续补齐。
