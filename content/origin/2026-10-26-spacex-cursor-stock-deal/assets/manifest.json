@@ -351,7 +351,17 @@
       ],
       "home_review": "approved",
       "home_reviewer": "agent",
-      "home_review_notes": "Native 2.35:1 display at desktop and 390px mobile preserves the full title, stock relationship and all three labels in light and dark themes. No desktop low crop."
+      "home_review_notes": "Native 2.35:1 display at desktop and 390px mobile preserves the full title, stock relationship and all three labels in light and dark themes. No desktop low crop.",
+      "home_published": true,
+      "wechat_published": true,
+      "home_commit": "e769de9",
+      "wechat_publish_method": "user-manual"
     }
-  ]
+  ],
+  "homepage_commit": "e769de9",
+  "wechat_status": "published",
+  "wechat_publish_method": "user-manual",
+  "wechat_publish_date": "2026-10-27",
+  "wechat_channel_artifact": "content/wechat/2026-10-26-spacex-cursor-stock-deal/index.wechat-preview.html",
+  "wechat_layout": "native-cards"
 }

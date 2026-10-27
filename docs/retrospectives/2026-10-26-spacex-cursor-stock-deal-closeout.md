@@ -4,10 +4,11 @@
 
 ## 最终状态
 
-- [博客文章](https://eriklee-blog.pages.dev/posts/2026-10-26-spacex-cursor-stock-deal/)已在用户最终确认后发布，生产提交 `8e39d10`；[商业洞察](https://eriklee-blog.pages.dev/categories/business-insights/)分类同时上线。
+- [博客文章](https://eriklee-blog.pages.dev/posts/2026-10-26-spacex-cursor-stock-deal/)已发布；初始生产提交 `8e39d10`，首页 regenerate 最终提交 `e769de9`。[商业洞察](https://eriklee-blog.pages.dev/categories/business-insights/)分类同时上线，用户确认首页效果满意。
+- 微信公众号的最新原生短卡片版本已于 2026-10-27 由用户在后台手工发布。未提供公众号公开 URL，不虚构；早期长图草稿保留，未删除或重复发布。
 - 文章同时属于 `AI Frontier / AI 前沿` 与 `Business Insights / 商业洞察`；麒麟大口茶移入商业洞察。全部文章列表不重复计数。
-- 线上标题、历史案例、封面 v2、结尾图与 3 个交互 HTML 已核验。部署初期 404 与临时 TLS 错误没有直接判定为发布失败，等待部署并按重定向复核后通过。
-- 本机归档：`.local-archive/2026-10-26-spacex-cursor-stock-deal/`。9 张最终图片移入归档，origin 保留相对软链接；prompt 保留在 provenance，metadata 与发布状态进入本机归档。
+- 线上标题、历史案例、封面、结尾图与交互 HTML 已核验。部署初期 404 与临时 TLS 错误没有直接判定为发布失败，等待部署并按重定向复核后通过。
+- 本机归档：`.local-archive/2026-10-26-spacex-cursor-stock-deal/`。最终 Cover family 以相对软链接恢复；`wechat/` 保存正式渠道 HTML、渠道源稿和原生图解生成脚本，长截图仅保留为 QA 证据。
 
 ## 写作与事实边界
 
@@ -35,17 +36,21 @@
 1. **与上次同类任务的不同**：对照 [CopilotKit](2026-10-15-copilotkit-ag-ui-closeout.md)，本次不是修正单篇 taxonomy 误判，而是出现真实的多分类需求，因此把能力下沉到 schema、聚合、导航和同步器，并加入自动检查。对照[星舰第14次试飞](2026-09-29-starship-flight14-closeout.md)，用户再次通过正面标题样例纠正代理的过度朴素／过度工程化倾向；“星辰大海”类壮阔视觉也不能被信息图规则完全取代。
 2. **上次改进是否验证**：`summary`、引用图片筛选和明确 taxonomy 继续有效；归档相对软链接、哈希与公开博客独立副本再次验证。Cloudflare 部署后复查沿用 CopilotKit 的经验，没有把首轮 404 或一次网络错误写成站点故障。图片 metadata、prompt 和 manifest 已分离保存。
 3. **重复问题如何处理**：标题偏好再次出现“先给多轮代理候选，最后由用户正面样例定调”的模式。本次不修改 SOUL，但补充已有标题 memory 的 register 边界。Blog skill 的单分类说明与实际需求不匹配，登记 staleness；同步器和 Blog 代码则已完成真实修复，而非只记待办。
+4. **跨渠道验收的不同**：初次 derive-first 曾把 pad 通过当作成本与一致性收益，用户后续用同尺寸对比证明 regenerate 更好；长截图也在真实手机阅读中被否定，最终改成原生短卡片。可复用结论是：文件完整、生成成功和成本更低都不等于阅读效果更好。Cover 要追求最佳视觉，交互 HTML 要按渠道重组内容，而不是把同一份资产机械复用。
 
 ## ⚠️ 技能腐化风险与处置
 
-- `erik-blog-publish-workflow`：需补 `Business Insights -> 商业洞察`、额外 `categories` 以及“不要用 series 代替多分类”的规则。记录于 `.local-memory/skill-staleness-erik-blog-publish-workflow.md`，未在 worktree 中直接修改外部共享 skill。
-- 没有新建 skill，没有修改 SOUL。多分类能力已经由代码和测试落地，不把文档待更新误写成功能缺失。
+- `erik-blog-publish-workflow`：多分类与 `homeCover` 文档缺口已修复，`skill-staleness-erik-blog-publish-workflow.md` 标记 resolved。分类、首页检查及同步器均有真实代码与测试，不是只记待办。
+- `wechat-article-renderer`：frontmatter-only 文章会输出“未命名文章”，iframe 会退化为转义源码；preview 的 origin 相对路径也需要正确的 content root。记录在 `skill-staleness-wechat-article-renderer.md`，本次用渠道 H1、静态/原生替换和 content-root 预览解决。
+- `wechat-article-publisher`：非交互缺作者会保存空署名，Draft History 中的既有 ID 也没有形成可靠复用。记录在 `skill-staleness-wechat-article-publisher.md`。本次显式补 `Erik Lee`，保留两个历史草稿，没有自动删除或宣称覆盖成功。
+- 没有新建通用 skill，没有修改 SOUL。原生移动卡片目前只验证于本篇文章；若同类交互图跨渠道需求重复出现，再抽成共享 builder，而不是过早制度化。
 
 ## Git / Handoff
 
-- 博客提交已推送 `main`；原有 `.claude/` 与旧封面没有进入提交。
-- 写作仓库只提交 canonical、HTML、prompt、manifest、同步器、测试与本复盘；本机 `.local-archive/`、`.local-memory/`、图片二进制和发布状态不提交。
-- 博客公开内容已完成，无剩余发布动作。后续若在共享 skill 中补多分类说明，属于独立维护工作。
+- Blog 初始发布提交 `8e39d10`，首页 regenerate 最终提交 `e769de9`，均已推送 `main` 并完成线上核验；原有 `.claude/` 与旧 `hero-cover.png` 未进入提交。
+- 写作仓库 canonical、prompt、manifest、同步器、测试和流程文档已提交到 `8a42087`；本机 `.local-archive/`、`.local-memory/`、图片二进制与发布状态不提交。
+- 最终微信 `article.md` / `index.wechat-preview.html`、视觉方案和本复盘的新增收尾修改保留在工作区，未按用户要求执行新的 commit。若后续需要提交，应只选择这些已验收文件，排除未生成的 `home-cover-wide-v2.txt` 和本机文件。
+- Blog 与微信公众号发布均已完成，无剩余发布动作。后续仅保留 renderer / publisher 的独立维护项。
 
 ## 首页推荐修复
 
@@ -61,4 +66,10 @@
 
 `article-readiness-check`、Blog / 微信 workflow 和 closeout 已接入 Cover 必备、显式绝对 `--cover`、保存重开后的视觉验收、Cover family 去重归档等规则。微信专用派生图不会进入 Blog 引用资产集合。首页检查改为读取文章实际 `homeCover` / `heroImage`，并按无扩展名的资产标识兼容 Astro WebP，不再写死未生成的 v2 文件名；完整 Blog build、图片、分类和首页检查通过。
 
-SpaceX 微信试点先用 center crop 建立基线，在 1080×460、900×383、360×153 下均切掉主标题/底部标签，直接拒绝；pad 保留完整构图，先通过基线验收。随后应用户要求，以原 Prompt、标题修正和具体失败原因生成原生 2.35:1 版本，并与 pad 同尺寸对照。原生版的主标题、股票关系和三项标签在小卡上更有视觉重心，用户最终选择 regenerate，pad 降为备选。规范因此从“低成本派生优先”修正为“实际效果优先”：crop/pad 只作快速基线，原生再生是常规优化路径，不为少一次模型调用接受较弱结果。QA、Prompt、metadata 和最终图片均已归档；未创建新微信草稿。随后 regenerate 同时接入首页 `homeCover`，首次桌面低裁会切掉顶部标题，因此首页统一改为原生 2.35:1 完整显示，不再对信息型 Cover 做桌面低裁；桌面、390px、亮暗主题及完整 Blog build 均通过，文章 hero 未变。线上首页图尚未更新，留待用户 final review。
+SpaceX 微信试点先用 center crop 建立基线，在 1080×460、900×383、360×153 下均切掉主标题/底部标签，直接拒绝；pad 保留完整构图，先通过基线验收。随后应用户要求，以原 Prompt、标题修正和具体失败原因生成原生 2.35:1 版本，并与 pad 同尺寸对照。原生版的主标题、股票关系和三项标签在小卡上更有视觉重心，用户最终选择 regenerate，pad 降为备选。规范因此从“低成本派生优先”修正为“实际效果优先”：crop/pad 只作快速基线，原生再生是常规优化路径，不为少一次模型调用接受较弱结果。QA、Prompt、metadata 和最终图片均已归档；未创建新微信草稿。随后 regenerate 同时接入首页 `homeCover`，首次桌面低裁会切掉顶部标题，因此首页统一改为原生 2.35:1 完整显示，不再对信息型 Cover 做桌面低裁；桌面、390px、亮暗主题及完整 Blog build 均通过，文章 hero 未变。首页 regenerate 随提交 `e769de9` 发布，用户确认满意。
+
+## 微信公众号原生排版改造
+
+首次微信派生曾把三个交互 HTML 做成 5 张移动端长截图，虽然信息完整，但用户指出长图在手机阅读体验不好。最终没有以“信息不丢失”为理由保留截图，而是把内容重新设计成微信原生短卡片：六节点时间线、价格与身份卡、当前/规划/验收三个全链条分区。`content/wechat/.../index.wechat-preview.html` 使用白底 agent-flow，390px 无横向溢出，正文回到 8 张原图。
+
+最新原生排版版本已由用户在微信公众号后台手工发布：作者 Erik Lee、regenerate 封面、8/8 正文 CDN 图片，保存回读通过。早前长图草稿仍保留，未擅自删除；公开 URL 未提供，不重复执行发布。

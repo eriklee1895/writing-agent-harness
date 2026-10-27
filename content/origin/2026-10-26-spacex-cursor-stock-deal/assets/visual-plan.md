@@ -48,3 +48,12 @@
 - `hero-cover-v2-wechat-regenerated.png`：原生 1728×736 重新构图，使用原 Prompt、标题修正与 crop/pad 失败原因。主标题、股票关系和三项标签在小卡上更有冲击力，用户确认 **used / visual_review approved**。电脑前人物接受为 Cursor 开发者工作流提示，不再额外精修。
 - QA 对照：`previews/wechat-cover-candidates-qa.png` 与 `previews/wechat-pad-vs-regenerated-qa.png`。
 - 本轮确定的效果原则：模型调用成本低时，crop/pad 只作快速基线；原生再生是常规优化路径，以实际展示效果而非最少调用次数决定最终版本。
+
+## 微信公众号原生排版（2026-10-27）
+
+- 长截图只作过渡 QA，不作为最终公众号交付。用户反馈长图在手机阅读体验不佳后，三部分全部改为原生 HTML 短卡片。
+- 时间线：6 个短节点，替代宽表与长图。
+- 股东：3 个价格卡 + 6 个身份卡 + 边界说明。
+- 全链条：当前事实、公司规划、验收指标三个短分区，不再拆成三张长图。
+- 最终渠道 HTML：`content/wechat/2026-10-26-spacex-cursor-stock-deal/index.wechat-preview.html`。白底 `agent-flow`，390px 无横向溢出，正文图片 8 张，封面使用 regenerate。
+- 最新原生排版草稿已由用户在微信公众号后台手工正式发布；早期长图草稿保留，未删除。
