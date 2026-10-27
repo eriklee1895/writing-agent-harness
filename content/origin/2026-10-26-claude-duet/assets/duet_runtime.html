@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Duet：一次唤醒走过哪些组件</title>
+<style>
+:root{
+  --text:#2C2C2B; --muted:#6F6C67; --bg:#FFFFFF; --soft:#F9F8F7; --soft2:#F0EFED; --border:#E6E5E3;
+  --blue:#2783DE; --blue-soft:#E5F2FC; --green:#46A171; --orange:#D5803B;
+  --node:#FFFFFF; --badge-bg:#1F6FC0; --badge-fg:#FFFFFF; --line:rgba(39,131,222,.95); --line-dim:rgba(39,131,222,.32);
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --text:#FFFFFF; --muted:rgba(255,255,255,.65); --bg:#191919; --soft:#202020; --soft2:#2A2A29; --border:rgba(255,255,255,.20);
+    --blue:#5E9FE8; --blue-soft:#283240; --badge-bg:#5E9FE8; --badge-fg:#191919; --green:#72BC8F; --orange:#DE9255;
+    --node:#202020; --line:rgba(94,159,232,.95); --line-dim:rgba(94,159,232,.38); --shadow:none;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);
+  font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.wrap{padding:16px;max-width:1120px;margin:0 auto}
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;margin-bottom:12px}
+h1{font-size:16px;font-weight:600;margin:0;line-height:1.4}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tabs{display:flex;gap:2px;background:var(--soft2);padding:3px;border-radius:10px}
+.tab{min-height:44px;padding:0 14px;border:0;border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-size:14px;cursor:pointer;white-space:nowrap}
+.tab:hover{color:var(--text)}
+.tab[aria-selected="true"]{background:var(--bg);color:var(--text);font-weight:600;box-shadow:var(--shadow)}
+.ctrls{display:flex;gap:4px;align-items:center}
+.btn{min-width:44px;min-height:44px;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:8px;font:inherit;font-size:14px;cursor:pointer;padding:0 12px;white-space:nowrap}
+.btn:hover{background:var(--soft)}
+.btn[disabled]{opacity:.4;cursor:default}
+.counter{font-size:14px;color:var(--muted);min-width:48px;text-align:center;font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.stage{position:relative}
+svg.paths{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible}
+.grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.col h2{font-size:14px;font-weight:500;color:var(--muted);margin:0 0 6px;line-height:1.3}
+.nodes{display:flex;flex-direction:column;gap:8px}
+.node{position:relative;display:block;width:100%;text-align:left;border:1px solid var(--border);background:var(--node);border-radius:8px;padding:6px 10px;min-height:52px;font:inherit;color:var(--text);cursor:default}
+.node .t{display:block;font-size:14px;font-weight:600;line-height:1.35}
+.node .s{display:block;font-size:14px;color:var(--muted);line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.node.off .t{color:var(--muted);font-weight:500}
+.node.inpath{cursor:pointer}
+.node.inpath:hover{border-color:var(--line-dim)}
+.node.visited{border-color:var(--line-dim)}
+.node.active{border-color:var(--blue);background:var(--blue-soft);box-shadow:inset 0 0 0 1px var(--blue)}
+.badge{position:absolute;top:-9px;right:-6px;height:22px;min-width:22px;padding:0 6px;border-radius:11px;border:1px solid var(--border);background:var(--bg);color:var(--muted);font-size:12px;line-height:20px;text-align:center;font-variant-numeric:tabular-nums}
+.node.visited .badge{border-color:var(--line-dim);color:var(--text)}
+.node.active .badge{background:var(--badge-bg);border-color:var(--badge-bg);color:var(--badge-fg);font-weight:600}
+.detail{margin-top:14px;border:1px solid var(--border);border-radius:10px;background:var(--soft);padding:12px 14px;min-height:136px}
+.dhead{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-bottom:4px}
+.dstep{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.dtitle{font-size:16px;font-weight:600}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:14px;line-height:22px;padding:0 8px;border-radius:6px;background:var(--bg);border:1px solid var(--border);color:var(--text)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.d-doc{background:var(--green)} .d-inf{background:var(--orange)} .d-demo{background:var(--blue)}
+.dbody{margin:0;font-size:15px;line-height:1.6}
+.dvs{margin:6px 0 0;font-size:14px;color:var(--muted);line-height:1.5}
+.dvs b{font-weight:600;color:var(--text)}
+@media (max-width:620px){
+  .wrap{padding:12px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}
+  header{flex-direction:column;align-items:stretch}
+  .bar{justify-content:space-between}
+  .tabs{flex:1}
+  .tab{flex:1;padding:0 8px}
+}
+@media (prefers-reduced-motion: no-preference){
+  .node{transition:border-color .2s ease,background-color .2s ease}
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="app" tabindex="-1">
+  <header>
+    <h1>Duet：一次唤醒走过哪些组件</h1>
+    <div class="bar">
+      <div class="tabs" role="tablist" aria-label="场景"></div>
+      <div class="ctrls">
+        <button class="btn" id="prev" aria-label="上一步">←</button>
+        <span class="counter" id="counter" aria-live="polite">1 / 6</span>
+        <button class="btn" id="next" aria-label="下一步">→</button>
+        <button class="btn" id="play" aria-label="自动播放">播放</button>
+      </div>
+    </div>
+  </header>
+  <div class="stage" id="stage">
+    <svg class="paths" id="paths" aria-hidden="true"></svg>
+    <div class="grid" id="grid"></div>
+  </div>
+  <section class="detail" id="detail" aria-live="polite"></section>
+</div>
+<script>
+(function(){
+  var COLS=['客户端','控制面 · 大脑','护栏','执行（手）'];
+  var NODES={
+    you:{t:'你',s:'文字 · 语音',c:0},
+    approve:{t:'审批卡',s:'不可逆动作前',c:0},
+    tasks:{t:'Tasks · 主线程',s:'进度与待决定',c:0},
+    make:{t:'Make',s:'deck · 模型 · 看板',c:0},
+    cron:{t:'定时巡检',s:'晨报 + 每几小时',c:1},
+    session:{t:'主线程 + 频道',s:'会话日志',c:1},
+    memory:{t:'记忆',s:'技能 · 历史对话',c:1},
+    brain:{t:'Opus 5.5',s:'自己决定 effort',c:1},
+    pi:{t:'注入防御',s:'训练 + 分类器',c:2},
+    action:{t:'动作分类器',s:'auto mode',c:2},
+    sensitive:{t:'敏感信息分类器',s:'外发逐条检查',c:2},
+    conn:{t:'连接器',s:'凭据代理 · 保险库',c:3},
+    vm:{t:'云 VM',s:'自带浏览器',c:3},
+    wallet:{t:'Link · Shop Pay',s:'一次性虚拟卡',c:3}
+  };
+  var ORDER=[['you','approve','tasks','make'],['cron','session','memory','brain'],['pi','action','sensitive'],['conn','vm','wallet']];
+  var TAGS={doc:{l:'文档',d:['doc']},inf:{l:'推断',d:['inf']},demo:{l:'官网演示',d:['demo']},docinf:{l:'文档 + 推断',d:['doc','inf']}};
+  var SC=[
+    {id:'brief',label:'晨报 · 巡检',steps:[
+      {n:'cron',h:'定时唤醒',g:'doc',b:'早上发一份晨报；白天每隔几小时检查一次已连接的账户，而不是持续轮询。官方理由：持续检查会更快耗尽套餐额度。关注什么、多久一次可以自己设。',v:'OpenClaw 早期用 heartbeat 周期唤醒，现已改成普通 automation job——两边都收敛到显式调度。'},
+      {n:'session',h:'从日志恢复',g:'inf',b:'唤醒事件写进会话日志，无状态 harness 读日志接着干，跑完即睡；云 VM 只在需要浏览器或文件时才拉起。',v:'依据 Managed Agents 的 wake(sessionId) / emitEvent 设计推断。OpenClaw 是一个一直挂着的 Gateway 进程。'},
+      {n:'conn',h:'读账户',g:'doc',b:'Gmail、日历、QuickBooks、Stripe 等走连接器。令牌放在保险库，经专用代理调用，模型和沙箱都碰不到。',v:'OpenClaw 的凭据以明文存在本机。'},
+      {n:'pi',h:'隔离不可信内容',g:'doc',b:'邮件和网页都可能藏指令。模型经强化学习训练，把它们当信息而不是命令；另有分类器扫描所有进入上下文的不可信内容。',v:''},
+      {n:'brain',h:'分诊',g:'doc',b:'Opus 5.5 判断哪些要你、哪些可以等、哪些先动手（例如先起草回复）；花多少 effort 也由它定，用户不能选模型。',v:''},
+      {n:'tasks',h:'推送',g:'doc',b:'进行中的事进 Tasks；主线程只收「完成」和「要你决定」。晨报每条挂一个频道标签，数字注明出自哪封邮件或哪张表。',v:''}
+    ]},
+    {id:'job',label:'大任务',steps:[
+      {n:'you',h:'一句话下达',g:'doc',b:'在主线程打字或发语音：「用 Q3 数据重做融资 deck，发给 Harbor」。也可以单开一个频道，频道之间共享同一份记忆。',v:''},
+      {n:'memory',h:'带上存量上下文',g:'doc',b:'继承 Claude 账户的记忆、技能和连接器；还会检索过去的 Duet 对话和项目外的 Claude 对话。',v:'OpenClaw 的记忆是工作区里的 Markdown 文件，要自己维护。'},
+      {n:'brain',h:'规划',g:'doc',b:'决定用哪些应用、分几步、花多少 effort。长任务进 Tasks，不刷屏主线程。',v:''},
+      {n:'vm',h:'云端动手',g:'doc',b:'有连接器走连接器，没有就用云 VM 里的浏览器；手机、电脑关机也照常干活。目前看不到、也接管不了这个浏览器。',v:'OpenClaw 跑在你自己的 Mac mini 或 VPS 上，机器关了就停。'},
+      {n:'make',h:'交付成品',g:'doc',b:'deck、财务模型、看板、Web app 放进 Make 页签，可审阅、可编辑。',v:''},
+      {n:'sensitive',h:'外发前检查',g:'doc',b:'新的敏感信息分类器加安全系统提示，逐条检查消息：卡号、证件号一律拒绝；健康和个人财务信息只在你明确要求时放行。',v:''},
+      {n:'approve',h:'发送审批',g:'doc',b:'发邮件前把收件人、主题、正文完整摆出来，等你点 Send。你一时没空，它先做完其余部分，审批稍后再带回来。',v:''}
+    ]},
+    {id:'pay',label:'付款',steps:[
+      {n:'tasks',h:'发现卡点',g:'demo',b:'「Chicago location opening」频道：41 项开业清单，33 项完成或正常推进、7 项在盯、1 项要你——卫生许可表已填好，费用 $640。',v:''},
+      {n:'brain',h:'识别不可逆动作',g:'doc',b:'付款、发送、签署、删除都要先问你。另有硬禁区：交易证券、账户间转账、访问他人账户，批准了也不做。',v:''},
+      {n:'action',h:'动作分类器',g:'docinf',b:'Duet 的动作由 auto mode 分类器把关。Claude Code 版的公开设计：只看用户消息和工具调用，不看模型自述和工具输出；先单 token 快筛，被标记才跑 CoT。',v:'Duet 用的阈值和误拦率未公开。'},
+      {n:'approve',h:'审批卡',g:'demo',b:'卡片写明金额、用途和有效期（演示里是「8 分钟后过期」），点 Approve 才往下走。',v:'Grok Bot 来自 routine、触发器的审批约 10 分钟过期。'},
+      {n:'wallet',h:'一次性卡',g:'doc',b:'Link 再请你确认一次花费，然后发一张只对这一笔有效的虚拟卡，真实卡号不进对话。也能用 Shop Pay 结账。',v:''},
+      {n:'vm',h:'浏览器结账',g:'doc',b:'在云端浏览器里填表付款。站点要密码时，你在手机上的独立表单里输入，直接送进浏览器，不经过聊天。1Password 登录即将支持。',v:''},
+      {n:'tasks',h:'回报',g:'doc',b:'主线程收到「已完成」。任务是否结束，只能由你标记。',v:''}
+    ]}
+  ];
+  var s=0, i=0, timer=null;
+  var tabs=document.querySelector('.tabs'), grid=document.getElementById('grid'), svg=document.getElementById('paths');
+  var stage=document.getElementById('stage'), detail=document.getElementById('detail');
+  var prev=document.getElementById('prev'), next=document.getElementById('next'), play=document.getElementById('play'), counter=document.getElementById('counter');
+  var els={};
+  SC.forEach(function(sc,k){
+    var b=document.createElement('button'); b.className='tab'; b.setAttribute('role','tab'); b.textContent=sc.label;
+    b.addEventListener('click',function(){stop(); s=k; i=0; render();}); tabs.appendChild(b);
+  });
+  ORDER.forEach(function(ids,c){
+    var col=document.createElement('div'); col.className='col';
+    var h=document.createElement('h2'); h.textContent=COLS[c]; col.appendChild(h);
+    var wrap=document.createElement('div'); wrap.className='nodes';
+    ids.forEach(function(id){
+      var n=NODES[id], b=document.createElement('button'); b.className='node'; b.type='button';
+      b.innerHTML='<span class="t"></span><span class="s"></span>';
+      b.querySelector('.t').textContent=n.t; b.querySelector('.s').textContent=n.s;
+      b.addEventListener('click',function(){var st=SC[s].steps; for(var k=0;k<st.length;k++){ if(st[k].n===id){stop(); i=k; render(); return;} }});
+      wrap.appendChild(b); els[id]=b;
+    });
+    col.appendChild(wrap); grid.appendChild(col);
+  });
+  function center(el){var r=el.getBoundingClientRect(), o=stage.getBoundingClientRect(); return [r.left-o.left+r.width/2, r.top-o.top+r.height/2];}
+  function draw(){
+    var st=SC[s].steps, out='';
+    for(var k=1;k<=i;k++){
+      var a=center(els[st[k-1].n]), b=center(els[st[k].n]);
+      if(st[k-1].n===st[k].n) continue;
+      out+='<line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'" stroke="'+(k===i?'var(--line)':'var(--line-dim)')+'" stroke-width="'+(k===i?2.5:2)+'" stroke-linecap="round"'+'/>';
+    }
+    svg.innerHTML=out;
+  }
+  function render(){
+    var sc=SC[s], st=sc.steps, cur=st[i];
+    Array.prototype.forEach.call(tabs.children,function(b,k){b.setAttribute('aria-selected',k===s?'true':'false'); b.tabIndex=k===s?0:-1;});
+    var nums={};
+    st.forEach(function(x,k){(nums[x.n]=nums[x.n]||[]).push(k);});
+    Object.keys(els).forEach(function(id){
+      var b=els[id], inP=!!nums[id];
+      b.className='node'+(inP?' inpath':' off');
+      var old=b.querySelector('.badge'); if(old) old.remove();
+      b.removeAttribute('aria-current');
+      if(inP){
+        var vis=nums[id].some(function(k){return k<i;}), act=nums[id].indexOf(i)>-1;
+        if(vis) b.className+=' visited';
+        if(act){ b.className+=' active'; b.setAttribute('aria-current','step'); }
+        var bd=document.createElement('span'); bd.className='badge'; bd.textContent=nums[id].map(function(k){return k+1;}).join('·'); b.appendChild(bd);
+        b.setAttribute('aria-label',NODES[id].t+'，第 '+nums[id].map(function(k){return k+1;}).join('、')+' 步');
+        b.tabIndex=0;
+      } else { b.setAttribute('aria-label',NODES[id].t+'（本场景不经过）'); b.tabIndex=-1; }
+    });
+    counter.textContent=(i+1)+' / '+st.length;
+    prev.disabled=i===0; next.disabled=i===st.length-1;
+    var tg=TAGS[cur.g];
+    var dots=tg.d.map(function(d){return '<span class="dot d-'+d+'"></span>';}).join('');
+    detail.innerHTML='<div class="dhead"><span class="dstep">第 '+(i+1)+' 步</span><span class="dtitle"></span><span class="tag">'+dots+'<span class="tl"></span></span></div><p class="dbody"></p>'+(cur.v?'<p class="dvs"><b>对照</b>　<span class="vt"></span></p>':'');
+    detail.querySelector('.dtitle').textContent=NODES[cur.n].t+' · '+cur.h;
+    detail.querySelector('.tl').textContent=tg.l;
+    detail.querySelector('.dbody').textContent=cur.b;
+    if(cur.v) detail.querySelector('.vt').textContent=cur.v;
+    draw();
+  }
+  function stop(){ if(timer){clearInterval(timer); timer=null;} play.textContent='播放'; play.setAttribute('aria-label','自动播放'); }
+  function start(){
+    if(i>=SC[s].steps.length-1){ i=0; render(); }
+    play.textContent='暂停'; play.setAttribute('aria-label','暂停播放');
+    timer=setInterval(function(){ if(i<SC[s].steps.length-1){ i++; render(); } else stop(); },2800);
+  }
+  prev.addEventListener('click',function(){stop(); if(i>0){i--; render();}});
+  next.addEventListener('click',function(){stop(); if(i<SC[s].steps.length-1){i++; render();}});
+  play.addEventListener('click',function(){ timer?stop():start(); });
+  document.addEventListener('keydown',function(e){
+    if(e.target && e.target.getAttribute && e.target.getAttribute('role')==='tab' && (e.key==='ArrowLeft'||e.key==='ArrowRight')){
+      var k=(s+(e.key==='ArrowRight'?1:SC.length-1))%SC.length; stop(); s=k; i=0; render(); tabs.children[k].focus(); e.preventDefault(); return;
+    }
+    if(e.key==='ArrowRight'){ stop(); if(i<SC[s].steps.length-1){i++; render();} }
+    else if(e.key==='ArrowLeft'){ stop(); if(i>0){i--; render();} }
+  });
+  if(window.ResizeObserver){ new ResizeObserver(function(){draw();}).observe(stage); } else { window.addEventListener('resize',draw); }
+  render();
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+})();
+</script>
+</body>
+</html>

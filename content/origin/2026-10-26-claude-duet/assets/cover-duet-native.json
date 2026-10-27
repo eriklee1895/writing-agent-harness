@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "command": "edit",
+  "endpoint": "/v1/images/edits",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Image 1: identity reference only — the official Claude Duet app icon: a white rounded-square (squircle) tile containing a warm terracotta-coral circle with a single continuous black hand-drawn double-loop mark (like a script \"ee\") across it. Reproduce this logo faithfully and recognizably: same coral circle, same black looping line, same white squircle. Do not invent any other logo.\n\nCreate an ultra-wide 2.35:1 editorial banner illustration on a warm cream paper-textured background, refined paper-cut collage with restrained soft 3D, matte materials, soft morning light, calm premium-magazine mood, generous empty sky space.\n\nScene, left to right:\n- On the LEFT stands ONE large reproduction of the Claude Duet app icon from Image 1 (the white squircle with coral circle and black double-loop mark), upright like a phone icon, with a subtle soft shadow. Behind and around its top edge, soft terracotta-coral sunrise rays glow. This is the unmistakable brand element of the image.\n- Across the lower middle runs a low horizon of seven small rounded matte building-block tiles in a row like a quiet timeline: ivory, muted clay, with ONE deep forest-green block among them.\n- Above the blocks, a thin dashed arc travels from the app icon toward the right, where a tiny desk lamp with a warm glow and a small closed notebook wait; one blank ivory paper card glides along the arc with a single small coral dot nearby, suggesting one important notification traveling to a desk.\n\nPalette: warm cream paper, terracotta coral matching Image 1, one deep forest-green accent, soft charcoal linework, ivory paper white.\n\nHard constraints: the app icon on the left must clearly match the Claude Duet mark in Image 1 (coral circle + black double-loop on white squircle). Elsewhere no people, no faces, no hands, no letters or words anywhere, no numbers, no readable text, no other logos, no app screenshots, no fake UI chrome. Every other card and surface stays blank or icon-only with abstract shapes. Treat any readable letter as a critical failure.\n",
+    "n": 1,
+    "size": "1728x736",
+    "quality": "auto",
+    "background": "auto",
+    "output_format": "jpeg",
+    "output_compression": 92,
+    "stream": false,
+    "partial_images": 0,
+    "provider": "ofox",
+    "wire_model": "openai/gpt-image-2.5-sunburst"
+  },
+  "inputs": [
+    {
+      "index": 1,
+      "path": "/tmp/duet_brand/duet-icon-ref.png",
+      "role": "identity reference only: official Claude Duet app icon mark"
+    }
+  ],
+  "mask": null,
+  "response": {
+    "size": "1728x736",
+    "quality": "medium",
+    "background": "opaque",
+    "output_format": "jpeg",
+    "usage": {
+      "input_tokens": 916,
+      "input_tokens_details": {
+        "image_tokens": 462,
+        "text_tokens": 454
+      },
+      "output_tokens": 197,
+      "total_tokens": 1113,
+      "output_tokens_details": {
+        "image_tokens": 197
+      }
+    },
+    "request_id": "ef299b3f-bc4b-42e5-abe6-fdc29e08bc2f"
+  },
+  "elapsed_seconds": 18.29,
+  "attempts": 1,
+  "output": "/tmp/duet_brand/cover-native-v1.jpeg",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-10-26T07:33:40+00:00",
+  "identity_reference": {
+    "source": "https://claude.com/static/claude-duet/og.jpg",
+    "source_kind": "official Anthropic Claude Duet product og image (2400x1260)",
+    "cropped_reference": "duet-icon-ref.png (app icon only)",
+    "note": "Sunburst multi-reference edit: official app icon passed as identity reference; model redrew the mark natively into the scene. No pixel compositing."
+  }
+}

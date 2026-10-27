@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Editorial banner illustration for a technology essay, ultra-wide 2.35:1 composition.\n\nScene: a quiet writer's desk at early morning on a warm cream paper-textured background. Slightly left of center, a single smartphone stands upright in a slim minimal stand, its screen glowing softly with warm terracotta-coral light. Floating gently just above the phone is one small rounded paper notification card carrying only a tiny embossed sunrise pictogram and a small coral dot — the card is otherwise blank. From the right, a gentle arc of seven small matte rounded-square building-block tiles floats toward the phone, quietly slotting together in mid-air; the tiles are ivory, muted clay, and one deep forest-green tile, each decorated only with a tiny embossed icon (a cloud, a shield, a small card, a price tag, a sun) — pictograms only.\n\nStyle: refined editorial illustration mixing paper-cut collage with restrained soft 3D, matte materials, soft window light from the upper left casting long gentle shadows, calm and intelligent premium-magazine mood. Very generous empty negative space across the upper-right third of the canvas.\n\nPalette strictly: warm cream paper background, terracotta coral glow, one deep forest-green accent, soft charcoal linework.\n\nHard constraints: no people, no faces, no hands, no letters or words anywhere, no numbers, no readable text, no logos or brand marks, no app screenshots, no fake UI chrome. Any object resembling a card or screen must be blank or icon-only. Treat any readable letter as a critical failure.\n",
+    "n": 1,
+    "size": "1728x736",
+    "quality": "auto",
+    "background": "auto",
+    "output_format": "jpeg",
+    "output_compression": 90,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "ofox",
+    "wire_model": "openai/gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": "1728x736",
+    "quality": "medium",
+    "background": "opaque",
+    "output_format": "jpeg",
+    "usage": {
+      "input_tokens": 320,
+      "input_tokens_details": {
+        "text_tokens": 320
+      },
+      "output_tokens": 367,
+      "total_tokens": 687,
+      "output_tokens_details": {
+        "image_tokens": 367
+      }
+    },
+    "request_id": "e1f87af0-8aed-4fb6-ab96-6189e605c34b"
+  },
+  "elapsed_seconds": 25.418,
+  "attempts": 1,
+  "output": "content/origin/2026-10-26-claude-duet/assets/cover-morning-desk.jpeg",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-10-26T06:48:29+00:00"
+}

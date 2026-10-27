@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenClaw 到 Duet：近 9 个月晚在哪</title>
+<style>
+:root{
+  --text:#2C2C2B; --muted:#6F6C67; --bg:#FFFFFF; --soft:#F9F8F7; --soft2:#F0EFED; --border:#E6E5E3; --grid:#EFEEEC;
+  --demand:#2783DE; --sec:#D9534A; --econ:#C98A1B; --model:#9A6DD7; --blocks:#46A171;
+  --band:rgba(39,131,222,.07); --focus:#2783DE; --hl:rgba(0,0,0,.035);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --text:#FFFFFF; --muted:rgba(255,255,255,.65); --bg:#191919; --soft:#202020; --soft2:#2A2A29; --border:rgba(255,255,255,.18); --grid:rgba(255,255,255,.07);
+    --demand:#5E9FE8; --sec:#E97366; --econ:#EAC26B; --model:#BF8EDA; --blocks:#72BC8F;
+    --band:rgba(94,159,232,.10); --focus:#5E9FE8; --hl:rgba(255,255,255,.05);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);
+  font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.wrap{padding:16px;max-width:1120px;margin:0 auto}
+header{margin-bottom:10px}
+h1{font-size:16px;font-weight:600;margin:0;line-height:1.4}
+.hint{margin:2px 0 0;font-size:14px;color:var(--muted)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.tl{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.tl-inner{display:flex;min-width:100%;width:max-content}
+.lanes{position:sticky;left:0;z-index:3;background:var(--bg);flex:0 0 96px;width:96px;border-right:1px solid var(--border)}
+.lanes .top{height:66px;display:flex;align-items:flex-end;padding:0 0 4px}
+.ov{min-height:44px;width:88px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font:inherit;font-size:14px;cursor:pointer}
+.ov[aria-pressed="true"]{background:var(--soft2);font-weight:600}
+.lane-btn{display:flex;align-items:center;gap:6px;width:100%;height:62px;padding:0 6px 0 2px;border:0;border-top:1px solid var(--grid);background:transparent;color:var(--text);font:inherit;font-size:14px;line-height:1.3;text-align:left;cursor:pointer}
+.lane-btn:hover{background:var(--soft)}
+.lane-btn[aria-pressed="true"]{background:var(--soft2);font-weight:600}
+.sw{flex:0 0 10px;width:10px;height:10px;border-radius:50%}
+.plot{position:relative;flex:1 0 auto;min-width:560px}
+.row{position:relative;height:22px}
+.lane{position:relative;height:62px;border-top:1px solid var(--grid);transition:opacity .2s ease}
+.lane::before{content:"";position:absolute;left:0;right:0;top:31px;height:1px;background:var(--border)}
+.lane.dim{opacity:.28}
+.lane.hl{background:var(--hl)}
+.ovl{position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;z-index:0}
+.mline{position:absolute;top:0;bottom:0;width:0;border-left:1px solid var(--grid)}
+.mlab{position:absolute;top:44px;height:22px;font-size:12px;line-height:22px;color:var(--muted);transform:translateX(4px);white-space:nowrap}
+.band{position:absolute;top:22px;bottom:0;background:var(--band)}
+.mark{position:absolute;top:0;bottom:0;width:0;border-left:1.5px dashed var(--muted);opacity:.55}
+.br{position:absolute;height:22px;display:flex;align-items:center;justify-content:center}
+.br::before{content:"";position:absolute;left:0;right:0;top:11px;height:0;border-top:1.5px solid var(--muted);opacity:.6}
+.br::after{content:"";position:absolute;left:0;right:0;top:6px;height:11px;border-left:1.5px solid var(--muted);border-right:1.5px solid var(--muted);opacity:.6}
+.br span{position:relative;z-index:1;background:var(--bg);padding:0 6px;font-size:12px;font-weight:600;line-height:22px;white-space:nowrap}
+.ev{position:absolute;z-index:1;display:block;padding:0;border:0;background:transparent;color:var(--text);font:inherit;font-size:13px;line-height:18px;white-space:nowrap;cursor:pointer;text-align:center}
+.ev .lb{display:block;padding:0 2px;border-radius:4px;text-shadow:0 0 3px var(--bg),0 0 3px var(--bg),0 0 2px var(--bg)}
+.ev:hover .lb{background:var(--soft2)}
+.ev .dt{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--c)}
+.ev.sel .lb{font-weight:600}
+.ev.sel .dt{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--c)}
+.detail{margin-top:12px;border:1px solid var(--border);border-radius:10px;background:var(--soft);padding:12px 14px;min-height:150px}
+.dhead{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-bottom:2px}
+.ddate{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:14px;line-height:22px;padding:0 8px;border-radius:6px;background:var(--bg);border:1px solid var(--border)}
+.dtitle{margin:2px 0 4px;font-size:16px;font-weight:600;line-height:1.4}
+.dbody{margin:0;font-size:15px;line-height:1.6}
+.dsrc{margin:6px 0 0;font-size:14px;color:var(--muted);line-height:1.5}
+.dsrc a{color:var(--text);text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:2px}
+.dsrc a:hover{text-decoration-color:var(--text)}
+@media (max-width:620px){
+  .wrap{padding:12px}
+  .lanes{flex-basis:92px;width:92px}
+  .ov{width:84px}
+  .lane-btn{font-size:13px;gap:5px}
+}
+@media (prefers-reduced-motion: reduce){ .lane{transition:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>OpenClaw 到 Duet：近 9 个月晚在哪</h1>
+    <p class="hint">点左侧泳道看每道闸门，点圆点看单个事件</p>
+  </header>
+  <div class="tl" id="tl">
+    <div class="tl-inner">
+      <div class="lanes" id="lanes"><div class="top"><button class="ov" id="ov" aria-pressed="true">总览</button></div></div>
+      <div class="plot" id="plot">
+        <div class="ovl" id="ovl"></div>
+        <div class="row" id="r1"></div>
+        <div class="row" id="r2"></div>
+        <div class="row" id="r3"></div>
+      </div>
+    </div>
+  </div>
+  <section class="detail" id="detail" aria-live="polite"></section>
+</div>
+<script>
+(function(){
+  var S={
+    wired:{l:'WIRED｜OpenAI Dots',u:'https://www.wired.com/story/openai-dots-always-on-ai-agents-that-proactively-help/'},
+    pete:{l:'Peter Steinberger｜About',u:'https://steipete.me/about'},
+    grok:{l:'xAI｜Introducing Grok Bot',u:'https://x.ai/news/introducing-grok-bot'},
+    muse:{l:'Meta｜Introducing Muse（存档）',u:'https://web.archive.org/web/20260921184201/https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/'},
+    tc:{l:'TechCrunch｜Muse 与 OpenClaw',u:'https://techcrunch.com/2026/09/22/meta-admits-muses-likeness-to-openclaw-isnt-a-coincidence'},
+    yahoo:{l:'Yahoo Finance｜Muse 下载量',u:'https://finance.yahoo.com/markets/article/metas-muse-ai-agent-hits-109-million-downloads-as-chatgpt-slides-25-153532560.html'},
+    cue:{l:'Pandaily｜Manus 2.0 与 Cue',u:'https://pandaily.com/manus-2-0-cascade-agent-harness-cue-personal-agents'},
+    dots:{l:'OpenAI｜Introducing Dots',u:'https://openai.com/index/introducing-dots'},
+    duet:{l:'Claude｜Introducing Claude Duet',u:'https://claude.com/resources/articles/claude-duet'},
+    bi:{l:'Business Insider｜Claude Duet',u:'https://www.businessinsider.com/anthropic-answers-meta-openai-new-personal-agent-claude-duet-2026-10'},
+    acr:{l:'Acronis｜OpenClaw in the wild',u:'https://www.acronis.com/en/tru/posts/openclaw-agentic-ai-in-the-wild-architecture-adoption-and-emerging-security-risks/'},
+    thn:{l:'The Hacker News｜OpenClaw 接入 VirusTotal',u:'https://thehackernews.com/2026/02/openclaw-integrates-virustotal-scanning.html'},
+    vbsec:{l:'VentureBeat｜OpenClaw 安全',u:'https://venturebeat.com/security/openclaw-500000-instances-no-enterprise-kill-switch'},
+    auto:{l:'Anthropic｜Claude Code auto mode',u:'https://www.anthropic.com/engineering/claude-code-auto-mode'},
+    ma:{l:'Anthropic｜Scaling Managed Agents',u:'https://www.anthropic.com/engineering/managed-agents'},
+    vbsub:{l:'VentureBeat｜订阅恢复第三方用法',u:'https://venturebeat.com/technology/anthropic-reinstates-openclaw-and-third-party-agent-usage-on-claude-subscriptions-with-a-catch'},
+    help:{l:'Claude Help｜Get started with Claude Duet',u:'https://support.claude.com/en/articles/17631495-get-started-with-claude-duet'},
+    opus:{l:'Anthropic｜Introducing Claude Opus 5.5',u:'https://www.anthropic.com/claude-opus-5-5'},
+    ars:{l:'Ars Technica｜Cowork 发布',u:'https://arstechnica.com/ai/2026/01/anthropic-launches-cowork-a-claude-code-like-for-general-computing/'},
+    rel:{l:'Claude Help｜Release notes',u:'https://support.claude.com/en/articles/12138966-release-notes'},
+    vbduet:{l:'VentureBeat｜Claude Duet',u:'https://venturebeat.com/technology/anthropics-answer-to-muse-is-here-claude-duet-a-mobile-and-desktop-ai-agent-that-takes-actions-proactively'},
+    tag:{l:'Anthropic｜Introducing Claude Tag',u:'https://www.anthropic.com/news/introducing-claude-tag'},
+    fello:{l:'Fello AI（第三方整理）｜Cowork 指南',u:'https://felloai.com/pt/claude-cowork-guide/'},
+    cloud:{l:'Claude Help｜Cowork on web, desktop and mobile',u:'https://support.claude.com/en/articles/15520349-use-claude-cowork-on-web-desktop-and-mobile'}
+  };
+  var LANES=[
+    {k:'demand',n:'需求与竞争',t:'需求与竞争：需求早有，触发靠对手',
+     b:'1 月 OpenClaw 证明了需求，2 月作者去了 OpenAI。8 月 11 日 Grok Bot 先发，之后 Muse、Cue、Dots、Duet 在 10 周内接连发布；Meta 已公开承认 Muse 受 OpenClaw 启发。'},
+    {k:'sec',n:'安全',t:'安全：先把暴露面收回来',
+     b:'OpenClaw 的问题主要出在部署形态：控制台裸露在公网、凭据明文存放、技能市场被投毒、漏洞能串成一键 RCE。托管产品得先把凭据移出沙箱（4 月）、让审批自动化（3 月）；Duet 又补了一层外发信息检查（10 月）。'},
+    {k:'econ',n:'经济',t:'经济：常驻 Agent 会打穿订阅',
+     b:'订阅是按人在聊天的用量定价的，常驻 Agent 却整天在跑循环。Anthropic 先禁止、再改为单独计量；到 Duet，干脆把巡检频率做成产品参数，用「每几小时一次」换额度。'},
+    {k:'model',n:'模型',t:'模型：没人盯着也要守规矩',
+     b:'Anthropic 承认早期模型撑不起「一个大脑调度多只手」。到 Opus 5.5，宣传重点从能力转向克制：更少做难以撤销的动作，更抗注入。Duet 只用这一个模型。'},
+    {k:'blocks',n:'Anthropic 积木',t:'积木：Duet 是拼出来的',
+     b:'Cowork（1 月）→ Dispatch（3 月，手机派活）→ Tag（6 月，Slack 里的团队 Agent）→ Cowork 上云（7–10 月）。到 10 月，云端执行、凭据代理、审批、记忆都已在别的产品里跑过；Duet 新增的主要是巡检节奏和「什么值得打扰你」的判断。'}
+  ];
+  var OVERVIEW={t:'晚的不是想法，是可托管',
+    b:'OpenClaw 1 月就证明了需求，大厂到 8–10 月才密集发布。中间差的是把它做成托管产品的几道闸门：安全（凭据和动作要可控）、经济（常驻会打穿订阅）、模型（没人盯着也不越界）、基础设施（大脑和手解耦、云端常驻）。8 月 Grok Bot 发布后，竞争把剩下的时间压到了 10 周。'};
+  var EV=[
+    {l:0,d:'2026-01-25',dl:'2026-01',t:'OpenClaw 走红',b:'开源、自托管、模型无关的常驻 Agent 在早期用户里走红：住在聊天软件里，有记忆，会定时醒来，能动手。需求被证明了，但它跑在用户自己的机器上。',s:['wired','acr']},
+    {l:0,d:'2026-02-15',dl:'2026-02',t:'作者加入 OpenAI',b:'Peter Steinberger 加入 OpenAI 做 personal agents，项目交给 OpenClaw Foundation 运作。',s:['pete']},
+    {l:0,d:'2026-08-11',t:'Grok Bot',b:'xAI 发布 Grok Bot：Cursor 底座、microVM、Auto Review，每月 $120–200。这一波大厂 Personal Agent 里最早发布的一家。',s:['grok']},
+    {l:0,d:'2026-09-08',t:'Muse',b:'Meta 发布 Muse，免费，App、WhatsApp、网页三个入口。截至 10 月中旬下载 1,090 万次、日活 250 万（Sensor Tower）。9 月 22 日 Meta 承认它深受 OpenClaw 启发。',s:['muse','tc','yahoo']},
+    {l:0,d:'2026-09-28',dl:'09-28 / 09-29',t:'Cue · Dots',b:'Manus 2.0 发布 Cue，给每个 Agent 配邮箱、电话和钱包；第二天 OpenAI 在 DevDay 发布 Dots（GPT-6 Astra，每个 dot 一台云电脑）。',s:['cue','dots']},
+    {l:0,d:'2026-10-21',t:'Duet',b:'Anthropic 发布 Claude Duet 预览：独立 App，仅限美国 Pro / Max 用户。距 OpenClaw 走红近 9 个月，距 Dots 三周，发布当天正好是 Meta 财报日。',s:['duet','bi']},
+    {l:1,d:'2026-01-31',dl:'2026-01-31',t:'暴露实例 2 万+',b:'Censys 数据：不到一周，公网可访问的 OpenClaw 实例从约 1,000 个涨到 21,000+。凭据以明文存在本机。',s:['acr','thn']},
+    {l:1,d:'2026-02-12',dl:'1 月底 – 2 月',t:'CVE + 技能投毒',b:'CVE-2026-25253（CVSS 8.8）：令牌外泄可串成一键 RCE。Koi 在 ClawHub 的 2,857 个技能里查出 341 个恶意技能，其中 335 个来自 ClawHavoc 这一次行动；到 2 月中旬增至 824 个。',s:['vbsec']},
+    {l:1,d:'2026-03-25',t:'auto mode',b:'Claude Code auto mode 用两段式转录分类器代替人工审批（用户本来就批准了 93% 的弹窗）。真实流量误拦率 0.4%，但真实越界动作有 17% 漏放。',s:['auto']},
+    {l:1,d:'2026-04-08',t:'凭据移出沙箱',b:'Managed Agents 重构：令牌放进保险库，经专用代理调用，沙箱里跑的代码碰不到。旧设计里，不可信代码和凭据在同一个容器。',s:['ma']},
+    {l:1,d:'2026-10-21',t:'敏感信息分类器',b:'Duet 新增敏感信息分类器，配合安全系统提示，逐条检查外发消息：卡号、证件号一律拒绝；健康和财务信息只在你明确要求时才发。',s:['duet']},
+    {l:2,d:'2026-04-04',t:'订阅禁用',b:'Anthropic 禁止用 Pro / Max 订阅驱动 OpenClaw 等第三方 harness。Boris Cherny 说，这类用法绕开了 prompt cache，「很难可持续」；$20 的订阅能跑出按 API 价要几百美元的用量。',s:['vbsub']},
+    {l:2,d:'2026-05-13',t:'恢复，但单独计量',b:'重新允许第三方用法，但改成每月 $20–200 的 Agent SDK 额度：按 API 价计费，不结转。6 月 15 日起全面计量。',s:['vbsub']},
+    {l:2,d:'2026-10-21',t:'每几小时巡检',b:'Duet 每隔几小时检查一次账户，官方理由是持续检查会更快耗尽额度；后台检查也计入用量。11 月 30 日前可一次性重置额度。',s:['duet','help']},
+    {l:3,d:'2026-04-08',t:'「早期模型做不到」',b:'Managed Agents 一文：最初把大脑放在单个容器里，是因为早期模型还不会在多个执行环境之间推理、决定把活派到哪里；模型变强后，单容器反而成了瓶颈。',s:['ma']},
+    {l:3,d:'2026-09-25',dl:'2026-09 下旬',t:'Opus 5.5',b:'自动行为审计成绩最好的一版：更少做难以撤销的动作，更少越界，比 Opus 5 更抗注入（Gray Swan 测试中与 Fable 5.1 并列最低攻击成功率）。Duet 固定用它，用户不能换。',s:['opus','help']},
+    {l:4,d:'2026-01-12',t:'Cowork',b:'把 Claude Code 的 Agent 能力搬进 macOS 桌面端，做代码之外的知识工作：给它一个文件夹，告诉它要做什么。',s:['ars']},
+    {l:4,d:'2026-03-17',t:'Dispatch',b:'在手机上用一条常驻线程给 Cowork 派活。前提是桌面端开着；现已不再接受新用户。',s:['rel','vbduet']},
+    {l:4,d:'2026-06-23',t:'Claude Tag',b:'Slack 里的团队 Agent：频道会话负责分诊，线程开临时沙箱干活，Agent Proxy 在请求时注入凭据，出网默认拒绝。',s:['tag']},
+    {l:4,d:'2026-07-07',t:'Cowork 上云',b:'Cowork 上线 Web、iOS、Android，在 Anthropic 服务器上运行的云端会话进入 beta（Max 先行）。',s:['fello']},
+    {l:4,d:'2026-09-16',t:'聊天并入 Cowork',b:'聊天与 Cowork 合并为一个入口。',s:['fello','vbduet']},
+    {l:4,d:'2026-10-06',t:'云端默认',b:'新建的 Pro / Max Cowork 任务默认在 Anthropic 服务器上运行。',s:['cloud']}
+  ];
+  var T0=Date.UTC(2026,0,1), T1=Date.UTC(2026,9,31), PAD=10;
+  function ts(d){var p=d.split('-'); return Date.UTC(+p[0],+p[1]-1,+p[2]);}
+  var lanesEl=document.getElementById('lanes'), plot=document.getElementById('plot'), ovl=document.getElementById('ovl');
+  var r1=document.getElementById('r1'), r2=document.getElementById('r2'), r3=document.getElementById('r3');
+  var detail=document.getElementById('detail'), ovBtn=document.getElementById('ov');
+  var laneRows=[], laneBtns=[], evEls=[], state={lane:-1,ev:-1};
+  LANES.forEach(function(L,i){
+    var b=document.createElement('button'); b.className='lane-btn'; b.type='button'; b.setAttribute('aria-pressed','false');
+    b.innerHTML='<span class="sw"></span><span></span>'; b.firstChild.style.background='var(--'+L.k+')'; b.lastChild.textContent=L.n;
+    b.addEventListener('click',function(){ state.lane=(state.lane===i?-1:i); state.ev=-1; render(); });
+    lanesEl.appendChild(b); laneBtns.push(b);
+    var row=document.createElement('div'); row.className='lane'; plot.appendChild(row); laneRows.push(row);
+  });
+  EV.forEach(function(e,i){
+    var b=document.createElement('button'); b.className='ev'; b.type='button'; b.style.setProperty('--c','var(--'+LANES[e.l].k+')');
+    b.innerHTML='<span class="lb"></span><span class="dt"></span>'; b.firstChild.textContent=e.t;
+    b.setAttribute('aria-label',(e.dl||e.d)+' '+LANES[e.l].n+'：'+e.t);
+    b.addEventListener('click',function(){ state.ev=(state.ev===i?-1:i); if(state.ev>-1&&state.lane>-1&&state.lane!==e.l) state.lane=-1; render(); });
+    laneRows[e.l].appendChild(b); evEls.push(b);
+  });
+  ovBtn.addEventListener('click',function(){ state.lane=-1; state.ev=-1; render(); });
+  var MONTHS=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月'];
+  function layout(){
+    var W=plot.clientWidth, span=W-2*PAD;
+    function X(d){return PAD+(ts(d)-T0)/(T1-T0)*span;}
+    var o='';
+    for(var m=0;m<10;m++){
+      var x=PAD+(Date.UTC(2026,m,1)-T0)/(T1-T0)*span;
+      o+='<div class="mline" style="left:'+x+'px;top:44px"></div><div class="mlab" style="left:'+x+'px">'+MONTHS[m]+'</div>';
+    }
+    var xa=X('2026-01-25'), xb=X('2026-10-21'), xg=X('2026-08-11');
+    o+='<div class="band" style="left:'+xg+'px;width:'+(xb-xg)+'px"></div>';
+    o+='<div class="mark" style="left:'+xa+'px;top:0"></div><div class="mark" style="left:'+xb+'px;top:0"></div>';
+    o+='<div class="br" style="left:'+xa+'px;width:'+(xb-xa)+'px;top:0"><span>近 9 个月</span></div>';
+    o+='<div class="br b2" style="left:'+xg+'px;width:'+(xb-xg)+'px;top:22px"><span>10 周 5 款</span></div>';
+    ovl.innerHTML=o;
+    LANES.forEach(function(L,li){
+      var last={up:-1e9,down:-1e9}, k=0;
+      EV.forEach(function(e,i){
+        if(e.l!==li) return;
+        var el=evEls[i], lb=el.firstChild, dt=el.lastChild; el.style.width='auto'; var w=Math.ceil(lb.getBoundingClientRect().width), x=X(e.d);
+        var pref=(k%2===0)?'up':'down', other=pref==='up'?'down':'up';
+        function box(){var l=Math.max(0,Math.min(W-w,x-w/2)); return l;}
+        var left=box(), side=pref;
+        if(left<last[pref]+6){ if(left>=last[other]+6) side=other; else { left=Math.min(W-w,last[pref]+6); } }
+        last[side]=left+w;
+        el.style.left=left+'px'; el.style.width=w+'px';
+        var dx=x-left-5;
+        if(side==='up'){ el.style.top='5px'; lb.style.marginTop='0'; dt.style.left=dx+'px'; dt.style.top='21px'; el.style.height='31px'; }
+        else { el.style.top='26px'; dt.style.left=dx+'px'; dt.style.top='0px'; lb.style.marginTop='14px'; el.style.height='32px'; }
+        el.dataset.side=side; k++;
+      });
+    });
+  }
+  function link(id){var s=S[id]; return '<a href="'+s.u+'" target="_blank" rel="noopener">'+s.l+'</a>';}
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function render(){
+    ovBtn.setAttribute('aria-pressed',(state.lane<0&&state.ev<0)?'true':'false');
+    laneBtns.forEach(function(b,i){b.setAttribute('aria-pressed',state.lane===i?'true':'false');});
+    laneRows.forEach(function(r,i){ r.className='lane'+(state.lane>-1?(state.lane===i?' hl':' dim'):''); });
+    evEls.forEach(function(el,i){ el.className='ev'+(state.ev===i?' sel':''); el.setAttribute('aria-pressed',state.ev===i?'true':'false'); });
+    var h='';
+    if(state.ev>-1){
+      var e=EV[state.ev], L=LANES[e.l];
+      h='<div class="dhead"><span class="ddate">'+esc(e.dl||e.d)+'</span><span class="chip"><span class="sw" style="background:var(--'+L.k+')"></span>'+esc(L.n)+'</span></div>'+
+        '<p class="dtitle">'+esc(e.t)+'</p><p class="dbody">'+esc(e.b)+'</p><p class="dsrc">来源：'+e.s.map(link).join('；')+'</p>';
+    } else if(state.lane>-1){
+      var L2=LANES[state.lane];
+      h='<div class="dhead"><span class="chip"><span class="sw" style="background:var(--'+L2.k+')"></span>'+esc(L2.n)+'</span><span class="chip">推断</span></div>'+
+        '<p class="dtitle">'+esc(L2.t)+'</p><p class="dbody">'+esc(L2.b)+'</p>';
+    } else {
+      h='<div class="dhead"><span class="chip">总览</span><span class="chip">推断</span></div><p class="dtitle">'+esc(OVERVIEW.t)+'</p><p class="dbody">'+esc(OVERVIEW.b)+'</p>';
+    }
+    detail.innerHTML=h;
+  }
+  if(window.ResizeObserver){ new ResizeObserver(function(){layout();}).observe(plot); } else { window.addEventListener('resize',layout); }
+  layout(); render();
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(layout);
+})();
+</script>
+</body>
+</html>

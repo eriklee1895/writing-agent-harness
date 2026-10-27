@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "command": "generate",
+  "endpoint": "/v1/images/generations",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Editorial banner illustration for a technology essay, ultra-wide 2.35:1 composition, abstract and minimal.\n\nScene: across a warm cream paper-textured canvas, a low horizon line formed by seven rounded matte building-block tiles arranged like a quiet timeline, most in ivory and muted clay with one deep forest-green tile. On the left, a small terracotta-coral sun rises gently behind a single soft cloud-shaped tile that quietly glows. From that glowing tile, one small blank paper card glides along a thin dashed arc across the canvas toward the far right, where a tiny simple desk lamp and a closed notebook wait on the horizon. Above the arc, a single small coral dot suggests a notification traveling. The composition reads as: an agent waking on a schedule and reaching out with one important thing.\n\nStyle: refined editorial illustration, paper-cut collage with restrained soft 3D, matte textures, gentle long shadows, calm premium-magazine mood, lots of breathing room and open sky space in the upper two thirds, balanced with the horizon in the lower third.\n\nPalette strictly: warm cream paper, terracotta coral, one deep forest-green accent, soft charcoal thin linework.\n\nHard constraints: no people, no faces, no hands, no letters or words anywhere, no numbers, no readable text, no logos or brand marks, no app screenshots, no fake UI chrome. Every tile, card and surface must be blank or carry only abstract shapes. Treat any readable letter as a critical failure.\n",
+    "n": 1,
+    "size": "1728x736",
+    "quality": "auto",
+    "background": "auto",
+    "output_format": "jpeg",
+    "output_compression": 90,
+    "stream": false,
+    "partial_images": 0,
+    "moderation": "auto",
+    "provider": "ofox",
+    "wire_model": "openai/gpt-image-2.5-sunburst"
+  },
+  "inputs": [],
+  "mask": null,
+  "response": {
+    "size": "1728x736",
+    "quality": "low",
+    "background": "opaque",
+    "output_format": "jpeg",
+    "usage": {
+      "input_tokens": 307,
+      "input_tokens_details": {
+        "text_tokens": 307
+      },
+      "output_tokens": 92,
+      "total_tokens": 399,
+      "output_tokens_details": {
+        "image_tokens": 92
+      }
+    },
+    "request_id": "ba878484-1f05-414b-867f-d3db7d380fda"
+  },
+  "elapsed_seconds": 19.35,
+  "attempts": 1,
+  "output": "content/origin/2026-10-26-claude-duet/assets/cover-blocks-sunrise.jpeg",
+  "partial_outputs": [],
+  "derived_output": null,
+  "created_at": "2026-10-26T06:49:06+00:00"
+}

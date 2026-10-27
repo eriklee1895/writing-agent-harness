@@ -1,0 +1,93 @@
+{
+  "article": "只卖一种茶的茶饮店，凭什么活了九年",
+  "date": "2026-10-25",
+  "style": "editorial risograph business illustration",
+  "generator": "gpt-image-2.5-sunburst via gpt-image-api",
+  "canonical": "content/origin/2026-10-25-qilin-dakoucha/index.md",
+  "archive": ".local-archive/2026-10-25-qilin-dakoucha/",
+  "images": [
+    {
+      "file": "images/01-cover.webp",
+      "role": "blog cover + chapter 1",
+      "size": "2048x1152",
+      "prompt": "prompts/01-cover.txt",
+      "wechat": "assets/01-cover.jpg + assets/cover-wechat.jpg + assets/cover-square.jpg"
+    },
+    {
+      "file": "images/02-menu-collapse.webp",
+      "role": "chapter 1",
+      "size": "1536x1024",
+      "prompt": "prompts/02-menu-collapse-nostraw.txt",
+      "wechat": "assets/02-menu-collapse.jpg"
+    },
+    {
+      "file": "images/03-lottery-jar.webp",
+      "role": "chapter 3",
+      "size": "1536x1024",
+      "prompt": "prompts/03-lottery-jar-nostraw.txt",
+      "wechat": "assets/03-lottery-jar.jpg"
+    },
+    {
+      "file": "images/04-stage-backstage.webp",
+      "role": "chapter 4",
+      "size": "1536x1024",
+      "prompt": "prompts/batch-02-04.jsonl#L3",
+      "wechat": "assets/04-stage-backstage.jpg"
+    },
+    {
+      "file": "images/05-ch2-night-street.webp",
+      "role": "chapter 2",
+      "size": "1536x1024",
+      "prompt": "prompts/batch-05-08.jsonl#L1",
+      "wechat": "assets/05-ch2-night-street.jpg"
+    },
+    {
+      "file": "images/06-ch5-stamp.webp",
+      "role": "chapter 5",
+      "size": "1536x1024",
+      "prompt": "prompts/06-ch5-stamp.txt",
+      "wechat": "assets/06-ch5-stamp.jpg"
+    },
+    {
+      "file": "images/07-ch6-tightrope.webp",
+      "role": "chapter 6",
+      "size": "1536x1024",
+      "prompt": "prompts/batch-05-08.jsonl#L3",
+      "wechat": "assets/07-ch6-tightrope.jpg"
+    },
+    {
+      "file": "images/08-ch7-price-tag.webp",
+      "role": "chapter 7",
+      "size": "1536x1024",
+      "prompt": "prompts/batch-05-08.jsonl#L4",
+      "wechat": "assets/08-ch7-price-tag.jpg"
+    }
+  ],
+  "embeds": [
+    {
+      "file": "embeds/qilin-timeline.html",
+      "role": "blog interactive timeline",
+      "wechat_static": "assets/qilin-timeline.jpg",
+      "wechat_size": "780x2160"
+    },
+    {
+      "file": "embeds/qilin-sku-price.html",
+      "role": "blog interactive SKU/price card",
+      "wechat_static": "assets/qilin-sku-price.jpg",
+      "wechat_size": "780x1120"
+    }
+  ],
+  "wechat_covers": [
+    {
+      "file": "../wechat/2026-10-25-qilin-dakoucha/assets/cover-wechat.jpg",
+      "size": "1080x460",
+      "ratio": "2.35:1"
+    },
+    {
+      "file": "../wechat/2026-10-25-qilin-dakoucha/assets/cover-square.jpg",
+      "size": "1080x1080",
+      "ratio": "1:1"
+    }
+  ],
+  "notes": "WebP are the blog assets; JPEG derivatives and static embed renders are the WeChat channel assets. Binaries are gitignored; archive copies live in .local-archive/."
+}
