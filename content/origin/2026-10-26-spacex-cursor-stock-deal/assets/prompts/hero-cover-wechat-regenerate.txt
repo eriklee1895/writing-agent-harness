@@ -1,0 +1,22 @@
+Deliverable: A native 1728×736 (2.35:1) financial editorial cover for WeChat, belonging to the same visual family as the approved SpaceX–Cursor article cover. This is a fresh composition, not a crop or padded version of the 3:2 master.
+
+Source lineage: Use the original approved cover concept and the later approved title wording. Preserve the flat-vector financial editorial style, Swiss grid, white/off-white background, charcoal typography, restrained forest green, muted blue and small terracotta accents.
+
+Observed problems to correct:
+- Center-cropping the 3:2 master cuts off the main title and the three analytical labels.
+- Padding the whole master makes the title, labels and brand details too small at WeChat card size.
+- Do not reproduce those failures. Use the wide canvas efficiently with no oversized empty top/bottom band and no tiny footer text.
+
+Composition:
+- Create a strong left-to-right acquisition narrative with three coordinated zones: title and Cursor on the left/center-left, a large SPCX Class A stock certificate and exchange arrow in the center, SpaceX and its related marks on the right.
+- Main title: exact text "600 亿美元的资本大戏". Make it the largest element, bold and instantly readable at small-card size. Keep the space between "600" and "亿美元".
+- Subtitle directly beneath: exact text "回望SpaceX豪购Cursor". Keep no spaces around SpaceX or Cursor. It must be clearly secondary to the main title, not a tiny caption.
+- Cursor logo and a compact developer-workflow icon appear near the left/center-left, associated with the recipient of the stock exchange.
+- The central equity certificate is labeled "SPCX Class A" with a smaller "ALL-STOCK DEAL" label and a clear arrow from SpaceX toward Cursor. It must read as the payment instrument, not a decorative banknote.
+- Right side: accurate SpaceX wordmark, small xAI and Grok marks, and one small monochrome line-art Elon Musk portrait with caption "ELON MUSK". Keep Musk and secondary brand marks visually subordinate.
+- Integrate three readable concept labels into the composition: "估值", "流动性", "风险分配". Use simple icons and give these labels real visual weight; do not shrink them into an unreadable footer.
+- Keep all essential content away from the outer 7% margins and preserve comfortable spacing at mobile card width.
+
+Text allowlist: Only "600 亿美元的资本大戏", "回望SpaceX豪购Cursor", "SPCX Class A", "ALL-STOCK DEAL", "估值", "流动性", "风险分配", "ELON MUSK", plus official brand wordmarks "SpaceX", "xAI", "Grok", "Cursor". No other readable words, numbers, captions, slogans, footnotes or UI labels.
+
+Avoid: generic logo collage, large empty margins, tiny text, distorted logos, extra people, photography, 3D, gradients, rockets, starfields, cash piles, a generic banknote as the main subject, extra statistics, dates, or any implication that IPO cash paid Cursor shareholders.

@@ -134,7 +134,8 @@ Do not use base64 as an archive strategy. It bloats HTML and Git history while m
 ### Image Archive
 
 - **只在 closeout 时移动图片。** 生成阶段不要双写到 `.local-archive/`。
-- 移动最终图片到 `.local-archive/YYYY-MM-DD-<slug>/images/`，只移动 `index.md` 中实际引用的图片；未使用的生成版本可保留在 `content/origin/YYYY-MM-DD-<slug>/assets/` 中作为本地工作副本，不强制清理。
+- 移动最终图片到 `.local-archive/YYYY-MM-DD-<slug>/images/`：包括 `index.md` 实际引用的图片，以及 manifest 中标记为 used 的 Cover family（母版、微信有效 Cover、可选 `homeCover`），即使某个渠道派生物没有出现在正文引用中。候选/ rejected 版本只保留本地工作副本，不进入最终归档。
+- 同一文件被多个角色复用时按实际路径/解析目标去重，不重复归档二进制；已经归档且哈希一致的文件直接核验，不在增量 closeout 中重复搬运。
 - 同时复制最终 `index.md` 到 `.local-archive/YYYY-MM-DD-<slug>/index.md` 作为文章快照。
 - 保留源 prompt、style profile、model/provider、size/ratio、generation time、usage 和 article reference；将对应 `.json` metadata 放入 `.local-archive/YYYY-MM-DD-<slug>/prompts/`。
 - Repo 中保留 `content/origin/YYYY-MM-DD-<slug>/assets/manifest.json` 作为轻量 provenance，记录每张图的来源、生成参数、归档路径、使用状态。

@@ -46,7 +46,7 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
    - `title`、`date` 存在；
    - `summary` 存在且 ≤120 字（公众号摘要长度上限）。如果缺失或过长，回到 `polish-article` 流程补/改，**不要**让 publisher 自动截取首句——那会丢失作者判断；
    - frontmatter 中 **没有 `author` 字段**。作者永远从 `.config/wechat.toml` 的 `default_author` 读取，不写入 Markdown canonical source；
-   - `cover` 可选：有则传给 `--try-cover` 自动上传封面；没有则提示用户草稿箱 final review 时手动设置封面。
+   - `cover` **必须具备且已通过实际尺寸验收**。选择已批准的母版或渠道派生图，把其**绝对路径**显式传给 `--cover` 并加 `--try-cover`；不要用 `homeCover` 替代微信 Cover。若派生图不适合，回到 `article-illustration` 的派生/再生流程，不要把不合适母图交给平台硬裁。
 6. 在触碰微信公众号编辑器前，先让用户确认 preview。
 6. **渠道产物约定：`content/wechat/YYYY-MM-DD-<slug>/` 是微信渠道派生 artifact 的 canonical 目录，但只放可进 git 的排版产物（`index.wechat-preview.html`）。**
    - **发布态不进 git**：`appmsgid`、草稿 URL、群发状态属于渠道运营状态，不是文章内容。publisher 把 `publish-status.md` 写到 `.local-archive/YYYY-MM-DD-<slug>/`（`.gitignore` 已覆盖该目录），**不要**写进 `content/wechat/`。理由：appmsgid 可构造微信后台编辑链接，属于账号态敏感信息；且草稿会删会重发、值会变，写进 git history 只会留下 stale data。
@@ -70,6 +70,8 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
    uv run ../wechat-article-publisher/scripts/publish.py \
      --article /abs/path/to/content/origin/YYYY-MM-DD-<slug>/index.md \
      --html    /abs/path/to/content/wechat/YYYY-MM-DD-<slug>/index.wechat-preview.html \
+     --cover   /abs/path/to/approved-wechat-cover.png \
+     --try-cover \
      --save-draft
    ```
 
@@ -78,13 +80,13 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
    - 自动读取 `data-local-path` 指向的本地图片（renderer 产出绝对路径，和 HTML 所在目录无关，所以 origin/wechat 两份 HTML 用的是同一组图片，不用双拷贝二进制）；
    - 串行上传正文图片到微信公众号，等其变成 `mmbiz.qpic.cn` CDN URL 再传下一张/保存；
    - 不把图片 base64 内联进 HTML；
-   - 传 `--try-cover` 会用 frontmatter 中的 `cover:` 路径自动上传封面（走 WebUploader 隐藏 file input，已稳定）；
+   - 传 `--cover` 指定已批准的微信母版或派生图，传 `--try-cover` 执行自动上传（WebUploader 隐藏 file input）；只给 frontmatter `cover` 不构成完整的多渠道 Cover 流程；
    - 传 `--declare-original` 会自动勾选原创声明（需要该账号已开通原创功能）；
    - 保存前按 Tab blur 让 Vue 把 ProseMirror 输入 flush 到隐藏 textarea，避免 metadata 不 commit；保存后三重验证（toast / appmsgid 变更 / title 回读匹配），不再依赖 URL 中预分配的 appmsgid 槽位作为成功信号。
    - **浏览器默认以 headed 模式启动（`headless=False` + `launch_persistent_context`）**。这是刻意的默认：首次必须扫码；已登录时仍保留 headed 是因为微信后台反自动化对头less 敏感、图片上传链路在 headless 下易隐式失败、final human review 本来就需要人眼、debug 时直接可见错误弹框。不要自作主张改成 headless；决策细节见 [docs/retrospectives/2026-06-29-wechat-publisher-headed-mode.md](../../../docs/retrospectives/2026-06-29-wechat-publisher-headed-mode.md)。未来若加 `--headless` flag，必须先在该 retrospective 中登记稳定性数据，且只能 opt-in。
 9. 填入后检查：
    - title、author、summary；
-   - 封面可见，上传后指向 WeChat CDN；
+   - 封面在保存并重新打开草稿后仍可见，且确实是批准的微信 Cover；不能只看 `--try-cover` 返回值或 placeholder DOM；
    - 正文图片已上传到 WeChat CDN；
    - 如含视频，视频卡片/播放器在编辑器中可见，插入位置正确；
    - editor body 中 external links 数量为 `0`；

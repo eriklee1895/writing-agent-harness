@@ -62,17 +62,20 @@ description: "发布前文章 readiness 检查。Use when the user says ready/�
 
 ### Visual And Media References
 
-- 只有当 visuals 帮助理解、传播或渠道呈现时才要求补图。
-- 封面图、正文图、视频 preview frame 是否与文章气质和渠道一致。
-- 生成图必须有 source prompt / metadata；没有 prompt / metadata 的生成图不算可追溯。
+- **每篇进入渠道 handoff 的文章必须有 Cover。**缺失、无法解析、来源不可追溯或尚未完成实际尺寸视觉验收，均为 publish blocker；不能用“图片可选”或运行时文字 fallback 绕过。
+- `cover` 应是已批准的 Blog hero / OG 母版，并能通过 origin assets、归档软链或 Blog destination 解析。不要把 source-only 检查误用于图片被 gitignore 的正常情况。
+- 系列模板、确定性渲染与授权素材同样属于正式 Cover，但必须有对应模板/来源 provenance；生成图必须有 source prompt / metadata。
+- 裁剪或补边只产生候选，不等于验收通过。必须检查目标渠道实际画框与手机小图，记录 approved / rejected 与检查尺寸；主体被裁、文字不可读、Logo 变形均不得 Ready。
+- 多渠道时分别确认 Blog Cover、微信有效 Cover 与可选 `homeCover` 的角色和 lineage。`homeCover` 不能替代缺失的 Blog 母版或微信 Cover。
+- 封面图、正文图、视频 preview frame 是否与文章气质和渠道一致；正文插图仍按内容需要判断，不强制每章配齐。
 - 图片和视频二进制默认不进本 repo；readiness 阶段只确认引用、metadata、alt/caption、发布用途和可找回线索完整。
 - 本地视频素材应来自 `video-material-ingest` 素材包，并有 `manifest.json` / `sources.md`。
 - 没有确认使用权、来源或插入位置的视频，不要标记 ready。
 
 ### Channel Handoff
 
-- 微信公众号：内容 ready 后交给 `wechat-article-renderer`；preview 确认后再交给 `wechat-publish-workflow`。
-- Blog / MDX：确认 frontmatter、canonical URL、图片引用、MDX 组件和 build/render 风险。
+- 微信公众号：内容 ready 后交给 `wechat-article-renderer`；preview 确认后再交给 `wechat-publish-workflow`。必须明确实际批准的微信 Cover 绝对路径，并在 publisher 命令中同时传 `--cover <absolute-path> --try-cover`；保存并重开草稿后确认封面卡片可见，不能只看上传返回值。
+- Blog / MDX：确认 frontmatter、canonical URL、图片引用、MDX 组件和 build/render 风险。`cover` / 可选 `homeCover` 必须与实际页面角色一致，且各自通过目标画框验收。
 - 多渠道：保留 canonical Markdown / MDX article，再派生 channel-specific version；不要把渠道版本反向覆盖 origin article。
 - 跨渠道复用：判断是否值得同步到 blog、知乎、即刻、小红书等；如需要，记录每个渠道要改的标题、摘要、长度、链接和图片策略。
 - 最终发布、群发、上线动作必须由用户 final review 或明确授权。

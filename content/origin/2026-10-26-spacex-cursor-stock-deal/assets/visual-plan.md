@@ -15,6 +15,7 @@
 | 章节 | 载体 | 内容 |
 | --- | --- | --- |
 | Cover | `hero-cover-v2.png` | SpaceX 股票作为收购货币，600 亿美元问题入口；品牌与股权交换结构 |
+| Home lead | `hero-cover-v2-wechat-regenerated.png` | 首页复用微信原生 2.35:1 regenerate；主标题、股票关系和三项标签保留，桌面与手机均完整显示，不做低裁；文章 hero 不变 |
 | 1. 收购前 Cursor | `ch01-growth-constraints.png` | 高增长与算力/模型成本/竞争约束；不把不同收入口径连成增长曲线 |
 | 2. SpaceX 动因 | `ch02-strategic-fit-v2.png` | SpaceX/xAI/Grok/X 与 Cursor 的双向互补， Musk 单元素 |
 | 3. 专业术语 | `ch03-stock-acquisition-terms.png` | 怎么付、为何此时付、两种理论解释；股票支付不等于必然高估或收割 |
@@ -38,3 +39,12 @@
 2. 视觉检查整张图，不只看构图；中文错字、数字错误、Logo 变形均判失败。
 3. 生图不用于承载长段落、复杂表格或精确多层级小字。
 4. HTML 通过桌面/移动、亮/暗、键盘和 console 检查；文章 MDX 构建后再检查实际 iframe。
+
+## 微信 Cover 派生与再生对比（2026-10-27）
+
+- 母版：`hero-cover-v2.png`，不改变 Blog hero / OG。
+- `hero-cover-v2-wechat-crop.png`：1080×460 center crop。1080×460、900×383、360×153 三个尺寸均切掉主标题与底部分析标签，**rejected**。
+- `hero-cover-v2-wechat-pad.png`：1080×460 contain/pad。保留完整构图，曾通过基线验收；但与原生再生版同尺寸比较后，标题和视觉重心偏弱，降为 **superseded 备选**。
+- `hero-cover-v2-wechat-regenerated.png`：原生 1728×736 重新构图，使用原 Prompt、标题修正与 crop/pad 失败原因。主标题、股票关系和三项标签在小卡上更有冲击力，用户确认 **used / visual_review approved**。电脑前人物接受为 Cursor 开发者工作流提示，不再额外精修。
+- QA 对照：`previews/wechat-cover-candidates-qa.png` 与 `previews/wechat-pad-vs-regenerated-qa.png`。
+- 本轮确定的效果原则：模型调用成本低时，crop/pad 只作快速基线；原生再生是常规优化路径，以实际展示效果而非最少调用次数决定最终版本。

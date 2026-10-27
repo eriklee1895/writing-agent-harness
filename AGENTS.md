@@ -84,6 +84,7 @@
 
 - 微信公众号排版默认要求**纯白底 `#ffffff`、正文外层与章节容器透明**，便于手机昼夜阅读适配；不要沿用模板暖纸色底。技术长文可保留 `warm-editorial` 的陶土橙强调、字号和留白，但须检查实际输出底色，表头默认采用透明背景与深色文字。`agent-flow` 等其他 preset 仍可按文章选择。浏览器深色模式模拟不能代替微信真机验收。表格统一用 flex `<div>` 渲染（不用 `<table>` 标签，否则微信会套虚线编辑框）。
 - 文章配图的**渠道尺寸**是渠道约束，与选哪个生图 skill 无关：规格见 [docs/reference/visuals.md](docs/reference/visuals.md)（微信头条封面 2.35:1）。能原生生成目标比例的模型直接出图；不支持该比例的模型才需要生成后再裁。
+- **每篇进入渠道 handoff 的文章都必须有经实尺寸验收的 Cover**；缺失、不可解析或未验收均为 blocker。默认“一个视觉母版 + 多渠道派生”，crop/pad 用作快速基线，原生再生是常规优化路径。**以实际展示效果为最高优先级，不因模型调用成本接受较弱方案**；根据同尺寸对比持续修正 Prompt 与构图，并记录派生或再生 lineage。系列模板与确定性 Cover 也算正式 Cover，不要求每篇独立 AI 生图。
 - 早期灵感脑暴使用 project skill：`article-ideation`。
 - 文章打磨使用 project skill：`polish-article`。
 - **❗ 写作开始前必须先读取 [docs/reference/format-standards.md](docs/reference/format-standards.md)。** 无论文章是 Markdown 技术报告、HTML 单页报告还是微信渠道，agent 都应在动笔前理解目标格式的写作方法论、视觉手段和质量标准。这条不是建议，是前置要求。

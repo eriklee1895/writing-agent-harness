@@ -142,12 +142,15 @@ wechat-article-publisher    # Playwright
 ```bash
 uv run .agents/skills/wechat-article-publisher/scripts/publish.py \
   --article /absolute/path/to/source/article.md \
-  --html    /absolute/path/to/article.wechat-preview.html --save-draft
+  --html    /absolute/path/to/article.wechat-preview.html \
+  --cover   /absolute/path/to/approved-wechat-cover.png \
+  --try-cover \
+  --save-draft
 ```
 
 唯一不可避免的人工参与点是微信登录确认（首次扫码）。这是微信账号安全模型带来的边界，不是自动化缺口；登录态存独立 profile 可复用后，后续 `login_wait≈0`，从 preview 到草稿箱同步接近 100% AI 自动化。
 
-封面图通过 publisher `--try-cover` 自动上传（需要 frontmatter 的 `cover:` 指向本地图片）。封面以编辑器左侧卡片/封面预览可见为准。DOM 里的 `#js_cover_area` 有时仍会显示 placeholder text，不一定代表封面失败。
+封面必须通过显式 `--cover /absolute/path/to/approved-wechat-cover.png --try-cover` 上传已批准的母版或渠道派生图，不能只依赖 frontmatter 回退，也不能把 `homeCover` 当作微信 Cover。以保存并重新打开草稿后的实际封面卡片可见且内容正确为准；`--try-cover` 返回值、保存成功或 DOM 中的 placeholder text 都不是充分的视觉验收。
 
 如果登录页显示「微信快捷登录」按钮而不是二维码，应直接点击该按钮继续登录流程，不要等待扫码超时；如果显示二维码，再由用户扫码确认。
 

@@ -76,6 +76,7 @@ Default behavior:
    ```
 
 4. Validate generated blog content:
+   - 进入同步前必须完成 `article-readiness-check`：批准 Cover 存在、可追溯且通过实际尺寸验收；缺失或未验收不得 handoff。
    - Destination file exists under `/Users/eriklee/code/my_project/eriklee-blog/src/content/posts/`.
    - Frontmatter has `title`, `description`, `pubDatetime`, `category`, `tags`, and preferably `series`/`type` when applicable.
    - No `Image pending` remains.
@@ -117,6 +118,7 @@ Default behavior:
 The blog sidebar depends on frontmatter. Preserve or infer these fields:
 
 - `category`: one primary bucket, shown in the sidebar.
+- `categories`: optional additional category memberships; primary `category` is always retained and deduplicated. Do not use `series` to simulate multi-category columns.
 - `series`: optional learning/research sequence.
 - `tags`: flexible secondary labels.
 - `type`: article shape, default `技术笔记`.
@@ -125,6 +127,7 @@ Common display taxonomy:
 
 - `AI Engineering` -> `AI 工程`
 - `AI Frontier` -> `AI 前沿`
+- `Business Insights` -> `商业洞察`
 - `Web & AI Tooling` -> `Web 与 AI 工具链`
 - `Culture & Media` -> `文化与媒介`
 - `Writing System` -> `写作系统`

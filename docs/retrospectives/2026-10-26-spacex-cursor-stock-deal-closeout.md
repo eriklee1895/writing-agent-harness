@@ -52,3 +52,13 @@
 用户发现首页左侧仍是 Claude Duet。根因不是部署缓存，而是两篇 `pubDatetime` 均为 `2026-10-26T00:00:00Z`，且均无 `featured`，首页回退到排序后的第一篇。采用显式编辑推荐而非伪造时间：SpaceX 设置 `featured: true`，同步器增加字段透传与默认省略测试，12 项测试通过。
 
 博客修复提交 `5c7aeb1` 已推送 `main`。本地构建与页面确认 SpaceX 左侧推荐、Claude Duet 右侧最新文章；Cloudflare 多次 200 响应确认新 lead，用户线上截图再次验证。推送前的 GitHub 连接超时通过保留本地提交、网络恢复后重试解决，没有改 remote 或凭据。
+
+## Cover 必备与派生流程落地
+
+用户随后明确：Cover 是每篇文章的必备交付物，Blog 与微信公众号应共享母版和派生流程，但不要求每篇独立 AI 生图。最终规则是“一个视觉母版 + 按渠道确定性派生；crop/pad 先验收，不合适再用原 Prompt、目标比例与失败原因重新生成”。通用模板与系列 Cover 同样是正式路径，不建立 CMS 或批量返工旧文。
+
+新增 `article-illustration/scripts/prepare_cover.py`：支持 focal crop、contain/pad、目标尺寸、背景、输出保护、manifest lineage 和 JSON。输出只能是 candidate / visual_review pending；重新派生会重置旧验收状态。输出软链接一律拒绝，避免覆盖 closeout 归档。27 项 prepare/sync 回归测试通过。
+
+`article-readiness-check`、Blog / 微信 workflow 和 closeout 已接入 Cover 必备、显式绝对 `--cover`、保存重开后的视觉验收、Cover family 去重归档等规则。微信专用派生图不会进入 Blog 引用资产集合。首页检查改为读取文章实际 `homeCover` / `heroImage`，并按无扩展名的资产标识兼容 Astro WebP，不再写死未生成的 v2 文件名；完整 Blog build、图片、分类和首页检查通过。
+
+SpaceX 微信试点先用 center crop 建立基线，在 1080×460、900×383、360×153 下均切掉主标题/底部标签，直接拒绝；pad 保留完整构图，先通过基线验收。随后应用户要求，以原 Prompt、标题修正和具体失败原因生成原生 2.35:1 版本，并与 pad 同尺寸对照。原生版的主标题、股票关系和三项标签在小卡上更有视觉重心，用户最终选择 regenerate，pad 降为备选。规范因此从“低成本派生优先”修正为“实际效果优先”：crop/pad 只作快速基线，原生再生是常规优化路径，不为少一次模型调用接受较弱结果。QA、Prompt、metadata 和最终图片均已归档；未创建新微信草稿。随后 regenerate 同时接入首页 `homeCover`，首次桌面低裁会切掉顶部标题，因此首页统一改为原生 2.35:1 完整显示，不再对信息型 Cover 做桌面低裁；桌面、390px、亮暗主题及完整 Blog build 均通过，文章 hero 未变。线上首页图尚未更新，留待用户 final review。

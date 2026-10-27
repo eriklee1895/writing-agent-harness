@@ -499,6 +499,11 @@ def build_blog_frontmatter(
         source_path.parent, cover, destination_assets_dir
     ):
         cover = ""
+    home_cover = source_meta.get("homeCover")
+    if home_cover and not asset_exists_in_source_or_destination(
+        source_path.parent, home_cover, destination_assets_dir
+    ):
+        home_cover = ""
 
     source_ref = display_source_path(source_path)
     lines = [
@@ -520,6 +525,7 @@ def build_blog_frontmatter(
         # [...slug].astro:74). ogImage only feeds <meta og:image>. Without this
         # line every synced post shows a text placeholder instead of a thumbnail.
         f"heroImage: {normalize_asset_path(cover, source_path.parent.name)}" if cover else "",
+        f"homeCover: {normalize_asset_path(home_cover, source_path.parent.name)}" if home_cover else "",
         *yaml_list(tags),
         f"source: {yaml_scalar(source_ref)}",
         "---",
@@ -600,7 +606,7 @@ def referenced_asset_names(body: str, meta: dict[str, object]) -> set[str]:
         if _EXTERNAL_URL_RE.match(url):
             continue
         names.add(Path(url.removeprefix("./")).name)
-    for key in ("cover", "ogImage", "coverImage"):
+    for key in ("cover", "ogImage", "coverImage", "homeCover"):
         value = str(meta.get(key) or "").strip()
         if value and not _EXTERNAL_URL_RE.match(value):
             names.add(Path(value).name)

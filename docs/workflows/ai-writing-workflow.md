@@ -117,7 +117,8 @@ content/origin/YYYY-MM-DD-<slug>/index.md
 
 | 预设 | `--size` | 用途 |
 |------|----------|------|
-| `wechat-cover-hd` | 1792x1024 → 自动裁剪 1080x460 (2.35:1) | 公众号头条封面 |
+| `prepare_cover.py` | 按目标尺寸 crop / pad，记录 focal point 与派生 lineage | Blog / 微信 / OG 渠道 Cover 派生；先做候选，实尺寸验收后再使用 |
+| `wechat-cover-hd`（legacy） | 1792x1024 → 自动裁剪 1080x460 (2.35:1) | 仅旧脚本回退，不再作为默认渠道适配 |
 | `doc-hd` | 1536x1024 | 正文插图（横版） |
 | `portrait-hd` | 1024x1536 | 正文插图（竖版，移动端） |
 | `blog-banner` | 2048x1152 | 博客首页头图 |

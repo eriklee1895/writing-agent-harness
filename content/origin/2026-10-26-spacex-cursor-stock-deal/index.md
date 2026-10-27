@@ -3,6 +3,7 @@ title: "回望SpaceX豪购Cursor：600 亿美元的资本大戏"
 date: 2026-10-26
 summary: "从30美元订阅到太空算力，拆解SpaceX收购Cursor的产业动因、股票货币与风险分配。"
 cover: assets/hero-cover-v2.png
+homeCover: assets/hero-cover-v2-wechat-regenerated.png
 register: industry-analysis
 type: 行业观察
 featured: true

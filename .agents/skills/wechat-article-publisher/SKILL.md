@@ -28,7 +28,7 @@ description: 用 Playwright 把微信公众号文章（文章流程）同步到�
 | 标题 | `--title` → frontmatter `title` → 正文首个 H1（renderer hero，会从正文剔除避免重复） |
 | 作者 | `--author` → frontmatter `author` → repo `.config/wechat.toml` `default_author` →（缺失）首次运行询问并写回 |
 | 摘要 | `--summary` → frontmatter `description`/`summary` → 正文首段（≤120 字） |
-| 封面 | `--try-cover` 开启自动上传（frontmatter `cover` 相对 .md 目录；推荐预裁剪为 2.35:1 比例，省去编辑器内裁剪步骤）。成功时左侧卡片显示封面，失败不阻塞草稿保存 |
+| 封面 | 显式 `--cover` 优先，其次才是 frontmatter `cover`/`coverImage`/`image`。多渠道发布应由 workflow 传入已批准派生图的绝对路径并加 `--try-cover`；`--try-cover` 本身不是封面合格的证明 |
 | 原创声明 | `--declare-original` 勾选「声明原创」（需账号已开通原创功能）；作用域限定在原创弹窗内的「确定」按钮 |
 
 作者等恒定本机配置放在 repo 根下 **`.config/wechat.toml`**（已 `.gitignore`），首次缺 `default_author` 时脚本会自动创建。
@@ -53,6 +53,8 @@ content/origin/YYYY-MM-DD-<slug>/index.md（frontmatter 权威源）
 uv run scripts/publish.py \
   --article content/origin/YYYY-MM-DD-<slug>/index.md \
   --html    content/wechat/YYYY-MM-DD-<slug>/index.wechat-preview.html \
+  --cover   /absolute/path/to/approved-wechat-cover.png \
+  --try-cover \
   --save-draft
 
 # 备用：只给 .md（极简排版，无 renderer 样式）
@@ -97,7 +99,7 @@ uv run scripts/publish.py \
 - **保存成功与请求图片数不能代替媒体验收**：逐图确认 CDN 地址、非零显示尺寸、左右位置，并在保存重新打开后复核。当前发布状态里的 `image_count` 可能来自请求数量，需要与实际插入数量对照。
 - **读取编辑器 HTML 后重新注入**：先移除无 `src` / `data-src` 的编辑器辅助图片和 `ProseMirror-separator`，保留实际图片及用户文字；否则辅助节点可能变成空正文图片。
 
-- **封面图：`--try-cover` 已稳定（2026-06-29 起）**。走 WebUploader 隐藏 `<input type=file>` 的 `set_input_files`（不点透明 label overlay，overlay 会拦截）→ 等 `mmbiz.qpic.cn` URL 出现 → JS 定位「下一步」可见主按钮 → 完成。建议把封面预裁为 2.35:1（公众号封面标准比例），跳过编辑器内裁剪步骤更稳。`--try-cover` 仍为 opt-in（不强制每篇都需要封面），失败时 `cover-set-failed` 不阻塞草稿保存。
+- **封面图：`--try-cover` 已稳定（2026-06-29 起）**。走 WebUploader 隐藏 `<input type=file>` 的 `set_input_files`（不点透明 label overlay，overlay 会拦截）→ 等 `mmbiz.qpic.cn` URL 出现 → JS 定位「下一步」可见主按钮 → 完成。workflow 必须显式传已批准有效 Cover 的绝对路径；`homeCover` 不能作为微信回退。`--try-cover` 仍为 opt-in，失败不阻塞底层草稿保存，但渠道 handoff 不得因此缺 Cover。保存并重新打开草稿后，必须确认实际封面卡片可见且内容正确，不能把 `cover-set`、placeholder DOM 或保存成功当作视觉验收。
 - **标题字段是隐藏 textarea + 独立 ProseMirror**：直接设 `#title.value` 不显示（隐藏镜像），必须键入可见的 `#js_title_main .ProseMirror`。
 - **正文图片串行上传**：每张等 CDN 完成再传下一张，多图文章更慢但可靠。大图慢网络下单张可能逼近 60s 超时；脚本如实打印「请求 N / 已插入 M」，M<N 时清理残留占位符并提示人工补图。不自动重传。
 - **草稿保存三重确认**：编辑器 tab 打开时 URL 已预分配 appmsgid，不能当作保存成功信号。脚本用 (a)「保存成功」toast、(b) appmsgid 变更、(c) `#title` 回读匹配预期标题 + 按钮 loading 态消失 ≥2s 三重验证，默认 30s 超时。保存前先按 `Tab` blur 触发 Vue 把 ProseMirror 输入 flush 到隐藏 textarea。仍失败时截图存 `scripts/.artifacts/` 并提示去草稿箱人工确认（常已自动保存）。

@@ -188,6 +188,170 @@
       "symlink_target": "../../../../.local-archive/2026-10-26-spacex-cursor-stock-deal/images/closing-starship-orbital-dawn.png",
       "sha256": "00e8ab5e85940fbc28824d01442cf185c258b7737736ca264eb073af8f458bf0",
       "bytes": 1848570
+    },
+    {
+      "file": "home-cover-spacex-cursor-wide.png",
+      "usage": "homepage homeCover",
+      "status": "superseded",
+      "source": "gpt-image-api",
+      "model": "gpt-image-2.5-sunburst",
+      "provider": "ofox",
+      "size": "1728x736",
+      "quality": "high",
+      "created_at": "2026-10-27T01:54:31+00:00",
+      "prompts": [
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/home-cover-wide.txt"
+      ],
+      "metadata": ".local-archive/2026-10-26-spacex-cursor-stock-deal/prompts/home-cover-spacex-cursor-wide.json",
+      "archive": ".local-archive/2026-10-26-spacex-cursor-stock-deal/images/home-cover-spacex-cursor-wide.png",
+      "working_link": "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/home-cover-spacex-cursor-wide.png",
+      "symlink_target": "../../../../.local-archive/2026-10-26-spacex-cursor-stock-deal/images/home-cover-spacex-cursor-wide.png",
+      "sha256": "9a920f984e2b9b138b9c4834563f8fd57640c79fd1d66ac78105608970cf5890",
+      "bytes": 715208,
+      "superseded_by": "hero-cover-v2-wechat-regenerated.png",
+      "selection_note": "The logo-only wide cover was rejected for lacking information; the native regenerated composition is the homepage candidate."
+    },
+    {
+      "file": "hero-cover-v2-wechat-crop.png",
+      "status": "rejected",
+      "role": "wechat_cover",
+      "channel": "wechat",
+      "derived_from": "hero-cover-v2.png",
+      "derivation": {
+        "operation": "crop",
+        "from": [
+          1536,
+          1024
+        ],
+        "to": [
+          1080,
+          460
+        ],
+        "focus": [
+          0.5,
+          0.5
+        ],
+        "crop": [
+          0,
+          185,
+          1536,
+          839
+        ]
+      },
+      "dimensions": [
+        1080,
+        460
+      ],
+      "sha256": "fe54f74aa374f3a6b8c4ac216994a43cc2ea4e856d04e4807caf7a5f9d77667b",
+      "visual_review": "rejected",
+      "review": {
+        "reviewer": "agent",
+        "date": "2026-10-27",
+        "sizes": [
+          "1080x460",
+          "900x383",
+          "360x153"
+        ],
+        "notes": "Center crop cuts the main title and the three analytical labels; rejected at every inspection size."
+      }
+    },
+    {
+      "file": "hero-cover-v2-wechat-pad.png",
+      "status": "superseded",
+      "role": "wechat_cover",
+      "channel": "wechat",
+      "derived_from": "hero-cover-v2.png",
+      "derivation": {
+        "operation": "pad",
+        "from": [
+          1536,
+          1024
+        ],
+        "to": [
+          1080,
+          460
+        ],
+        "focus": [
+          0.5,
+          0.5
+        ],
+        "padding": [
+          195,
+          0
+        ]
+      },
+      "dimensions": [
+        1080,
+        460
+      ],
+      "sha256": "521a3f20a9187fc280fd7de4965642734a973b0b1af376995957c4ef1410850a",
+      "visual_review": "approved",
+      "review": {
+        "reviewer": "agent",
+        "date": "2026-10-27",
+        "sizes": [
+          "1080x460",
+          "900x383",
+          "360x153"
+        ],
+        "notes": "Whole composition preserved. Main title and stock relationship remain recognizable at small-card size; fine labels are supplementary only."
+      },
+      "archive": ".local-archive/2026-10-26-spacex-cursor-stock-deal/images/hero-cover-v2-wechat-pad.png",
+      "working_link": "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/hero-cover-v2-wechat-pad.png",
+      "symlink_target": "../../../../.local-archive/2026-10-26-spacex-cursor-stock-deal/images/hero-cover-v2-wechat-pad.png",
+      "superseded_by": "hero-cover-v2-wechat-regenerated.png",
+      "selection_note": "Pad remains a valid conservative backup, but the native regenerated composition is stronger at WeChat display sizes."
+    },
+    {
+      "file": "hero-cover-v2-wechat-regenerated.png",
+      "status": "used",
+      "role": "wechat_cover",
+      "channel": "wechat",
+      "source": "gpt-image-api",
+      "model": "gpt-image-2.5-sunburst",
+      "provider": "ofox",
+      "size": "1728x736",
+      "quality": "high",
+      "created_at": "2026-10-27T04:15:17+00:00",
+      "prompts": [
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/hero-cover.txt",
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/hero-cover-title-fix.txt",
+        "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/prompts/hero-cover-wechat-regenerate.txt"
+      ],
+      "metadata": ".local-archive/2026-10-26-spacex-cursor-stock-deal/prompts/hero-cover-v2-wechat-regenerated.json",
+      "regeneration": {
+        "reason": "Crop loses title/footer content; pad weakens hierarchy and readability at small-card size.",
+        "correction": "Regenerate a native 2.35:1 composition using the original concept, approved title edit, and explicit crop/pad failure corrections."
+      },
+      "visual_review": "approved",
+      "review": {
+        "reviewer": "agent",
+        "date": "2026-10-27",
+        "sizes": [
+          "1080x460",
+          "900x383",
+          "360x153"
+        ],
+        "notes": "User-confirmed winner over pad at 1080x460, 900x383 and 360x153: stronger title hierarchy, acquisition relationship and small-card impact."
+      },
+      "sha256": "d871d696499811f348811574ae01d6e15d5ff31b579d0cadcc9aba792e046f4c",
+      "approved_by": "user",
+      "approval_date": "2026-10-27",
+      "selection_note": "User selected the native regenerated cover for best visual effect. The developer figure is accepted as a Cursor workflow cue; no further cleanup is required.",
+      "archive": ".local-archive/2026-10-26-spacex-cursor-stock-deal/images/hero-cover-v2-wechat-regenerated.png",
+      "working_link": "content/origin/2026-10-26-spacex-cursor-stock-deal/assets/hero-cover-v2-wechat-regenerated.png",
+      "symlink_target": "../../../../.local-archive/2026-10-26-spacex-cursor-stock-deal/images/hero-cover-v2-wechat-regenerated.png",
+      "roles": [
+        "wechat_cover",
+        "home_cover"
+      ],
+      "channels": [
+        "wechat",
+        "blog-home"
+      ],
+      "home_review": "approved",
+      "home_reviewer": "agent",
+      "home_review_notes": "Native 2.35:1 display at desktop and 390px mobile preserves the full title, stock relationship and all three labels in light and dark themes. No desktop low crop."
     }
   ]
 }

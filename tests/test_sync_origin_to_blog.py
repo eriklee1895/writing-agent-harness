@@ -200,3 +200,56 @@ def test_featured_flag_is_forwarded(tmp_path):
 def test_featured_is_omitted_by_default(tmp_path):
     frontmatter = render(tmp_path, origin_has_file=False, destination_has_file=False)
     assert "\nfeatured:" not in frontmatter
+
+
+def test_wechat_only_derivative_is_not_copied_to_blog():
+    names = sync.referenced_asset_names(
+        "[channel notes](assets/hero-cover-v2-wechat-crop.png)",
+        {"cover": "assets/hero-cover-v2.png", "homeCover": "assets/home-wide.png"},
+    )
+
+    assert names == {"hero-cover-v2.png", "home-wide.png"}
+
+
+def test_home_cover_is_forwarded(tmp_path):
+    source_path, destination_assets = build_scene(
+        tmp_path, origin_has_file=True, destination_has_file=False
+    )
+    frontmatter = sync.build_blog_frontmatter(
+        {"title": "Demo", "homeCover": "assets/cover.png"},
+        "body\n",
+        source_path,
+        make_args(),
+        destination_assets,
+    )
+
+    assert "\nhomeCover: ./assets/2026-01-01-demo/cover.png\n" in frontmatter
+
+
+def test_home_cover_is_omitted_by_default(tmp_path):
+    frontmatter = render(tmp_path, origin_has_file=False, destination_has_file=False)
+    assert "\nhomeCover:" not in frontmatter
+
+
+def test_home_cover_survives_when_only_blog_has_asset(tmp_path):
+    source_path, destination_assets = build_scene(
+        tmp_path, origin_has_file=False, destination_has_file=True
+    )
+    frontmatter = sync.build_blog_frontmatter(
+        {"title": "Demo", "homeCover": "assets/cover.png"},
+        "body\n",
+        source_path,
+        make_args(),
+        destination_assets,
+    )
+
+    assert "\nhomeCover: ./assets/2026-01-01-demo/cover.png\n" in frontmatter
+
+
+def test_referenced_assets_include_home_cover_without_duplicates():
+    names = sync.referenced_asset_names(
+        "![closing](assets/closing-starship-orbital-dawn.png)",
+        {"homeCover": "assets/closing-starship-orbital-dawn.png"},
+    )
+
+    assert names == {"closing-starship-orbital-dawn.png"}

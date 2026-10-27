@@ -1,0 +1,24 @@
+Create a wide editorial homepage cover for an article about SpaceX acquiring Cursor in an all-stock deal. This is a dedicated homeCover for a featured blog card, not an article title poster.
+
+Canvas and layout:
+- Ultra-wide 2.35:1 composition, white or very softly off-white background, refined financial-editorial flat-vector style with crisp Swiss-grid alignment.
+- No large headline and no article title. The blog page will provide the title separately.
+- Center: an elegant SPCX Class A stock certificate with a subtle deep-green seal and the small label "ALL-STOCK DEAL" above it. A clear arrow points from the certificate toward Cursor, showing SpaceX stock flowing to Cursor.
+- Left: the Cursor logo and name, a small laptop with a code editor and one restrained agent/workflow icon.
+- Right: the SpaceX wordmark, accurate xAI and Grok logos, and one tasteful monochrome line-art portrait of Elon Musk. Keep these elements visually related but not crowded.
+- Keep every logo, icon, portrait, arrow and text label inside the central 60% of the image height and the central 88% of the image width. Leave generous quiet space above and below so the image can be cropped into a lower homepage banner without cutting any subject.
+
+Text allowlist (no other readable text):
+- "SPCX Class A"
+- "ALL-STOCK DEAL"
+- "Cursor"
+- "SPACEX"
+- "xAI"
+- "Grok"
+
+Style and constraints:
+- Restrained charcoal ink, deep forest green, muted blue and a small terracotta accent, matching an editorial finance infographic rather than a cinematic space scene.
+- No large "600 亿美元", no article title, no subtitles, no border, no frame, no extra captions, no bottom label row.
+- No starfield, planets, rockets or atmospheric effects: this image is specifically about the stock acquisition relationship.
+- No extra people, no fake logos, no extra brands, no garbled text, no watermark.
+- The composition must remain readable at mobile article width and survive a desktop crop to a wide, low banner.
