@@ -45,7 +45,7 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
 5. **Frontmatter pre-flight（调用 publisher 前必须做）**：读取 `index.md` frontmatter，确认：
    - `title`、`date` 存在；
    - `summary` 存在且 ≤120 字（公众号摘要长度上限）。如果缺失或过长，回到 `polish-article` 流程补/改，**不要**让 publisher 自动截取首句——那会丢失作者判断；
-   - frontmatter 中 **没有 `author` 字段**。作者永远从 `.config/wechat.toml` 的 `default_author` 读取，不写入 Markdown canonical source；
+   - frontmatter 中 **没有 `author` 字段**。作者从显式 `--author` 或 `.config/wechat.toml` 的 `default_author` 读取，不写入 Markdown canonical source；两者都为空时 publisher 会阻断，不得保存空署名草稿。
    - `cover` **必须具备且已通过实际尺寸验收**。选择已批准的母版或渠道派生图，把其**绝对路径**显式传给 `--cover` 并加 `--try-cover`；不要用 `homeCover` 替代微信 Cover。若派生图不适合，回到 `article-illustration` 的派生/再生流程，不要把不合适母图交给平台硬裁。
 6. 在触碰微信公众号编辑器前，先让用户确认 preview。
 6. **渠道产物约定：`content/wechat/YYYY-MM-DD-<slug>/` 是微信渠道派生 artifact 的 canonical 目录，但只放可进 git 的排版产物（`index.wechat-preview.html`）。**
@@ -77,7 +77,7 @@ description: "微信公众号文章发布 workflow。Use when the user wants to 
 
    - 元数据（标题/作者/摘要/封面）取自 `--article` 的 frontmatter；作者缺省取 repo 根下 `.config/wechat.toml`（首次缺失时询问并写回，已 .gitignore）；
    - 标题写入可见标题 ProseMirror（同步隐藏 `#title`），正文剔除 hero 大标题避免重复；
-   - 自动读取 `data-local-path` 指向的本地图片（renderer 产出绝对路径，和 HTML 所在目录无关，所以 origin/wechat 两份 HTML 用的是同一组图片，不用双拷贝二进制）；
+   - 自动读取 `data-local-path` 指向的本地图片（支持 repo 根相对、HTML 相对、源稿相对和绝对路径，不依赖 CWD，所以 origin/wechat 两份 HTML 用的是同一组图片，不用双拷贝二进制）；
    - 串行上传正文图片到微信公众号，等其变成 `mmbiz.qpic.cn` CDN URL 再传下一张/保存；
    - 不把图片 base64 内联进 HTML；
    - 传 `--cover` 指定已批准的微信母版或派生图，传 `--try-cover` 执行自动上传（WebUploader 隐藏 file input）；只给 frontmatter `cover` 不构成完整的多渠道 Cover 流程；

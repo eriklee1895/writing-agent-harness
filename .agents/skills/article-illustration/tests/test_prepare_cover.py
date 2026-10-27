@@ -171,3 +171,89 @@ def test_cli_emits_structured_json(tmp_path, capsys):
     payload = json.loads(capsys.readouterr().out)
     assert payload["output"] == str(output)
     assert payload["dimensions"] == [200, 100]
+
+
+def test_rederiving_clears_old_approval_and_regeneration_fields(tmp_path):
+    source = tmp_path / "source.png"
+    output = tmp_path / "cover.png"
+    manifest = tmp_path / "manifest.json"
+    write_image(source)
+    manifest.write_text(json.dumps({"images": [{
+        "file": output.name,
+        "status": "used",
+        "visual_review": "approved",
+        "approved_by": "user",
+        "approval_date": "2026-01-01",
+        "review": {"sizes": ["old"]},
+        "home_review": "approved",
+        "regeneration": {"reason": "old"},
+        "home_published": True,
+        "wechat_published": True,
+        "archive": "old/archive.png",
+        "note": "keep me",
+    }]}))
+
+    prepare.derive_cover(source, output, (200, 100), mode="crop", manifest_path=manifest, force=True)
+
+    entry = json.loads(manifest.read_text())["images"][0]
+    for field in ["approved_by", "approval_date", "review", "home_review", "regeneration", "home_published", "wechat_published", "archive"]:
+        assert field not in entry, field
+    assert entry["status"] == "candidate"
+    assert entry["visual_review"] == "pending"
+    assert entry["note"] == "keep me"
+
+
+def test_invalid_manifest_does_not_replace_existing_image(tmp_path):
+    source = tmp_path / "source.png"
+    output = tmp_path / "cover.png"
+    manifest = tmp_path / "manifest.json"
+    write_image(source)
+    output.write_bytes(b"approved-image")
+    manifest.write_text("{not-json")
+
+    with pytest.raises(json.JSONDecodeError):
+        prepare.derive_cover(source, output, (100, 100), mode="crop", manifest_path=manifest, force=True)
+
+    assert output.read_bytes() == b"approved-image"
+
+
+def test_rgba_background_is_preserved(tmp_path):
+    source = tmp_path / "source.png"
+    output = tmp_path / "alpha.png"
+    write_image(source, size=(100, 50), mode="RGBA")
+
+    prepare.derive_cover(source, output, (100, 100), mode="pad", background="#11223380")
+
+    image = Image.open(output)
+    assert image.mode == "RGBA"
+    assert image.getpixel((1, 1)) == (17, 34, 51, 128)
+
+
+def test_manifest_symlink_is_rejected_without_touching_target(tmp_path):
+    source = tmp_path / "source.png"
+    output = tmp_path / "cover.png"
+    target = tmp_path / "archived-manifest.json"
+    link = tmp_path / "manifest.json"
+    write_image(source)
+    target.write_text('{"images": []}')
+    link.symlink_to(target)
+
+    with pytest.raises(ValueError, match="symlink manifest"):
+        prepare.derive_cover(source, output, (100, 100), mode="crop", manifest_path=link)
+
+    assert target.read_text() == '{"images": []}'
+    assert not output.exists()
+
+
+def test_same_named_assets_keep_distinct_lineage(tmp_path):
+    manifest = tmp_path / "manifest.json"
+    for directory in ["blog", "wechat"]:
+        (tmp_path / directory).mkdir()
+        write_image(tmp_path / directory / "master.png")
+
+    prepare.derive_cover(tmp_path / "blog" / "master.png", tmp_path / "blog" / "cover.png", (100, 100), mode="crop", role="blog_cover", channel="blog", manifest_path=manifest)
+    prepare.derive_cover(tmp_path / "wechat" / "master.png", tmp_path / "wechat" / "cover.png", (100, 100), mode="crop", role="wechat_cover", channel="wechat", manifest_path=manifest)
+
+    entries = json.loads(manifest.read_text())["images"]
+    assert [entry["file"] for entry in entries] == ["blog/cover.png", "wechat/cover.png"]
+    assert [entry["derived_from"] for entry in entries] == ["blog/master.png", "wechat/master.png"]

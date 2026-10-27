@@ -451,6 +451,34 @@ def infer_taxonomy(source_meta: dict[str, object], slug: str) -> tuple[str, str 
     return category, series, tags or ["others"]
 
 
+def resolve_cover_fields(
+    source_meta: dict[str, object],
+    source_dir: Path,
+    destination_assets_dir: Path,
+) -> tuple[object, object, object]:
+    def first_declared(keys: tuple[str, ...]) -> tuple[str, object]:
+        for key in keys:
+            if source_meta.get(key):
+                return key, source_meta[key]
+        return keys[0], ""
+
+    cover_key, cover = first_declared(("cover", "coverImage", "ogImage"))
+    if cover and not asset_exists_in_source_or_destination(source_dir, cover, destination_assets_dir):
+        raise ValueError(f"{cover_key} is declared but cannot be resolved: {cover}")
+
+    home_cover = source_meta.get("homeCover") or ""
+    if home_cover:
+        if not cover:
+            raise ValueError("homeCover requires a resolvable cover; it is only a homepage exception")
+        if not asset_exists_in_source_or_destination(source_dir, home_cover, destination_assets_dir):
+            raise ValueError(f"homeCover is declared but cannot be resolved: {home_cover}")
+
+    og_cover = source_meta.get("ogImage") or cover
+    if og_cover and not asset_exists_in_source_or_destination(source_dir, og_cover, destination_assets_dir):
+        raise ValueError(f"ogImage is declared but cannot be resolved: {og_cover}")
+    return cover, og_cover, home_cover
+
+
 def build_blog_frontmatter(
     source_meta: dict[str, object],
     body: str,
@@ -481,29 +509,13 @@ def build_blog_frontmatter(
     )
     category, series, tags = infer_taxonomy(source_meta, source_path.parent.name)
     categories = source_meta.get("categories") or []
-    if isinstance(categories, str):
-        categories = [categories]
     register = str(source_meta.get("register") or "").strip().lower()
     default_type = _REGISTER_TAXONOMY.get(register, ("", "技术笔记"))[1]
     article_type = source_meta.get("type") or default_type
-    cover = (
-        source_meta.get("ogImage")
-        or source_meta.get("coverImage")
-        or source_meta.get("cover")
+    cover, og_cover, home_cover = resolve_cover_fields(
+        source_meta, source_path.parent, destination_assets_dir
     )
-    # Gate on source-OR-destination, never on the origin tree alone: covers are
-    # gitignored, so a clean checkout is *expected* to be missing them while the
-    # blog still holds its own copy. Blanking on a missing local file silently
-    # deletes heroImage/ogImage from published posts.
-    if cover and not asset_exists_in_source_or_destination(
-        source_path.parent, cover, destination_assets_dir
-    ):
-        cover = ""
-    home_cover = source_meta.get("homeCover")
-    if home_cover and not asset_exists_in_source_or_destination(
-        source_path.parent, home_cover, destination_assets_dir
-    ):
-        home_cover = ""
+    destination_slug = destination_assets_dir.name
 
     source_ref = display_source_path(source_path)
     lines = [
@@ -519,13 +531,13 @@ def build_blog_frontmatter(
         yaml_optional_string("series", series),
         f"type: {yaml_scalar(article_type)}",
         f"canonicalURL: {yaml_scalar(args.canonical_url)}" if args.canonical_url else "",
-        f"ogImage: {normalize_asset_path(cover, source_path.parent.name)}" if cover else "",
+        f"ogImage: {normalize_asset_path(og_cover, destination_slug)}" if og_cover else "",
         # heroImage — not ogImage — is what the blog's post-list thumbnail and
         # the in-article hero render from (src/pages/posts/index.astro:18 and
         # [...slug].astro:74). ogImage only feeds <meta og:image>. Without this
         # line every synced post shows a text placeholder instead of a thumbnail.
-        f"heroImage: {normalize_asset_path(cover, source_path.parent.name)}" if cover else "",
-        f"homeCover: {normalize_asset_path(home_cover, source_path.parent.name)}" if home_cover else "",
+        f"heroImage: {normalize_asset_path(cover, destination_slug)}" if cover else "",
+        f"homeCover: {normalize_asset_path(home_cover, destination_slug)}" if home_cover else "",
         *yaml_list(tags),
         f"source: {yaml_scalar(source_ref)}",
         "---",
@@ -613,6 +625,62 @@ def referenced_asset_names(body: str, meta: dict[str, object]) -> set[str]:
     return names
 
 
+_EMBED_URL_RE = re.compile(r"<iframe\b[^>]*?\bsrc=[\"']([^\"']+)[\"']", re.IGNORECASE)
+
+
+def referenced_embed_names(body: str) -> set[str]:
+    """Local HTML documents referenced by interactive iframes."""
+    names: set[str] = set()
+    for url in _EMBED_URL_RE.findall(body):
+        if _EXTERNAL_URL_RE.match(url):
+            continue
+        local = url.removeprefix("./")
+        if (local.startswith("assets/") or local.startswith("/embeds/")) and local.lower().endswith(".html"):
+            names.add(Path(local).name)
+    return names
+
+
+def rewrite_embed_links(body: str, slug: str) -> str:
+    def replace(match: re.Match[str]) -> str:
+        url = match.group(1)
+        local = url.removeprefix("./")
+        if _EXTERNAL_URL_RE.match(url) or not local.startswith("assets/"):
+            return match.group(0)
+        if not local.lower().endswith(".html"):
+            return match.group(0)
+        return match.group(0).replace(url, f"/embeds/{slug}/{Path(local).name}")
+
+    return _EMBED_URL_RE.sub(replace, body)
+
+
+def resolve_embeds_dir(args: argparse.Namespace, destination: Path, slug: str) -> Path | None:
+    if args.blog_root:
+        return Path(args.blog_root) / "public" / "embeds" / slug
+    posts_dir = destination.parent
+    if posts_dir.parent.name == "content" and posts_dir.parent.parent.name == "src":
+        return posts_dir.parent.parent.parent / "public" / "embeds" / slug
+    return None
+
+
+def sync_embed_assets(
+    names: set[str],
+    source_assets_dir: Path,
+    embeds_dir: Path | None,
+) -> None:
+    if not names:
+        return
+    if embeds_dir is None:
+        raise ValueError("HTML embeds require --blog-root or an Astro src/content/posts output directory")
+    for name in sorted(names):
+        source = source_assets_dir / name
+        destination = embeds_dir / name
+        if source.is_file():
+            embeds_dir.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, destination)
+        elif not destination.is_file():
+            raise FileNotFoundError(f"Referenced HTML embed is missing: {source}")
+
+
 def strip_leading_cover_image(body: str, cover: object, source_dir: Path) -> str:
     """Drop a leading body image that is the same file as the frontmatter cover.
 
@@ -650,19 +718,24 @@ def sync_article(args: argparse.Namespace) -> Path:
         body = strip_duplicate_title_heading(body, meta.get("title"))
     body = strip_leading_cover_image(
         body,
-        meta.get("ogImage") or meta.get("coverImage") or meta.get("cover"),
+        meta.get("cover") or meta.get("coverImage") or meta.get("ogImage"),
         source_path.parent,
     )
+    embed_names = referenced_embed_names(body)
 
     slug = args.slug or source_path.parent.name
     destination = resolve_destination(args, slug).resolve()
     destination_assets_dir = destination.parent / "assets" / slug
+    embeds_dir = resolve_embeds_dir(args, destination, slug)
 
     if args.dry_run:
         print(f"Would write: {destination}")
         print(f"Would copy assets: {source_path.parent / 'assets'} -> {destination_assets_dir}")
+        if embed_names:
+            print(f"Would copy HTML embeds: {source_path.parent / 'assets'} -> {embeds_dir}")
         return destination
 
+    resolve_cover_fields(meta, source_path.parent, destination_assets_dir)
     destination.parent.mkdir(parents=True, exist_ok=True)
     assets_dir = source_path.parent / "assets"
     # Deliberately additive: never rmtree the destination first. Image binaries
@@ -704,6 +777,9 @@ def sync_article(args: argparse.Namespace) -> Path:
             ignore=asset_ignore,
         )
 
+    sync_embed_assets(embed_names, assets_dir, embeds_dir)
+
+    body = rewrite_embed_links(body, slug)
     body = rewrite_asset_links(body, slug)
     body = materialize_local_image_refs(body, source_path.parent, destination_assets_dir, slug)
     body = replace_missing_asset_refs(body, source_path.parent, destination_assets_dir, slug)

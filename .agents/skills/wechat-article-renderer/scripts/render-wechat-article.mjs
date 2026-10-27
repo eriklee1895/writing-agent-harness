@@ -342,6 +342,12 @@ function stripHtmlComments(markdown) {
   return markdown.replace(/<!--[\s\S]*?-->/g, "");
 }
 
+function frontmatterTitle(markdown) {
+  const frontmatter = markdown.match(/^---\n([\s\S]*?)\n---\n?/);
+  const title = frontmatter?.[1].match(/^title:\s*(.+?)\s*$/m)?.[1] || "";
+  return title.replace(/^(['"])(.*)\1$/, "$2").trim();
+}
+
 function attrValue(markup, name) {
   const match = markup.match(new RegExp(`${name}=["']([^"']+)["']`, "i"));
   return match ? match[1] : "";
@@ -374,7 +380,8 @@ function plainInline(value) {
 
 function inline(markdown) {
   const tokens = getTokens();
-  let html = escapeHtml(markdown);
+  const normalized = markdown.replace(/<strong>([^<]+)<\/strong>/g, "**$1**");
+  let html = escapeHtml(normalized);
 
   if (ACTIVE_STYLE === "editorial-magazine") {
     // 杂志风行内样式：code 用深靛蓝底白字 + bold 用朱红加粗 + link 用深靛蓝下划线
@@ -634,10 +641,10 @@ function groupConsecutiveImages(blocks) {
   return grouped;
 }
 
-function takeOpening(blocks) {
+function takeOpening(blocks, fallbackTitle = "") {
   const remaining = [...blocks];
   const titleIndex = remaining.findIndex((block) => block.type === "heading" && block.level === 1);
-  const title = titleIndex >= 0 ? plainInline(remaining[titleIndex].text) : "未命名文章";
+  const title = titleIndex >= 0 ? plainInline(remaining[titleIndex].text) : (fallbackTitle || "未命名文章");
   if (titleIndex >= 0) remaining.splice(titleIndex, 1);
 
   const deckIndex = remaining.findIndex((block) => block.type === "quote");
@@ -1370,7 +1377,7 @@ async function main() {
   const markdown = fs.readFileSync(inputPath, "utf8");
   IMAGE_BASE_DIR = path.dirname(inputPath);
   const blocks = parseBlocks(markdown);
-  const opening = takeOpening(blocks);
+  const opening = takeOpening(blocks, frontmatterTitle(markdown));
   const html = renderDocument(opening);
   fs.writeFileSync(outputPath, html, "utf8");
 

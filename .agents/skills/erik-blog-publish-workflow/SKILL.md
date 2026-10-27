@@ -52,6 +52,7 @@ Default behavior:
    ```
 
    Preserve unrelated user changes. Do not stage unrelated files, especially untracked origin articles.
+   - 在同步前完成 `article-readiness-check`：批准 Cover 存在、可追溯且通过实际尺寸验收；缺失或未验收不得 handoff。
 3. Sync one article to the blog repo:
 
    The adapter is the [repository-root script](../../../scripts/sync_origin_to_blog.py), not a `scripts/` directory inside this skill. The following sync commands run from this skill directory.
@@ -76,11 +77,11 @@ Default behavior:
    ```
 
 4. Validate generated blog content:
-   - 进入同步前必须完成 `article-readiness-check`：批准 Cover 存在、可追溯且通过实际尺寸验收；缺失或未验收不得 handoff。
    - Destination file exists under `/Users/eriklee/code/my_project/eriklee-blog/src/content/posts/`.
    - Frontmatter has `title`, `description`, `pubDatetime`, `category`, `tags`, and preferably `series`/`type` when applicable.
+   - Declared `cover` / `homeCover` resolve in the source or destination tree; `homeCover` cannot stand in for a missing article `cover`.
    - No `Image pending` remains.
-   - Referenced local assets exist under `src/content/posts/assets/<slug>/`.
+   - Referenced local assets exist under `src/content/posts/assets/<slug>/`; referenced interactive iframes use `/embeds/<slug>/…` and exist under `public/embeds/<slug>/`.
    - Do not overwrite manually edited blog files without checking the diff.
    - Check channel-specific syntax explicitly: the adapter currently does not convert WeChat `::compare` blocks. Convert these to native Astro/MDX image layouts with visible captions and optimized images before publishing.
    - Compare generated description, category and type with the approved source: `summary` may fall back to the first paragraph, and inferred taxonomy may label a personal essay as technical or AI frontier content. Preserve the approved summary and choose the intended taxonomy.

@@ -55,24 +55,24 @@ Channel ratios are constraints, not provider defaults. Prefer native target-rati
 1. 先用 focal crop、contain/pad 或一个原生比例候选建立快速基线，并在真实 Blog 卡片、微信小图等目标尺寸比较。**基线只用于对照，不因它成本更低就自动中选。**
 2. 如果主要是文字层级或标签布局不合适，可共享背景与结构化内容重新排版；如果原生再生能获得更好的主体、层级和小图效果，就直接走再生，不设置“必须先接受派生”的成本门槛。
 3. 再生时沿用原 Prompt、目标比例和本次失败的具体修正，保持同一视觉体系。允许围绕实际对比做多轮优化，直到目标尺寸下效果最佳；每轮都重新验收，不把更换尺寸当作质量保证。
-4. `cover` 是 Blog hero / OG 的批准母版；微信使用实际效果最佳的批准版本；`homeCover` 只处理 Blog 首页例外，不能替代微信 Cover。
+4. `cover` 是 Blog hero / OG 的批准母版；微信使用实际效果最佳的批准版本；`homeCover` 只处理 Blog 首页例外，不能替代 Blog `cover` 或微信 Cover。
 
-使用 `scripts/prepare_cover.py` 做确定性 raster 派生。它只创建候选并把 `visual_review` 记为 `pending`，不会自动宣称构图合格：
+使用 `scripts/prepare_cover.py` 做确定性 raster 派生。它只创建候选并把 `visual_review` 记为 `pending`，不会自动宣称构图合格。以下命令从仓库根目录运行，输入、输出和 manifest 都以文章目录为基准：
 
 ```bash
-uv run scripts/prepare_cover.py \
-  --input assets/cover-master.png \
-  --output assets/cover-wechat.png \
+uv run .agents/skills/article-illustration/scripts/prepare_cover.py \
+  --input content/origin/YYYY-MM-DD-<slug>/assets/cover-master.png \
+  --output content/origin/YYYY-MM-DD-<slug>/assets/cover-wechat.png \
   --size 1080x460 \
   --mode crop \
   --focus-x 0.5 --focus-y 0.5 \
   --role wechat_cover --channel wechat \
-  --manifest assets/manifest.json \
+  --manifest content/origin/YYYY-MM-DD-<slug>/assets/manifest.json \
   --json
 ```
 
 - `--mode crop` 保持比例裁剪；`--mode pad` 保留完整画面并补边。
-- 输出已存在时需显式 `--force`；任何输出软链接都会被拒绝，避免覆盖 closeout 归档。
+- 输出已存在时需显式 `--force`；任何输出或 manifest 软链接都会被拒绝，避免覆盖 closeout 归档。强制重新派生会清除旧审批、发布和 regeneration 元数据，只保留安全备注；同名但不同目录的资产按 manifest 相对路径分别记录 lineage。
 - 裁剪派生在 manifest 记录 `derived_from` 与 `derivation`。重新生成的版本记录原/修正 Prompt、参考图与再生原因，不能伪装成像素裁剪。
 - 预览后把候选标为 used / rejected，并记录实际检查尺寸与理由；被拒绝的候选不要进入渠道或最终归档。
 - 旧的 `wechat-cover-hd` 自动 center-crop 只保留为 legacy fallback，不再是默认渠道适配路径。

@@ -99,6 +99,7 @@ uv run scripts/publish.py \
 - **保存成功与请求图片数不能代替媒体验收**：逐图确认 CDN 地址、非零显示尺寸、左右位置，并在保存重新打开后复核。当前发布状态里的 `image_count` 可能来自请求数量，需要与实际插入数量对照。
 - **读取编辑器 HTML 后重新注入**：先移除无 `src` / `data-src` 的编辑器辅助图片和 `ProseMirror-separator`，保留实际图片及用户文字；否则辅助节点可能变成空正文图片。
 
+- **图片路径与署名前置校验**：`data-local-path` 支持 repo 根相对、HTML 相对、源稿相对和绝对路径，不依赖调用 publisher 时的 CWD；从任意 skill 目录运行也能找到 `content/...` 图片。作者为空会在打开浏览器前阻断，必须显式传 `--author` 或配置 `.config/wechat.toml` 的 `default_author`，不能保存空署名草稿。
 - **封面图：`--try-cover` 已稳定（2026-06-29 起）**。走 WebUploader 隐藏 `<input type=file>` 的 `set_input_files`（不点透明 label overlay，overlay 会拦截）→ 等 `mmbiz.qpic.cn` URL 出现 → JS 定位「下一步」可见主按钮 → 完成。workflow 必须显式传已批准有效 Cover 的绝对路径；`homeCover` 不能作为微信回退。`--try-cover` 仍为 opt-in，失败不阻塞底层草稿保存，但渠道 handoff 不得因此缺 Cover。保存并重新打开草稿后，必须确认实际封面卡片可见且内容正确，不能把 `cover-set`、placeholder DOM 或保存成功当作视觉验收。
 - **标题字段是隐藏 textarea + 独立 ProseMirror**：直接设 `#title.value` 不显示（隐藏镜像），必须键入可见的 `#js_title_main .ProseMirror`。
 - **正文图片串行上传**：每张等 CDN 完成再传下一张，多图文章更慢但可靠。大图慢网络下单张可能逼近 60s 超时；脚本如实打印「请求 N / 已插入 M」，M<N 时清理残留占位符并提示人工补图。不自动重传。

@@ -11,8 +11,11 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
+import os
 import sys
+import tempfile
 from pathlib import Path
 
 from PIL import Image, ImageColor, ImageOps
@@ -35,17 +38,42 @@ def validate_focus(value: float, name: str) -> float:
     return value
 
 
-def output_image(image: Image.Image, output: Path) -> None:
-    suffix = output.suffix.lower()
-    if suffix in {".jpg", ".jpeg", ".webp"}:
-        image.save(output, quality=92)
+def encode_image(image: Image.Image, suffix: str) -> bytes:
+    suffix = suffix.lower()
+    has_alpha = "A" in image.getbands() and image.getchannel("A").getextrema()[0] < 255
+    buffer = io.BytesIO()
+    if suffix in {".jpg", ".jpeg"}:
+        image.convert("RGB").save(buffer, format="JPEG", quality=92)
+    elif suffix == ".webp":
+        (image if has_alpha else image.convert("RGB")).save(buffer, format="WEBP", quality=92)
     elif suffix == ".png":
-        image.save(output)
+        (image if has_alpha else image.convert("RGB")).save(buffer, format="PNG")
     else:
         raise ValueError("output must be a .png, .jpg, .jpeg or .webp file")
+    return buffer.getvalue()
 
 
-def update_manifest(
+def output_image(image: Image.Image, output: Path) -> None:
+    output.write_bytes(encode_image(image, output.suffix))
+
+
+def relative_asset_path(path: Path, base: Path) -> str:
+    return os.path.relpath(path.resolve(), base.resolve()).replace(os.sep, "/")
+
+
+def load_manifest(manifest_path: Path) -> dict:
+    if manifest_path.is_symlink():
+        raise ValueError("refusing to write through a symlink manifest")
+    if not manifest_path.exists():
+        return {"images": []}
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if not isinstance(manifest, dict) or not isinstance(manifest.get("images"), list):
+        raise ValueError("manifest must be an object with an images array")
+    return manifest
+
+
+def build_manifest_document(
+    manifest: dict,
     manifest_path: Path,
     *,
     source: Path,
@@ -53,32 +81,63 @@ def update_manifest(
     result: dict,
     role: str,
     channel: str,
-) -> None:
-    if manifest_path.exists():
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    else:
-        manifest = {"images": []}
-    images = manifest.setdefault("images", [])
-    existing = next((item for item in images if item.get("file") == output.name), {})
+) -> bytes:
+    file_ref = relative_asset_path(output, manifest_path.parent)
+    images = manifest["images"]
+    existing = next(
+        (item for item in images if item.get("file") in {file_ref, output.name}),
+        None,
+    )
     entry = {
-        **existing,
-        "file": output.name,
+        key: value
+        for key, value in (existing or {}).items()
+        if key in {"note", "alt", "caption"}
+    }
+    entry.update({
+        "file": file_ref,
         "status": "candidate",
         "role": role,
         "channel": channel,
-        "derived_from": source.name,
+        "derived_from": relative_asset_path(source, manifest_path.parent),
         "derivation": result["derivation"],
         "dimensions": result["dimensions"],
-        "sha256": hashlib.sha256(output.read_bytes()).hexdigest(),
+        "sha256": result["sha256"],
         "visual_review": "pending",
-    }
-    images[:] = [item for item in images if item.get("file") != output.name]
-    images.append(entry)
-    manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    manifest_path.write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    })
+    retained = [item for item in images if item is not existing]
+    document = {**manifest, "images": [*retained, entry]}
+    return (json.dumps(document, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+
+
+def stage_bytes(path: Path, data: bytes) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temp_name = tempfile.mkstemp(prefix=path.name + ".", dir=path.parent)
+    with os.fdopen(descriptor, "wb") as handle:
+        handle.write(data)
+    return Path(temp_name)
+
+
+def commit_outputs(output: Path, image_data: bytes, manifest_path: Path | None, manifest_data: bytes | None) -> None:
+    previous_image = output.read_bytes() if output.exists() else None
+    previous_manifest = manifest_path.read_bytes() if manifest_path and manifest_path.exists() else None
+    image_temp = stage_bytes(output, image_data)
+    manifest_temp = stage_bytes(manifest_path, manifest_data) if manifest_path else None
+    try:
+        os.replace(image_temp, output)
+        if manifest_path and manifest_temp:
+            os.replace(manifest_temp, manifest_path)
+    except Exception:
+        if previous_image is None:
+            output.unlink(missing_ok=True)
+        else:
+            output.write_bytes(previous_image)
+        if manifest_path and previous_manifest is not None:
+            manifest_path.write_bytes(previous_manifest)
+        raise
+    finally:
+        image_temp.unlink(missing_ok=True)
+        if manifest_temp:
+            manifest_temp.unlink(missing_ok=True)
 
 
 def derive_cover(
@@ -97,6 +156,8 @@ def derive_cover(
 ) -> dict:
     source = Path(source)
     output = Path(output)
+    manifest_path = Path(manifest_path) if manifest_path is not None else None
+    manifest = load_manifest(manifest_path) if manifest_path else None
     target_width, target_height = size
     if min(target_width, target_height) <= 0:
         raise ValueError("size dimensions must be positive")
@@ -110,7 +171,9 @@ def derive_cover(
         raise ValueError("mode must be crop or pad")
     validate_focus(focus_x, "focus_x")
     validate_focus(focus_y, "focus_y")
-    background_rgb = ImageColor.getrgb(background)
+    background_rgba = ImageColor.getrgb(background)
+    if len(background_rgba) == 3:
+        background_rgba = (*background_rgba, 255)
 
     with Image.open(source) as opened:
         source_image = ImageOps.exif_transpose(opened).convert("RGBA")
@@ -122,7 +185,7 @@ def derive_cover(
     if scale > 1:
         raise ValueError("refusing to upscale the source image")
 
-    canvas = Image.new("RGBA", (target_width, target_height), (*background_rgb, 255))
+    canvas = Image.new("RGBA", (target_width, target_height), background_rgba)
     derivation = {
         "operation": mode,
         "from": [source_width, source_height],
@@ -158,16 +221,18 @@ def derive_cover(
         canvas.paste(resized, (left, top), resized)
         derivation["padding"] = [left, top]
 
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output_image(canvas.convert("RGB"), output)
+    image_data = encode_image(canvas, output.suffix)
     result = {
         "output": str(output),
         "dimensions": [target_width, target_height],
         "derivation": derivation,
+        "sha256": hashlib.sha256(image_data).hexdigest(),
     }
-    if manifest_path is not None:
-        update_manifest(
-            Path(manifest_path),
+    manifest_data = None
+    if manifest_path:
+        manifest_data = build_manifest_document(
+            manifest,
+            manifest_path,
             source=source,
             output=output,
             result=result,
@@ -175,6 +240,7 @@ def derive_cover(
             channel=channel,
         )
         result["manifest"] = str(manifest_path)
+    commit_outputs(output, image_data, manifest_path, manifest_data)
     return result
 
 

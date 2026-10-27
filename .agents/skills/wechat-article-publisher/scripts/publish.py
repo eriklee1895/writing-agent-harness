@@ -196,7 +196,44 @@ def first_paragraph(body_html: str, limit: int = 120) -> str:
 
 # ── Body extraction: rendered HTML (preferred) ───────────────────────────
 
-def extract_body_from_html(html_text: str):
+def resolve_local_image_path(
+    value: str,
+    *,
+    html_path: Path | None = None,
+    article_path: Path | None = None,
+) -> Path:
+    """Resolve tracked image references without depending on the caller's CWD."""
+    path = Path(value)
+    if path.is_absolute():
+        return path
+
+    candidates: list[Path] = []
+
+    def add_candidate(base: Path) -> None:
+        candidate = (base / path).resolve()
+        if candidate not in candidates:
+            candidates.append(candidate)
+
+    if path.parts and path.parts[0] in {"content", ".local-archive"}:
+        add_candidate(REPO_ROOT)
+    if html_path is not None:
+        add_candidate(html_path.parent)
+    if article_path is not None:
+        add_candidate(article_path.parent)
+    add_candidate(REPO_ROOT)
+
+    for candidate in candidates:
+        if candidate.is_file():
+            return candidate
+    return candidates[0]
+
+
+def extract_body_from_html(
+    html_text: str,
+    *,
+    html_path: Path | None = None,
+    article_path: Path | None = None,
+):
     """Extract styled body + images from rendered HTML; strip the hero.
 
     Returns (body_html, images, hero_title). The renderer's hero section
@@ -296,7 +333,13 @@ def extract_body_from_html(html_text: str):
             fig.decompose()
         else:
             img.replace_with(soup.new_string(placeholder))
-        images.append({"placeholder": placeholder, "path": Path(local), "alt": alt})
+        images.append({
+            "placeholder": placeholder,
+            "path": resolve_local_image_path(
+                local, html_path=html_path, article_path=article_path
+            ),
+            "alt": alt,
+        })
 
     return container.decode_contents(), images, hero_title
 
@@ -1234,10 +1277,11 @@ def resolve_author(cli_author: str, fm: dict) -> str:
         return cfg["default_author"]
     try:
         entered = input("[publish] 配置无默认作者，请输入公众号署名（将写入 .config/wechat.toml）: ").strip()
-    except EOFError:
-        return ""
-    if entered:
-        save_default_author(entered)
+    except EOFError as exc:
+        raise ValueError("缺少作者；请用 --author 或配置 .config/wechat.toml 的 default_author") from exc
+    if not entered:
+        raise ValueError("作者不能为空；请用 --author 或配置 .config/wechat.toml 的 default_author")
+    save_default_author(entered)
     return entered
 
 
@@ -1257,7 +1301,10 @@ def load_article(article_path: Path | None, html_path: Path | None):
 
     if html_path is not None:
         body_html, images, h1_title = extract_body_from_html(
-            html_path.read_text(encoding="utf-8"))
+            html_path.read_text(encoding="utf-8"),
+            html_path=html_path,
+            article_path=article_path,
+        )
     else:
         body_html, images, h1_title = parse_markdown(md_body, md_base)
 
@@ -1588,7 +1635,14 @@ def publish(article_path: Path | None, html_path: Path | None,
 
     # Resolve metadata (frontmatter is authority for per-article fields).
     title = title or fm.get("title") or h1_title
-    author = resolve_author(author, fm)
+    try:
+        author = resolve_author(author, fm).strip()
+    except ValueError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
+    if not author:
+        print("ERROR: 作者不能为空；请用 --author 或配置 default_author", file=sys.stderr)
+        return 1
     summary = summary or fm.get("description") or fm.get("summary") or first_paragraph(body_html)
     # Cover: --cover resolves relative to CWD; frontmatter cover relative to .md dir.
     cover_path = None
